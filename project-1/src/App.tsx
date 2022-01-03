@@ -1,5 +1,7 @@
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
+
+import BarBox from './components/BarBox';
 import GlobalStyles from './styles/global';
 import { baseTheme } from './styles/theme';
 
@@ -7,7 +9,7 @@ function App() {
   return (
     <div className="App">
       <ThemeProvider theme={baseTheme}>
-        <h1>Hello, World!</h1>
+        <BarBox />
         <GlobalStyles />
       </ThemeProvider>
     </div>
