@@ -18,7 +18,11 @@ const BarBox = () => {
     <Box>
       <div className="section">
         <div className="items">
-          <ShapeSelector color={baseTheme.colors.font} shape={shape} onChange={setShape} />
+          <ShapeSelector 
+            color={baseTheme.colors.font} 
+            shape={shape} 
+            onChange={setShape}
+          />
         </div>
 
         <div className="items">
