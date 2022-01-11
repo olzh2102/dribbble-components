@@ -7,7 +7,7 @@ const Box = styled.div`
   left: 50%;
   transform: translateX(-50%);
 
-  background-color: #f8faff;
+  background-color: ${({ theme }) => theme.colors.secondaryBg};
   border-radius: 8px;
   padding: 12px 0;
 
@@ -25,9 +25,7 @@ const Box = styled.div`
       place-items: center;
       width: 32px;
       height: 32px;
-      padding: 6px;
       border-radius: 8px;
-      /* background-color: coral; */
     }
 
     .color-picker {
