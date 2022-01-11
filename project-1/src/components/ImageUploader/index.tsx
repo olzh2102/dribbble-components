@@ -1,14 +1,12 @@
 import React from 'react'
 
-import { baseTheme } from '../../styles/theme';
 import { UploadImageIcon } from '../Icons';
-
 import { StyledImageUploader } from './style';
 
-const ImageUploader = ({ onImageUpload }: { onImageUpload: (e: any) => void }) => {
+const ImageUploader = ({ onImageUpload, color }: { onImageUpload: (e: any) => void, color: string }) => {
     return (
         <StyledImageUploader>
-            <UploadImageIcon color={baseTheme.colors.font} />
+            <UploadImageIcon color={color} />
             <input 
                 className="input-image" 
                 type="file" 
