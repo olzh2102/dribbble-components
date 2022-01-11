@@ -11,7 +11,8 @@ import Box from './style';
 
 const BarBox = () => {
   const [shape, setShape] = useState<Shapes>('line');
-  const [color, setColor] = useState('#fff');
+  const [color, setColor] = useState({"r":64,"g":45,"b":104,"a":1});
+  const [hoverColor, setHoverColor] = useState({"r":64,"g":45,"b":104,"a":0.6});
 
   return (
     <Box>
@@ -24,6 +25,8 @@ const BarBox = () => {
           <ColorSelector 
             onChange={setColor}
             color={color}
+            hoverColor={hoverColor}
+            onHoverColorChange={setHoverColor}
           />
         </div>
       </div>
