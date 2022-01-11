@@ -1,18 +1,28 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 
 const useOnOutsideClick = (
     ref: any, 
-    setOpen: (param: boolean) => void
+    handler: (param: boolean) => void
 ) => {
-    useEffect(() => {
-        function handleClick(e: MouseEvent) {
-            const path = e.composedPath && e.composedPath()
-
-            if (!path.includes(ref.current)) setOpen(false)
-        }
-
-        document.body.onclick = handleClick
-    }, [ref, setOpen])
+    useEffect(
+        () => {
+          const listener = (event: any) => {
+            // Do nothing if clicking ref's element or descendent elements
+            if (!ref.current || ref.current.contains(event.target)) {
+              return;
+            }
+            handler(event);
+          };
+          document.addEventListener("mousedown", listener);
+          document.addEventListener("touchstart", listener);
+          
+          return () => {
+            document.removeEventListener("mousedown", listener);
+            document.removeEventListener("touchstart", listener);
+          };
+        },
+        [ref, handler]
+      );
 }
 
 export default useOnOutsideClick
