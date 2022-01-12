@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 
 import { Shapes } from '../../types';
+import useOnClickOutside from '../../hooks/useOnOutsideClick';
 import { LineIcon, ArrowIcon, SquareIcon, CircleIcon } from '../Icons';
 import StyledShapeSelector from './style';
 
@@ -9,12 +10,10 @@ const ShapeSelector = ({
   color,
   shape,
   onChange,
-}: {
-  color: string;
-  shape: Shapes;
-  onChange: (shape: Shapes) => void;
-}) => {
+}: Props) => {
+  const ref = useRef<any>();
   const [open, setOpen] = useState(false);
+  useOnClickOutside(ref, () => setOpen(false));
 
   const handleChange = (shape: Shapes) => {
     onChange(shape);
@@ -48,7 +47,7 @@ const ShapeSelector = ({
     <StyledShapeSelector>
       <div onClick={() => setOpen(!open)}>{shapes[shape]}</div>
       {open && (
-        <motion.div className="shapes" animate={{ y: '45%' }} transition={{ type: 'spring' }}>
+        <motion.div ref={ref} className="shapes" animate={{ y: '45%' }} transition={{ type: 'spring' }}>
           {Object.values(shapes).map((shape) => shape)}
         </motion.div>
       )}
@@ -57,3 +56,9 @@ const ShapeSelector = ({
 };
 
 export default ShapeSelector;
+
+type Props =  {
+  color: string;
+  shape: Shapes;
+  onChange: (shape: Shapes) => void;
+}
