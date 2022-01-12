@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
+import { RgbaColor } from "react-colorful";
 
 import { baseTheme } from '../../styles/theme';
 import { Shapes } from '../../types';
 
 import ShapeSelector from '../ShapeSelector';
 import ColorSelector from '../ColorSelector';
-import { UploadImageIcon } from '../Icons';
+import ImageUploader from '../ImageUploader';
 
 import Box from './style';
 
 const BarBox = () => {
   const [shape, setShape] = useState<Shapes>('line');
-  const [color, setColor] = useState({"r":64,"g":45,"b":104,"a":1});
-  const [hoverColor, setHoverColor] = useState({"r":64,"g":45,"b":104,"a":0.6});
+  const [color, setColor] = useState<RgbaColor>({"r":64,"g":45,"b":104,"a":1});
+  const [hoverColor, setHoverColor] = useState<RgbaColor>({"r":64,"g":45,"b":104,"a":0.6});
+  const [images, setImages] = useState<File[]>([])
 
   return (
     <Box>
@@ -37,7 +39,7 @@ const BarBox = () => {
 
       <div className="section">
         <div className="items">
-          <UploadImageIcon color={baseTheme.colors.font} />
+          <ImageUploader onImageUpload={setImages} />
         </div>
       </div>
     </Box>
