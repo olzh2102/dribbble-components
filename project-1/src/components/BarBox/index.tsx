@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { RgbaColor } from "react-colorful";
 
 import { Shapes } from '../../types';
+import { toHex } from '../../utils';
 import ShapeSelector from '../ShapeSelector';
 import ColorSelector from '../ColorSelector';
 import ImageUploader from '../ImageUploader';
@@ -49,10 +50,3 @@ const BarBox = () => {
 
 export default BarBox;
 
-function toHex(color: string){
-  const rgba = color.replace(/^rgba?\(|\s+|\)$/g, '').split(',');
-  console.log(rgba)
-  const hex = `#${((1 << 24) + (parseInt(rgba[0]) << 16) + (parseInt(rgba[1]) << 8) + parseInt(rgba[2])).toString(16).slice(1)}`;
-  
-  return hex;
-}
