@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { RgbaColor } from "react-colorful";
 
-import { baseTheme } from '../../styles/theme';
 import { Shapes } from '../../types';
-
+import { toHex } from '../../utils';
 import ShapeSelector from '../ShapeSelector';
 import ColorSelector from '../ColorSelector';
 import ImageUploader from '../ImageUploader';
@@ -21,9 +20,9 @@ const BarBox = () => {
       <div className="section">
         <div className="items">
           <ShapeSelector 
-            color={baseTheme.colors.font} 
+            color={toHex(`rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`)} 
             shape={shape} 
-            onChange={setShape}
+            onChange={setShape} 
           />
         </div>
 
@@ -39,7 +38,10 @@ const BarBox = () => {
 
       <div className="section">
         <div className="items">
-          <ImageUploader onImageUpload={setImages} />
+          <ImageUploader 
+            onImageUpload={setImages} 
+            color={toHex(`rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`)}
+          />
         </div>
       </div>
     </Box>
@@ -47,3 +49,4 @@ const BarBox = () => {
 };
 
 export default BarBox;
+
