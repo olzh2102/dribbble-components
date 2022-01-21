@@ -1,11 +1,12 @@
 import styled from 'styled-components';
 
-const Box = styled.div`
+const Box = styled.div<{ state: any }>`
   display: inline-flex;
+  flex-direction: ${({ state }) => state.flexDirection};
   position: absolute;
-  top: 50px;
-  left: 50%;
-  transform: translateX(-50%);
+  top: ${({ state }) => state.top};
+  left: ${({ state }) => state.left};
+  transform: translateX(${({ state }) => state.translateX});
 
   background-color: ${({ theme }) => theme.colors.secondaryBg};
   border-radius: 8px;
@@ -13,6 +14,7 @@ const Box = styled.div`
 
   .section {
     display: flex;
+    flex-direction: ${({ state }) => state.flexDirection};
     gap: 8px;
     padding: 4px 16px;
 
