@@ -5,11 +5,10 @@ import BarBox from './components/BarBox';
 import GlobalStyles from './styles/global';
 import { baseTheme } from './styles/theme';
 import { SetBoxPositionContext } from './hooks/useSetBoxPosition';
+import { Position } from './types';
 
 function App() {
-  const [position, setPosition] = useState<'top' | 'bottom' | 'left' | 'right'>(
-    'top'
-  );
+  const [position, setPosition] = useState<Position>('top');
 
   return (
     <div className="App">
