@@ -1,19 +1,19 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import { motion } from 'framer-motion';
 
 import { Shapes } from '../../types';
 import useOnClickOutside from '../../hooks/useOnOutsideClick';
 import { LineIcon, ArrowIcon, SquareIcon, CircleIcon } from '../Icons';
 import StyledShapeSelector from './style';
+import { SetBoxPositionContext } from '../../hooks/useSetBoxPosition';
+import { shapeSelectorPositionStyles as styles } from '../../constants';
 
-const ShapeSelector = ({
-  color,
-  shape,
-  onChange,
-}: Props) => {
+const ShapeSelector = ({ color, shape, onChange }: Props) => {
   const ref = useRef<any>();
   const [open, setOpen] = useState(false);
   useOnClickOutside(ref, () => setOpen(false));
+
+  const { position } = useContext(SetBoxPositionContext);
 
   const handleChange = (shape: Shapes) => {
     onChange(shape);
@@ -44,10 +44,22 @@ const ShapeSelector = ({
   };
 
   return (
-    <StyledShapeSelector>
+    <StyledShapeSelector state={styles[position]}>
       <div onClick={() => setOpen(!open)}>{shapes[shape]}</div>
       {open && (
-        <motion.div ref={ref} className="shapes" animate={{ y: '45%' }} transition={{ type: 'spring' }}>
+        <motion.div
+          ref={ref}
+          className="shapes"
+          initial={{
+            x: styles[position].initialX,
+            y: styles[position].initialY,
+          }}
+          animate={{
+            x: styles[position].x,
+            y: styles[position].y,
+          }}
+          transition={{ type: 'spring' }}
+        >
           {Object.values(shapes).map((shape) => shape)}
         </motion.div>
       )}
@@ -57,8 +69,8 @@ const ShapeSelector = ({
 
 export default ShapeSelector;
 
-type Props =  {
+type Props = {
   color: string;
   shape: Shapes;
   onChange: (shape: Shapes) => void;
-}
+};
