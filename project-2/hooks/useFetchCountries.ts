@@ -1,13 +1,17 @@
 import { useQuery } from 'react-query';
+import { QUERY_KEY_COUNTRIES } from '../constants';
 
-const useFetchCountries = (url: string) => {
-  const { status, data } = useQuery('countries', () =>
-    fetch(url).then((res) => res.json())
+const useFetchCountries = (url: string, options: any = {}) => {
+  const query = useQuery(
+    QUERY_KEY_COUNTRIES,
+    async () => {
+      const response = await fetch(url);
+      return response.json();
+    },
+    options
   );
 
-  const countries = data?.data;
-
-  return { status, countries };
+  return { ...query, status: query.status, countries: query.data?.data };
 };
 
 export default useFetchCountries;
