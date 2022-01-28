@@ -2,6 +2,7 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import { QueryClient } from 'react-query';
+import Image from 'next/image';
 import useFetchCountries from '../hooks/useFetchCountries';
 import { TCountry } from '../types';
 
@@ -39,6 +40,16 @@ const Home: NextPage = () => {
               <h2>Code:</h2>
               <span>{c.dialCode}</span>
               <h2>Flag:</h2>
+              {/*
+               * TODO: fix broken src url
+               */}
+              {/* <Image
+                src={c.flag}
+                alt={c.name}
+                width={'100px'}
+                height={'50px'}
+                onError={() => {}}
+              /> */}
               <img src={c.flag} alt={c.name} style={{ width: '100px' }} />
               <h2>Name:</h2>
               <span>{c.name}</span>
