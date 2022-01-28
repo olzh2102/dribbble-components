@@ -1,0 +1,1 @@
+export const QUERY_KEY_COUNTRIES = 'COUNTRIES';
