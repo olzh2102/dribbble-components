@@ -1,4 +1,4 @@
-import { StyledLabel, StyledInput } from './style'
+import { StyledLabel, StyledInput, StyledPlaceholder } from './style'
 
 const SearchInput = (
 { 
@@ -17,10 +17,8 @@ const SearchInput = (
                 value={value} 
                 onChange={onChange} 
                 placeholder="&nbsp;" 
-            />
-            <span>Enter</span>
-            {/* <StyledPlaceholder>{placeholder}</StyledPlaceholder>
-            <StyledBorder /> */}
+                />
+            <StyledPlaceholder className="placeholder">{placeholder}</StyledPlaceholder>
         </StyledLabel>
     )
 }
