@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 
-import SearchInput from '../../components/search-input';
+import App from '../../components/app';
 
 const Countries: NextPage = () => {
     return (
@@ -16,7 +16,7 @@ const Countries: NextPage = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <SearchInput onChange={() => {}} value="" placeholder="Search countries" />
+            <App />
         </div>
     )
 }

@@ -1,1 +1,2 @@
 export const QUERY_KEY_COUNTRIES = 'COUNTRIES';
+export const DEFAULT_DELAY_TIME = 1000;

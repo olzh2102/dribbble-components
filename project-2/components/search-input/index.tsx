@@ -6,7 +6,7 @@ const SearchInput = (
     value, 
     placeholder 
 }: {
-    onChange: (e: any) => void,
+    onChange: (val: string) => void,
     value: string,
     placeholder: string
 }) => {
@@ -15,10 +15,12 @@ const SearchInput = (
             <StyledInput 
                 type="text" 
                 value={value} 
-                onChange={onChange} 
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange(e.target.value)} 
                 placeholder="&nbsp;" 
-                />
-            <StyledPlaceholder className="placeholder">{placeholder}</StyledPlaceholder>
+            />
+            <StyledPlaceholder className="placeholder">
+                {placeholder}
+            </StyledPlaceholder>
         </StyledLabel>
     )
 }
