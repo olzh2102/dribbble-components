@@ -1,7 +1,10 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
-import { QueryClient, useQuery } from 'react-query';
+import { QueryClient } from 'react-query';
+import Image from 'next/image';
+import useFetchCountries from '../hooks/useFetchCountries';
+import { TCountry } from '../types';
 
 export const queryClient = new QueryClient();
 
@@ -9,9 +12,7 @@ const URL =
   'https://countriesnow.space/api/v0.1/countries/info?returns=flag,dialCode';
 
 const Home: NextPage = () => {
-  const query = useQuery('countries', () =>
-    fetch(URL).then((res) => res.json())
-  );
+  const { status, countries } = useFetchCountries(URL);
 
   return (
     <div className={styles.container}>
@@ -21,27 +22,41 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(6, 1fr)',
-          gap: '1rem',
-        }}
-      >
-        {query.data?.data.map((c: any, index: any) => (
-          <div
-            key={index}
-            style={{ border: '1px solid black', padding: '20px' }}
-          >
-            <h2>Code:</h2>
-            <span>{c.dialCode}</span>
-            <h2>Flag:</h2>
-            <img src={c.flag} alt={c.name} style={{ width: '100px' }} />
-            <h2>Name:</h2>
-            <span>{c.name}</span>
-          </div>
-        ))}
-      </div>
+      {status === 'error' && <div>Error fetching data</div>}
+      {status === 'loading' && <div>Fetching data...</div>}
+      {status === 'success' && (
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(6, 1fr)',
+            gap: '1rem',
+          }}
+        >
+          {countries.map((c: TCountry, index: number) => (
+            <div
+              key={index}
+              style={{ border: '1px solid black', padding: '20px' }}
+            >
+              <h2>Code:</h2>
+              <span>{c.dialCode}</span>
+              <h2>Flag:</h2>
+              {/*
+               * TODO: fix broken src url
+               */}
+              {/* <Image
+                src={c.flag}
+                alt={c.name}
+                width={'100px'}
+                height={'50px'}
+                onError={() => {}}
+              /> */}
+              <img src={c.flag} alt={c.name} style={{ width: '100px' }} />
+              <h2>Name:</h2>
+              <span>{c.name}</span>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
