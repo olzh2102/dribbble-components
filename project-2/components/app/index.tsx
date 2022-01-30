@@ -12,8 +12,8 @@ const App = () => {
     }, [debouncedValue])
     
     return (    
-        <div>
-            <SearchInput 
+        <div data-testid="app">
+            <SearchInput
                 onChange={(val: string) => setSearchTerm(val)}
                 placeholder="Search countries"
                 value={searchTerm}
