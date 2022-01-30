@@ -11,8 +11,10 @@ const SearchInput = (
     placeholder: string
 }) => {
     return (
-        <StyledLabel>
-            <StyledInput 
+        <StyledLabel htmlFor="search-input">
+            <StyledInput
+                id="search-input" 
+                data-test-id="search-input"
                 type="text" 
                 value={value} 
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange(e.target.value)} 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { useDebounce } from '../../hooks';
+import useDebounce from '@hooks/use-debounce';
 import SearchInput from '../search-input';
 
 const App = () => {
@@ -12,8 +12,8 @@ const App = () => {
     }, [debouncedValue])
     
     return (    
-        <div>
-            <SearchInput 
+        <div data-testid="app">
+            <SearchInput
                 onChange={(val: string) => setSearchTerm(val)}
                 placeholder="Search countries"
                 value={searchTerm}
