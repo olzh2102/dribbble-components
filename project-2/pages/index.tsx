@@ -1,18 +1,14 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import styles from '../styles/Home.module.css';
-import { QueryClient } from 'react-query';
 import Image from 'next/image';
+
 import useFetchCountries from '../hooks/use-fetch-countries';
 import { TCountry } from '../types';
 
-export const queryClient = new QueryClient();
-
-const URL =
-  'https://countriesnow.space/api/v0.1/countries/info?returns=flag,dialCode';
+import styles from '../styles/Home.module.css';
 
 const Home: NextPage = () => {
-  const { status, countries } = useFetchCountries(URL);
+  const { status, countries } = useFetchCountries();
 
   return (
     <div className={styles.container}>
