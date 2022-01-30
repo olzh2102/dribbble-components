@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { useDebounce } from '../../hooks';
+import useDebounce from '@hooks/use-debounce';
 import SearchInput from '../search-input';
 
 const App = () => {

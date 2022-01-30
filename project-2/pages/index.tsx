@@ -3,7 +3,7 @@ import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import { QueryClient } from 'react-query';
 import Image from 'next/image';
-import useFetchCountries from '../hooks/useFetchCountries';
+import useFetchCountries from '../hooks/use-fetch-countries';
 import { TCountry } from '../types';
 
 export const queryClient = new QueryClient();
