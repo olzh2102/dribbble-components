@@ -5,16 +5,15 @@ const useFetchCountries = (options: any = {}) => {
   const query = useQuery(
     QUERY_KEY_COUNTRIES,
     async () => {
-      return await fetch(URL_COUNTRIES).then((res) => res.json())
+      const response = await fetch(URL_COUNTRIES);
+      return response.json();
     },
     options
   );
 
   return { 
     ...query, 
-    status: query.status, 
-    countries: query.data?.data 
-  };
+    countries: query.data?.data };
 };
 
 export default useFetchCountries;
