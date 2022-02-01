@@ -1,13 +1,8 @@
 import React from 'react';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { render as rtlRender } from '@testing-library/react';
-import { QueryClient, QueryClientProvider } from 'react-query';
 
 const queryClient = new QueryClient();
-
-function Providers({ children }) {
-    return children
-}
 
 function render(
     ui,
