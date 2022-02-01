@@ -4,17 +4,15 @@ export const StyledLabel = styled.label`
     display: inline-block;
     position: relative;
     font-size: 14px;
-    border-top: 20px solid transparent;
-    margin-bottom: 5px;
-    padding: 12px;
+    padding: 12px 0;
 `
 
 export const StyledInput = styled.input`
     border: none;
     appearance: none;
     background-color: #f2f2f2;
-    padding: 12px;
-    border-radius: 25px;
+    padding: 18px;
+    border-radius: 18px;
     width: 250px;
     outline: none;
     font-size: 14px;
@@ -30,7 +28,7 @@ export const StyledInput = styled.input`
 
 export const StyledPlaceholder = styled.span`
     position: absolute;
-    top: 30px;
+    top: 36px;
     left: 30px;
     width: calc(100% - 12 * 2);
     overflow: hidden;
