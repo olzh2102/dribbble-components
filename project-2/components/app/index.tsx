@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
 import { useDebounce, useFetchCountries } from '../../hooks';
-import SearchInput from '../search-input';
+import SearchInput from '@components/search-input';
 import { StyledContainer } from './style';
+import CountryList from '@components/country-list';
+import Skeleton from '@components/skeleton';
 
 const App = () => {
   const { countries, isLoading, isError } = useFetchCountries();
@@ -24,13 +26,14 @@ const App = () => {
       />
 
       {isLoading ? (
-        // TODO: replace loading div with Skeleton component
-        <div>Countries are loading...</div>
+        <Skeleton count={5} />
       ) : isError ? (
         <div>Error happened</div>
       ) : (
-        // TODO: replace div with Country component inside iterate over countries
-        <div>Countries will go here</div>
+        <CountryList
+          countries={countries}
+          onSelect={(val) => setSearchTerm(val)}
+        />
       )}
     </StyledContainer>
   );
