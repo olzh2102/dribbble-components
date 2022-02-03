@@ -1,3 +1,4 @@
+import CountrySelectRadioInput from '@components/country-select-radio-input';
 import { TCountry } from 'types';
 import { CountryInfo, StyledLabel } from './style';
 
@@ -19,12 +20,7 @@ const CountryItem = ({
             : `(+${country.dialCode})`)}
       </span>
     </CountryInfo>
-    <input
-      type="radio"
-      value={country.name}
-      name="country"
-      onClick={() => onSelect(country.name)}
-    />
+    <CountrySelectRadioInput value={country.name} onSelect={onSelect} />
   </StyledLabel>
 );
 
