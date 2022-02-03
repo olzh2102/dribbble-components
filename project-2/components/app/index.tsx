@@ -17,22 +17,33 @@ const App = () => {
     // TODO: list re-render on searchTerm
   }, [debouncedValue]);
 
-  return (
-    <StyledContainer data-testid="app">
-      <SearchInput
-        onChange={setSearchTerm}
-        placeholder="Search countries"
-        value={searchTerm}
-      />
+    return (    
+        <StyledContainer data-testid="app">
+            <SearchInput
+                onChange={setSearchTerm}
+                placeholder="Search countries"
+                value={searchTerm}
+            />
 
-      {isLoading ? (
+{isLoading ? (
         <Skeleton count={5} />
       ) : isError ? (
         <div>Error happened</div>
       ) : (
         <CountryList countries={countries} onSelect={setSearchTerm} />
       )}
-    </StyledContainer>
+            
+            
+
+            <Button
+                as="link"
+                onClick={() => {}}
+                icon={null}
+                label=""
+                disabled={false}
+                variant="outlined"
+            />
+        </StyledContainer>
   );
 };
 
