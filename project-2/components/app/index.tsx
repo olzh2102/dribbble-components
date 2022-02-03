@@ -20,7 +20,7 @@ const App = () => {
   return (
     <StyledContainer data-testid="app">
       <SearchInput
-        onChange={(val: string) => setSearchTerm(val)}
+        onChange={setSearchTerm}
         placeholder="Search countries"
         value={searchTerm}
       />
@@ -30,10 +30,7 @@ const App = () => {
       ) : isError ? (
         <div>Error happened</div>
       ) : (
-        <CountryList
-          countries={countries}
-          onSelect={(val) => setSearchTerm(val)}
-        />
+        <CountryList countries={countries} onSelect={setSearchTerm} />
       )}
     </StyledContainer>
   );

@@ -11,11 +11,7 @@ const CountryList = ({
 }) => (
   <StyledCountryList>
     {countries.map((country: TCountry, index: number) => (
-      <CountryItem
-        key={index}
-        country={country}
-        onSelect={(value) => onSelect(value)}
-      />
+      <CountryItem key={index} country={country} onSelect={onSelect} />
     ))}
   </StyledCountryList>
 );
