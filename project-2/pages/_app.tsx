@@ -19,7 +19,7 @@ const GlobalStyle = createGlobalStyle`
     min-height: 100vh;
     padding: 1rem;
     margin-top: 0;
-    font-family: 'Verdana'
+    font-family: 'Verdana';
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -29,12 +29,13 @@ const GlobalStyle = createGlobalStyle`
   *, *::before, *::after {
     box-sizing: border-box;
   }
-`
+`;
+
 const theme = {
   colors: {
     primary: '#fafafa',
-  }
-}
+  },
+};
 
 const App = ({ Component, pageProps }: AppProps) => (
   <>
