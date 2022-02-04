@@ -37,6 +37,7 @@ const App = () => {
 
             <Button
                 as="link"
+                to=""
                 onClick={() => {}}
                 icon={null}
                 label=""
