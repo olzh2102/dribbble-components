@@ -13,7 +13,7 @@ const Button = (props: Props) => {
         endIcon = null
     } = props
     return as == 'link' ?  
-        <Link href={to}><AnchorButton {...props} /></Link> : <button type="button">{label}</button>
+        <Link href={to}><AnchorButton {...props} /></Link> : <button type="button">{label ? label : icon}</button>
 }
 
 export default Button;
@@ -25,11 +25,11 @@ const AnchorButton = ({ label }: any) => {
 }
 
 type Props = {
-    as: 'button' | 'link';
-    to: string;
+    as?: 'button' | 'link';
+    to?: string;
     onClick: () => void;
     icon?: React.ReactElement | null;
-    label: string;
+    label?: string;
     disabled?: boolean;
     variant: 'contained' | 'text' | 'outlined';
     startIcon?: React.ReactElement | null;

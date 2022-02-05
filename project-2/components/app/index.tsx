@@ -2,9 +2,12 @@ import React, { useEffect, useState } from 'react';
 
 import { useDebounce, useFetchCountries } from '../../hooks';
 import SearchInput from '@components/search-input';
-import { StyledContainer } from './style';
 import CountryList from '@components/country-list';
 import Skeleton from '@components/skeleton';
+import Button from '@components/button';
+import { CrossIcon } from '@components/icons';
+
+import { StyledContainer } from './style';
 
 const App = () => {
   const { countries, isLoading, isError } = useFetchCountries();
@@ -25,25 +28,32 @@ const App = () => {
                 value={searchTerm}
             />
 
-{isLoading ? (
-        <Skeleton count={5} />
-      ) : isError ? (
-        <div>Error happened</div>
-      ) : (
-        <CountryList countries={countries} onSelect={setSearchTerm} />
-      )}
+            {isLoading ? (
+              <Skeleton count={5} />
+              ) : isError ? (
+              <div>Error happened</div>
+              ) : (
+              <CountryList countries={countries} onSelect={setSearchTerm} />
+            )}
             
-            
+            <div className="actions">
+                <Button
+                    as="link"
+                    to="/"
+                    onClick={() => {}}
+                    label="NEXT"
+                    disabled={false}
+                    variant="outlined"
+                    />
 
-            <Button
-                as="link"
-                to=""
-                onClick={() => {}}
-                icon={null}
-                label=""
-                disabled={false}
-                variant="outlined"
-            />
+
+                <Button
+                    onClick={() => {}}
+                    icon={<CrossIcon />}
+                    disabled={false}
+                    variant="outlined"
+                />
+            </div>
         </StyledContainer>
   );
 };
