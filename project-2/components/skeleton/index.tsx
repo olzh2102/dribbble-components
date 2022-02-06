@@ -2,15 +2,16 @@ import ContentLoader from 'react-content-loader';
 
 const Skeleton = ({ count }: { count: number }) => (
   <>
-    {Array.from({ length: count }, () => (
+    {Array.from({ length: count }, (_, i) => (
       <ContentLoader
-        className="pizza-block"
+        key={i}
         speed={2}
         width={280}
         height={40}
         viewBox="0 0 280 40"
         backgroundColor="#f3f3f3"
         foregroundColor="#dadada"
+        data-testid="skeleton"
       >
         <circle cx="15" cy="15" r="15" />
         <rect x="38" y="2" rx="6" ry="6" width="220" height="25" />
