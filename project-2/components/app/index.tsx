@@ -40,11 +40,11 @@ const App = () => {
                 <Button
                     as="link"
                     to="/"
-                    onClick={() => {}}
+                    onClick={() => { console.log('banana') }}
                     label="NEXT"
-                    disabled={false}
+                    disabled={true}
                     variant="outlined"
-                    />
+                />
 
 
                 <Button

@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { ButtonStyled, AnchorStyled } from './style';
 
 const Button = (props: Props) => {
     const {
@@ -13,14 +14,19 @@ const Button = (props: Props) => {
         endIcon = null
     } = props
     return as == 'link' ?  
-        <Link href={to}><AnchorButton {...props} /></Link> : <button type="button">{label ? label : icon}</button>
+        <Link href={to}><AnchorButton {...props} /></Link> : 
+        <ButtonStyled type="button" onClick={onClick}>
+            {startIcon != null && startIcon} 
+            {label ? label : icon} 
+            {endIcon != null && endIcon}
+        </ButtonStyled>
 }
 
 export default Button;
 
-const AnchorButton = ({ label }: any) => {
+const AnchorButton = ({ label, disabled }: any) => {
     return (
-        <a>{label}</a>
+        <AnchorStyled disabled={disabled}>{label}</AnchorStyled>
     )
 }
 
