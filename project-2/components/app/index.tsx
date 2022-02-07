@@ -16,9 +16,16 @@ const App = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const debouncedValue = useDebounce(searchTerm);
 
-  useEffect(() => {
-    // TODO: list re-render on searchTerm
-  }, [debouncedValue]);
+    const [selectedCountry, setSelectedCountry] = useState({})
+
+    const handleRemoveCountry = () => {
+        if (Object.keys(selectedCountry).length > 0)
+            setSelectedCountry({})
+    }
+
+    useEffect(() => {
+        // TODO: list re-render on searchTerm
+    }, [debouncedValue])
 
     return (    
         <StyledContainer data-testid="app">
@@ -40,18 +47,16 @@ const App = () => {
                 <Button
                     as="link"
                     to="/"
-                    onClick={() => { console.log('banana') }}
                     label="NEXT"
-                    disabled={true}
                     variant="outlined"
                 />
 
 
                 <Button
-                    onClick={() => {}}
+                    onClick={handleRemoveCountry}
                     icon={<CrossIcon />}
-                    disabled={false}
-                    variant="outlined"
+                    disabled={Object.keys(selectedCountry).length == 0}
+                    variant="contained"
                 />
             </div>
         </StyledContainer>

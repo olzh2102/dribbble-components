@@ -26,13 +26,5 @@ export const StyledContainer = styled.div`
             color: #fff;
             cursor: pointer;
         }
-
-        > button {
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            border: grey;
-            cursor: pointer;
-        }
     }
 `
