@@ -1,4 +1,4 @@
-import CountrySelectRadioInput from '@components/country-select-radio-input';
+import CountrySelectRadioInput from '../country-select-radio-input';
 import { TCountry } from 'types';
 import { CountryInfo, StyledLabel } from './style';
 

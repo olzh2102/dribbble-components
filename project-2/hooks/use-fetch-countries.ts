@@ -5,10 +5,7 @@ import { QUERY_KEY_COUNTRIES, URL_COUNTRIES } from '../constants';
 const useFetchCountries = (options: any = {}) => {
   const query = useQuery(
     QUERY_KEY_COUNTRIES,
-    async () => {
-      const response = await axios.get(URL_COUNTRIES);
-      return response.data;
-    },
+    () => axios.get(URL_COUNTRIES),
     options
   );
 
