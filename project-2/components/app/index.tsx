@@ -9,8 +9,9 @@ import Button from '../button';
 import { CrossIcon } from '../icons';
 
 import { StyledContainer } from './style';
+import { TCountry } from 'types';
 
-const App = () => {
+const App = ({ testCountries }: { testCountries?: TCountry }) => {
   const { countries, isLoading, isError } = useFetchCountries();
 
   const [searchTerm, setSearchTerm] = useState('');
