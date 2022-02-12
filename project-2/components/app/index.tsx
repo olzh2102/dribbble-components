@@ -11,7 +11,6 @@ import { StyledContainer } from './style';
 
 const App = () => {
   const { countries, isLoading, isError } = useFetchCountries();
-  console.log('Countries: ', countries);
 
   const [searchTerm, setSearchTerm] = useState('');
   const debouncedValue = useDebounce(searchTerm);
