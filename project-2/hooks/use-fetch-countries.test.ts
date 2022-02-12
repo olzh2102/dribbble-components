@@ -15,7 +15,7 @@ describe('use fetch countries hook', () => {
     const { result, waitFor } = setup();
 
     await waitFor(() => result.current.isSuccess);
-    console.log(result.current)
+    
     expect((result as any).current.data.length).toBe(3);
   });
 
