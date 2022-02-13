@@ -10,7 +10,7 @@ const CountryItem = ({
   onSelect: (val: string) => void;
 }) => (
   <StyledLabel>
-    <CountryInfo>
+    <CountryInfo onClick={() => onSelect(country as any)}>
       <img src={country.flag} alt="" />
       <span>{country.name}</span>
       <span>
@@ -20,7 +20,7 @@ const CountryItem = ({
             : `(+${country.dialCode})`)}
       </span>
     </CountryInfo>
-    <CountrySelectRadioInput value={country.name} onSelect={onSelect} />
+    {/* <CountrySelectRadioInput value={country.name} onSelect={onSelect} /> */}
   </StyledLabel>
 );
 

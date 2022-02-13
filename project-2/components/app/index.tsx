@@ -8,14 +8,16 @@ import Button from '../button';
 import { CrossIcon } from '../icons';
 
 import { StyledContainer } from './style';
+import { TCountry } from 'types';
 
 const App = () => {
-  const { countries, isLoading, isError } = useFetchCountries();
+    const { countries, isLoading, isError } = useFetchCountries();
 
-  const [searchTerm, setSearchTerm] = useState('');
-  const debouncedValue = useDebounce(searchTerm);
+    const [searchTerm, setSearchTerm] = useState('');
+    const debouncedValue = useDebounce(searchTerm);
 
-    const [selectedCountry, setSelectedCountry] = useState({})
+    const [selectedCountry, setSelectedCountry] = useState({} as any);
+    console.log('banana selected: ', selectedCountry)
 
     const handleRemoveCountry = () => {
         if (Object.keys(selectedCountry).length > 0)
@@ -35,11 +37,11 @@ const App = () => {
             />
 
             {isLoading ? (
-              <Skeleton count={5} />
-              ) : isError ? (
-              <div>Error happened</div>
-              ) : (
-              <CountryList countries={countries} onSelect={setSearchTerm} />
+                <Skeleton count={5} />
+                ) : isError ? (
+                <div>Error happened</div>
+                ) : (
+                <CountryList countries={countries} onSelect={setSelectedCountry} />
             )}
             
             <div className="actions">
@@ -59,7 +61,7 @@ const App = () => {
                 />
             </div>
         </StyledContainer>
-  );
+    );
 };
 
 export default App;
