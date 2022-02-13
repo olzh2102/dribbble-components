@@ -1,4 +1,4 @@
-import CountryItem from '@components/country-item';
+import CountryItem from '../country-item';
 import { TCountry } from 'types';
 import { StyledCountryList } from './style';
 

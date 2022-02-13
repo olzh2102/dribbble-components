@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react';
 
 import { useDebounce, useFetchCountries } from '../../hooks';
-import SearchInput from '@components/search-input';
-import CountryList from '@components/country-list';
-import Skeleton from '@components/skeleton';
-import Button from '@components/button';
-import { CrossIcon } from '@components/icons';
+import SearchInput from '../search-input';
+import CountryList from '../country-list';
+import Skeleton from '../skeleton';
+import Button from '../button';
+import { CrossIcon } from '../icons';
 
 import { StyledContainer } from './style';
 
 const App = () => {
   const { countries, isLoading, isError } = useFetchCountries();
-  console.log('Countries: ', countries);
 
   const [searchTerm, setSearchTerm] = useState('');
   const debouncedValue = useDebounce(searchTerm);
