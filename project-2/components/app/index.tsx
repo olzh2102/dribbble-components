@@ -8,7 +8,6 @@ import Button from '../button';
 import { CrossIcon } from '../icons';
 
 import { StyledContainer } from './style';
-import { TCountry } from 'types';
 
 const App = () => {
     const { countries, isLoading, isError } = useFetchCountries();
@@ -41,7 +40,11 @@ const App = () => {
                 ) : isError ? (
                 <div>Error happened</div>
                 ) : (
-                <CountryList countries={countries} onSelect={setSelectedCountry} />
+                <CountryList 
+                    countries={countries} 
+                    onSelect={setSelectedCountry} 
+                    selectedCountry={selectedCountry} 
+                />
             )}
             
             <div className="actions">
@@ -51,7 +54,6 @@ const App = () => {
                     label="NEXT"
                     variant="outlined"
                 />
-
 
                 <Button
                     onClick={handleRemoveCountry}

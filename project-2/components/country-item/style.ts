@@ -3,11 +3,12 @@ import styled from 'styled-components';
 export const StyledLabel = styled.label`
   display: flex;
   justify-content: space-between;
+  cursor: pointer;
 `;
 
 export const CountryInfo = styled.div`
   display: flex;
-  column-gap: 4px;
+  gap: 12px;
 
   img {
     width: 25px;

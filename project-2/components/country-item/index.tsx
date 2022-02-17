@@ -1,13 +1,15 @@
-import CountrySelectRadioInput from '../country-select-radio-input';
+import CheckIcon from '../icons/check';
 import { TCountry } from 'types';
 import { CountryInfo, StyledLabel } from './style';
 
 const CountryItem = ({
   country,
   onSelect,
+  selectedCountry
 }: {
   country: TCountry;
   onSelect: (val: string) => void;
+  selectedCountry: TCountry;
 }) => (
   <StyledLabel>
     <CountryInfo onClick={() => onSelect(country as any)}>
@@ -20,7 +22,7 @@ const CountryItem = ({
             : `(+${country.dialCode})`)}
       </span>
     </CountryInfo>
-    {/* <CountrySelectRadioInput value={country.name} onSelect={onSelect} /> */}
+    {selectedCountry.name == country.name && <div><CheckIcon /></div>}
   </StyledLabel>
 );
 
