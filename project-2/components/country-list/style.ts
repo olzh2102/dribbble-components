@@ -6,4 +6,8 @@ export const StyledCountryList = styled.div`
   row-gap: 16px;
   height: 300px;
   overflow-y: scroll;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
