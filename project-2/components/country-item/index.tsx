@@ -1,6 +1,6 @@
 import CheckIcon from '../icons/check';
 import { TCountry } from 'types';
-import { CountryInfo, StyledLabel } from './style';
+import { CountryInfo, CheckWrapper, StyledLabel } from './style';
 
 const CountryItem = ({
   country,
@@ -11,7 +11,7 @@ const CountryItem = ({
   onSelect: (val: string) => void;
   selectedCountry: TCountry;
 }) => (
-  <StyledLabel>
+  <StyledLabel isSelected={selectedCountry.name == country.name}>
     <CountryInfo onClick={() => onSelect(country as any)}>
       <img src={country.flag} alt="" />
       <span>{country.name}</span>
@@ -22,7 +22,7 @@ const CountryItem = ({
             : `(+${country.dialCode})`)}
       </span>
     </CountryInfo>
-    {selectedCountry.name == country.name && <div><CheckIcon /></div>}
+    {selectedCountry.name == country.name && <CheckWrapper><CheckIcon /></CheckWrapper>}
   </StyledLabel>
 );
 
