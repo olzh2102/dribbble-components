@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+import { isEmpty } from '../../utils';
 import { useDebounce, useFetchCountries } from '../../hooks';
 import SearchInput from '../search-input';
 import CountryList from '../country-list';
@@ -16,10 +17,9 @@ const App = () => {
     const debouncedValue = useDebounce(searchTerm);
 
     const [selectedCountry, setSelectedCountry] = useState({} as any);
-    console.log('banana selected: ', selectedCountry)
 
     const handleRemoveCountry = () => {
-        if (Object.keys(selectedCountry).length > 0)
+        if (!isEmpty(selectedCountry))
             setSelectedCountry({})
     }
 
