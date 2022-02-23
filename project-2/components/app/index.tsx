@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+import { isEmpty } from '../../utils';
 import { useDebounce, useFetchCountries } from '../../hooks';
 import SearchInput from '../search-input';
 import CountryList from '../country-list';
@@ -10,15 +11,15 @@ import { CrossIcon } from '../icons';
 import { StyledContainer } from './style';
 
 const App = () => {
-  const { countries, isLoading, isError } = useFetchCountries();
+    const { countries, isLoading, isError } = useFetchCountries();
 
-  const [searchTerm, setSearchTerm] = useState('');
-  const debouncedValue = useDebounce(searchTerm);
+    const [searchTerm, setSearchTerm] = useState('');
+    const debouncedValue = useDebounce(searchTerm);
 
-    const [selectedCountry, setSelectedCountry] = useState({})
+    const [selectedCountry, setSelectedCountry] = useState({} as any);
 
     const handleRemoveCountry = () => {
-        if (Object.keys(selectedCountry).length > 0)
+        if (!isEmpty(selectedCountry))
             setSelectedCountry({})
     }
 
@@ -35,11 +36,15 @@ const App = () => {
             />
 
             {isLoading ? (
-              <Skeleton count={5} />
-              ) : isError ? (
-              <div>Error happened</div>
-              ) : (
-              <CountryList countries={countries} onSelect={setSearchTerm} />
+                <Skeleton count={5} />
+                ) : isError ? (
+                <div>Error happened</div>
+                ) : (
+                <CountryList 
+                    countries={countries} 
+                    onSelect={setSelectedCountry} 
+                    selectedCountry={selectedCountry} 
+                />
             )}
             
             <div className="actions">
@@ -50,7 +55,6 @@ const App = () => {
                     variant="outlined"
                 />
 
-
                 <Button
                     onClick={handleRemoveCountry}
                     icon={<CrossIcon />}
@@ -59,7 +63,7 @@ const App = () => {
                 />
             </div>
         </StyledContainer>
-  );
+    );
 };
 
 export default App;

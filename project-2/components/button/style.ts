@@ -13,5 +13,5 @@ export const ButtonStyled = styled.button<{ variant: 'contained' | 'outlined' | 
 `
 
 export const LinkStyled = styled(Link)`
-   
+   text-decoration: none;
 `

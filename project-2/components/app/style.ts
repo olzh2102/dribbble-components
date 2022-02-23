@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 
 export const StyledContainer = styled.div`
-    max-width: 322px;
+    height: 350px;
+    max-width: 290px;
     margin-top: 100px;
     display: flex;
     flex-direction: column;
@@ -9,13 +10,13 @@ export const StyledContainer = styled.div`
     padding: 20px;
     background-color: #fff;
     gap: 8px;
-    box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 0px 1px inset, 
-      rgba(0, 0, 0, 0.9) 0px 0px 0px 1px;
+    align-items: center;
 
     .actions {
         display: flex;
         align-items: center;
         gap: 16px;
+        width: 100%;
 
         > a {
             flex-grow: 2;
