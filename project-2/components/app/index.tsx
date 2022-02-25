@@ -9,10 +9,9 @@ import Button from '../button';
 import { CrossIcon } from '../icons';
 
 import { StyledContainer } from './style';
-import { TCountry } from 'types';
 
-const App = ({ testCountries }: { testCountries?: TCountry }) => {
-  const { countries, isLoading, isError } = useFetchCountries();
+const App = () => {
+  const { data: res, isLoading, isError } = useFetchCountries();
 
   const [searchTerm, setSearchTerm] = useState('');
   const debouncedValue = useDebounce(searchTerm);
@@ -41,7 +40,7 @@ const App = ({ testCountries }: { testCountries?: TCountry }) => {
         <div>Error happened</div>
       ) : (
         <CountryList
-          countries={countries}
+          countries={res?.data.data}
           onSelect={setSelectedCountry}
           selectedCountry={selectedCountry}
         />
