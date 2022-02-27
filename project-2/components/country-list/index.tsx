@@ -11,7 +11,7 @@ const CountryList = ({
   onSelect: (value: string) => void;
   selectedCountry: TCountry;
 }) => (
-  <StyledCountryList>
+  <StyledCountryList data-testid="countries">
     {countries.map((country: TCountry, index: number) => (
       <CountryItem
         key={index}
