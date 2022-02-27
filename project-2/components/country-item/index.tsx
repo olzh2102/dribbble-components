@@ -5,7 +5,7 @@ import { CountryInfo, CheckWrapper, StyledLabel } from './style';
 const CountryItem = ({
   country,
   onSelect,
-  selectedCountry
+  selectedCountry,
 }: {
   country: TCountry;
   onSelect: (val: string) => void;
@@ -22,7 +22,11 @@ const CountryItem = ({
             : `(+${country.dialCode})`)}
       </span>
     </CountryInfo>
-    {selectedCountry.name == country.name && <CheckWrapper><CheckIcon /></CheckWrapper>}
+    {selectedCountry.name == country.name && (
+      <CheckWrapper>
+        <CheckIcon />
+      </CheckWrapper>
+    )}
   </StyledLabel>
 );
 

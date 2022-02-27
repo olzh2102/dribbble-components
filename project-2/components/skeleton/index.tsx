@@ -1,10 +1,10 @@
 import ContentLoader from 'react-content-loader';
 
 const Skeleton = ({ count }: { count: number }) => (
-  <>
-    {Array.from({ length: count }, () => (
+  <div data-testid="skeletons">
+    {Array.from({ length: count }, (_, i) => (
       <ContentLoader
-        className="pizza-block"
+        key={i}
         speed={2}
         width={280}
         height={40}
@@ -16,7 +16,7 @@ const Skeleton = ({ count }: { count: number }) => (
         <rect x="38" y="2" rx="6" ry="6" width="220" height="25" />
       </ContentLoader>
     ))}
-  </>
+  </div>
 );
 
 export default Skeleton;

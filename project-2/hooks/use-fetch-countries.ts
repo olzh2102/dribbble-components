@@ -1,21 +1,15 @@
 import axios from 'axios';
-import { useQuery } from 'react-query';
+import { QueryOptions, useQuery, UseQueryResult } from 'react-query';
 import { QUERY_KEY_COUNTRIES, URL_COUNTRIES } from '../constants';
 
-const useFetchCountries = (options: any = {}) => {
-  const query = useQuery(
+const useFetchCountries = (options: QueryOptions = {}): UseQueryResult<any> => {
+  const res = useQuery(
     QUERY_KEY_COUNTRIES,
-    async () => {
-      const res = await axios.get(URL_COUNTRIES)
-      return res.data
-    },
+    () => axios.get(URL_COUNTRIES),
     options
   );
 
-  return {
-    ...query,
-    countries: query.data?.data,
-  };
+  return res;
 };
 
 export default useFetchCountries;
