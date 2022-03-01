@@ -1,7 +1,11 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
+import useFetchWeather from '../hooks/useFetchWeather'
 
 const Home: NextPage = () => {
+  const { data } = useFetchWeather('Astana', ['daily', 'minutely', 'alerts']);
+  console.log(data);
+
   return (
     <div>
       <Head>
