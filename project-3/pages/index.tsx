@@ -1,6 +1,7 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import useFetchWeather from '../hooks/useFetchWeather'
+import { Box } from '@mui/material'
 
 const Home: NextPage = () => {
   const { data } = useFetchWeather('Astana', ['daily', 'minutely', 'alerts']);
@@ -15,7 +16,9 @@ const Home: NextPage = () => {
       </Head>
 
       <main data-testid="home">
-        here will be weather app!
+        <Box sx={{ width: 300, height: 150, backgroundColor: 'primary.dark' }}>
+          here will be weather app!
+        </Box>
       </main>
     </div>
   )
