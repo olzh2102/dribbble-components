@@ -5,18 +5,18 @@ import useFetchWeather from './useFetchWeather';
 describe('use fetch weather hook', () => {
   function setup() {
     return renderHook(
-      () => useFetchWeather('Astana', ['daily', 'minutely', 'alerts']),
+      () => useFetchWeather('', []),
       {
         wrapper: createWrapper(),
       }
     );
   }
 
-  it('should return an object', async () => {
+  it('should return an object with hourly property', async () => {
     const { result, waitFor } = setup();
 
     await waitFor(() => result.current.isSuccess);
 
-    expect(result.current.data).toBeInstanceOf(Object);
+    expect(result.current.data).toHaveProperty('hourly');
   });
 });
