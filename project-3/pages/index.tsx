@@ -1,7 +1,8 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import useFetchWeather from '../hooks/use-fetch-weather';
 import { Box } from '@mui/material';
+
+import useFetchWeather from '@hooks/use-fetch-weather';
 
 const Home: NextPage = () => {
   const { data } = useFetchWeather('Astana', ['daily', 'minutely', 'alerts']);
