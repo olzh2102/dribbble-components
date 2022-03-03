@@ -5,4 +5,7 @@ import { handlers } from './handlers';
 
 const server = setupServer(...handlers);
 
-export { server, rest };
+export {
+    server,
+    rest
+}
