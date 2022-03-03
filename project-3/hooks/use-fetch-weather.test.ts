@@ -1,18 +1,15 @@
 import { setLogger } from 'react-query';
 import { renderHook, createWrapper } from '../test/test-utils';
-import { server } from '../__api_mocks__/mswServer';
-import { networkErrorHandlers } from '../__api_mocks__/handlers/networkError';
+import { server } from '../__api_mocks__/msw-server';
+import { networkErrorHandlers } from '../__api_mocks__/handlers/network-error';
 
-import useFetchWeather from './useFetchWeather';
+import useFetchWeather from './use-fetch-weather';
 
 describe('use fetch weather hook', () => {
   function setup() {
-    return renderHook(
-      () => useFetchWeather('', []),
-      {
-        wrapper: createWrapper(),
-      }
-    );
+    return renderHook(() => useFetchWeather('', []), {
+      wrapper: createWrapper(),
+    });
   }
 
   it('should return an object with hourly property', async () => {
@@ -29,7 +26,7 @@ describe('use fetch weather hook', () => {
       warn: console.warn,
       // ✅ no more errors on the console
       error: () => {},
-    })
+    });
 
     server.use(...networkErrorHandlers);
     const { result, waitFor } = setup();
