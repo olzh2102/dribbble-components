@@ -1,3 +1,6 @@
+/** @jsxRuntime classic */
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react'
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useDispatch } from 'react-redux';
@@ -32,10 +35,17 @@ const Home: NextPage = () => {
       </Head>
 
       <main data-testid="home">
-        <Box sx={{ width: 300, height: 150, backgroundColor: 'primary.dark' }}>
-          here will be weather app!
+        <Box
+          css={css`
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            min-height: 100vh;
+          `}
+        >
+          <App />
         </Box>
-        <App />
       </main>
     </div>
   );
