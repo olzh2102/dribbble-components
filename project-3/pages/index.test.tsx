@@ -4,7 +4,7 @@ import { render, screen } from '@common/test/test-utils';
 import Home from '.';
 
 describe('<Home />', () => {
-  it('renders Home page', () => {
+  it.skip('renders Home page', () => {
     render(<Home />);
     expect(screen.getByTestId('home')).toBeInTheDocument();
   });
