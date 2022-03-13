@@ -13,7 +13,7 @@ jobs:
             - uses: actions/setup-node@v1
 
             - name: Install dependencies
-            - run: npm ci
+            - run: cd project-3 && npm ci
 
             - name: Run unit tests
-            - run: npm test
+            - run: cd project-3 && npm test
