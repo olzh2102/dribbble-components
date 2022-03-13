@@ -1,19 +1,17 @@
 name: pull-request
-
 on: [push]
-
 jobs:
     build:
         runs-on: ubuntu-latest
         steps:
             - name: Check out code
-            - uses: actions/checkout@v2
+              uses: actions/checkout@v2
 
             - name: Set up node
-            - uses: actions/setup-node@v1
+              uses: actions/setup-node@v1
 
             - name: Install dependencies
-            - run: cd project-3 && npm ci
+              run: cd project-3 && npm ci
 
             - name: Run unit tests
-            - run: cd project-3 && npm test
+              run: cd project-3 && npm test
