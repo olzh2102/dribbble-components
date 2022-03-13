@@ -1,7 +1,7 @@
 import { setLogger } from 'react-query';
-import { renderHook, createWrapper } from '../test/test-utils';
-import { server } from '../__api_mocks__/msw-server';
-import { networkErrorHandlers } from '../__api_mocks__/handlers/network-error';
+import { renderHook, createWrapper } from '../common/test/test-utils';
+import { server } from '@common/api-mocks/msw-server';
+import { networkErrorHandlers } from '@common/api-mocks/handlers/network-error';
 
 import useFetchWeather from './use-fetch-weather';
 

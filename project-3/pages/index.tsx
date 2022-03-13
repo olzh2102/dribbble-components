@@ -6,6 +6,8 @@ import { Box } from '@mui/material';
 import useFetchWeather from '@hooks/use-fetch-weather';
 import { onSave } from 'store/weatherSlice';
 
+import App from '../components'
+
 const Home: NextPage = () => {
   const dispatch = useDispatch();
 
@@ -33,6 +35,7 @@ const Home: NextPage = () => {
         <Box sx={{ width: 300, height: 150, backgroundColor: 'primary.dark' }}>
           here will be weather app!
         </Box>
+        <App />
       </main>
     </div>
   );

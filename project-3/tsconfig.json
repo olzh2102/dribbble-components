@@ -19,8 +19,9 @@
       "@pages/*": ["pages/*"],
       "@components/*": ["components/*"],
       "@hooks/*": ["hooks/*"],
+      "@common/*": ["common/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "test/test-utils.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "common/test/test-utils.js"],
   "exclude": ["node_modules"]
 }
