@@ -1,19 +1,14 @@
-name: pull-request
+name: Shell Commands
 
 on: [push]
 
 jobs:
-    build:
+    run-shell-command:
         runs-on: ubuntu-latest
         steps:
-            - name: Check out code
-            - uses: actions/checkout@v2
-
-            - name: Set up node
-            - uses: actions/setup-node@v1
-
-            - name: Install dependencies
-            - run: cd project-3 && npm ci
-
-            - name: Run unit tests
-            - run: cd project-3 && npm test
+            - name: echo a string
+              run: eccho 'Hello World'
+            - name: multiline script
+              run: |
+                  node -v
+                  npm -v
