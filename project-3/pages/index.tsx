@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { Box } from '@mui/material';
 
 import useFetchWeather from '@hooks/use-fetch-weather';
-import { onSave } from 'store/weatherSlice';
+import { onSave } from '../store/weatherSlice';
 
 import App from '../components'
 
