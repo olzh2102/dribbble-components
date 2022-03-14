@@ -1,10 +1,15 @@
+/** @jsxRuntime classic */
+/** @jsx jsx */
+import { css, jsx } from '@emotion/react'
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useDispatch } from 'react-redux';
 import { Box } from '@mui/material';
 
 import useFetchWeather from '@hooks/use-fetch-weather';
-import { onSave } from 'store/weatherSlice';
+import { onSave } from '../store/weatherSlice';
+
+import App from '../components'
 
 const Home: NextPage = () => {
   const dispatch = useDispatch();
@@ -30,8 +35,16 @@ const Home: NextPage = () => {
       </Head>
 
       <main data-testid="home">
-        <Box sx={{ width: 300, height: 150, backgroundColor: 'primary.dark' }}>
-          here will be weather app!
+        <Box
+          css={css`
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            min-height: 100vh;
+          `}
+        >
+          <App />
         </Box>
       </main>
     </div>

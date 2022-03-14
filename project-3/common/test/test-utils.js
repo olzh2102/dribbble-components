@@ -1,20 +1,34 @@
 import next from 'next';
 import React from 'react';
+import { Provider } from 'react-redux';
+import { createStore, combineReducers } from 'redux';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { render as rtlRender } from '@testing-library/react';
-
+import weatherSlice from '../../store/weatherSlice';
+ 
 const queryClient = new QueryClient();
 
-function render(ui, options = {}) {
+const rootReducer = combineReducers({
+  weather: weatherSlice
+});
+
+function render(ui, {
+  initialState,
+  store = createStore(rootReducer, initialState),
+  theme = {},
+  ...renderOptions
+} = {}) {
   function Wrapper({ children }) {
     return (
-      <QueryClientProvider client={queryClient}>
-        {children}
-      </QueryClientProvider>
+      <Provider store={store}>
+        <QueryClientProvider client={queryClient}>
+          {children}
+        </QueryClientProvider>
+      </Provider>
     );
   }
 
-  return rtlRender(ui, { wrapper: Wrapper, ...options });
+  return rtlRender(ui, { wrapper: Wrapper, ...renderOptions });
 }
 
 export const createWrapper = () => {

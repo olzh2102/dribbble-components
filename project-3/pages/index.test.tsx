@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '../test/test-utils';
+import { render, screen } from '@common/test/test-utils';
 
 import Home from '.';
 

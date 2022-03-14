@@ -4,9 +4,9 @@ import {
   CURRENT_WEATHER_URL,
   ONECALL_WEATHER_URL,
   WEATHER_API_KEY
-} from '../constants';
-import { TCurrentWeather } from '../types';
-import { getData } from '../utils';
+} from '@common/constants';
+import { TCurrentWeather } from '@common/types';
+import { getData } from '@common/utils';
 
 const useFetchWeather = (
   city: string,

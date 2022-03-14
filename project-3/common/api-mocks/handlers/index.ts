@@ -1,6 +1,6 @@
 import { rest } from 'msw';
 
-import { CURRENT_WEATHER_URL, ONECALL_WEATHER_URL } from '../../constants';
+import { CURRENT_WEATHER_URL, ONECALL_WEATHER_URL } from '@common/constants';
 
 export const handlers = [
   rest.get(CURRENT_WEATHER_URL, (req, res, ctx) =>

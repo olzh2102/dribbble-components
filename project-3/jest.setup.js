@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom/extend-expect';
-import { server } from './__api_mocks__/msw-server';
+import { server } from './common/api-mocks/msw-server';
 
 beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
