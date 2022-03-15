@@ -1,6 +1,17 @@
 {
-  "extends": ["next/babel", "next/core-web-vitals"],
+  "plugins": ["@typescript-eslint"],
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
   "env": {
     "jest": true
+  },
+  "rules": {
+    "prefer-const": "error",
+    "@typescript-eslint/no-explicit-any": "warn",
+    "no-console": "warn",
+    "max-len": ["warn", { "code": 80 }]
   }
 }
