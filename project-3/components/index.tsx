@@ -7,11 +7,8 @@ const App = () => {
   return (
     <Container>
       <Box>Autocomplete Search component</Box>
-      <Box
-        sx={{
-          padding: '10px',
-        }}
-      >
+
+      <Box>
         <Statistics />
       </Box>
     </Container>

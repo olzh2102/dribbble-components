@@ -1,6 +1,6 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { css, jsx } from '@emotion/react'
+import { css, jsx } from '@emotion/react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useDispatch } from 'react-redux';
@@ -9,7 +9,7 @@ import { Box } from '@mui/material';
 import useFetchWeather from '@hooks/use-fetch-weather';
 import { onSave } from '../store/weatherSlice';
 
-import App from '../components'
+import App from '../components';
 
 const Home: NextPage = () => {
   const dispatch = useDispatch();
