@@ -1,19 +1,19 @@
-import Box from '@mui/material/Box';
-import { default as MuiCard } from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
+import { CardHeader, CardProps } from '@mui/material';
+import { StyledCard } from './style';
 
-const Card = () => {
+const Card = (props: TCardProps) => {
   return (
-    <Box sx={{ maxWidth: 275 }}>
-      <MuiCard>
-        <CardContent>
-          <Typography variant="h5">Card</Typography>
-          <Typography variant="body2">Card Content</Typography>
-        </CardContent>
-      </MuiCard>
-    </Box>
+    <StyledCard sx={props.sx}>
+      <CardHeader title={props.title} subheader={props.subTitle} />
+      {props.children}
+    </StyledCard>
   );
 };
 
 export default Card;
+
+export type TCardProps = CardProps & {
+  title: string;
+  subTitle: string;
+  children: JSX.Element;
+};
