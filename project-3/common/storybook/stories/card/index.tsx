@@ -3,7 +3,11 @@ import { StyledCard, TypographyWithIcon } from './style';
 
 const Card = (props: TCardProps) => {
   return (
-    <StyledCard sx={props.sx} orientation={props.orientation || 'vertical'}>
+    <StyledCard
+      sx={props.sx}
+      orientation={props.orientation || 'vertical'}
+      data-testid="card"
+    >
       <CardHeader title={props.title} subheader={props.subTitle} />
       {props.withInfo && (
         <CardContent>
