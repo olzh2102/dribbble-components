@@ -22,7 +22,7 @@ const Card = (props: TCardProps) => {
 
 export default Card;
 
-export type TCardProps = Omit<CardProps, 'variant'> & {
+export type TCardProps = CardProps & {
   title: string;
   subTitle: string;
   temperature: string;
