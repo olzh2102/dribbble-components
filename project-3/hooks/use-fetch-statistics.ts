@@ -8,11 +8,11 @@ const useFetchStatistics = (
     excludes,
     units = 'metric',
   }: {
-    coordinates: { lat: number; lon: number };
+    coordinates?: { lat: number; lon: number };
     excludes: TExclude[];
-    units: TUnits;
+    units?: TUnits;
   },
-  queryOptions?: QueryOptions
+  queryOptions?: any
 ) => {
   return useQuery(
     ['statistics', { coordinates, excludes, units }],

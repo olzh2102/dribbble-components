@@ -7,8 +7,8 @@ const useFetchCoordinates = (
     city,
     excludes,
     units = 'metric',
-  }: { city: string; excludes: TExclude[]; units: TUnits },
-  queryOptions?: QueryOptions
+  }: { city: string; excludes: TExclude[]; units?: TUnits },
+  queryOptions?: any
 ) => {
   return useQuery(
     ['coordinates', { city, excludes, units }],
