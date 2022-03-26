@@ -39,3 +39,6 @@ export type TCurrentWeather = {
     speed: number;
   };
 };
+
+export type TExclude = 'current' | 'minutely' | 'hourly' | 'daily' | 'alerts';
+export type TUnits = 'standard' | 'metric' | 'imperial';

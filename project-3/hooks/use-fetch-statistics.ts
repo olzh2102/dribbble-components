@@ -1,6 +1,7 @@
-import { useQuery, QueryOptions } from 'react-query';
+import { useQuery } from 'react-query';
 import { getData } from '@common/utils';
 import { ONECALL_WEATHER_URL, WEATHER_API_KEY } from '@common/constants';
+import { TExclude, TUnits } from '@common/types';
 
 const useFetchStatistics = (
   {
@@ -28,6 +29,3 @@ const useFetchStatistics = (
 };
 
 export default useFetchStatistics;
-
-type TExclude = 'current' | 'minutely' | 'hourly' | 'daily' | 'alerts';
-type TUnits = 'standard' | 'metric' | 'imperial';

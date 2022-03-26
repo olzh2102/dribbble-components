@@ -1,27 +1,26 @@
 import { useDispatch } from 'react-redux';
+import { pipe, prop, mergeLeft } from 'ramda';
 import { Box } from '@mui/material';
-import styled from '@emotion/styled';
-import { pipe, prop } from 'ramda';
 
-import Statistics from './statistics';
+import { TExclude } from '@common/types';
+import { onSave } from '@store/weatherSlice';
 import useFetchCoordinates from '@hooks/use-fetch-coordinates';
 import useFetchStatistics from '@hooks/use-fetch-statistics';
-import { onSave } from '@store/weatherSlice';
+
+import Statistics from './statistics';
 
 const App = () => {
   const dispatch = useDispatch();
-  const excludes = ['daily', 'minutely', 'alerts'] as any;
 
-  const { data: res }: any = useFetchCoordinates(
-    { city: 'Astana', excludes },
+  const excludes = ['daily', 'minutely', 'alerts'] as TExclude[];
+  const cityName = 'Astana';
+
+  const { data: res } = useFetchCoordinates(
+    { cityName, excludes },
     {
       onSuccess: pipe(
         prop('coord'),
-        (coord: any) => ({
-          cityName: 'Astana',
-          lat: coord.lat,
-          lon: coord.lon,
-        }),
+        (mergeLeft as any)({ cityName }),
         onSave,
         dispatch
       ),
@@ -30,25 +29,24 @@ const App = () => {
 
   const coordinates = res?.coord;
 
-  const { data: statistics } = useFetchStatistics(
+  const { data: statistics, isLoading } = useFetchStatistics(
     { coordinates, excludes },
     { enabled: !!coordinates }
   );
 
   return (
-    <Container>
+    <Box display="flex" sx={{ gap: '32px' }}>
       <Box>Autocomplete Search component</Box>
 
       <Box>
-        <Statistics />
+        {isLoading ? (
+          'Loading statistics for the city...'
+        ) : (
+          <Statistics data={statistics} />
+        )}
       </Box>
-    </Container>
+    </Box>
   );
 };
 
 export default App;
-
-const Container = styled(Box)`
-  display: flex;
-  gap: 32px;
-`;
