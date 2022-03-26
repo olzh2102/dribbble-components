@@ -5,12 +5,12 @@ export const getData = async <T>(
   queryParams: { [key: string]: string | number } = {},
   config: AxiosRequestConfig = {}
 ): Promise<T> => {
-  const stringifiedQueryParams = Object.entries(queryParams).map(([k, v]) => `${k}=${v}`).join('&');
+  const stringifiedQueryParams = Object.entries(queryParams)
+    .map(([k, v]) => `${k}=${v}`)
+    .join('&');
 
   const res = await axios.get(
-    stringifiedQueryParams === ''
-      ? url
-      : `${url}?${stringifiedQueryParams}`,
+    stringifiedQueryParams === '' ? url : `${url}?${stringifiedQueryParams}`,
     config
   );
   return res.data;
