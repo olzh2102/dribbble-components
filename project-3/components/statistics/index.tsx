@@ -1,5 +1,7 @@
+import dynamic from 'next/dynamic';
 import { Card, CardContent, Typography, Box } from '@mui/material';
-import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
+
+const HumidityChart = dynamic(() => import('./humidity-chart'), { ssr: false });
 
 const Statistics = ({ data }: any) => {
   return (
@@ -22,13 +24,7 @@ const Statistics = ({ data }: any) => {
         HOURLY STATISTICS:
       </Typography>
 
-      <BarChart width={730} height={250} data={data?.hourly}>
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="humidity" tick={false} />
-        <YAxis />
-        <Tooltip />
-        <Bar dataKey="humidity" fill="#8884d8" />
-      </BarChart>
+      <HumidityChart data={data} />
     </Box>
   );
 };

@@ -43,7 +43,7 @@ const App = () => {
       <Box>
         <Autocomplete
           label="Select a city"
-          value={city}
+          isOptionEqualToValue={(option, value) => option.name === value.name}
           getOptionLabel={(option: any) => option.label || ''}
           options={[{ label: 'Nur-Sultan', name: 'Astana' }]}
           onChange={setCity}
