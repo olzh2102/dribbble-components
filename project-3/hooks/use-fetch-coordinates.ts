@@ -6,9 +6,9 @@ import { TExclude, TUnits, TCurrentWeather } from '@common/types';
 const useFetchCoordinates = (
   {
     cityName,
-    excludes,
+    excludes = ['daily', 'minutely', 'alerts'],
     units = 'metric',
-  }: { cityName: string; excludes: TExclude[]; units?: TUnits },
+  }: { cityName: string; excludes?: TExclude[]; units?: TUnits },
   queryOptions?: any
 ) => {
   return useQuery<Pick<TCurrentWeather, 'coord'>>(

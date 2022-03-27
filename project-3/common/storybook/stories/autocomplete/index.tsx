@@ -10,7 +10,9 @@ const Autocomplete = (props: AutocompleteProps) => {
       {...props}
       options={[''].concat(props.options)}
       onChange={(e, val) => props.onChange(val)}
-      renderInput={(params) => <TextField {...params} label={props.label} size="small" />}
+      renderInput={(params) => (
+        <TextField {...params} label={props.label} size="small" />
+      )}
     />
   );
 };
