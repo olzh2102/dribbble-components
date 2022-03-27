@@ -6,11 +6,11 @@ import { TExclude, TUnits } from '@common/types';
 const useFetchStatistics = (
   {
     coordinates,
-    excludes,
+    excludes = ['daily', 'minutely', 'alerts'],
     units = 'metric',
   }: {
     coordinates?: { lat: number; lon: number };
-    excludes: TExclude[];
+    excludes?: TExclude[];
     units?: TUnits;
   },
   queryOptions?: any

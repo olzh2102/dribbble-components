@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 import { pipe, prop, mergeLeft } from 'ramda';
 import { Box } from '@mui/material';
 
-import { TExclude } from '@common/types';
 import { onSave } from '@store/weatherSlice';
 import useFetchCoordinates from '@hooks/use-fetch-coordinates';
 import useFetchStatistics from '@hooks/use-fetch-statistics';
@@ -14,13 +13,12 @@ import Autocomplete from '@common/storybook/stories/autocomplete';
 const App = () => {
   const dispatch = useDispatch();
 
-  const excludes = ['daily', 'minutely', 'alerts'] as TExclude[];
   const cityName = 'Astana';
   const [city, setCity] = useState({});
   console.log(city);
 
   const { data: res } = useFetchCoordinates(
-    { cityName, excludes },
+    { cityName },
     {
       onSuccess: pipe(
         prop('coord'),
@@ -34,7 +32,7 @@ const App = () => {
   const coordinates = res?.coord;
 
   const { data: statistics, isLoading } = useFetchStatistics(
-    { coordinates, excludes },
+    { coordinates },
     { enabled: !!coordinates }
   );
 
@@ -44,8 +42,10 @@ const App = () => {
         <Autocomplete
           label="Select a city"
           isOptionEqualToValue={(option, value) => option.name === value.name}
-          getOptionLabel={(option: any) => option.label || ''}
-          options={[{ label: 'Nur-Sultan', name: 'Astana' }]}
+          getOptionLabel={(option: { label: string; name: string }) =>
+            option.label || ''
+          }
+          options={CITIES}
           onChange={setCity}
         />
       </Box>
@@ -62,3 +62,12 @@ const App = () => {
 };
 
 export default App;
+
+const CITIES = [
+  { label: 'Nur-Sultan', name: 'Astana' },
+  { label: 'Minsk', name: 'Minsk' },
+  { label: 'Karaganda', name: 'Karaganda' },
+  { label: 'London', name: 'London' },
+  { label: 'Lviv', name: 'Lviv' },
+  { label: 'Faro', name: 'Faro' },
+];
