@@ -2,6 +2,9 @@ import dynamic from 'next/dynamic';
 import { Card, CardContent, Typography, Box } from '@mui/material';
 
 const HumidityChart = dynamic(() => import('./humidity-chart'), { ssr: false });
+const TemperatureChart = dynamic(() => import('./temperature-chart'), {
+  ssr: false,
+});
 
 const Statistics = ({ data }: any) => {
   return (
@@ -25,6 +28,7 @@ const Statistics = ({ data }: any) => {
       </Typography>
 
       <HumidityChart data={data} />
+      <TemperatureChart data={data} />
     </Box>
   );
 };
