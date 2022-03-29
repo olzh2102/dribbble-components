@@ -6,6 +6,7 @@ import { Box } from '@mui/material';
 import { onSave } from '@store/weatherSlice';
 import useFetchCoordinates from '@hooks/use-fetch-coordinates';
 import useFetchStatistics from '@hooks/use-fetch-statistics';
+import useCurrentLocation from '@hooks/use-current-location';
 
 import Statistics from './statistics';
 import Autocomplete from '@common/storybook/stories/autocomplete';
@@ -16,9 +17,12 @@ const App = () => {
   const [city, setCity] = useState(INITIAL_CITY);
   const { name: cityName } = city;
 
+  const currentLocation = useCurrentLocation();
+
   const { data: res } = useFetchCoordinates(
     { cityName },
     {
+      enabled: !!cityName,
       onSuccess: pipe(
         prop('coord'),
         (mergeLeft as any)({ cityName }),
@@ -28,7 +32,7 @@ const App = () => {
     }
   );
 
-  const coordinates = res?.coord;
+  const coordinates = res?.coord || currentLocation?.coord;
 
   const {
     data: statistics,
