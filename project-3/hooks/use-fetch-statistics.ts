@@ -24,7 +24,10 @@ const useFetchStatistics = (
         units,
         appid: WEATHER_API_KEY,
       }),
-    queryOptions
+    {
+      ...queryOptions,
+      enabled: !!coordinates,
+    }
   );
 };
 
