@@ -6,13 +6,13 @@ const TemperatureChart = dynamic(() => import('./temperature-chart'), {
   ssr: false,
 });
 
-const Statistics = ({ data }: any) => {
+const Statistics = ({ data, cityName }: any) => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
       <Card variant="outlined">
         <CardContent sx={{ textAlign: 'left' }}>
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-            Astana
+            {cityName}
           </Typography>
           <Typography variant="h5" component="div">
             {data?.current.temp}

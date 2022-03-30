@@ -56,7 +56,7 @@ const App = () => {
         ) : isLoading ? (
           'Loading statistics for the city...'
         ) : (
-          <Statistics data={statistics} />
+          <Statistics data={statistics} cityName={cityName} />
         )}
       </Box>
     </Box>
