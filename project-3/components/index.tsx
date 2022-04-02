@@ -22,7 +22,7 @@ const App = () => {
   const { data: res } = useFetchCoordinates(
     { cityName },
     {
-      enabled: !!cityName,
+      enabled: !!cityName && cityName !== INITIAL_CITY.name,
       onSuccess: pipe(
         prop('coord'),
         (mergeLeft as any)({ cityName }),
@@ -47,7 +47,7 @@ const App = () => {
           label="Select a city"
           isOptionEqualToValue={(option, value) => option.name === value.name}
           getOptionLabel={(option: { label: string; name: string }) =>
-            option.label || ''
+            option.label || INITIAL_CITY.label
           }
           options={CITIES}
           onChange={(val) => setCity(val || INITIAL_CITY)}
@@ -79,6 +79,6 @@ const CITIES = [
 ];
 
 const INITIAL_CITY = {
-  label: '',
-  name: '',
+  label: 'Your current city',
+  name: 'Your current city',
 };
