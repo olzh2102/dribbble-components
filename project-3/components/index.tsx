@@ -13,9 +13,8 @@ import Autocomplete from '@common/storybook/stories/autocomplete';
 const App = () => {
   const dispatch = useDispatch();
 
-  const cityName = 'Astana';
-  const [city, setCity] = useState({});
-  console.log(city);
+  const [city, setCity] = useState(INITIAL_CITY);
+  const { name: cityName } = city;
 
   const { data: res } = useFetchCoordinates(
     { cityName },
@@ -31,10 +30,11 @@ const App = () => {
 
   const coordinates = res?.coord;
 
-  const { data: statistics, isLoading } = useFetchStatistics(
-    { coordinates },
-    { enabled: !!coordinates }
-  );
+  const {
+    data: statistics,
+    isLoading,
+    isIdle,
+  } = useFetchStatistics({ coordinates }, { enabled: !!coordinates });
 
   return (
     <Box display="flex" sx={{ gap: '32px' }}>
@@ -46,15 +46,17 @@ const App = () => {
             option.label || ''
           }
           options={CITIES}
-          onChange={setCity}
+          onChange={(val) => setCity(val || INITIAL_CITY)}
         />
       </Box>
 
       <Box>
-        {isLoading ? (
+        {isIdle ? (
+          'Please, select a city'
+        ) : isLoading ? (
           'Loading statistics for the city...'
         ) : (
-          <Statistics data={statistics} />
+          <Statistics data={statistics} cityName={cityName} />
         )}
       </Box>
     </Box>
@@ -71,3 +73,8 @@ const CITIES = [
   { label: 'Lviv', name: 'Lviv' },
   { label: 'Faro', name: 'Faro' },
 ];
+
+const INITIAL_CITY = {
+  label: '',
+  name: '',
+};
