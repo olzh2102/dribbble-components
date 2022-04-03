@@ -9,7 +9,6 @@ jobs:
               env:
                   pr_title: ${{ github.event.pull_request.title }}
                   pr_body: ${{ github.event.pull_request.body }}
-                  GITHUB_TOKEN: ${{ steps.GITHUB_TOKEN }}
               run: |
                   title="yoyo"
                   gh pr edit $pr_number --title "$title"
