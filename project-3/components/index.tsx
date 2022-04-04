@@ -4,8 +4,11 @@ import { pipe, prop, mergeLeft } from 'ramda';
 import { Box } from '@mui/material';
 
 import { onSave } from '@store/weatherSlice';
-import useFetchCoordinates from '@hooks/use-fetch-coordinates';
-import useFetchStatistics from '@hooks/use-fetch-statistics';
+import {
+  useFetchCoordinates,
+  useFetchStatistics,
+  useCurrentLocationCoordinates,
+} from '@hooks/index';
 
 import Statistics from './statistics';
 import Autocomplete from '@common/storybook/stories/autocomplete';
@@ -16,9 +19,12 @@ const App = () => {
   const [city, setCity] = useState(INITIAL_CITY);
   const { name: cityName } = city;
 
+  const currentLocation = useCurrentLocationCoordinates();
+
   const { data: res } = useFetchCoordinates(
     { cityName },
     {
+      enabled: !!cityName && cityName !== INITIAL_CITY.name,
       onSuccess: pipe(
         prop('coord'),
         (mergeLeft as any)({ cityName }),
@@ -28,7 +34,7 @@ const App = () => {
     }
   );
 
-  const coordinates = res?.coord;
+  const coordinates = res?.coord || currentLocation?.coord;
 
   const {
     data: statistics,
@@ -43,7 +49,7 @@ const App = () => {
           label="Select a city"
           isOptionEqualToValue={(option, value) => option.name === value.name}
           getOptionLabel={(option: { label: string; name: string }) =>
-            option.label || ''
+            option.label || INITIAL_CITY.label
           }
           options={CITIES}
           onChange={(val) => setCity(val || INITIAL_CITY)}
@@ -75,6 +81,6 @@ const CITIES = [
 ];
 
 const INITIAL_CITY = {
-  label: '',
-  name: '',
+  label: 'Your current city',
+  name: 'Your current city',
 };
