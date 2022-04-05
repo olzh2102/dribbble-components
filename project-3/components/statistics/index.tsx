@@ -23,7 +23,7 @@ const Statistics = ({ data, cityName }: any) => {
           <Image
             width="50"
             height="50"
-            src={`http://openweathermap.org/img/wn/04n@2x.png`}
+            src={`http://openweathermap.org/img/wn/${data?.current.weather[0].icon}@2x.png`}
             alt="weather-icon"
           />
 
