@@ -12,3 +12,19 @@ export const DAY_SEGMENTS = [
   [5, 'morning'],
   [0, 'early morning'],
 ];
+
+export const DAYTIME_BG_COLORS = {
+  night: '#010206',
+  evening: '#180E4B',
+  afternoon: '#CE3110',
+  morning: '#4DB4D1',
+  'early morning': '#E3E6EA',
+};
+
+export const DAYTIME_FONT_COLORS = {
+  night: '#F5F0F6',
+  evening: '#F5F0F6',
+  afternoon: '#40434E',
+  morning: '#40434E',
+  'early morning': '#080705',
+};
