@@ -1,11 +1,19 @@
-const daySegments = {
-  22: 'night',
-  18: 'evening',
-  12: 'afternoon',
-  5: 'morning',
-  0: 'early morning',
-};
+import { useEffect, useState } from 'react';
+import { getDaytimeName } from '@common/utils';
 
 const useDaytimeBackground = () => {
-  const now = new Date();
+  const hr = new Date().getHours();
+  const [daytime, setDaytime] = useState(getDaytimeName(hr));
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDaytime(getDaytimeName(hr));
+    }, 12 * 10 ** 5);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return daytime;
 };
+
+export default useDaytimeBackground;

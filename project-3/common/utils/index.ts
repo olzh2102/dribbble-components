@@ -1,4 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios';
+import { DAY_SEGMENTS } from '@common/constants';
 
 export const getData = async <T>(
   url: string,
@@ -14,4 +15,11 @@ export const getData = async <T>(
     config
   );
   return res.data;
+};
+
+export const getDaytimeName = (currentHour: number): string => {
+  for (const [hour, name] of DAY_SEGMENTS)
+    if (currentHour >= hour) return name as string;
+
+  return '';
 };
