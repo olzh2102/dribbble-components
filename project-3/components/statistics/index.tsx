@@ -2,12 +2,17 @@ import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { Card, CardContent, Typography, Box } from '@mui/material';
 
+import useDaytimeBackground from '@hooks/use-daytime-background';
+
 const HumidityChart = dynamic(() => import('./humidity-chart'), { ssr: false });
 const TemperatureChart = dynamic(() => import('./temperature-chart'), {
   ssr: false,
 });
 
 const Statistics = ({ data, cityName }: any) => {
+  const daytime = useDaytimeBackground();
+  console.log('DAYTIME: ', daytime);
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
       <Card variant="outlined" sx={{ maxWidth: '200px' }}>

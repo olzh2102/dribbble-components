@@ -40,7 +40,10 @@ const App = () => {
     data: statistics,
     isLoading,
     isIdle,
-  } = useFetchStatistics({ coordinates }, { enabled: !!coordinates });
+  } = useFetchStatistics(
+    { coordinates },
+    { enabled: !!coordinates, refetchOnWindowFocus: false }
+  );
 
   return (
     <Box display="flex" sx={{ gap: '32px' }}>
