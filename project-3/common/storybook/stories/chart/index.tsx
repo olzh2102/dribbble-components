@@ -20,27 +20,39 @@ import {
 import { CategoricalChartProps } from 'recharts/types/chart/generateCategoricalChart';
 
 const ChartContainer = (props: TChartProps) => {
-  const { data, chartType, children, areaProps, barProps, lineProps, ...rest } =
-    props;
+  let {
+    data,
+    chartType,
+    children,
+    areaProps,
+    barProps,
+    lineProps,
+    width,
+    height,
+    ...rest
+  } = props;
+
+  width = width || 730;
+  height = height || 250;
 
   switch (chartType) {
     case 'area':
       return (
-        <AreaChart data={data} {...rest}>
+        <AreaChart data={data} width={width} height={height} {...rest}>
           {children}
           {areaProps && <Area {...areaProps} />}
         </AreaChart>
       );
     case 'bar':
       return (
-        <BarChart data={data} {...rest}>
+        <BarChart data={data} width={width} height={height} {...rest}>
           {children}
           {barProps && <Bar {...barProps} />}
         </BarChart>
       );
     default:
       return (
-        <LineChart data={data} {...rest}>
+        <LineChart data={data} width={width} height={height} {...rest}>
           {children}
           {lineProps && <Line {...lineProps} />}
         </LineChart>
@@ -49,18 +61,12 @@ const ChartContainer = (props: TChartProps) => {
 };
 
 const Chart = (props: TChartProps) => {
-  const {
-    cartesianGridProps,
-    children,
-    xAxisProps,
-    yAxisProps,
-    tooltipProps,
-    ...rest
-  } = props;
+  const { gridProps, children, xAxisProps, yAxisProps, tooltipProps, ...rest } =
+    props;
 
   return (
     <ChartContainer {...rest}>
-      <CartesianGrid {...cartesianGridProps} />
+      <CartesianGrid {...gridProps} />
       <XAxis {...xAxisProps} />
       <YAxis {...yAxisProps} />
       <Tooltip {...tooltipProps} />
@@ -81,7 +87,7 @@ export type TChartProps = CategoricalChartProps & {
   areaProps?: chardTypeProps<AreaProps, Area>;
   barProps?: chardTypeProps<BarProps, Bar>;
   lineProps?: chardTypeProps<LineProps, Line>;
-  cartesianGridProps?: Omit<CartesianGridProps, 'ref'> & {
+  gridProps?: Omit<CartesianGridProps, 'ref'> & {
     ref?: React.RefObject<SVGPathElement & CartesianGrid>;
   };
   xAxisProps?: XAxisProps;

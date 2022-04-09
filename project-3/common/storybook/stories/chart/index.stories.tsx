@@ -10,12 +10,6 @@ export default {
       control: { type: 'radio' },
       table: { category: 'View' },
     },
-    width: {
-      table: { category: 'View' },
-    },
-    height: {
-      table: { category: 'View' },
-    },
     areaProps: {
       table: { category: 'View' },
     },
@@ -25,10 +19,16 @@ export default {
     lineProps: {
       table: { category: 'View' },
     },
-    cartesianGridProps: {
+    gridProps: {
       table: { category: 'View' },
     },
     xAxisProps: {
+      table: { category: 'View' },
+    },
+    yAxisProps: {
+      table: { category: 'View' },
+    },
+    tooltipProps: {
       table: { category: 'View' },
     },
     data: {
@@ -44,8 +44,6 @@ const Template: ComponentStory<typeof Chart> = (args: TChartProps) => {
 export const Standard = Template.bind({});
 Standard.args = {
   chartType: 'area',
-  width: 730,
-  height: 250,
   areaProps: {
     dataKey: 'temp',
     fill: '#82ca9d',
@@ -62,7 +60,7 @@ Standard.args = {
     stroke: '#82ca9d',
     type: 'monotone',
   },
-  cartesianGridProps: {
+  gridProps: {
     strokeDasharray: '3 3',
   },
   xAxisProps: {

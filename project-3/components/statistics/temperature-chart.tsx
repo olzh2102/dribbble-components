@@ -3,8 +3,6 @@ import Chart from '@common/storybook/stories/chart';
 export default function TemperatureChart({ data }: any) {
   return (
     <Chart
-      width={730}
-      height={250}
       chartType="area"
       data={data?.hourly}
       areaProps={{
@@ -14,7 +12,7 @@ export default function TemperatureChart({ data }: any) {
         fill: 'url(#colorUv)',
         fillOpacity: 1,
       }}
-      cartesianGridProps={{ strokeDasharray: '3 3' }}
+      gridProps={{ strokeDasharray: '3 3' }}
       xAxisProps={{ dataKey: 'dt', tick: renderCustomAxisTick }}
       tooltipProps={{
         labelFormatter: (value: number) =>
