@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react';
 import { getDaytimeName } from '@common/utils';
 
-const useDaytimeBackground = () => {
+const useDaytimeBackground = (offsetHours: number) => {
   const hr = new Date().getHours();
   const [daytime, setDaytime] = useState<
     'night' | 'evening' | 'morning' | 'early morning' | 'afternoon'
-  >(getDaytimeName(hr));
+  >(getDaytimeName(hr + offsetHours - 2));
+
+  useEffect(() => {
+    setDaytime(getDaytimeName(hr + offsetHours - 2));
+  }, [offsetHours]);
 
   useEffect(() => {
     const interval = setInterval(() => {

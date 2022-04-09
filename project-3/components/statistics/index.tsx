@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { Card, CardContent, Typography, Box } from '@mui/material';
+import styled from '@emotion/styled';
 
 import useDaytimeBackground from '@hooks/use-daytime-background';
 import { DAYTIME_BG_COLORS, DAYTIME_FONT_COLORS } from '@common/constants';
@@ -10,17 +11,28 @@ const TemperatureChart = dynamic(() => import('./temperature-chart'), {
   ssr: false,
 });
 
+const Wrapper = styled(Box)<{ borderColor: string }>`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  .recharts-wrapper {
+    padding: 20px;
+    border-radius: 8px;
+    border: ${({ borderColor }) => `2px solid ${borderColor}`};
+  }
+
+  .recharts-surface {
+    width: 650px;
+    height: 215px;
+  }
+`;
+
 const Statistics = ({ data, cityName }: any) => {
-  const daytime = useDaytimeBackground();
+  const daytime = useDaytimeBackground(data.timezone_offset / 3600);
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '10px',
-      }}
-    >
+    <Wrapper borderColor={DAYTIME_BG_COLORS[daytime]}>
       <Card
         variant="outlined"
         sx={{ maxWidth: '200px', backgroundColor: DAYTIME_BG_COLORS[daytime] }}
@@ -64,7 +76,7 @@ const Statistics = ({ data, cityName }: any) => {
 
       <HumidityChart data={data} />
       <TemperatureChart data={data} />
-    </Box>
+    </Wrapper>
   );
 };
 

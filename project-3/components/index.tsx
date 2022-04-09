@@ -81,6 +81,7 @@ const CITIES = [
   { label: 'London', name: 'London' },
   { label: 'Lviv', name: 'Lviv' },
   { label: 'Faro', name: 'Faro' },
+  { label: 'Ottava', name: 'Ottava' },
 ];
 
 const INITIAL_CITY = {
