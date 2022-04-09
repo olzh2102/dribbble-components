@@ -17,7 +17,7 @@ export const getData = async <T>(
   return res.data;
 };
 
-export const getDaytimeName = (currentHour: number): any => {
+export const getDaytimeName = (currentHour: number) => {
   for (const [hour, name] of DAY_SEGMENTS)
     if (currentHour >= hour) return name as any;
 
