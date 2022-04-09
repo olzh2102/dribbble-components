@@ -5,6 +5,7 @@ export default function TemperatureChart({ data }: any) {
     <Chart
       chartType="area"
       data={data?.hourly}
+      title="Temperature"
       areaProps={{
         dataKey: 'temp',
         type: 'monotone',

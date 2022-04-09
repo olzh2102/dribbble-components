@@ -1,3 +1,4 @@
+import { Typography } from '@mui/material';
 import {
   Area,
   AreaChart,
@@ -7,6 +8,7 @@ import {
   BarProps,
   CartesianGrid,
   CartesianGridProps,
+  Legend,
   Line,
   LineChart,
   LineProps,
@@ -33,7 +35,7 @@ const ChartContainer = (props: TChartProps) => {
   } = props;
 
   width = width || 730;
-  height = height || 250;
+  height = height || 270;
 
   switch (chartType) {
     case 'area':
@@ -70,6 +72,18 @@ const Chart = (props: TChartProps) => {
       <XAxis {...xAxisProps} />
       <YAxis {...yAxisProps} />
       <Tooltip {...tooltipProps} />
+      {rest.title && (
+        <Legend
+          content={
+            <Typography sx={{ marginLeft: '10px' }} variant="h6">
+              {rest.title}
+            </Typography>
+          }
+          verticalAlign="top"
+          align="left"
+          height={50}
+        />
+      )}
       {children}
     </ChartContainer>
   );
@@ -84,6 +98,7 @@ type chardTypeProps<P, T> = Omit<P, 'ref'> & {
 export type TChartProps = CategoricalChartProps & {
   data: any;
   chartType: 'area' | 'bar' | 'line';
+  title?: string;
   areaProps?: chardTypeProps<AreaProps, Area>;
   barProps?: chardTypeProps<BarProps, Bar>;
   lineProps?: chardTypeProps<LineProps, Line>;

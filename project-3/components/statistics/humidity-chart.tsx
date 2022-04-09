@@ -5,6 +5,7 @@ export default function HumidityChart({ data }: any) {
     <Chart
       id="humidity-chart"
       data={data?.hourly}
+      title="Humidity"
       chartType="bar"
       barProps={{ dataKey: 'humidity', fill: '#8884d8' }}
       gridProps={{ strokeDasharray: '3 3' }}

@@ -31,6 +31,9 @@ export default {
     tooltipProps: {
       table: { category: 'View' },
     },
+    title: {
+      table: { category: 'Content' },
+    },
     data: {
       table: { category: 'Content' },
     },
@@ -43,6 +46,7 @@ const Template: ComponentStory<typeof Chart> = (args: TChartProps) => {
 
 export const Standard = Template.bind({});
 Standard.args = {
+  title: 'Chart title',
   chartType: 'area',
   areaProps: {
     dataKey: 'temp',
