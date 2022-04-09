@@ -26,7 +26,6 @@ const useFetchStatistics = (
       }),
     {
       ...queryOptions,
-      enabled: !!coordinates,
     }
   );
 };
