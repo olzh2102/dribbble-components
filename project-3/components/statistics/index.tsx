@@ -1,6 +1,11 @@
-import Image from 'next/image';
 import dynamic from 'next/dynamic';
-import { Card, CardContent, Typography, Box } from '@mui/material';
+import { Typography } from '@mui/material';
+
+import useDaytimeBackground from '@hooks/use-daytime-background';
+import { DAYTIME_BG_COLORS } from '@common/constants';
+
+import CurrentCity from './city-current-weather';
+import { Wrapper } from './styled';
 
 const HumidityChart = dynamic(() => import('./humidity-chart'), { ssr: false });
 const TemperatureChart = dynamic(() => import('./temperature-chart'), {
@@ -8,30 +13,15 @@ const TemperatureChart = dynamic(() => import('./temperature-chart'), {
 });
 
 const Statistics = ({ data, cityName }: any) => {
+  const daytime = useDaytimeBackground(data.timezone_offset / 3600);
+
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-      <Card variant="outlined" sx={{ maxWidth: '200px' }}>
-        <CardContent sx={{ textAlign: 'left' }}>
-          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-            {cityName}
-          </Typography>
-
-          <Typography variant="h5" component="div">
-            {data?.current.temp} <span>&#8451;</span>
-          </Typography>
-
-          <Image
-            width="50"
-            height="50"
-            src={`http://openweathermap.org/img/wn/${data?.current.weather[0].icon}@2x.png`}
-            alt="weather-icon"
-          />
-
-          <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            {data?.current.weather[0].description}
-          </Typography>
-        </CardContent>
-      </Card>
+    <Wrapper borderColor={DAYTIME_BG_COLORS[daytime]}>
+      <CurrentCity
+        daytime={daytime}
+        cityName={cityName}
+        current={data?.current}
+      />
 
       <Typography sx={{ textAlign: 'left' }} variant="body2" component="div">
         HOURLY STATISTICS:
@@ -39,7 +29,7 @@ const Statistics = ({ data, cityName }: any) => {
 
       <HumidityChart data={data} />
       <TemperatureChart data={data} />
-    </Box>
+    </Wrapper>
   );
 };
 

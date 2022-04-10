@@ -40,7 +40,10 @@ const App = () => {
     data: statistics,
     isLoading,
     isIdle,
-  } = useFetchStatistics({ coordinates }, { enabled: !!coordinates });
+  } = useFetchStatistics(
+    { coordinates },
+    { enabled: !!coordinates, refetchOnWindowFocus: false }
+  );
 
   return (
     <Box display="flex" sx={{ gap: '32px' }}>
@@ -78,6 +81,7 @@ const CITIES = [
   { label: 'London', name: 'London' },
   { label: 'Lviv', name: 'Lviv' },
   { label: 'Faro', name: 'Faro' },
+  { label: 'Ottava', name: 'Ottava' },
 ];
 
 const INITIAL_CITY = {

@@ -42,3 +42,9 @@ export type TCurrentWeather = {
 
 export type TExclude = 'current' | 'minutely' | 'hourly' | 'daily' | 'alerts';
 export type TUnits = 'standard' | 'metric' | 'imperial';
+export type TDaytime =
+  | 'early morning'
+  | 'afternoon'
+  | 'morning'
+  | 'night'
+  | 'evening';
