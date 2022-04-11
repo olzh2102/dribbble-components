@@ -7,6 +7,7 @@ import { onSave } from '@store/weatherSlice';
 import {
   useFetchCoordinates,
   useFetchStatistics,
+  useFetchCityName,
   useCurrentLocationCoordinates,
 } from '@hooks/index';
 
@@ -36,13 +37,25 @@ const App = () => {
 
   const coordinates = res?.coord || currentLocation?.coord;
 
+  useFetchCityName(
+    { coordinates },
+    {
+      enabled: cityName === INITIAL_CITY.name,
+      onSuccess: ([result]) =>
+        result && setCity({ name: result.name, label: result.name }),
+    }
+  );
+
   const {
     data: statistics,
     isLoading,
     isIdle,
   } = useFetchStatistics(
     { coordinates },
-    { enabled: !!coordinates, refetchOnWindowFocus: false }
+    {
+      enabled: !!coordinates && !!coordinates.lat && !!coordinates.lon,
+      refetchOnWindowFocus: false,
+    }
   );
 
   return (
@@ -60,9 +73,7 @@ const App = () => {
       </Box>
 
       <Box>
-        {isIdle ? (
-          'Please, select a city'
-        ) : isLoading ? (
+        {isIdle || isLoading ? (
           'Loading statistics for the city...'
         ) : (
           <Statistics data={statistics} cityName={cityName} />

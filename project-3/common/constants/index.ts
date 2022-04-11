@@ -1,7 +1,8 @@
 export const WEATHER_API_KEY = process.env.NEXT_PUBLIC_API_KEY || '';
-export const BASE_WEATHER_URL = 'https://api.openweathermap.org/data/2.5';
-export const CURRENT_WEATHER_URL = `${BASE_WEATHER_URL}/weather`;
-export const ONECALL_WEATHER_URL = `${BASE_WEATHER_URL}/onecall`;
+export const BASE_WEATHER_URL = 'https://api.openweathermap.org';
+export const CURRENT_WEATHER_URL = `${BASE_WEATHER_URL}/data/2.5/weather`;
+export const ONECALL_WEATHER_URL = `${BASE_WEATHER_URL}/data/2.5/onecall`;
+export const GEO_URL = `${BASE_WEATHER_URL}/geo/1.0/reverse`;
 export const QUERY_KEY_WEATHER = 'weather';
 
 export const DAY_SEGMENTS = [
