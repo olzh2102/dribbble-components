@@ -51,6 +51,24 @@ export const QueryClientWrapper = ({ children }) => (
   </QueryClientProvider>
 )
 
+export const mockNavigatorGeolocation = () => {
+  const clearWatchMock = jest.fn();
+  const getCurrentPositionMock = jest.fn();
+  const watchPositionMock = jest.fn();
+
+  const geolocation = {
+    clearWatch: clearWatchMock,
+    getCurrentPosition: getCurrentPositionMock,
+    watchPosition: watchPositionMock,
+  };
+
+  Object.defineProperty(global.navigator, 'geolocation', {
+    value: geolocation,
+  });
+
+  return { clearWatchMock, getCurrentPositionMock, watchPositionMock };
+};
+
 export * from '@testing-library/react';
 export { renderHook } from '@testing-library/react-hooks';
 export { render };
