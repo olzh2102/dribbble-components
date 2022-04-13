@@ -9,13 +9,20 @@ const coords = {
 
 describe('use current location hook', () => {
   function setup() {
+    return renderHook(() => useCurrentLocation());
+  }
+
+  beforeAll(() => {
     const { getCurrentPositionMock } = mockNavigatorGeolocation();
     getCurrentPositionMock.mockImplementation((success) => {
       success({ coords });
     });
+  });
 
-    return renderHook(() => useCurrentLocation());
-  }
+  afterAll(() => {
+    const { mockReset } = mockNavigatorGeolocation();
+    mockReset();
+  });
 
   it('should set current location coordinates', () => {
     const { result } = setup();

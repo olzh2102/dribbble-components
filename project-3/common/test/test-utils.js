@@ -52,6 +52,7 @@ export const QueryClientWrapper = ({ children }) => (
 )
 
 export const mockNavigatorGeolocation = () => {
+  const original = global.navigator.geolocation;
   const clearWatchMock = jest.fn();
   const getCurrentPositionMock = jest.fn();
   const watchPositionMock = jest.fn();
@@ -63,10 +64,23 @@ export const mockNavigatorGeolocation = () => {
   };
 
   Object.defineProperty(global.navigator, 'geolocation', {
+    configurable: true,
     value: geolocation,
   });
 
-  return { clearWatchMock, getCurrentPositionMock, watchPositionMock };
+  const mockReset = () => {
+    Object.defineProperty(global.navigator, 'geolocation', {
+      configurable: true,
+      value: original,
+    });
+  }
+
+  return {
+    clearWatchMock,
+    getCurrentPositionMock,
+    watchPositionMock,
+    mockReset,
+  };
 };
 
 export * from '@testing-library/react';
