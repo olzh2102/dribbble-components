@@ -9,8 +9,9 @@ const Home: NextPage = () => {
         <meta name="description" content="Video Chat App" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
       <main>
-        <h2>Video chat app</h2>
+        <h2 className="text-3xl font-bold underline">Video chat app</h2>
       </main>
     </div>
   );
