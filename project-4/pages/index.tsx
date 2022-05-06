@@ -1,8 +1,39 @@
+import React, { useEffect, useState } from 'react';
 import type { NextPage } from 'next';
 import Link from 'next/link';
 import Head from 'next/head';
+import { io } from 'socket.io-client';
+import SocketIOClient from 'socket.io-client';
 
 const Home: NextPage = () => {
+  const [socket, setSocket] = useState<any>();
+  console.log('socket: ', socket);
+
+  useEffect(() => {
+    const socket = io('/', {
+      path: '/api/socketio',
+    });
+    setSocket(socket);
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (socket == null) return;
+    socket.emit('join-room', 10, 13);
+  }, [socket]);
+
+  // useEffect(() => {
+  //   const s = (SocketIOClient as any).connect('/', {
+  //     path: '/api/socketio',
+  //   });
+  //   setSocket(s);
+
+  //   if (s) return () => s.disconnect();
+  // }, []);
+
   return (
     <div>
       <Head>
