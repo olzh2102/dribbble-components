@@ -1,8 +1,25 @@
+import { useEffect, useState } from 'react';
 import type { NextPage } from 'next';
 import Link from 'next/link';
 import Head from 'next/head';
+import { io, Socket } from 'socket.io-client';
+
+const BASE_URL = '/';
 
 const Home: NextPage = () => {
+  const [socket, setSocket] = useState<Socket>();
+  console.log('SOCKET: ', socket);
+
+  useEffect(() => {
+    const s = io(BASE_URL, { path: '/api/socketio' });
+    setSocket(s);
+    return () => {
+      s.disconnect();
+    };
+  }, []);
+
+  console.log('SOCKET: ', socket);
+
   return (
     <div>
       <Head>
