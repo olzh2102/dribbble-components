@@ -19,11 +19,15 @@ export default function socketHandler(
 
 function handleSocketEvents(socket: any) {
   socket.on('join-room', (roomId: any, userId: any) => {
+    console.log('room id: ', roomId);
+    console.log('user id: ', userId);
+
     socket.join(roomId);
-    socket.to(roomId).broadcast.emit('user-connected', userId);
-    socket.on('disconnect', () => {
-      socket.to(roomId).broadcast.emit('user-disconnected', userId);
-    });
+    console.log('here');
+    socket.to(roomId).emit('user-connected', userId);
+    // socket.on('disconnect', () => {
+    //   socket.to(roomId).broadcast.emit('user-disconnected', userId);
+    // });
   });
 }
 
