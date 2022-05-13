@@ -1,21 +1,26 @@
 import type { NextPage } from 'next';
 import Link from 'next/link';
-import Head from 'next/head';
+
+import { JoinRoom, WelcomeContainer } from '../components';
+import { CameraIcon } from '../assets/icons';
+import { Button, JoinButton } from './style';
 
 const Home: NextPage = () => {
   return (
-    <div>
-      <Head>
-        <title>Video Chat</title>
-        <meta name="description" content="Video Chat App" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main>
-        <h2 className="text-3xl font-bold underline">Video chat app</h2>
-        <Link href="/api/auth/login">Login</Link>
-      </main>
-    </div>
+    <WelcomeContainer>
+      <div className="mt-5 sm:flex sm:justify-center lg:justify-start">
+        <div className="rounded-md mr-3">
+          <Link href="/dasdasddasd">
+            <Button>
+              <CameraIcon />
+              Create room
+            </Button>
+          </Link>
+        </div>
+        <JoinRoom />
+        <JoinButton disabled={true}>Join</JoinButton>
+      </div>
+    </WelcomeContainer>
   );
 };
 
