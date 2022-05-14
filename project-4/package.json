@@ -14,11 +14,12 @@
     "@headlessui/react": "^1.6.1",
     "@heroicons/react": "^1.0.6",
     "next": "12.1.5",
+    "peerjs": "^1.4.4",
     "react": "18.0.0",
     "react-dom": "18.0.0",
-    "simple-peer": "^9.11.1",
     "socket.io": "^4.5.0",
-    "socket.io-client": "^4.5.0"
+    "socket.io-client": "^4.5.0",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.4",
@@ -29,6 +30,7 @@
     "@types/react": "18.0.5",
     "@types/react-dom": "18.0.1",
     "@types/simple-peer": "^9.11.4",
+    "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.20.0",
     "autoprefixer": "^10.4.5",
     "babel-jest": "^27.5.1",
