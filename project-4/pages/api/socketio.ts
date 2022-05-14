@@ -13,8 +13,9 @@ const socketHandler = (req: NextApiRequest, res: NextApiResponseServerIO) => {
 
     io.on('connection', (socket) => {
       console.log('connected');
-      socket.on('join-room', ({ room }) => {
-        socket.emit('message', { msg: `Welcome to the room ${room}` });
+      socket.on('join-room', ({ roomId, peerId }) => {
+        console.log(roomId, peerId);
+        socket.emit('message', { msg: `Welcome to the room ${roomId}` });
       });
 
       socket.on('disconnect', () => {});

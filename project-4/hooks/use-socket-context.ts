@@ -12,20 +12,20 @@ const defaultValues: {
 
 export const SocketContext = createContext(defaultValues);
 
-const useSocketContext = ({ room }: { room: string }) => {
+const useSocketContext = ({ roomId }: { roomId: string }) => {
   const { socket, setSocket } = useContext(SocketContext);
 
   useEffect(() => {
     const s = io('/', { path: '/api/socketio' });
 
-    s.emit('join-room', { room });
+    s.emit('join-room', { roomId });
 
     setSocket(s);
 
     return () => {
       s.disconnect();
     };
-  }, [room]);
+  }, [roomId]);
 
   return { socket, setSocket };
 };
