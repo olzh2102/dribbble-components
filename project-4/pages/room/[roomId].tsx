@@ -1,10 +1,23 @@
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { useSocketContext } from '../../hooks';
 
 const Room: NextPage = () => {
+  const [stream, setStream] = useState<MediaStream | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    async function getStream() {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: true,
+      });
+      setStream(stream);
+    }
+    getStream();
+  }, []);
   const [peer, setPeer] = useState<any>();
   useEffect(() => {
     (async () => {
@@ -18,7 +31,15 @@ const Room: NextPage = () => {
   const { roomId } = router.query as { roomId: string };
 
   const { socket } = useSocketContext({ roomId });
-  const [message, setMessage] = useState('');
+
+  const connectToNewUser = (userId: string) => {
+    if (!peer || !stream) return;
+    const call = peer.call(userId, stream);
+    console.log('connected');
+    call.on('stream', (userVideoStream: any) => {
+      if (videoRef.current) videoRef.current.srcObject = userVideoStream;
+    });
+  };
 
   useEffect(() => {
     if (!peer || !socket) return;
@@ -29,6 +50,7 @@ const Room: NextPage = () => {
 
       socket.on('user-connected', (userId) => {
         console.log('USER ID CONNECTED: ', userId);
+        connectToNewUser(userId);
       });
     });
   }, [socket, peer]);
@@ -39,9 +61,27 @@ const Room: NextPage = () => {
     socket.on('user-connected', (userId) => {
       console.log('USER ID CONNECTED: ', userId);
     });
-  });
+  }, [socket, peer]);
 
-  return <h2>{message}</h2>;
+  useEffect(() => {
+    if (!peer || !socket || !stream) return;
+
+    if (videoRef.current) videoRef.current.srcObject = stream;
+
+    peer.on('call', (call: any) => {
+      call.answer(stream);
+      call.on('stream', (userVideoStream: any) => {
+        if (videoRef.current) videoRef.current.srcObject = userVideoStream;
+      });
+    });
+  }, [socket, peer]);
+
+  return (
+    <>
+      <h2>Room page</h2>
+      <video ref={videoRef} playsInline muted autoPlay />
+    </>
+  );
 };
 
 export default Room;
