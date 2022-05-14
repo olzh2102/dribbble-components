@@ -14,7 +14,6 @@ const Room: NextPage = () => {
     })();
   }, []);
 
-  console.log('PEER: ', peer);
   const router = useRouter();
   const { roomId } = router.query as { roomId: string };
 
@@ -22,21 +21,23 @@ const Room: NextPage = () => {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    if (!socket) return;
-    socket.on('message', (message) => {
-      setMessage(message.msg);
-    });
+    if (!peer || !socket) return;
 
-    return () => {
-      socket.off('message');
-    };
-  }, [socket]);
+    peer.on('open', (userId: any) => {
+      socket.emit('join-room', { roomId, userId });
+      console.log('peers established and joined the room');
+
+      socket.on('user-connected', (userId) => {
+        console.log('USER ID CONNECTED: ', userId);
+      });
+    });
+  }, [socket, peer]);
 
   useEffect(() => {
     if (!peer || !socket) return;
 
-    peer.on('open', (peerId: any) => {
-      socket.emit('join-room', { roomId, peerId });
+    socket.on('user-connected', (userId) => {
+      console.log('USER ID CONNECTED: ', userId);
     });
   });
 
