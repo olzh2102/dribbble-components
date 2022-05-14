@@ -3,10 +3,10 @@ import { io } from 'socket.io-client';
 import { TSocket } from '../common/types';
 
 const defaultValues: {
-  socket: TSocket | undefined;
+  socket: TSocket | null;
   setSocket: (val: TSocket) => void;
 } = {
-  socket: undefined,
+  socket: null,
   setSocket: () => {},
 };
 
