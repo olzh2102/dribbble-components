@@ -79,7 +79,17 @@ const Room: NextPage = () => {
   return (
     <>
       <h2>Room page</h2>
-      <video ref={videoRef} playsInline muted autoPlay />
+      <div className="flex h-screen">
+        <div className="m-auto" id="video-grid">
+          <video
+            className="rounded-2xl max-w-md max-h-80"
+            ref={videoRef}
+            playsInline
+            muted
+            autoPlay
+          />
+        </div>
+      </div>
     </>
   );
 };
