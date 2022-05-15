@@ -1,23 +1,25 @@
 import tw from 'tailwind-styled-components';
 
 export const Button = tw.button`
-  w-full 
-  flex 
+  inline-flex 
   items-center 
-  justify-center 
-  px-5 
+  px-4 
   py-2 
   border 
   border-transparent 
-  text-base 
+  shadow-sm 
+  text-sm 
   font-medium 
   rounded-md 
   text-white 
   bg-indigo-600 
   hover:bg-indigo-700 
-  md:py-4 
-  md:text-lg 
-  md:px-10
+  focus:outline-none 
+  focus:ring-2 
+  focus:ring-offset-2 
+  focus:ring-indigo-500
+  rounded-md 
+  mr-3
 `;
 
 export const JoinButton = tw.button`

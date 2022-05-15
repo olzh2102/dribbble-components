@@ -10,14 +10,13 @@ const Home: NextPage = () => {
   return (
     <WelcomeContainer>
       <div className="mt-5 sm:flex sm:justify-center lg:justify-start">
-        <div className="rounded-md mr-3">
-          <Link href={`/room/${uuid()}`}>
-            <Button>
-              <CameraIcon />
-              Create room
-            </Button>
-          </Link>
-        </div>
+        <Link href={`/room/${uuid()}`}>
+          <Button>
+            <CameraIcon />
+            New room
+          </Button>
+        </Link>
+
         <JoinRoom />
         <JoinButton disabled={true}>Join</JoinButton>
       </div>
