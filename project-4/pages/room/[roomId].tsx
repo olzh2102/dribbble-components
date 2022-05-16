@@ -1,13 +1,19 @@
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useCallback, useRef, useState } from 'react';
 
-import { useSocketContext, useCreateVideoStream } from '../../hooks';
+import {
+  useSocketContext,
+  useCreateVideoStream,
+  useCreatePeer,
+} from '../../hooks';
 
 const Room: NextPage = () => {
   console.log('render');
+  const [users, setUsers] = useState([]) as any;
 
   const router = useRouter();
+  const peer = useCreatePeer();
   const stream = useCreateVideoStream({ audio: true, video: true });
 
   const { roomId } = router.query as { roomId: string };
@@ -17,14 +23,7 @@ const Room: NextPage = () => {
 
   if (stream && videoRef.current) videoRef.current.srcObject = stream;
 
-  // const [peer, setPeer] = useState<any>();
-  // useEffect(() => {
-  //   (async () => {
-  //     const PeerJs = (await import('peerjs')).default;
-  //     const p = new PeerJs();
-  //     setPeer(p);
-  //   })();
-  // }, []);
+  // console.log(peer);
 
   // const connectToNewUser = (userId: string) => {
   //   if (!peer || !stream) return;
@@ -35,27 +34,27 @@ const Room: NextPage = () => {
   //   });
   // };
 
-  // useEffect(() => {
-  //   if (!peer || !socket) return;
+  const fn = useCallback(() => {
+    if (!peer || !socket) return;
 
-  //   peer.on('open', (userId: any) => {
-  //     socket.emit('join-room', { roomId, userId });
-  //     console.log('peers established and joined the room');
+    peer.on('open', (userId: any) => {
+      console.log('My peer ID is: ', userId);
+      socket.emit('join-room', { roomId, userId });
+      console.log('peers established and joined the room');
 
-  //     socket.on('user-connected', (userId) => {
-  //       console.log('USER ID CONNECTED: ', userId);
-  //       connectToNewUser(userId);
-  //     });
-  //   });
-  // }, [socket, peer]);
+      socket.on('user-connected', (userId) => {
+        users.push(userId);
+        console.log(users);
+        setUsers(users);
+        console.log('USER ID CONNECTED: ', userId);
+        // connectToNewUser(userId);
+      });
+    });
+  }, [socket, peer, users.length]);
 
-  // useEffect(() => {
-  //   if (!peer || !socket) return;
+  useEffect(fn, [fn]);
 
-  //   socket.on('user-connected', (userId) => {
-  //     console.log('USER ID CONNECTED: ', userId);
-  //   });
-  // }, [socket, peer]);
+  console.log('USERS: ', users);
 
   // useEffect(() => {
   //   if (!peer || !socket || !stream) return;
@@ -83,6 +82,9 @@ const Room: NextPage = () => {
             autoPlay
           />
         </div>
+        {users.map((user: any) => (
+          <span>Joined user: {user}</span>
+        ))}
       </div>
     </>
   );
