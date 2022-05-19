@@ -14,7 +14,7 @@ const Room: NextPage = () => {
 
   const router = useRouter();
   const peer = useCreatePeer();
-  const stream = useCreateVideoStream({ audio: true, video: true });
+  const stream = useCreateVideoStream({ audio: false, video: true });
 
   const { roomId } = router.query as { roomId: string };
   const { socket } = useSocketContext({ roomId });
@@ -22,52 +22,6 @@ const Room: NextPage = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   if (stream && videoRef.current) videoRef.current.srcObject = stream;
-
-  // console.log(peer);
-
-  // const connectToNewUser = (userId: string) => {
-  //   if (!peer || !stream) return;
-  //   const call = peer.call(userId, stream);
-  //   console.log('connected');
-  //   call.on('stream', (userVideoStream: any) => {
-  //     if (videoRef.current) videoRef.current.srcObject = userVideoStream;
-  //   });
-  // };
-
-  const fn = useCallback(() => {
-    if (!peer || !socket) return;
-
-    peer.on('open', (userId: any) => {
-      console.log('My peer ID is: ', userId);
-      socket.emit('join-room', { roomId, userId });
-      console.log('peers established and joined the room');
-
-      socket.on('user-connected', (userId) => {
-        users.push(userId);
-        console.log(users);
-        setUsers(users);
-        console.log('USER ID CONNECTED: ', userId);
-        // connectToNewUser(userId);
-      });
-    });
-  }, [socket, peer, users.length]);
-
-  useEffect(fn, [fn]);
-
-  console.log('USERS: ', users);
-
-  // useEffect(() => {
-  //   if (!peer || !socket || !stream) return;
-
-  //   if (videoRef.current) videoRef.current.srcObject = stream;
-
-  //   peer.on('call', (call: any) => {
-  //     call.answer(stream);
-  //     call.on('stream', (userVideoStream: any) => {
-  //       if (videoRef.current) videoRef.current.srcObject = userVideoStream;
-  //     });
-  //   });
-  // }, [socket, peer]);
 
   return (
     <>

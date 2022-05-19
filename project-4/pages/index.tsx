@@ -11,10 +11,13 @@ const Home: NextPage = () => {
     <WelcomeContainer>
       <div className="mt-5 sm:flex sm:justify-center lg:justify-start">
         <Link href={`/room/${uuid()}`}>
-          <Button>
-            <CameraIcon />
-            New room
-          </Button>
+          <Button>New room</Button>
+        </Link>
+
+        <Link href={`/chamber/${uuid()}`}>
+          <button className="rounded bg-[#881337] text-white px-2 mr-3">
+            New chamber
+          </button>
         </Link>
 
         <JoinRoom />
