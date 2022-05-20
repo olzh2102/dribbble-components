@@ -18,7 +18,7 @@ const useSocketContext = ({ roomId }: { roomId: string }) => {
   useEffect(() => {
     const s = io('/', { path: '/api/socketio' });
 
-    s.emit('join-room', { roomId });
+    // s.emit('join-room', { roomId });
 
     setSocket(s);
 
