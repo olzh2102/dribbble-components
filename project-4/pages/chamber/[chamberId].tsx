@@ -1,158 +1,118 @@
-import { useEffect, useState, useRef } from 'react';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
+import { useEffect, useCallback, useRef, useState } from 'react';
 
-import { useSocketContext } from '../../hooks';
+import {
+  useSocketContext,
+  useCreateVideoStream,
+  useCreatePeer,
+  useGetRoomId,
+} from '../../hooks';
 
 const Chamber: NextPage = () => {
-  const router = useRouter();
+  const videoBoxContainer = useRef<HTMLDivElement>(null);
 
-  const { chamberId } = router.query as { chamberId: string };
-  const { socket } = useSocketContext({ roomId: chamberId });
+  const roomId = useGetRoomId();
 
-  const videoRefFirst = useRef<HTMLVideoElement>(null);
-  const videoRefSecond = useRef<HTMLVideoElement>(null);
+  const { peer, isSuccess: isPeerSuccess } = useCreatePeer();
+  const { stream, isSuccess: isStreamSuccess } = useCreateVideoStream({
+    audio: false,
+    video: true,
+  });
 
-  const [localStream, setLocalStream] = useState<MediaStream | null>(null);
-  const [peerConnection, setPeerConnection] =
-    useState<RTCPeerConnection | null>(null);
+  const { socket } = useSocketContext({ roomId });
+  const [me, setMe] = useState('');
+  const [friend, setFriend] = useState('');
 
-  useEffect(() => {
-    if (!socket || !localStream) return;
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const videoRef2 = useRef<HTMLVideoElement>(null);
 
-    socket.emit('join-room', { roomId: chamberId, userId: 'user-1' });
+  const addStream = useCallback((stream: MediaStream) => {
+    const video = document.createElement('video');
+    video.className = 'rounded-2xl max-w-md max-h-80';
+    video.muted = true;
+    video.playsInline = true;
+    video.autoplay = true;
 
-    socket.on('member-joined', async (userId) => {
-      await createOffer(userId);
-      console.log('A new user joined the chamber: ', userId);
-    });
+    video.srcObject = stream;
 
-    socket.on('message-from-peer', async ({ text, userId }) => {
-      const message = JSON.parse(text);
-      if (message.type === 'offer') {
-        await createAnswer(userId, message.offer);
-      }
-
-      if (message.type === 'answer') {
-        await addAnswer(message.answer);
-      }
-
-      if (message.type === 'candidate') {
-        if (peerConnection) {
-          peerConnection.addIceCandidate(message.candidate);
-        }
-      }
-      console.log(message.type, message);
-    });
-  }, [socket, localStream]);
-
-  useEffect(() => {
-    init();
-    async function init() {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: true,
-        audio: true,
-      });
-
-      setLocalStream(stream);
-
-      if (stream && videoRefFirst.current)
-        videoRefFirst.current.srcObject = stream;
-    }
+    if (videoBoxContainer.current) videoBoxContainer.current.append(video);
   }, []);
 
-  async function createPeerConnection(userId: string) {
-    const peerConnection = new RTCPeerConnection();
-    const remoteStream = new MediaStream();
-    console.log('REMOTE STREAM: ', remoteStream);
+  useEffect(() => {
+    if (isStreamSuccess && stream) addStream(stream);
+  }, [isStreamSuccess]);
+  // if (stream && videoRef.current) videoRef.current.srcObject = stream;
 
-    if (videoRefSecond.current) videoRefSecond.current.srcObject = remoteStream;
+  useEffect(() => {
+    if (isPeerSuccess && peer && socket) {
+      console.log('open peer');
 
-    if (localStream)
-      for (const track of localStream.getTracks())
-        peerConnection.addTrack(track, localStream);
+      peer.on('open', (userId: string) => {
+        setMe(userId);
+        socket.emit('join-room', { roomId, userId });
+      });
+    }
+  }, [isPeerSuccess]);
 
-    peerConnection.ontrack = (event: any) => {
-      for (const track of event.streams[0].getTracks())
-        remoteStream.addTrack(track);
-    };
+  useEffect(() => {
+    if (isPeerSuccess && peer && socket) {
+      console.log('connect user, create call');
 
-    peerConnection.onicecandidate = async (event: any) => {
-      if (event.candidate && socket) {
-        socket.emit('send-message', {
-          text: JSON.stringify({
-            type: 'candidate',
-            candidate: event.candidate,
-          }),
-          userId,
+      socket.on('member-joined', (userId: string) => {
+        setFriend(userId);
+        const call = peer.call(userId, stream);
+
+        call?.on('stream', (userVideoStream: MediaStream) => {
+          addStream(userVideoStream);
+          // if (videoRef2.current) videoRef2.current.srcObject = userVideoStream;
         });
-      }
-    };
-
-    return peerConnection;
-  }
-
-  async function createOffer(userId: string) {
-    const peerConnection = await createPeerConnection(userId);
-    setPeerConnection(peerConnection);
-
-    let offer = await peerConnection.createOffer();
-    await peerConnection.setLocalDescription(offer);
-
-    console.log('OFFER: ', offer);
-
-    if (socket) {
-      socket.emit('send-message', {
-        text: JSON.stringify({ type: 'offer', offer }),
-        userId,
       });
     }
-  }
+  }, [isPeerSuccess]);
 
-  async function createAnswer(
-    userId: string,
-    offer: RTCSessionDescriptionInit
-  ) {
-    const peerConnection = await createPeerConnection(userId);
-    setPeerConnection(peerConnection);
+  useEffect(() => {
+    if (isPeerSuccess && isStreamSuccess && peer && stream) {
+      console.log('answer call');
 
-    await peerConnection.setRemoteDescription(offer);
-
-    const answer = await peerConnection.createAnswer();
-    await peerConnection.setLocalDescription(answer);
-
-    if (socket) {
-      socket.emit('send-message', {
-        text: JSON.stringify({ type: 'answer', answer }),
-        userId,
+      peer.on('call', (call: any) => {
+        setFriend(call.peer);
+        call.answer(stream);
+        call.on('stream', (friendStream: MediaStream) => {
+          addStream(friendStream);
+          // if (videoRef2.current) videoRef2.current.srcObject = friendStream;
+        });
       });
     }
-  }
-
-  async function addAnswer(answer: RTCSessionDescriptionInit) {
-    if (peerConnection && !peerConnection.currentRemoteDescription) {
-      peerConnection.setRemoteDescription(answer);
-    }
-  }
+  }, [isPeerSuccess]);
 
   return (
-    <div className="grid grid-cols-2 gap-4 place-content-center">
-      <video
-        className="bg-slate-800 w-auto h-72 m-5 rounded-2xl"
-        ref={videoRefFirst}
-        autoPlay
-        playsInline
-        muted
-      />
-
-      <video
-        className="bg-slate-800 w-auto h-72 m-5 rounded-2xl"
-        ref={videoRefSecond}
-        autoPlay
-        playsInline
-        muted
-      />
-    </div>
+    <>
+      <h2>Room page</h2>
+      <p>me: {me}</p>
+      <p>friend: {friend}</p>
+      <div ref={videoBoxContainer} className="flex h-screen">
+        {/* <div className="m-auto" id="video-grid">
+          <video
+            className="rounded-2xl max-w-md max-h-80"
+            ref={videoRef}
+            playsInline
+            muted
+            autoPlay
+          />
+        </div>
+        <div className="m-auto" id="video-grid">
+          <video
+            className="rounded-2xl max-w-md max-h-80"
+            ref={videoRef2}
+            playsInline
+            muted
+            autoPlay
+          />
+          <p>friend: {friend}</p>
+        </div> */}
+      </div>
+    </>
   );
 };
 
