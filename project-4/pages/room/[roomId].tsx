@@ -9,13 +9,14 @@ import {
 } from '../../hooks';
 
 const Room: NextPage = () => {
-  const [users, setUsers] = useState([]) as any;
   const router = useRouter();
   const peer = useCreatePeer();
   const stream = useCreateVideoStream({ audio: false, video: true });
 
   const { roomId } = router.query as { roomId: string };
   const { socket } = useSocketContext({ roomId });
+  const [me, setMe] = useState('');
+  const [friend, setFriend] = useState('');
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const videoRef2 = useRef<HTMLVideoElement>(null);
@@ -27,7 +28,7 @@ const Room: NextPage = () => {
     console.log('open peer');
 
     peer.on('open', (userId: string) => {
-      console.log('USER ID:', userId);
+      setMe(userId);
       socket.emit('join-room', { roomId, userId });
     });
   });
@@ -37,9 +38,10 @@ const Room: NextPage = () => {
     console.log('connect user, create call');
 
     socket.on('member-joined', (userId: string) => {
+      setFriend(userId);
       const call = peer.call(userId, stream);
 
-      call.on('stream', (userVideoStream: MediaStream) => {
+      call?.on('stream', (userVideoStream: MediaStream) => {
         if (videoRef2.current) videoRef2.current.srcObject = userVideoStream;
       });
     });
@@ -50,8 +52,11 @@ const Room: NextPage = () => {
     console.log('answer call');
 
     peer.on('call', (call: any) => {
+      setFriend(call.peer);
       call.answer(stream);
-      // call.on('stream', user);
+      call.on('stream', (friendStream: MediaStream) => {
+        if (videoRef2.current) videoRef2.current.srcObject = friendStream;
+      });
     });
   });
 
@@ -67,6 +72,7 @@ const Room: NextPage = () => {
             muted
             autoPlay
           />
+          <p>me: {me}</p>
         </div>
         <div className="m-auto" id="video-grid">
           <video
@@ -76,10 +82,8 @@ const Room: NextPage = () => {
             muted
             autoPlay
           />
+          <p>friend: {friend}</p>
         </div>
-        {users.map((user: any) => (
-          <span>Joined user: {user}</span>
-        ))}
       </div>
     </>
   );
