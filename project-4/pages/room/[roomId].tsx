@@ -69,7 +69,7 @@ const Room: NextPage = () => {
             className="rounded-2xl max-w-md max-h-80"
             ref={videoRef}
             playsInline
-            muted
+            // muted
             autoPlay
           />
           <p>me: {me}</p>
@@ -79,7 +79,7 @@ const Room: NextPage = () => {
             className="rounded-2xl max-w-md max-h-80"
             ref={videoRef2}
             playsInline
-            muted
+            // muted
             autoPlay
           />
           <p>friend: {friend}</p>

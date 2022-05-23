@@ -1,5 +1,4 @@
 import { NextPage } from 'next';
-import { useRouter } from 'next/router';
 import { useEffect, useCallback, useRef, useState } from 'react';
 
 import {
@@ -27,7 +26,11 @@ const Chamber: NextPage = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const videoRef2 = useRef<HTMLVideoElement>(null);
 
-  const addStream = useCallback((stream: MediaStream) => {
+  const addStream = useCallback((stream: MediaStream, userId: string) => {
+    const container = document.createElement('div');
+    const user = document.createElement('p');
+    user.innerText = userId;
+
     const video = document.createElement('video');
     video.className = 'rounded-2xl max-w-md max-h-80';
     video.muted = true;
@@ -35,13 +38,14 @@ const Chamber: NextPage = () => {
     video.autoplay = true;
 
     video.srcObject = stream;
+    container.append(video, user);
 
-    if (videoBoxContainer.current) videoBoxContainer.current.append(video);
+    if (videoBoxContainer.current) videoBoxContainer.current.append(container);
   }, []);
 
   useEffect(() => {
-    if (isStreamSuccess && stream) addStream(stream);
-  }, [isStreamSuccess]);
+    if (isStreamSuccess && stream && me) addStream(stream, me);
+  }, [isStreamSuccess, me]);
   // if (stream && videoRef.current) videoRef.current.srcObject = stream;
 
   useEffect(() => {
@@ -64,7 +68,7 @@ const Chamber: NextPage = () => {
         const call = peer.call(userId, stream);
 
         call?.on('stream', (userVideoStream: MediaStream) => {
-          addStream(userVideoStream);
+          addStream(userVideoStream, userId);
           // if (videoRef2.current) videoRef2.current.srcObject = userVideoStream;
         });
       });
@@ -79,7 +83,7 @@ const Chamber: NextPage = () => {
         setFriend(call.peer);
         call.answer(stream);
         call.on('stream', (friendStream: MediaStream) => {
-          addStream(friendStream);
+          addStream(friendStream, friend);
           // if (videoRef2.current) videoRef2.current.srcObject = friendStream;
         });
       });
