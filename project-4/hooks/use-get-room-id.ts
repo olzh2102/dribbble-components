@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 
 const useGetRoomId = () => {
   const router = useRouter();
-  const { roomId } = router.query as { roomId: string };
+  const { chamberId: roomId } = router.query as { chamberId: string };
   return roomId;
 };
 
