@@ -20,6 +20,12 @@ const Home: NextPage = () => {
           </button>
         </Link>
 
+        <Link href={`/qora/${uuid()}`}>
+          <button className="rounded bg-[#000] text-white px-2 mr-3">
+            Jańa qora
+          </button>
+        </Link>
+
         <JoinRoom />
         <JoinButton disabled={true}>Join</JoinButton>
       </div>

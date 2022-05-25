@@ -10,8 +10,8 @@ import {
 
 const Chamber: NextPage = () => {
   const videoBoxContainer = useRef<HTMLDivElement>(null);
-
   const roomId = useGetRoomId();
+  const peers: Record<string, any> = {};
 
   const { peer, isSuccess: isPeerSuccess } = useCreatePeer();
   const { stream, isSuccess: isStreamSuccess } = useCreateVideoStream({
@@ -23,30 +23,48 @@ const Chamber: NextPage = () => {
   const [me, setMe] = useState('');
   const [friend, setFriend] = useState('');
 
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const videoRef2 = useRef<HTMLVideoElement>(null);
+  const addStream = useCallback(
+    (video: HTMLVideoElement, stream: MediaStream) => {
+      video.className = 'rounded-2xl max-w-md max-h-80';
+      video.muted = false;
+      video.playsInline = true;
+      video.autoplay = true;
 
-  const addStream = useCallback((stream: MediaStream) => {
-    // const container = document.createElement('div');
-    // const user = document.createElement('p');
-    // user.innerText = userId;
+      video.srcObject = stream;
 
-    const video = document.createElement('video');
-    video.className = 'rounded-2xl max-w-md max-h-80';
-    video.muted = false;
-    video.playsInline = true;
-    video.autoplay = true;
+      if (videoBoxContainer.current) videoBoxContainer.current.append(video);
+    },
+    []
+  );
 
-    video.srcObject = stream;
-    // container.append(video, user);
+  const connectToNewUser = useCallback(
+    (userId: string, stream: MediaStream) => {
+      if (!peer) return;
 
-    if (videoBoxContainer.current) videoBoxContainer.current.append(video);
-  }, []);
+      const call = peer.call(userId, stream);
+      const video = document.createElement('video');
+
+      console.log('CALL OBJ: ', call);
+      call.on('stream', (userVideoStream: MediaStream) => {
+        console.log('HERE???');
+        addStream(video, userVideoStream);
+      });
+      call.on('close', () => {
+        console.log('CLOSE');
+        video.remove();
+      });
+
+      peers[userId] = call;
+    },
+    [isPeerSuccess]
+  );
 
   useEffect(() => {
-    if (isStreamSuccess && stream) addStream(stream);
+    if (isStreamSuccess && stream) {
+      const video = document.createElement('video');
+      addStream(video, stream);
+    }
   }, [isStreamSuccess]);
-  // if (stream && videoRef.current) videoRef.current.srcObject = stream;
 
   useEffect(() => {
     if (isPeerSuccess && peer && socket) {
@@ -60,26 +78,24 @@ const Chamber: NextPage = () => {
   }, [isPeerSuccess]);
 
   useEffect(() => {
-    if (isPeerSuccess && peer && socket) {
-      console.log('connect user, create call');
+    console.log('connect user, create call');
 
-      socket.on('member-joined', (userId: string) => {
-        setFriend(userId);
-        console.log('PEER OBJ: ', peer);
-        console.log('STREAM: ', stream);
-        console.log('USER ID: ', userId);
-        const call = peer.call(userId, stream);
+    socket?.on('member-joined', (userId: string) => {
+      setFriend(userId);
+      console.log('PEER OBJ: ', peer);
+      console.log('STREAM: ', stream);
+      console.log('USER ID: ', userId);
 
-        console.log('MAYBE HERE???');
-        console.log('CALL OBJ: ', call);
-        call?.on('stream', (userVideoStream: MediaStream) => {
-          console.log('HERE???');
-          addStream(userVideoStream);
-          // if (videoRef2.current) videoRef2.current.srcObject = userVideoStream;
-        });
-      });
-    }
-  }, [isPeerSuccess, isStreamSuccess]);
+      console.log('MAYBE HERE???');
+
+      if (stream) connectToNewUser(userId, stream);
+    });
+
+    socket?.on('member-left', (userId: string) => {
+      console.log('member left');
+      if (userId in peers) peers[userId].close();
+    });
+  }, [isStreamSuccess, isPeerSuccess]);
 
   useEffect(() => {
     if (isPeerSuccess && isStreamSuccess) {
@@ -88,9 +104,9 @@ const Chamber: NextPage = () => {
       peer.on('call', (call: any) => {
         setFriend(call.peer);
         call.answer(stream);
+        const video = document.createElement('video');
         call.on('stream', (friendStream: MediaStream) => {
-          addStream(friendStream);
-          // if (videoRef2.current) videoRef2.current.srcObject = friendStream;
+          addStream(video, friendStream);
         });
       });
     }
@@ -101,27 +117,7 @@ const Chamber: NextPage = () => {
       <h2>Room page</h2>
       <p>me: {me}</p>
       <p>friend: {friend}</p>
-      <div ref={videoBoxContainer} className="flex h-screen">
-        {/* <div className="m-auto" id="video-grid">
-          <video
-            className="rounded-2xl max-w-md max-h-80"
-            ref={videoRef}
-            playsInline
-            muted
-            autoPlay
-          />
-        </div>
-        <div className="m-auto" id="video-grid">
-          <video
-            className="rounded-2xl max-w-md max-h-80"
-            ref={videoRef2}
-            playsInline
-            muted
-            autoPlay
-          />
-          <p>friend: {friend}</p>
-        </div> */}
-      </div>
+      <div ref={videoBoxContainer} className="flex h-screen" />
     </>
   );
 };

@@ -19,12 +19,17 @@ const socketHandler = (req: NextApiRequest, res: NextApiResponseServerIO) => {
         socket.join(roomId);
         socket.to(roomId).emit('member-joined', userId);
 
+        socket.on('disconnect', () => {
+          console.log('is member leaving???');
+          console.log('is member leaving???', userId);
+
+          socket.to(roomId).emit('member-left', userId);
+        });
+
         socket.on('send-message', ({ text, userId }) => {
           socket.to(roomId).emit('message-from-peer', { text, userId });
         });
       });
-
-      socket.on('disconnect', () => {});
     });
   }
 
