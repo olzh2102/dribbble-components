@@ -25,7 +25,7 @@ const Chamber: NextPage = () => {
 
   const addStream = useCallback(
     (video: HTMLVideoElement, stream: MediaStream) => {
-      video.className = 'rounded-2xl max-w-md max-h-80';
+      video.className = 'rounded-3xl max-w-md max-h-80 mr-4';
       video.muted = false;
       video.playsInline = true;
       video.autoplay = true;
@@ -113,12 +113,16 @@ const Chamber: NextPage = () => {
   }, [isPeerSuccess]);
 
   return (
-    <>
-      <h2>Room page</h2>
-      <p>me: {me}</p>
-      <p>friend: {friend}</p>
+    <div className="m-48">
+      <h2 className="mb-8 font-semibold">Room page</h2>
+      <p className="font-medium">
+        me: <span className="text-blue-600">{me}</span>
+      </p>
+      <p className="font-medium mb-4">
+        friend: <span className="text-blue-600">{friend}</span>
+      </p>
       <div ref={videoBoxContainer} className="flex h-screen" />
-    </>
+    </div>
   );
 };
 
