@@ -14,10 +14,10 @@ const Chamber: NextPage = () => {
   const peers: Record<string, any> = {};
 
   const { peer, isSuccess: isPeerSuccess } = useCreatePeer();
-  const { stream, isSuccess: isStreamSuccess } = useCreateVideoStream({
-    audio: false,
-    video: true,
-  });
+  // const { stream, isSuccess: isStreamSuccess } = useCreateVideoStream({
+  //   audio: false,
+  //   video: true,
+  // });
 
   const { socket } = useSocketContext({ roomId });
   const [me, setMe] = useState('');

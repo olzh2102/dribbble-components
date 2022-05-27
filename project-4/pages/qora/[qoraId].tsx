@@ -33,13 +33,18 @@ const Qora: NextPage = () => {
 
       if (videoBoxContainer.current) videoBoxContainer.current.append(video);
     },
-    []
+    [videoBoxContainer.current]
   );
 
   useEffect(() => {
-    if (!peer || !stream || !socket) return;
+    if (!stream) return;
+
     const video = document.createElement('video');
     addVideoStream(video, stream);
+  }, [stream, addVideoStream]);
+
+  useEffect(() => {
+    if (!peer || !socket) return;
 
     peer.on('open', () => {
       setMe(peer.id);
@@ -47,6 +52,10 @@ const Qora: NextPage = () => {
 
       console.log('Your device ID is: ', peer.id);
     });
+  }, [peer, socket]);
+
+  useEffect(() => {
+    if (!socket || !stream || !peer) return;
 
     socket.on('member-joined', (friendId: any) => {
       setFriend(friendId);
@@ -60,6 +69,10 @@ const Qora: NextPage = () => {
         addVideoStream(video, friendStream);
       });
     });
+  }, [socket, stream, peer]);
+
+  useEffect(() => {
+    if (!peer || !stream) return;
 
     peer.on('call', (call: any) => {
       setFriend(call.peer);
@@ -71,7 +84,7 @@ const Qora: NextPage = () => {
         addVideoStream(video, hostStream);
       });
     });
-  }, [socket, peer, stream]);
+  }, [peer, stream]);
 
   if (!peer || !stream || !socket)
     return (

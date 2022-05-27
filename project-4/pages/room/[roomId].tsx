@@ -11,7 +11,7 @@ import {
 const Room: NextPage = () => {
   const router = useRouter();
   const { peer } = useCreatePeer();
-  const { stream } = useCreateVideoStream({ audio: false, video: true });
+  // const { stream } = useCreateVideoStream({ audio: false, video: true });
 
   const { roomId } = router.query as { roomId: string };
   const { socket } = useSocketContext({ roomId });
