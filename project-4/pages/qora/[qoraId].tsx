@@ -1,92 +1,33 @@
 import { NextPage } from 'next';
-import { useEffect, useCallback, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 import {
-  useSocketContext,
   useCreateVideoStream,
   useCreatePeer,
   useGetRoomId,
+  useOnOpenPeer,
+  usePeerOnJoinRoom,
+  usePeerOnAnswer,
+  useCreateVideoOnPageOpen,
 } from '../../hooks';
 
 const Qora: NextPage = () => {
-  const videoBoxContainer = useRef<HTMLDivElement>(null);
   const roomId = useGetRoomId();
 
-  const { peer } = useCreatePeer();
-  const { stream } = useCreateVideoStream({
-    video: true,
-    audio: false,
-  });
-  const { socket } = useSocketContext();
+  const videoBoxContainer = useRef<HTMLDivElement>(null);
+  const { stream } = useCreateVideoStream();
 
-  const [me, setMe] = useState('');
+  useCreateVideoOnPageOpen({ stream, videoBoxContainer });
+
+  const { peer } = useCreatePeer();
+
+  const { me } = useOnOpenPeer({ peer, roomId });
   const [friend, setFriend] = useState('');
 
-  const addVideoStream = useCallback(
-    (video: HTMLVideoElement, stream: MediaStream) => {
-      video.className = 'rounded-3xl max-w-md max-h-80 mr-4';
-      video.muted = false;
-      video.playsInline = true;
-      video.autoplay = true;
+  usePeerOnJoinRoom({ peer, stream, videoBoxContainer, setFriend });
+  usePeerOnAnswer({ peer, stream, videoBoxContainer, setFriend });
 
-      video.srcObject = stream;
-
-      if (videoBoxContainer.current) videoBoxContainer.current.append(video);
-    },
-    [videoBoxContainer.current]
-  );
-
-  useEffect(() => {
-    if (!stream) return;
-
-    const video = document.createElement('video');
-    addVideoStream(video, stream);
-  }, [stream, addVideoStream]);
-
-  useEffect(() => {
-    if (!peer || !socket) return;
-
-    peer.on('open', () => {
-      setMe(peer.id);
-      socket.emit('join-room', { userId: peer.id, roomId });
-
-      console.log('Your device ID is: ', peer.id);
-    });
-  }, [peer, socket]);
-
-  useEffect(() => {
-    if (!socket || !stream || !peer) return;
-
-    socket.on('member-joined', (friendId: any) => {
-      setFriend(friendId);
-
-      const call = peer.call(friendId, stream);
-      console.log('call friend with id:', friendId);
-
-      call.on('stream', (friendStream: MediaStream) => {
-        console.log('friend stream');
-        const video = document.createElement('video');
-        addVideoStream(video, friendStream);
-      });
-    });
-  }, [socket, stream, peer]);
-
-  useEffect(() => {
-    if (!peer || !stream) return;
-
-    peer.on('call', (call: any) => {
-      setFriend(call.peer);
-      console.log('answer call from:', call.peer);
-      call.answer(stream);
-      call.on('stream', (hostStream: MediaStream) => {
-        console.log('answer call stream');
-        const video = document.createElement('video');
-        addVideoStream(video, hostStream);
-      });
-    });
-  }, [peer, stream]);
-
-  if (!peer || !stream || !socket)
+  if (!peer || !stream)
     return (
       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
     );
