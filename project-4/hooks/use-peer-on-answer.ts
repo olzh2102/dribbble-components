@@ -6,6 +6,7 @@ const usePeerOnAnswer = ({
   stream,
   videoBoxContainer,
   setFriend,
+  setPeers,
 }: any) => {
   const addVideoStream = useAddVideoStream(videoBoxContainer);
 
@@ -14,14 +15,19 @@ const usePeerOnAnswer = ({
 
     peer.on('call', (call: any) => {
       setFriend(call.peer);
+      setPeers((prev: any) => ({ ...prev, [call.peer]: call }));
       console.log('answer call from:', call.peer);
 
       call.answer(stream);
 
+      const video = document.createElement('video');
       call.on('stream', (hostStream: MediaStream) => {
         console.log('answer call stream');
-        const video = document.createElement('video');
         addVideoStream(video, hostStream);
+      });
+
+      call.on('close', () => {
+        video.remove();
       });
     });
   }, [peer, stream]);

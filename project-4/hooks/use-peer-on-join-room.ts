@@ -6,6 +6,7 @@ const usePeerOnJoinRoom = ({
   peer,
   videoBoxContainer,
   setFriend,
+  setPeers,
 }: any) => {
   const { socket } = useSocketContext();
   const addVideoStream = useAddVideoStream(videoBoxContainer);
@@ -18,11 +19,17 @@ const usePeerOnJoinRoom = ({
       setFriend(friendId);
       console.log('call friend with id:', friendId);
 
+      const video = document.createElement('video');
       call.on('stream', (friendStream: MediaStream) => {
         console.log('friend stream');
-        const video = document.createElement('video');
         addVideoStream(video, friendStream);
       });
+
+      call.on('close', () => {
+        video.remove();
+      });
+
+      setPeers((prevState: any) => ({ ...prevState, [friendId]: call }));
     });
   }, [socket, stream, peer]);
 };

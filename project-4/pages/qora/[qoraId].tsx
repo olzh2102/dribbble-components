@@ -9,6 +9,7 @@ import {
   usePeerOnJoinRoom,
   usePeerOnAnswer,
   useCreateVideoOnPageOpen,
+  usePeerOnLeftRoom,
 } from '../../hooks';
 
 const Qora: NextPage = () => {
@@ -19,17 +20,19 @@ const Qora: NextPage = () => {
 
   useCreateVideoOnPageOpen({ stream, videoBoxContainer });
 
+  const [peers, setPeers] = useState<Record<string, any>>({});
   const { peer } = useCreatePeer();
 
   const { me } = useOnOpenPeer({ peer, roomId });
   const [friend, setFriend] = useState('');
 
-  usePeerOnJoinRoom({ peer, stream, videoBoxContainer, setFriend });
-  usePeerOnAnswer({ peer, stream, videoBoxContainer, setFriend });
+  usePeerOnJoinRoom({ peer, stream, videoBoxContainer, setFriend, setPeers });
+  usePeerOnAnswer({ peer, stream, videoBoxContainer, setFriend, setPeers });
+  usePeerOnLeftRoom({ peers });
 
   if (!peer || !stream)
     return (
-      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
+      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75" />
     );
 
   return (
