@@ -1,5 +1,6 @@
 import { NextPage } from 'next';
 import { useState } from 'react';
+import { UserIcon } from '../../assets/icons';
 
 import {
   useCreateVideoStream,
@@ -36,7 +37,10 @@ const Qora: NextPage = () => {
 
   if (!peer || !stream)
     return (
-      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75" />
+      <div className="flex h-screen place-items-center place-content-center">
+        <span className="animate-ping absolute inline-flex h-32 w-32 rounded-full bg-sky-400 opacity-75 -z-10" />
+        <UserIcon className="h-48 w-48" />
+      </div>
     );
 
   return (
