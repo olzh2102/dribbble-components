@@ -8,7 +8,7 @@ import { TSocket } from '../common/types';
 import '../styles/globals.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const [socket, setSocket] = useState<TSocket>();
+  const [socket, setSocket] = useState<TSocket | null>(null);
 
   return (
     <UserProvider>

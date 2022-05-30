@@ -10,16 +10,6 @@ const Home: NextPage = () => {
   return (
     <WelcomeContainer>
       <div className="mt-5 sm:flex sm:justify-center lg:justify-start">
-        <Link href={`/room/${uuid()}`}>
-          <Button>New room</Button>
-        </Link>
-
-        <Link href={`/chamber/${uuid()}`}>
-          <button className="rounded bg-[#881337] text-white px-2 mr-3">
-            New chamber
-          </button>
-        </Link>
-
         <Link href={`/qora/${uuid()}`}>
           <button className="rounded bg-[#000] text-white px-2 mr-3">
             Jańa qora

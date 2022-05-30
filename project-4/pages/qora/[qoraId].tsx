@@ -36,7 +36,7 @@ const Qora: NextPage = () => {
     );
 
   return (
-    <div className="m-48 grid place-content-center ">
+    <div className="m-48 grid place-content-center">
       <h2 className="mb-8 font-semibold">Meeting topic: something</h2>
       <p className="font-medium">
         me: <span className="text-blue-600">{me}</span>
