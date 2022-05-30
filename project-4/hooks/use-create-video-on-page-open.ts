@@ -1,7 +1,13 @@
 import { useEffect } from 'react';
 import { useAddVideoStream } from './';
 
-const useCreateVideoOnPageOpen = ({ stream, videoBoxContainer }: any) => {
+const useCreateVideoOnPageOpen = ({
+  stream,
+  videoBoxContainer,
+}: {
+  stream: MediaStream | null;
+  videoBoxContainer: React.RefObject<HTMLDivElement>;
+}) => {
   const addVideoStream = useAddVideoStream(videoBoxContainer);
 
   useEffect(() => {
