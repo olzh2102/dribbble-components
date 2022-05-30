@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 
 const useCreatePeer = () => {
-  const [status, setStatus] = useState<'idle' | 'success' | 'rejected'>('idle');
   const [peer, setPeer] = useState<any>();
 
   useEffect(() => {
@@ -10,19 +9,11 @@ const useCreatePeer = () => {
         const PeerJs = (await import('peerjs')).default;
         const p = new PeerJs();
         setPeer(p);
-        setStatus('success');
-      } catch (e) {
-        setStatus('rejected');
-      }
+      } catch (e) {}
     })();
   }, []);
 
-  return {
-    peer,
-    isIdle: status === 'idle',
-    isSuccess: status === 'success',
-    isError: status === 'rejected',
-  };
+  return { peer };
 };
 
 export default useCreatePeer;
