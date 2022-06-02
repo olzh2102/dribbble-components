@@ -4,7 +4,7 @@ import { v4 as uuid } from 'uuid';
 
 import { JoinRoom, WelcomeContainer } from '../components';
 import { CameraIcon } from '../assets/icons';
-import { Button, JoinButton } from './style';
+import { Button, JoinButton } from '../components/style';
 
 const Home: NextPage = () => {
   return (
