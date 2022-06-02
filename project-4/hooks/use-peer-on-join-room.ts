@@ -1,35 +1,36 @@
-import { useEffect } from 'react';
-import { useSocketContext, useAddVideoStream } from './';
+import { Dispatch, SetStateAction, useEffect } from 'react';
+import { useSocketContext } from './';
 
 const usePeerOnJoinRoom = ({
   stream,
   peer,
-  videoBoxContainer,
-  setFriend,
+  addVideoStream,
   setPeers,
-}: any) => {
+}: {
+  peer: any;
+  stream: MediaStream | null;
+  addVideoStream: (id: string, stream: MediaStream) => void;
+  setPeers: Dispatch<SetStateAction<Record<string, any>>>;
+}) => {
   const { socket } = useSocketContext();
-  const addVideoStream = useAddVideoStream(videoBoxContainer);
 
   useEffect(() => {
     if (!socket || !stream || !peer) return;
 
-    socket.on('member-joined', (friendId: any) => {
+    socket.on('member-joined', (friendId: string) => {
       const call = peer.call(friendId, stream);
-      setFriend(friendId);
       console.log('call friend with id:', friendId);
 
-      const video = document.createElement('video');
       call.on('stream', (friendStream: MediaStream) => {
         console.log('friend stream');
-        addVideoStream(video, friendStream);
+        addVideoStream(friendId, friendStream);
       });
 
       call.on('close', () => {
-        video.remove();
+        console.log(`${friendId} has left the room`);
       });
 
-      setPeers((prevState: any) => ({ ...prevState, [friendId]: call }));
+      setPeers((prevState) => ({ ...prevState, [friendId]: call }));
     });
   }, [socket, stream, peer]);
 };

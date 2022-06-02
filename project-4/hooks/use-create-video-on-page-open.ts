@@ -1,21 +1,20 @@
-import { useEffect } from 'react';
+import { Dispatch, SetStateAction, useEffect } from 'react';
 import { useAddVideoStream } from './';
 
 const useCreateVideoOnPageOpen = ({
+  id,
   stream,
-  videoBoxContainer,
+  addVideoStream,
 }: {
+  id: string;
   stream: MediaStream | null;
-  videoBoxContainer: React.RefObject<HTMLDivElement>;
+  addVideoStream: (id: string, stream: MediaStream) => void;
 }) => {
-  const addVideoStream = useAddVideoStream(videoBoxContainer);
-
   useEffect(() => {
     if (!stream) return;
 
-    const video = document.createElement('video');
-    addVideoStream(video, stream);
-  }, [addVideoStream]);
+    addVideoStream(id, stream);
+  }, [id, addVideoStream, stream]);
 };
 
 export default useCreateVideoOnPageOpen;
