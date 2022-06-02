@@ -1,7 +1,13 @@
 import { useEffect } from 'react';
 import { useSocketContext } from './';
 
-const usePeerOnLeftRoom = ({ peers }: Record<string, any>) => {
+const usePeerOnLeftRoom = ({
+  peers,
+  videoRefs,
+}: {
+  peers: Record<string, any>;
+  videoRefs: Record<string, HTMLDivElement>;
+}) => {
   const { socket } = useSocketContext();
 
   useEffect(() => {
@@ -9,8 +15,9 @@ const usePeerOnLeftRoom = ({ peers }: Record<string, any>) => {
 
     socket.on('member-left', (friendId: string) => {
       peers[friendId]?.close();
+      videoRefs[friendId]?.remove();
     });
-  }, [Object.keys(peers).length]);
+  }, [Object.keys(peers).length, Object.keys(videoRefs).length]);
 };
 
 export default usePeerOnLeftRoom;

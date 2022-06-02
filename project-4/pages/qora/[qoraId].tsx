@@ -1,5 +1,5 @@
 import { NextPage } from 'next';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
 import {
   useCreateVideoStream,
@@ -10,25 +10,29 @@ import {
   usePeerOnAnswer,
   useCreateVideoOnPageOpen,
   usePeerOnLeftRoom,
+  useAddVideoStream,
 } from '../../hooks';
 
 const Qora: NextPage = () => {
   const roomId = useGetRoomId();
 
-  const videoBoxContainer = useRef<HTMLDivElement>(null);
+  const [videoRefs, setVideoRefs] = useState<Record<string, HTMLDivElement>>(
+    {}
+  );
+  const [videos, setVideos] = useState<JSX.Element[]>([]);
   const { stream } = useCreateVideoStream();
 
-  useCreateVideoOnPageOpen({ stream, videoBoxContainer });
+  const addVideoStream = useAddVideoStream({ setVideos, setVideoRefs });
 
   const [peers, setPeers] = useState<Record<string, any>>({});
   const { peer } = useCreatePeer();
 
   const { me } = useOnOpenPeer({ peer, roomId });
-  const [friend, setFriend] = useState('');
 
-  usePeerOnJoinRoom({ peer, stream, videoBoxContainer, setFriend, setPeers });
-  usePeerOnAnswer({ peer, stream, videoBoxContainer, setFriend, setPeers });
-  usePeerOnLeftRoom({ peers });
+  useCreateVideoOnPageOpen({ stream, id: me, addVideoStream });
+  usePeerOnJoinRoom({ peer, stream, addVideoStream, setPeers });
+  usePeerOnAnswer({ peer, stream, addVideoStream, setPeers });
+  usePeerOnLeftRoom({ peers, videoRefs });
 
   if (!peer || !stream)
     return (
@@ -38,13 +42,7 @@ const Qora: NextPage = () => {
   return (
     <div className="m-48 grid place-content-center">
       <h2 className="mb-8 font-semibold">Meeting topic: something</h2>
-      <p className="font-medium">
-        me: <span className="text-blue-600">{me}</span>
-      </p>
-      <p className="font-medium mb-4">
-        friend: <span className="text-blue-600">{friend}</span>
-      </p>
-      <div ref={videoBoxContainer} className="flex" />
+      <div className="flex">{videos}</div>
     </div>
   );
 };

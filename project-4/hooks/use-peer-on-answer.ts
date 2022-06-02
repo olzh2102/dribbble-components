@@ -1,33 +1,32 @@
-import { useEffect } from 'react';
-import { useAddVideoStream } from './';
+import { Dispatch, SetStateAction, useEffect } from 'react';
 
 const usePeerOnAnswer = ({
   peer,
   stream,
-  videoBoxContainer,
-  setFriend,
+  addVideoStream,
   setPeers,
-}: any) => {
-  const addVideoStream = useAddVideoStream(videoBoxContainer);
-
+}: {
+  peer: any;
+  stream: MediaStream | null;
+  addVideoStream: (id: string, stream: MediaStream) => void;
+  setPeers: Dispatch<SetStateAction<Record<string, any>>>;
+}) => {
   useEffect(() => {
     if (!peer || !stream) return;
 
     peer.on('call', (call: any) => {
-      setFriend(call.peer);
       setPeers((prev: any) => ({ ...prev, [call.peer]: call }));
       console.log('answer call from:', call.peer);
 
       call.answer(stream);
 
-      const video = document.createElement('video');
       call.on('stream', (hostStream: MediaStream) => {
         console.log('answer call stream');
-        addVideoStream(video, hostStream);
+        addVideoStream(call.peer, hostStream);
       });
 
       call.on('close', () => {
-        video.remove();
+        console.log(`${call.peer} has left qora`);
       });
     });
   }, [peer, stream]);
