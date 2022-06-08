@@ -35,6 +35,16 @@ const Qora: NextPage = () => {
   usePeerOnJoinRoom({ peer, stream, addVideoStream, setPeers });
   usePeerOnAnswer({ peer, stream, addVideoStream, setPeers });
   usePeerOnLeftRoom({ peers, videoRefs });
+  console.log((videoRefs[me]?.children[0] as any)?.srcObject);
+
+  function toggleVideoStream() {
+    const stream = (videoRefs[me]?.children[0] as any)?.srcObject;
+    const tracks = stream.getTracks();
+    tracks.forEach(function (track: any) {
+      track.stop();
+    });
+    videoRefs[me].children[0].srcObject = null;
+  }
 
   return (
     <div className="grid h-screen place-items-center place-content-center">
@@ -49,7 +59,11 @@ const Qora: NextPage = () => {
           <div className="flex w-full flex-wrap gap-4 justify-center">
             {videos}
           </div>
-          <ControlPanel />
+          <ControlPanel
+            onVideo={toggleVideoStream}
+            onAudio={() => {}}
+            onHangUp={() => {}}
+          />
         </>
       )}
     </div>
