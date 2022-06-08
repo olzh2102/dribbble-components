@@ -1,6 +1,7 @@
 import { NextPage } from 'next';
 import { useState } from 'react';
 import { UserIcon } from '../../assets/icons';
+import { ControlPanel } from '../../components';
 
 import {
   useCreateVideoStream,
@@ -48,6 +49,7 @@ const Qora: NextPage = () => {
           <div className="flex w-full flex-wrap gap-4 justify-center">
             {videos}
           </div>
+          <ControlPanel />
         </>
       )}
     </div>
