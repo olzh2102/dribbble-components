@@ -22,7 +22,7 @@ const useAddVideoStream = ({
           ref={(node) => {
             if (node) node.srcObject = stream;
           }}
-          className="rounded-3xl max-w-md max-h-80 mr-4"
+          className="rounded-3xl w-80 h-72 object-cover"
           muted
           autoPlay
         />

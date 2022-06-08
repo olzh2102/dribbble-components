@@ -45,7 +45,9 @@ const Qora: NextPage = () => {
       ) : (
         <>
           <h2 className="mb-8 font-semibold">Meeting topic: something</h2>
-          <div className="flex">{videos}</div>
+          <div className="flex w-full flex-wrap gap-4 justify-center">
+            {videos}
+          </div>
         </>
       )}
     </div>
