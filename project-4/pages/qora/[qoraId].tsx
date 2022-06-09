@@ -37,15 +37,15 @@ const Qora: NextPage = () => {
   usePeerOnJoinRoom({ peer, stream, addVideoStream, setPeers });
   usePeerOnAnswer({ peer, stream, addVideoStream, setPeers });
   usePeerOnLeftRoom({ peers, videoRefs });
-  console.log((videoRefs[me]?.children[0] as any)?.srcObject);
 
-  function toggleVideoStream() {
-    const stream = (videoRefs[me]?.children[0] as any)?.srcObject;
-    const tracks = stream.getTracks();
-    tracks.forEach(function (track: any) {
-      track.stop();
-    });
-    (videoRefs[me].children[0] as HTMLVideoElement).srcObject = null;
+  function toggleVideoTrack() {
+    const stream = (videoRefs[me].children[0] as HTMLVideoElement).srcObject;
+    const videoTrack = (stream as any)
+      .getTracks()
+      .find((track: any) => track.kind == 'video');
+
+    if (videoTrack.enabled) videoTrack.enabled = false;
+    else videoTrack.enabled = true;
   }
 
   function handleHangUp() {
@@ -66,7 +66,7 @@ const Qora: NextPage = () => {
             {videos}
           </div>
           <ControlPanel
-            onVideo={toggleVideoStream}
+            onVideo={toggleVideoTrack}
             onAudio={() => {}}
             onHangUp={handleHangUp}
           />
