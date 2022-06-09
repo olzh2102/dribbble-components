@@ -8,6 +8,14 @@ const useOnOpenPeer = ({ peer, roomId }: { peer: any; roomId: string }) => {
   useEffect(() => {
     if (!peer || !socket) return;
 
+    // peer.on('connection', (conn: any) => {
+    //   conn.on('open', () => {
+    //     conn.on('data', (data: any) => {
+    //       console.log('RECEIVED MESSAGE:', data);
+    //     });
+    //   });
+    // });
+
     peer.on('open', () => {
       setMe(peer.id);
       socket.emit('join-room', { userId: peer.id, roomId });

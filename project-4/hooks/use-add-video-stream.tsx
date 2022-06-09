@@ -25,6 +25,7 @@ const useAddVideoStream = ({
           className="rounded-3xl w-80 h-72 object-cover"
           muted
           autoPlay
+          hidden={false}
         />
         <p className="font-medium">
           <span className="text-blue-600">{id}</span>
