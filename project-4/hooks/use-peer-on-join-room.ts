@@ -18,20 +18,11 @@ const usePeerOnJoinRoom = ({
     if (!socket || !stream || !peer) return;
 
     socket.on('member-joined', (friendId: string) => {
-      const call = peer.call(friendId, stream, {
-        metadata: { msg: 'CALL FROM HOST' },
-      });
+      const call = peer.call(friendId, stream);
       console.log('call friend with id:', friendId);
 
-      // const conn = peer.connect(friendId);
-
-      // conn.on('open', () => {
-      //   conn.send('Hello! from join');
-      // });
-
-      call.on('stream', (friendStream: MediaStream, message: any) => {
+      call.on('stream', (friendStream: MediaStream) => {
         console.log('friend stream');
-        console.log('RECEIVED:', friendStream);
         addVideoStream(friendId, friendStream);
       });
 

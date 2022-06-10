@@ -16,16 +16,8 @@ const usePeerOnAnswer = ({
 
     peer.on('call', (call: any) => {
       setPeers((prev: any) => ({ ...prev, [call.peer]: call }));
-      console.log('answer call from:', call.peer);
-      console.log('MESSAGE FROM HOST:', call.metadata);
 
-      call.answer(stream, { metadata: { msg: 'MESSAGE FROM FRIEND' } });
-
-      // const conn = peer.connect(call.peer);
-
-      // conn.on('open', () => {
-      //   conn.send({ muted: true, hidden: true });
-      // });
+      call.answer(stream);
 
       call.on('stream', (hostStream: MediaStream) => {
         console.log('answer call stream');
