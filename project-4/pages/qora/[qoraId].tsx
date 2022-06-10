@@ -48,6 +48,16 @@ const Qora: NextPage = () => {
     else videoTrack.enabled = true;
   }
 
+  function toggleAudioTrack() {
+    const stream = (videoRefs[me].children[0] as HTMLVideoElement).srcObject;
+    const audioTrack = (stream as any)
+      .getAudioTracks()
+      .find((track: any) => track.kind == 'audio');
+
+    if (audioTrack.enabled) audioTrack.enabled = false;
+    else audioTrack.enabled = true;
+  }
+
   function handleHangUp() {
     router.push('/');
   }
@@ -67,7 +77,7 @@ const Qora: NextPage = () => {
           </div>
           <ControlPanel
             onVideo={toggleVideoTrack}
-            onAudio={() => {}}
+            onAudio={toggleAudioTrack}
             onHangUp={handleHangUp}
           />
         </>

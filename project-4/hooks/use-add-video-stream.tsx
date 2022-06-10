@@ -23,7 +23,6 @@ const useAddVideoStream = ({
             if (node) node.srcObject = stream;
           }}
           className="rounded-3xl w-80 h-72 object-cover"
-          muted
           autoPlay
           hidden={false}
         />
