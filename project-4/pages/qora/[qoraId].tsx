@@ -28,7 +28,7 @@ const Qora: NextPage = () => {
   const [videoRefs, setVideoRefs] = useState<Record<string, HTMLDivElement>>(
     {}
   );
-  const [videos, setVideos] = useState<JSX.Element[]>([]);
+  const [videos, setVideos] = useState<Record<string, JSX.Element>>({});
   const { stream } = useCreateVideoStream(DEFAULT_CONSTRAINTS);
 
   const addVideoStream = useAddVideoStream({ setVideos, setVideoRefs });
@@ -55,6 +55,8 @@ const Qora: NextPage = () => {
 
   function toggleAudioTrack() {
     const stream = (videoRefs[me].children[0] as HTMLVideoElement).srcObject;
+    console.log('stream: ', stream);
+    console.log('audio tracks:', (stream as any).getAudioTracks());
     const audioTrack = (stream as any)
       .getAudioTracks()
       .find((track: any) => track.kind == 'audio');
@@ -78,7 +80,7 @@ const Qora: NextPage = () => {
         <>
           <h2 className="mb-8 font-semibold">Meeting topic: something</h2>
           <div className="flex w-full flex-wrap gap-4 justify-center">
-            {videos}
+            {Object.values(videos).map((component) => component)}
           </div>
           <ControlPanel
             onVideo={toggleVideoTrack}

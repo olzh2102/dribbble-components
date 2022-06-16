@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-const useCreateVideoStream = (constraints = {}) => {
+const useCreateVideoStream = (constraints = { audio: false, video: false }) => {
   const [stream, setStream] = useState<MediaStream | null>(null);
 
   useEffect(() => {
