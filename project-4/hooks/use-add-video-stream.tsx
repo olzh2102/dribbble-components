@@ -32,11 +32,11 @@ const useAddVideoStream = ({
               ref={(node) => {
                 if (node) {
                   node.srcObject = stream;
-                  if (muted) node.volume = 0;
                 }
               }}
               className="rounded-3xl w-80 h-72 object-cover"
               autoPlay
+              muted={muted}
             />
             <p className="font-medium">
               <span className="text-blue-600">{id}</span>
