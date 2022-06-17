@@ -55,8 +55,6 @@ const Qora: NextPage = () => {
 
   function toggleAudioTrack() {
     const stream = (videoRefs[me].children[0] as HTMLVideoElement).srcObject;
-    console.log('stream: ', stream);
-    console.log('audio tracks:', (stream as any).getAudioTracks());
     const audioTrack = (stream as any)
       .getAudioTracks()
       .find((track: any) => track.kind == 'audio');
