@@ -9,7 +9,7 @@ const usePeerOnJoinRoom = ({
 }: {
   peer: any;
   stream: MediaStream | null;
-  addVideoStream: (id: string, stream: MediaStream) => void;
+  addVideoStream: ({ id, stream }: { id: string; stream: MediaStream }) => void;
   setPeers: Dispatch<SetStateAction<Record<string, any>>>;
 }) => {
   const { socket } = useSocketContext();
@@ -23,7 +23,7 @@ const usePeerOnJoinRoom = ({
 
       call.on('stream', (friendStream: MediaStream) => {
         console.log('friend stream');
-        addVideoStream(friendId, friendStream);
+        addVideoStream({ id: friendId, stream: friendStream });
       });
 
       call.on('close', () => {

@@ -16,6 +16,11 @@ import {
   useAddVideoStream,
 } from '../../hooks';
 
+const DEFAULT_CONSTRAINTS = {
+  video: true,
+  audio: true,
+};
+
 const Qora: NextPage = () => {
   const roomId = useGetRoomId();
   const router = useRouter();
@@ -23,8 +28,8 @@ const Qora: NextPage = () => {
   const [videoRefs, setVideoRefs] = useState<Record<string, HTMLDivElement>>(
     {}
   );
-  const [videos, setVideos] = useState<JSX.Element[]>([]);
-  const { stream } = useCreateVideoStream();
+  const [videos, setVideos] = useState<Record<string, JSX.Element>>({});
+  const { stream } = useCreateVideoStream(DEFAULT_CONSTRAINTS);
 
   const addVideoStream = useAddVideoStream({ setVideos, setVideoRefs });
 
@@ -73,12 +78,13 @@ const Qora: NextPage = () => {
         <>
           <h2 className="mb-8 font-semibold">Meeting topic: something</h2>
           <div className="flex w-full flex-wrap gap-4 justify-center">
-            {videos}
+            {Object.values(videos).map((component) => component)}
           </div>
           <ControlPanel
             onVideo={toggleVideoTrack}
             onAudio={toggleAudioTrack}
             onHangUp={handleHangUp}
+            constraints={DEFAULT_CONSTRAINTS}
           />
         </>
       )}
