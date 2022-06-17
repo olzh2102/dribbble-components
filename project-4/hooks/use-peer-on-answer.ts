@@ -8,7 +8,15 @@ const usePeerOnAnswer = ({
 }: {
   peer: any;
   stream: MediaStream | null;
-  addVideoStream: ({ id, stream }: { id: string; stream: MediaStream }) => void;
+  addVideoStream: ({
+    id,
+    name,
+    stream,
+  }: {
+    id: string;
+    name: string;
+    stream: MediaStream;
+  }) => void;
   setPeers: Dispatch<SetStateAction<Record<string, any>>>;
 }) => {
   useEffect(() => {
@@ -21,7 +29,11 @@ const usePeerOnAnswer = ({
 
       call.on('stream', (hostStream: MediaStream) => {
         console.log('answer call stream');
-        addVideoStream({ id: call.peer, stream: hostStream });
+        addVideoStream({
+          id: call.peer,
+          name: 'Jackie Chan',
+          stream: hostStream,
+        });
       });
 
       call.on('close', () => {

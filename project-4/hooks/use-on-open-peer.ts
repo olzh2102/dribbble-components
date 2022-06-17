@@ -1,20 +1,26 @@
+import { useUser } from '@auth0/nextjs-auth0';
 import { useEffect, useState } from 'react';
 import useSocketContext from './use-socket-context';
 
 const useOnOpenPeer = ({ peer, roomId }: { peer: any; roomId: string }) => {
   const [me, setMe] = useState('');
   const { socket } = useSocketContext();
+  const { user } = useUser();
 
   useEffect(() => {
-    if (!peer || !socket) return;
+    if (!peer || !socket || !user) return;
 
     peer.on('open', () => {
       setMe(peer.id);
-      socket.emit('join-room', { userId: peer.id, roomId });
+      socket.emit('join-room', {
+        userId: peer.id,
+        roomId,
+        username: user.name,
+      });
 
       console.log('Your device ID is: ', peer.id);
     });
-  }, [peer, socket]);
+  }, [peer, socket, user]);
 
   return { me };
 };

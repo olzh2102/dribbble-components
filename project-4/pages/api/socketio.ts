@@ -13,12 +13,12 @@ const socketHandler = (req: NextApiRequest, res: NextApiResponseServerIO) => {
     io.on('connection', (socket) => {
       console.log('connected');
 
-      socket.on('join-room', ({ roomId, userId }) => {
+      socket.on('join-room', ({ roomId, userId, username }) => {
         console.log('USER ID: ', userId);
         console.log('ROOM ID: ', roomId);
 
         socket.join(roomId);
-        socket.to(roomId).emit('member-joined', userId);
+        socket.to(roomId).emit('member-joined', { userId, username });
 
         socket.on('disconnect', () => {
           socket.to(roomId).emit('member-left', userId);

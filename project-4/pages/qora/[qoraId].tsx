@@ -1,3 +1,4 @@
+import { useUser } from '@auth0/nextjs-auth0';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -24,6 +25,8 @@ const DEFAULT_CONSTRAINTS = {
 const Qora: NextPage = () => {
   const roomId = useGetRoomId();
   const router = useRouter();
+  const { user } = useUser();
+  console.log('user data: ', user);
 
   const [videoRefs, setVideoRefs] = useState<Record<string, HTMLDivElement>>(
     {}

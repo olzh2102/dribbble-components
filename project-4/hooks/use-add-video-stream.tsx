@@ -10,12 +10,14 @@ const useAddVideoStream = ({
   const addVideoStream = useCallback(
     ({
       id,
+      name,
       stream,
-      muted,
+      isMe,
     }: {
       id: string;
+      name?: string;
       stream: MediaStream;
-      muted?: boolean;
+      isMe?: boolean;
     }) => {
       if (!id) return;
 
@@ -27,6 +29,7 @@ const useAddVideoStream = ({
             ref={(node) => {
               if (node) setVideoRefs((prev) => ({ ...prev, [id]: node }));
             }}
+            style={{ position: 'relative' }}
           >
             <video
               ref={(node) => {
@@ -36,10 +39,18 @@ const useAddVideoStream = ({
               }}
               className="rounded-3xl w-80 h-72 object-cover"
               autoPlay
-              muted={muted}
+              muted={isMe}
             />
-            <p className="font-medium">
-              <span className="text-blue-600">{id}</span>
+            <p
+              className="font-medium"
+              style={{
+                position: 'absolute',
+                bottom: '13px',
+                fontSize: '12px',
+                left: '10px',
+              }}
+            >
+              <span className="text-white">{isMe ? 'You' : name}</span>
             </p>
           </div>
         ),

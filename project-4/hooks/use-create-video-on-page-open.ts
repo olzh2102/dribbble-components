@@ -10,17 +10,17 @@ const useCreateVideoOnPageOpen = ({
   addVideoStream: ({
     id,
     stream,
-    muted,
+    isMe,
   }: {
     id: string;
     stream: MediaStream;
-    muted?: boolean;
+    isMe?: boolean;
   }) => void;
 }) => {
   useEffect(() => {
     if (!stream) return;
 
-    addVideoStream({ id, stream, muted: true });
+    addVideoStream({ id, stream, isMe: true });
   }, [id, addVideoStream, stream]);
 };
 
