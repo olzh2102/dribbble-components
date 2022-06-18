@@ -1,8 +1,11 @@
 import { useUser } from '@auth0/nextjs-auth0';
 import { useEffect, useState } from 'react';
+import useGetRoomId from './use-get-room-id';
 import useSocketContext from './use-socket-context';
 
-const useOnOpenPeer = ({ peer, roomId }: { peer: any; roomId: string }) => {
+const useOnOpenPeer = ({ peer }: { peer: any }) => {
+  const roomId = useGetRoomId();
+
   const [me, setMe] = useState('');
   const { socket } = useSocketContext();
   const { user } = useUser();

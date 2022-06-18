@@ -31,7 +31,7 @@ const usePeerOnAnswer = ({
         console.log('answer call stream');
         addVideoStream({
           id: call.peer,
-          name: 'Jackie Chan',
+          name: call.metadata.username,
           stream: hostStream,
         });
       });

@@ -28,7 +28,7 @@ const usePeerOnJoinRoom = ({
     socket.on(
       'member-joined',
       ({ userId, username }: { userId: string; username: string }) => {
-        const call = peer.call(userId, stream);
+        const call = peer.call(userId, stream, { metadata: { username } });
         console.log('call friend with id:', userId);
 
         call.on('stream', (friendStream: MediaStream) => {

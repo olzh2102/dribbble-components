@@ -23,51 +23,37 @@ const DEFAULT_CONSTRAINTS = {
 };
 
 const Qora: NextPage = () => {
-  const roomId = useGetRoomId();
   const router = useRouter();
-  const { user } = useUser();
-  console.log('user data: ', user);
 
-  const [videoRefs, setVideoRefs] = useState<Record<string, HTMLDivElement>>(
-    {}
-  );
+  const [videoRefs, setVideoRefs] = useState<VideoRefsType>({});
   const [videos, setVideos] = useState<Record<string, JSX.Element>>({});
-  const { stream } = useCreateVideoStream(DEFAULT_CONSTRAINTS);
 
   const addVideoStream = useAddVideoStream({ setVideos, setVideoRefs });
 
   const [peers, setPeers] = useState<Record<string, any>>({});
   const { peer } = useCreatePeer();
 
-  const { me } = useOnOpenPeer({ peer, roomId });
+  const { me } = useOnOpenPeer({ peer });
+
+  const { stream } = useCreateVideoStream(DEFAULT_CONSTRAINTS);
 
   useCreateVideoOnPageOpen({ stream, id: me, addVideoStream });
+
   usePeerOnJoinRoom({ peer, stream, addVideoStream, setPeers });
   usePeerOnAnswer({ peer, stream, addVideoStream, setPeers });
+
   usePeerOnLeftRoom({ peers, videoRefs });
 
-  function toggleVideoTrack() {
+  function toggle(type: 'audio' | 'video') {
     const stream = (videoRefs[me].children[0] as HTMLVideoElement).srcObject;
-    const videoTrack = (stream as any)
-      .getTracks()
-      .find((track: any) => track.kind == 'video');
+    const track =
+      type === 'video'
+        ? (stream as any).getTracks()
+        : (stream as any).getAudioTracks();
+    track.find((track: any) => track.kind == type);
 
-    if (videoTrack.enabled) videoTrack.enabled = false;
-    else videoTrack.enabled = true;
-  }
-
-  function toggleAudioTrack() {
-    const stream = (videoRefs[me].children[0] as HTMLVideoElement).srcObject;
-    const audioTrack = (stream as any)
-      .getAudioTracks()
-      .find((track: any) => track.kind == 'audio');
-
-    if (audioTrack.enabled) audioTrack.enabled = false;
-    else audioTrack.enabled = true;
-  }
-
-  function handleHangUp() {
-    router.push('/');
+    if (track.enabled) track.enabled = false;
+    else track.enabled = true;
   }
 
   return (
@@ -84,9 +70,9 @@ const Qora: NextPage = () => {
             {Object.values(videos).map((component) => component)}
           </div>
           <ControlPanel
-            onVideo={toggleVideoTrack}
-            onAudio={toggleAudioTrack}
-            onHangUp={handleHangUp}
+            onVideo={() => toggle('video')}
+            onAudio={() => toggle('audio')}
+            onHangUp={() => router.push('/')}
             constraints={DEFAULT_CONSTRAINTS}
           />
         </>
@@ -96,3 +82,5 @@ const Qora: NextPage = () => {
 };
 
 export default Qora;
+
+type VideoRefsType = Record<string, HTMLDivElement>;
