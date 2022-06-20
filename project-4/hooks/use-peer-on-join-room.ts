@@ -1,3 +1,4 @@
+import { useUser } from '@auth0/nextjs-auth0';
 import { Dispatch, SetStateAction, useEffect } from 'react';
 import { useSocketContext } from './';
 
@@ -21,6 +22,7 @@ const usePeerOnJoinRoom = ({
   setPeers: Dispatch<SetStateAction<Record<string, any>>>;
 }) => {
   const { socket } = useSocketContext();
+  const { user } = useUser();
 
   useEffect(() => {
     if (!socket || !stream || !peer) return;
@@ -28,7 +30,10 @@ const usePeerOnJoinRoom = ({
     socket.on(
       'member-joined',
       ({ userId, username }: { userId: string; username: string }) => {
-        const call = peer.call(userId, stream, { metadata: { username } });
+        const call = peer.call(userId, stream, {
+          metadata: { username: user?.name },
+        });
+        console.log('call friend with name:', username);
         console.log('call friend with id:', userId);
 
         call.on('stream', (friendStream: MediaStream) => {
