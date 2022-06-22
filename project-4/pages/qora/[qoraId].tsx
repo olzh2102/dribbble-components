@@ -46,11 +46,11 @@ const Qora: NextPage = () => {
 
   function toggle(type: 'audio' | 'video') {
     const stream = (videoRefs[me].children[0] as HTMLVideoElement).srcObject;
-    const track =
+    const tracks =
       type === 'video'
         ? (stream as any).getTracks()
         : (stream as any).getAudioTracks();
-    track.find((track: any) => track.kind == type);
+    const track = tracks.find((track: any) => track.kind == type);
 
     if (track.enabled) track.enabled = false;
     else track.enabled = true;
