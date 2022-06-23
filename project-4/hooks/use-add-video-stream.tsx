@@ -3,9 +3,11 @@ import { Dispatch, SetStateAction, useCallback } from 'react';
 const useAddVideoStream = ({
   setVideoRefs,
   setVideos,
+  isSpeaking,
 }: {
   setVideoRefs: Dispatch<SetStateAction<Record<string, HTMLDivElement>>>;
   setVideos: Dispatch<SetStateAction<Record<string, JSX.Element>>>;
+  isSpeaking: boolean;
 }) => {
   const addVideoStream = useCallback(
     ({
@@ -41,6 +43,7 @@ const useAddVideoStream = ({
               autoPlay
               muted={isMe}
             />
+            {isSpeaking && <span>Helllllo</span>}
             <p
               className="font-medium"
               style={{
@@ -56,7 +59,7 @@ const useAddVideoStream = ({
         ),
       }));
     },
-    []
+    [isSpeaking]
   );
 
   return addVideoStream;

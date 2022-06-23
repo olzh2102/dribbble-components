@@ -1,14 +1,13 @@
 import { useUser } from '@auth0/nextjs-auth0';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { UserIcon } from '../../assets/icons';
 import { ControlPanel } from '../../components';
 
 import {
   useCreateVideoStream,
   useCreatePeer,
-  useGetRoomId,
   useOnOpenPeer,
   usePeerOnJoinRoom,
   usePeerOnAnswer,
@@ -27,8 +26,7 @@ const Qora: NextPage = () => {
 
   const [videoRefs, setVideoRefs] = useState<VideoRefsType>({});
   const [videos, setVideos] = useState<Record<string, JSX.Element>>({});
-
-  const addVideoStream = useAddVideoStream({ setVideos, setVideoRefs });
+  const [isSpeaking, setIsSpeaking] = useState(false);
 
   const [peers, setPeers] = useState<Record<string, any>>({});
   const { peer } = useCreatePeer();
@@ -36,6 +34,43 @@ const Qora: NextPage = () => {
   const { me } = useOnOpenPeer({ peer });
 
   const { stream } = useCreateVideoStream(DEFAULT_CONSTRAINTS);
+
+  useEffect(() => {
+    if (stream) {
+      const audioContext = new AudioContext();
+      const analyser = audioContext.createAnalyser();
+      const source = audioContext.createMediaStreamSource(stream);
+      source.connect(analyser);
+
+      analyser.fftSize = 1024;
+      const dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+      const update = () => {
+        requestAnimationFrame(update);
+        analyser.getByteTimeDomainData(dataArray);
+        let values = 0;
+        for (let i = 0; i < dataArray.length; i++) {
+          values += dataArray[i];
+        }
+
+        if (values / dataArray.length / 128 >= 1) {
+          setIsSpeaking(true);
+          setTimeout(() => {
+            setIsSpeaking(false);
+          }, 1000);
+        }
+      };
+
+      update();
+    }
+  }, [stream]);
+
+  console.log('am i speaking: ', isSpeaking);
+  const addVideoStream = useAddVideoStream({
+    setVideos,
+    setVideoRefs,
+    isSpeaking,
+  });
 
   useCreateVideoOnPageOpen({ stream, id: me, addVideoStream });
 
@@ -45,11 +80,11 @@ const Qora: NextPage = () => {
   usePeerOnLeftRoom({ peers, videoRefs });
 
   function toggle(type: 'audio' | 'video') {
-    const stream = (videoRefs[me].children[0] as HTMLVideoElement).srcObject;
+    const stream: any = (videoRefs[me].children[0] as HTMLVideoElement)
+      .srcObject;
+
     const tracks =
-      type === 'video'
-        ? (stream as any).getTracks()
-        : (stream as any).getAudioTracks();
+      type === 'video' ? stream.getTracks() : stream.getAudioTracks();
     const track = tracks.find((track: any) => track.kind == type);
 
     if (track.enabled) track.enabled = false;
