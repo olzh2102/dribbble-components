@@ -13,6 +13,7 @@ import {
   useCreateVideoOnPageOpen,
   usePeerOnLeftRoom,
   useAddVideoStream,
+  useGetRoomId,
 } from '../../hooks';
 
 const DEFAULT_CONSTRAINTS = {
@@ -22,6 +23,16 @@ const DEFAULT_CONSTRAINTS = {
 
 const Qora: NextPage = () => {
   const router = useRouter();
+
+  const roomId = useGetRoomId();
+
+  const [amIHost, setAmIHost] = useState(false);
+
+  useEffect(() => {
+    setAmIHost(!!window.localStorage.getItem(roomId));
+  }, [roomId]);
+
+  console.log('am i host: ', amIHost);
 
   const [videoRefs, setVideoRefs] = useState<VideoRefsType>({});
   const [videos, setVideos] = useState<Record<string, JSX.Element>>({});
