@@ -17,16 +17,18 @@ const ControlPanel = ({ onVideo, onAudio, onHangUp, constraints }: any) => {
 
   return (
     <div className="flex gap-4 place-content-center">
-      <button
-        onClick={handleVideo}
-        type="button"
-        className="inline-flex items-center p-2 border border-transparent rounded-xl shadow-sm text-white bg-slate-800 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 relative"
-      >
-        <VideoIcon />
-        {!videoActive && (
-          <div className="bg-current absolute w-3/4 h-0.5 left-1/2 -translate-x-1/2 rotate-45" />
-        )}
-      </button>
+      {onVideo && (
+        <button
+          onClick={handleVideo}
+          type="button"
+          className="inline-flex items-center p-2 border border-transparent rounded-xl shadow-sm text-white bg-slate-800 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 relative"
+        >
+          <VideoIcon />
+          {!videoActive && (
+            <div className="bg-current absolute w-3/4 h-0.5 left-1/2 -translate-x-1/2 rotate-45" />
+          )}
+        </button>
+      )}
       <button
         onClick={handleAudio}
         type="button"

@@ -32,8 +32,6 @@ const Qora: NextPage = () => {
     setAmIHost(!!window.localStorage.getItem(roomId));
   }, [roomId]);
 
-  console.log('am i host: ', amIHost);
-
   const [videoRefs, setVideoRefs] = useState<VideoRefsType>({});
   const [videos, setVideos] = useState<Record<string, JSX.Element>>({});
   const [whoIsSpeaking, setWhoIsSpeaking] = useState<boolean[]>([]);
@@ -96,8 +94,8 @@ const Qora: NextPage = () => {
 
   usePeerOnLeftRoom({ peers, videoRefs });
 
-  function toggle(type: 'audio' | 'video') {
-    const stream: any = (videoRefs[me].children[0] as HTMLVideoElement)
+  function toggle(type: 'audio' | 'video', peerId = me) {
+    const stream: any = (videoRefs[peerId].children[0] as HTMLVideoElement)
       .srcObject;
 
     const tracks =
@@ -119,14 +117,27 @@ const Qora: NextPage = () => {
         <>
           <h2 className="mb-8 font-semibold">Meeting topic: something</h2>
           <div className="flex w-full flex-wrap gap-4 justify-center">
-            {Object.entries(videos).map(([key, element], index) => {
+            {Object.entries(videos).map(([peerId, element], index) => {
               return (
-                <div key={key} className="relative">
+                <div key={peerId} className="relative">
                   {element}
                   {whoIsSpeaking[index] && (
                     <div className="animate-[wiggle_1s_ease-in-out_infinite] rounded-full bg-indigo-400 absolute top-3 right-3 p-1">
                       <SpeakerIcon />
                     </div>
+                  )}
+                  {amIHost && (
+                    <>
+                      <ControlPanel
+                        onAudio={() => toggle('audio', peerId)}
+                        onHangUp={() => {
+                          peers[peerId]?.close();
+                          videoRefs[peerId]?.remove();
+                        }}
+                        constraints={DEFAULT_CONSTRAINTS}
+                      />
+                      <div>I am THE host</div>
+                    </>
                   )}
                 </div>
               );
