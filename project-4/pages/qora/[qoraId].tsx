@@ -14,6 +14,7 @@ import {
   usePeerOnLeftRoom,
   useAddVideoStream,
   useGetRoomId,
+  useSocketContext,
 } from '../../hooks';
 
 const DEFAULT_CONSTRAINTS = {
@@ -27,6 +28,7 @@ const Qora: NextPage = () => {
   const roomId = useGetRoomId();
 
   const [amIHost, setAmIHost] = useState(false);
+  const { socket } = useSocketContext();
 
   useEffect(() => {
     setAmIHost(!!window.localStorage.getItem(roomId));
@@ -131,6 +133,7 @@ const Qora: NextPage = () => {
                       <ControlPanel
                         onAudio={() => toggle('audio', peerId)}
                         onHangUp={() => {
+                          socket?.emit('remove-peer', peerId);
                           peers[peerId]?.close();
                           videoRefs[peerId]?.remove();
                         }}
