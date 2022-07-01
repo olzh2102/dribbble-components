@@ -1,7 +1,7 @@
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
-import { SpeakerIcon, UserIcon } from '../../assets/icons';
+import { SpeakerIcon, UserIcon, SpeakerIcon2 } from '../../assets/icons';
 import { ControlPanel } from '../../components';
 
 import {
@@ -117,18 +117,22 @@ const Qora: NextPage = () => {
         </>
       ) : (
         <>
-          <h2 className="mb-8 font-semibold">Meeting topic: something</h2>
+          <h2 className="mb-8 font-mono text-white">
+            Meeting topic: something
+          </h2>
           <div className="flex w-full flex-wrap gap-4 justify-center">
             {Object.entries(videos).map(([peerId, element], index) => {
               return (
                 <div key={peerId} className="relative">
                   {element}
+
                   {whoIsSpeaking[index] && (
                     <div className="animate-[wiggle_1s_ease-in-out_infinite] rounded-full bg-indigo-400 absolute top-3 right-3 p-1">
-                      <SpeakerIcon />
+                      {/* <SpeakerIcon /> */}
+                      <SpeakerIcon2 />
                     </div>
                   )}
-                  {amIHost && (
+                  {/* {amIHost && (
                     <>
                       <ControlPanel
                         onAudio={() => toggle('audio', peerId)}
@@ -141,7 +145,7 @@ const Qora: NextPage = () => {
                       />
                       <div>I am THE host</div>
                     </>
-                  )}
+                  )} */}
                 </div>
               );
             })}

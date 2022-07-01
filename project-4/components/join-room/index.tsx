@@ -1,7 +1,7 @@
 const JoinRoom = ({ setValue }: any) => {
   return (
     <div className="rounded border border-gray-300 rounded-md mr-3 px-3 py-2 focus-within:z-10 focus-within:ring-1 focus-within:ring-indigo-600 focus-within:border-indigo-600">
-      <label htmlFor="name" className="block text-xs font-medium text-gray-900">
+      <label htmlFor="name" className="block text-xs font-medium text-gray-200">
         Enter a link
       </label>
       <input

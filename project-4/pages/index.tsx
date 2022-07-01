@@ -21,7 +21,7 @@ const Home: NextPage = () => {
         <div className="mt-5 sm:flex sm:justify-center lg:justify-start">
           <Link href={`/qora/${roomId}`}>
             <button
-              className="rounded bg-[#000] text-white px-2 mr-3"
+              className="rounded border border-gray-300 text-white px-2 mr-3"
               onClick={() => window.localStorage.setItem(roomId, '*')}
             >
               Jańa qora

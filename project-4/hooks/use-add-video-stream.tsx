@@ -30,6 +30,7 @@ const useAddVideoStream = ({
               if (node) setVideoRefs((prev) => ({ ...prev, [id]: node }));
             }}
             style={{ position: 'relative' }}
+            className="drop-shadow-2xl shadow-indigo-500/50"
           >
             <video
               ref={(node) => {
@@ -37,7 +38,7 @@ const useAddVideoStream = ({
                   node.srcObject = stream;
                 }
               }}
-              className="rounded-3xl w-80 h-72 object-cover"
+              className="rounded-[40px] w-96 h-72 object-cover"
               autoPlay
               muted={isMe}
             />
@@ -48,7 +49,7 @@ const useAddVideoStream = ({
                 position: 'absolute',
                 bottom: '13px',
                 fontSize: '12px',
-                left: '10px',
+                left: '16px',
               }}
             >
               <span className="text-white">{isMe ? 'You' : name}</span>
