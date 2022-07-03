@@ -4,9 +4,13 @@ import { PeerVideo } from '../components';
 const useAddVideoStream = ({
   setVideoRefs,
   setVideos,
+  onHangUp,
+  onToggleAudio,
 }: {
   setVideoRefs: Dispatch<SetStateAction<Record<string, HTMLDivElement>>>;
   setVideos: Dispatch<SetStateAction<Record<string, JSX.Element>>>;
+  onHangUp: (id: string) => void;
+  onToggleAudio: (id: string) => void;
 }) => {
   const addVideoStream = useCallback(
     ({
@@ -33,7 +37,13 @@ const useAddVideoStream = ({
             style={{ position: 'relative' }}
             className="drop-shadow-2xl shadow-indigo-500/50 relative"
           >
-            <PeerVideo isMe={isMe} stream={stream} name={name} isHost={false} />
+            <PeerVideo
+              isMe={isMe}
+              stream={stream}
+              name={name}
+              onHangUp={() => onHangUp(id)}
+              onToggleAudio={() => onToggleAudio(id)}
+            />
           </div>
         ),
       }));

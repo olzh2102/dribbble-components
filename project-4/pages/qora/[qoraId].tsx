@@ -1,6 +1,6 @@
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { UserIcon } from '../../assets/icons';
 import { ControlPanel } from '../../components';
 
@@ -13,7 +13,6 @@ import {
   useCreateVideoOnPageOpen,
   usePeerOnLeftRoom,
   useAddVideoStream,
-  useGetRoomId,
   useSocketContext,
 } from '../../hooks';
 
@@ -24,15 +23,7 @@ const DEFAULT_CONSTRAINTS = {
 
 const Qora: NextPage = () => {
   const router = useRouter();
-
-  const roomId = useGetRoomId();
-
-  const [amIHost, setAmIHost] = useState(false);
   const { socket } = useSocketContext();
-
-  useEffect(() => {
-    setAmIHost(!!window.localStorage.getItem(roomId));
-  }, [roomId]);
 
   const [videoRefs, setVideoRefs] = useState<VideoRefsType>({});
   const [videos, setVideos] = useState<Record<string, JSX.Element>>({});
@@ -44,17 +35,11 @@ const Qora: NextPage = () => {
 
   const { stream } = useCreateVideoStream(DEFAULT_CONSTRAINTS);
 
-  const addVideoStream = useAddVideoStream({
-    setVideos,
-    setVideoRefs,
-  });
-
-  useCreateVideoOnPageOpen({ stream, id: me, addVideoStream });
-
-  usePeerOnJoinRoom({ peer, stream, addVideoStream, setPeers });
-  usePeerOnAnswer({ peer, stream, addVideoStream, setPeers });
-
-  usePeerOnLeftRoom({ peers, videoRefs });
+  const handleHangUp = (id: string) => {
+    socket?.emit('remove-peer', id);
+    peers[id]?.close();
+    videoRefs[id]?.remove();
+  };
 
   function toggle(type: 'audio' | 'video', peerId = me) {
     const stream: any = (videoRefs[peerId].children[0] as HTMLVideoElement)
@@ -67,6 +52,20 @@ const Qora: NextPage = () => {
     if (track.enabled) track.enabled = false;
     else track.enabled = true;
   }
+
+  const addVideoStream = useAddVideoStream({
+    setVideos,
+    setVideoRefs,
+    onHangUp: handleHangUp,
+    onToggleAudio: (id) => toggle('audio', id),
+  });
+
+  useCreateVideoOnPageOpen({ stream, id: me, addVideoStream });
+
+  usePeerOnJoinRoom({ peer, stream, addVideoStream, setPeers });
+  usePeerOnAnswer({ peer, stream, addVideoStream, setPeers });
+
+  usePeerOnLeftRoom({ peers, videoRefs });
 
   return (
     <div className="grid h-screen place-items-center place-content-center">

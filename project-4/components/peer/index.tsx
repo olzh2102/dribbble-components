@@ -1,10 +1,30 @@
+import { useEffect, useState } from 'react';
+import { useGetRoomId, useSocketContext } from '../../hooks';
 import ActiveSpeakerIcon from '../active-speaker';
 import ControlPanel from '../control-panel';
 
-const PeerVideo = ({ isMe, isHost, stream, name }: any) => {
+const DEFAULT_CONSTRAINTS = {
+  video: true,
+  audio: true,
+};
+
+const PeerVideo = ({ isMe, stream, name, onHangUp, onToggleAudio }: any) => {
+  const [isHover, setIsHover] = useState(false);
+  const roomId = useGetRoomId();
+
+  const [isHost, setIsHost] = useState(false);
+
+  useEffect(() => {
+    setIsHost(!!window.localStorage.getItem(roomId));
+  }, [roomId]);
+
+  console.log(isHover);
+
   return (
     <>
       <video
+        onMouseEnter={() => setIsHover(true)}
+        onMouseLeave={() => setIsHover(false)}
         ref={(node) => {
           if (node) node.srcObject = stream;
         }}
@@ -16,20 +36,16 @@ const PeerVideo = ({ isMe, isHost, stream, name }: any) => {
         <span className="text-white">{isMe ? 'You' : name}</span>
       </p>
       <ActiveSpeakerIcon stream={stream} />
-      {/* {isHost && (
-        <>
+      {/* TODO: re-render of video on hover and mouseleave malfunctioning */}
+      {!isMe && isHost && isHover && (
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2">
           <ControlPanel
-            onAudio={() => toggle('audio', peerId)}
-            onHangUp={() => {
-              socket?.emit('remove-peer', peerId);
-              peers[peerId]?.close();
-              videoRefs[peerId]?.remove();
-            }}
+            onAudio={onToggleAudio}
+            onHangUp={onHangUp}
             constraints={DEFAULT_CONSTRAINTS}
           />
-          <div>I am THE host</div>
-        </>
-      )} */}
+        </div>
+      )}
     </>
   );
 };
