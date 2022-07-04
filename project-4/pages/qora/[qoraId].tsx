@@ -1,8 +1,8 @@
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
-import { UserIcon } from '../../assets/icons';
-import { ControlPanel } from '../../components';
+import { useCallback, useEffect, useState } from 'react';
+import { HangUpIcon, MicrophoneIcon, UserIcon } from '../../assets/icons';
+import { ControlPanel, HostControlPanel } from '../../components';
 
 import {
   useCreateVideoStream,
@@ -14,6 +14,7 @@ import {
   usePeerOnLeftRoom,
   useAddVideoStream,
   useSocketContext,
+  useGetRoomId,
 } from '../../hooks';
 
 const DEFAULT_CONSTRAINTS = {
@@ -24,6 +25,7 @@ const DEFAULT_CONSTRAINTS = {
 const Qora: NextPage = () => {
   const router = useRouter();
   const { socket } = useSocketContext();
+  const roomId = useGetRoomId();
 
   const [videoRefs, setVideoRefs] = useState<VideoRefsType>({});
   const [videos, setVideos] = useState<Record<string, JSX.Element>>({});
@@ -35,13 +37,19 @@ const Qora: NextPage = () => {
 
   const { stream } = useCreateVideoStream(DEFAULT_CONSTRAINTS);
 
+  const [isHost, setIsHost] = useState(false);
+
+  useEffect(() => {
+    setIsHost(!!window.localStorage.getItem(roomId));
+  }, [roomId]);
+
   const handleHangUp = (id: string) => {
     socket?.emit('remove-peer', id);
     peers[id]?.close();
     videoRefs[id]?.remove();
   };
 
-  function toggle(type: 'audio' | 'video', peerId = me) {
+  const toggle = (type: 'audio' | 'video', peerId = me) => {
     const stream: any = (videoRefs[peerId].children[0] as HTMLVideoElement)
       .srcObject;
 
@@ -51,13 +59,11 @@ const Qora: NextPage = () => {
 
     if (track.enabled) track.enabled = false;
     else track.enabled = true;
-  }
+  };
 
   const addVideoStream = useAddVideoStream({
     setVideos,
     setVideoRefs,
-    onHangUp: handleHangUp,
-    onToggleAudio: (id) => toggle('audio', id),
   });
 
   useCreateVideoOnPageOpen({ stream, id: me, addVideoStream });
@@ -80,7 +86,17 @@ const Qora: NextPage = () => {
             Meeting topic: something
           </h2>
           <div className="flex w-full flex-wrap gap-4 justify-center">
-            {Object.values(videos)}
+            {Object.entries(videos).map(([id, element]) => (
+              <div key={id} className="relative group">
+                {element}
+                {isHost && me !== id && (
+                  <HostControlPanel
+                    onHangUp={() => handleHangUp(id)}
+                    onToggleAudio={() => toggle('audio', id)}
+                  />
+                )}
+              </div>
+            ))}
           </div>
           <ControlPanel
             onVideo={() => toggle('video')}
