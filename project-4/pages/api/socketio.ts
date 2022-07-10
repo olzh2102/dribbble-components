@@ -29,6 +29,10 @@ const socketHandler = (req: NextApiRequest, res: NextApiResponseServerIO) => {
           socket.to(roomId).emit('member-left', userId);
         });
 
+        socket.on('mute-peer', (userId) => {
+          socket.to(roomId).emit('member-muted', userId);
+        });
+
         socket.on('send-message', ({ text, userId }) => {
           socket.to(roomId).emit('message-from-peer', { text, userId });
         });

@@ -1,7 +1,7 @@
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useState } from 'react';
-import { HangUpIcon, MicrophoneIcon, UserIcon } from '../../assets/icons';
+import { useEffect, useState } from 'react';
+import { UserIcon } from '../../assets/icons';
 import { ControlPanel, HostControlPanel } from '../../components';
 
 import {
@@ -43,12 +43,6 @@ const Qora: NextPage = () => {
     setIsHost(!!window.localStorage.getItem(roomId));
   }, [roomId]);
 
-  const handleHangUp = (id: string) => {
-    socket?.emit('remove-peer', id);
-    peers[id]?.close();
-    videoRefs[id]?.remove();
-  };
-
   const toggle = (type: 'audio' | 'video', peerId = me) => {
     const stream: any = (videoRefs[peerId].children[0] as HTMLVideoElement)
       .srcObject;
@@ -59,6 +53,12 @@ const Qora: NextPage = () => {
 
     if (track.enabled) track.enabled = false;
     else track.enabled = true;
+  };
+
+  const handleHangUp = (id: string) => {
+    socket?.emit('remove-peer', id);
+    peers[id]?.close();
+    videoRefs[id]?.remove();
   };
 
   const addVideoStream = useAddVideoStream({
@@ -72,6 +72,17 @@ const Qora: NextPage = () => {
   usePeerOnAnswer({ peer, stream, addVideoStream, setPeers });
 
   usePeerOnLeftRoom({ peers, videoRefs });
+
+  useEffect(() => {
+    if (!socket) return;
+
+    socket.on('member-muted', (memberId: string) => {
+      console.log(memberId, 'is muted');
+      if (!videoRefs[memberId]) return;
+
+      toggle('audio', memberId);
+    });
+  }, [Object.keys(videoRefs).length]);
 
   return (
     <div className="grid h-screen place-items-center place-content-center">
@@ -92,7 +103,13 @@ const Qora: NextPage = () => {
                 {isHost && me !== id && (
                   <HostControlPanel
                     onHangUp={() => handleHangUp(id)}
-                    onToggleAudio={() => toggle('audio', id)}
+                    onToggleAudio={() => {
+                      // * mute peer across other peers
+                      socket?.emit('mute-peer', id);
+
+                      // * mute peer on host room
+                      toggle('audio', id);
+                    }}
                   />
                 )}
               </div>
