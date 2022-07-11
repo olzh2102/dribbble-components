@@ -1,18 +1,18 @@
 import { useState } from 'react';
 import { VideoIcon, MicrophoneIcon, HangUpIcon } from '../../assets/icons';
 
-const ControlPanel = ({ onVideo, onAudio, onHangUp, constraints }: any) => {
+const ControlPanel = ({
+  onVideo,
+  onAudio,
+  onHangUp,
+  constraints,
+  isMuted,
+}: any) => {
   const [videoActive, setVideoActive] = useState(constraints.video);
-  const [audioActive, setAudioActive] = useState(constraints.audio);
 
   const handleVideo = () => {
     setVideoActive(!videoActive);
     onVideo();
-  };
-
-  const handleAudio = () => {
-    setAudioActive(!audioActive);
-    onAudio();
   };
 
   return (
@@ -33,12 +33,12 @@ const ControlPanel = ({ onVideo, onAudio, onHangUp, constraints }: any) => {
         </button>
       )}
       <button
-        onClick={handleAudio}
+        onClick={onAudio}
         type="button"
         className="inline-flex items-center p-3 border border-transparent rounded-xl shadow-sm text-white bg-slate-800 hover:bg-indigo-700 relative"
       >
         <MicrophoneIcon />
-        {!audioActive && (
+        {isMuted && (
           <>
             <div className="bg-current absolute w-2/3 h-0.5 left-1/2 -translate-x-1/2 -rotate-45" />
             <div className="bg-slate-800 absolute w-2/3 h-0.5 left-1/2 -translate-x-1/2 translate-y-0.5 -rotate-45" />

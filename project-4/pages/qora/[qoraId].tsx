@@ -1,6 +1,6 @@
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { UserIcon } from '../../assets/icons';
 import { ControlPanel, HostControlPanel } from '../../components';
 
@@ -38,22 +38,28 @@ const Qora: NextPage = () => {
   const { stream } = useCreateVideoStream(DEFAULT_CONSTRAINTS);
 
   const [isHost, setIsHost] = useState(false);
+  const [isMuted, setIsMuted] = useState(!DEFAULT_CONSTRAINTS.audio);
 
   useEffect(() => {
     setIsHost(!!window.localStorage.getItem(roomId));
   }, [roomId]);
 
-  const toggle = (type: 'audio' | 'video', peerId = me) => {
-    const stream: any = (videoRefs[peerId].children[0] as HTMLVideoElement)
-      .srcObject;
+  const toggle = useCallback(
+    (type: 'audio' | 'video', peerId = me) => {
+      const stream: any = (videoRefs[peerId].children[0] as HTMLVideoElement)
+        .srcObject;
 
-    const tracks =
-      type === 'video' ? stream.getTracks() : stream.getAudioTracks();
-    const track = tracks.find((track: any) => track.kind == type);
+      const tracks =
+        type === 'video' ? stream.getTracks() : stream.getAudioTracks();
+      const track = tracks.find((track: any) => track.kind == type);
 
-    if (track.enabled) track.enabled = false;
-    else track.enabled = true;
-  };
+      if (track.enabled) track.enabled = false;
+      else track.enabled = true;
+
+      if (me === peerId) setIsMuted(!isMuted);
+    },
+    [isMuted, videoRefs]
+  );
 
   const handleHangUp = (id: string) => {
     socket?.emit('remove-peer', id);
@@ -77,12 +83,11 @@ const Qora: NextPage = () => {
     if (!socket) return;
 
     socket.on('member-muted', (memberId: string) => {
-      console.log(memberId, 'is muted');
       if (!videoRefs[memberId]) return;
 
       toggle('audio', memberId);
     });
-  }, [Object.keys(videoRefs).length]);
+  }, [toggle, Object.keys(videoRefs).length]);
 
   return (
     <div className="grid h-screen place-items-center place-content-center">
@@ -119,6 +124,7 @@ const Qora: NextPage = () => {
             onVideo={() => toggle('video')}
             onAudio={() => toggle('audio')}
             onHangUp={() => router.push('/')}
+            isMuted={isMuted}
             constraints={DEFAULT_CONSTRAINTS}
           />
         </>
