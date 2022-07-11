@@ -93,9 +93,6 @@ const Qora: NextPage = () => {
         </>
       ) : (
         <>
-          <h2 className="mb-8 font-mono text-white">
-            Meeting topic: something
-          </h2>
           <div className="flex w-full flex-wrap gap-4 justify-center">
             {Object.entries(videos).map(([id, element]) => (
               <div key={id} className="relative group">
