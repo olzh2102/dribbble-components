@@ -1,7 +1,7 @@
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
-import { UserIcon } from '../../assets/icons';
+import { MutedIcon, UserIcon } from '../../assets/icons';
 import { ControlPanel, HostControlPanel } from '../../components';
 
 import {
@@ -38,7 +38,7 @@ const Qora: NextPage = () => {
   const { stream } = useCreateVideoStream(DEFAULT_CONSTRAINTS);
 
   const [isHost, setIsHost] = useState(false);
-  const [isMuted, setIsMuted] = useState(!DEFAULT_CONSTRAINTS.audio);
+  const [isMuted, setIsMuted] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     setIsHost(!!window.localStorage.getItem(roomId));
@@ -56,7 +56,7 @@ const Qora: NextPage = () => {
       if (track.enabled) track.enabled = false;
       else track.enabled = true;
 
-      if (me === peerId) setIsMuted(!isMuted);
+      setIsMuted((prev) => ({ ...prev, [peerId]: !isMuted[peerId] }));
     },
     [isMuted, videoRefs]
   );
@@ -80,12 +80,10 @@ const Qora: NextPage = () => {
   usePeerOnLeftRoom({ peers, videoRefs });
 
   useEffect(() => {
-    if (!socket) return;
-
-    socket.on('member-muted', (memberId: string) => {
+    socket?.on('member-muted', (memberId: string) => {
       if (!videoRefs[memberId]) return;
 
-      toggle('audio', memberId);
+      setIsMuted((prev) => ({ ...prev, [memberId]: !isMuted[memberId] }));
     });
   }, [toggle, Object.keys(videoRefs).length]);
 
@@ -114,14 +112,22 @@ const Qora: NextPage = () => {
                     }}
                   />
                 )}
+                {isMuted[id] && (
+                  <div className="absolute top-3 right-3">
+                    <MutedIcon />
+                  </div>
+                )}
               </div>
             ))}
           </div>
           <ControlPanel
             onVideo={() => toggle('video')}
-            onAudio={() => toggle('audio')}
+            onAudio={() => {
+              toggle('audio');
+              socket?.emit('mute-peer', me);
+            }}
             onHangUp={() => router.push('/')}
-            isMuted={isMuted}
+            isMuted={isMuted[me]}
             constraints={DEFAULT_CONSTRAINTS}
           />
         </>
