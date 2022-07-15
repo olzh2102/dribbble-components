@@ -1,16 +1,12 @@
 import { useState } from 'react';
 import type { NextPage } from 'next';
 import Link from 'next/link';
-import { useUser } from '@auth0/nextjs-auth0';
 import { v4 as uuid } from 'uuid';
 
-import { Header, JoinRoom, WelcomeContainer } from '../components';
-import { JoinButton } from '../components/style';
+import { Header, WelcomeContainer } from '../components';
 
 const Home: NextPage = () => {
   const [value, setValue] = useState('');
-  console.log('user:', useUser());
-  const user = useUser();
 
   const roomId = uuid();
 
@@ -19,6 +15,16 @@ const Home: NextPage = () => {
       <Header />
       <WelcomeContainer>
         <div className="flex gap-4 justify-start mt-4">
+          <Link href={`/bølme/${roomId}`}>
+            <button
+              onClick={() => window.localStorage.setItem(roomId, '*')}
+              type="button"
+              className="inline-flex items-center px-6 py-2 border border-transparent text-sm font-medium rounded-md text-emerald-800 bg-emerald-300 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              New room
+            </button>
+          </Link>
+
           <Link href={`/qora/${roomId}`}>
             <button
               onClick={() => window.localStorage.setItem(roomId, '*')}
