@@ -7,6 +7,7 @@ const usePeerOnJoinRoom = ({
   peer,
   addVideoStream,
   setPeers,
+  socket,
 }: {
   peer: any;
   stream: MediaStream | null;
@@ -20,8 +21,9 @@ const usePeerOnJoinRoom = ({
     stream: MediaStream;
   }) => void;
   setPeers: Dispatch<SetStateAction<Record<string, any>>>;
+  socket: any;
 }) => {
-  const { socket } = useSocketContext();
+  // const { socket } = useSocketContext();
   const { user } = useUser();
 
   useEffect(() => {
