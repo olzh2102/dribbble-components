@@ -29,11 +29,12 @@ const usePeerOnAnswer = ({
 
       call.on('stream', (hostStream: MediaStream) => {
         console.log('answer call stream');
-        addVideoStream({
-          id: call.peer,
-          name: call.metadata.username,
-          stream: hostStream,
-        });
+        call.peer &&
+          addVideoStream({
+            id: call.peer,
+            name: call.metadata.username,
+            stream: hostStream,
+          });
       });
 
       call.on('close', () => {

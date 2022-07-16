@@ -15,11 +15,6 @@ import {
   useGetRoomId,
 } from '../../hooks';
 
-const DEFAULT_CONSTRAINTS = {
-  video: true,
-  audio: true,
-};
-
 const Qora: NextPage = () => {
   const router = useRouter();
   const [socket, setSocket] = useState<any>(null);
@@ -43,7 +38,10 @@ const Qora: NextPage = () => {
 
   const { me } = useOnOpenPeer({ peer, socket });
 
-  const { stream } = useCreateVideoStream(DEFAULT_CONSTRAINTS);
+  const { stream } = useCreateVideoStream({
+    video: true,
+    audio: true,
+  });
 
   const [isHost, setIsHost] = useState(false);
   const [isMuted, setIsMuted] = useState<Record<string, boolean>>({});
@@ -52,7 +50,7 @@ const Qora: NextPage = () => {
     setIsHost(!!window.localStorage.getItem(roomId));
   }, [roomId]);
 
-  const toggle = (type: 'audio' | 'video', peerId = me) => {
+  function toggle(type: 'audio' | 'video', peerId = me) {
     const stream: any = (videoRefs[peerId].children[0] as HTMLVideoElement)
       .srcObject;
 
@@ -63,18 +61,17 @@ const Qora: NextPage = () => {
     if (track.enabled) track.enabled = false;
     else track.enabled = true;
 
-    if (type === 'audio') {
+    if (type === 'audio')
       setIsMuted((prev) => ({ ...prev, [peerId]: !prev[peerId] }));
-    }
-  };
+  }
 
-  const handleHangUp = (id: string) => {
+  function handleHangUp(id: string) {
     socket?.emit('remove-peer', id);
     peers[id]?.close();
     videoRefs[id]?.remove();
-  };
+  }
 
-  const addVideoStream = ({
+  function addVideoStream({
     id,
     name,
     stream,
@@ -84,29 +81,26 @@ const Qora: NextPage = () => {
     name?: string;
     stream: MediaStream;
     isMe?: boolean;
-  }) => {
-    if (!id) return;
-
+  }) {
     setVideos((prev) => ({
       ...prev,
       [id]: (
         <div
           key={id}
-          ref={(node) => {
-            if (node) setVideoRefs((prev) => ({ ...prev, [id]: node }));
-          }}
+          ref={(node) =>
+            node && setVideoRefs((prev) => ({ ...prev, [id]: node }))
+          }
           className="drop-shadow-2xl shadow-indigo-500/50"
         >
           <PeerVideo isMe={isMe} stream={stream} name={name} />
         </div>
       ),
     }));
-  };
+  }
 
   useEffect(() => {
     if (!stream) return;
-
-    addVideoStream({ id: me, stream, isMe: true });
+    me && addVideoStream({ id: me, stream, isMe: true });
   }, [me]);
 
   usePeerOnJoinRoom({ peer, stream, addVideoStream, setPeers, socket });
@@ -117,28 +111,28 @@ const Qora: NextPage = () => {
   useEffect(() => {
     socket?.on('member-muted', (peerId: string) => {
       if (!videoRefs[peerId]) return;
-
       toggle('audio', peerId);
     });
 
-    return () => {
-      socket?.off('member-muted');
-    };
+    return () => socket?.off('member-muted');
   }, [Object.keys(videoRefs).length]);
 
   return (
     <div className="grid h-screen place-items-center place-content-center">
       {!peer || !stream ? (
-        <>
-          <span className="animate-ping absolute inline-flex h-32 w-32 rounded-full bg-gray-400 opacity-75 -z-10" />
-          <UserIcon className="h-48 w-48" />
-        </>
+        <div
+          className="spinner-grow inline-block w-12 h-12 bg-white rounded-full opacity-0"
+          role="status"
+        >
+          <span className="visually-hidden">Loading...</span>
+        </div>
       ) : (
         <>
           <div className="flex w-full flex-wrap gap-4 justify-center">
             {Object.entries(videos).map(([id, element]) => (
               <div key={id} className="relative group">
                 {element}
+
                 {isHost && me !== id && (
                   <HostControlPanel
                     onHangUp={() => handleHangUp(id)}
@@ -148,6 +142,7 @@ const Qora: NextPage = () => {
                     }}
                   />
                 )}
+
                 {isMuted[id] && (
                   <div className="absolute top-3 right-3">
                     <MutedIcon />
@@ -156,16 +151,19 @@ const Qora: NextPage = () => {
               </div>
             ))}
           </div>
+
           <ControlPanel
             onVideo={() => toggle('video')}
             onAudio={() => {
-              // toggle('audio');
               socket?.emit('mute-peer', me);
               setIsMuted((prev) => ({ ...prev, [me]: !prev[me] }));
             }}
             onHangUp={() => router.push('/')}
             isMuted={isMuted[me]}
-            constraints={DEFAULT_CONSTRAINTS}
+            constraints={{
+              video: true,
+              audio: true,
+            }}
           />
         </>
       )}

@@ -40,7 +40,12 @@ const usePeerOnJoinRoom = ({
 
         call.on('stream', (friendStream: MediaStream) => {
           console.log('friend stream');
-          addVideoStream({ id: userId, name: username, stream: friendStream });
+          userId &&
+            addVideoStream({
+              id: userId,
+              name: username,
+              stream: friendStream,
+            });
         });
 
         call.on('close', () => {
