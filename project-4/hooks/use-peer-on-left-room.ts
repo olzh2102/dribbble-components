@@ -4,11 +4,13 @@ import { useSocketContext } from './';
 const usePeerOnLeftRoom = ({
   peers,
   videoRefs,
+  socket,
 }: {
   peers: Record<string, any>;
   videoRefs: Record<string, HTMLDivElement>;
+  socket: any;
 }) => {
-  const { socket } = useSocketContext();
+  // const { socket } = useSocketContext();
 
   useEffect(() => {
     if (!socket) return;

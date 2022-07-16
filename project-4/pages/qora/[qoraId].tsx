@@ -2,7 +2,8 @@ import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import { MutedIcon, UserIcon } from '../../assets/icons';
-import { ControlPanel, HostControlPanel } from '../../components';
+import { ControlPanel, HostControlPanel, PeerVideo } from '../../components';
+import { io } from 'socket.io-client';
 
 import {
   useCreateVideoStream,
@@ -10,10 +11,7 @@ import {
   useOnOpenPeer,
   usePeerOnJoinRoom,
   usePeerOnAnswer,
-  useCreateVideoOnPageOpen,
   usePeerOnLeftRoom,
-  useAddVideoStream,
-  useSocketContext,
   useGetRoomId,
 } from '../../hooks';
 
@@ -24,7 +22,17 @@ const DEFAULT_CONSTRAINTS = {
 
 const Qora: NextPage = () => {
   const router = useRouter();
-  const { socket } = useSocketContext();
+  const [socket, setSocket] = useState<any>(null);
+
+  useEffect(() => {
+    const s = io('/', { path: '/api/socketio' });
+
+    setSocket(s);
+
+    return () => {
+      s.disconnect();
+    };
+  }, []);
   const roomId = useGetRoomId();
 
   const [videoRefs, setVideoRefs] = useState<VideoRefsType>({});
@@ -33,7 +41,7 @@ const Qora: NextPage = () => {
   const [peers, setPeers] = useState<Record<string, any>>({});
   const { peer } = useCreatePeer();
 
-  const { me } = useOnOpenPeer({ peer });
+  const { me } = useOnOpenPeer({ peer, socket });
 
   const { stream } = useCreateVideoStream(DEFAULT_CONSTRAINTS);
 
@@ -44,22 +52,21 @@ const Qora: NextPage = () => {
     setIsHost(!!window.localStorage.getItem(roomId));
   }, [roomId]);
 
-  const toggle = useCallback(
-    (type: 'audio' | 'video', peerId = me) => {
-      const stream: any = (videoRefs[peerId].children[0] as HTMLVideoElement)
-        .srcObject;
+  const toggle = (type: 'audio' | 'video', peerId = me) => {
+    const stream: any = (videoRefs[peerId].children[0] as HTMLVideoElement)
+      .srcObject;
 
-      const tracks =
-        type === 'video' ? stream.getTracks() : stream.getAudioTracks();
-      const track = tracks.find((track: any) => track.kind == type);
+    const tracks =
+      type === 'video' ? stream.getTracks() : stream.getAudioTracks();
+    const track = tracks.find((track: any) => track.kind == type);
 
-      if (track.enabled) track.enabled = false;
-      else track.enabled = true;
+    if (track.enabled) track.enabled = false;
+    else track.enabled = true;
 
-      setIsMuted((prev) => ({ ...prev, [peerId]: !isMuted[peerId] }));
-    },
-    [isMuted, videoRefs]
-  );
+    if (type === 'audio') {
+      setIsMuted((prev) => ({ ...prev, [peerId]: !prev[peerId] }));
+    }
+  };
 
   const handleHangUp = (id: string) => {
     socket?.emit('remove-peer', id);
@@ -67,25 +74,57 @@ const Qora: NextPage = () => {
     videoRefs[id]?.remove();
   };
 
-  const addVideoStream = useAddVideoStream({
-    setVideos,
-    setVideoRefs,
-  });
+  const addVideoStream = ({
+    id,
+    name,
+    stream,
+    isMe,
+  }: {
+    id: string;
+    name?: string;
+    stream: MediaStream;
+    isMe?: boolean;
+  }) => {
+    if (!id) return;
 
-  useCreateVideoOnPageOpen({ stream, id: me, addVideoStream });
-
-  usePeerOnJoinRoom({ peer, stream, addVideoStream, setPeers });
-  usePeerOnAnswer({ peer, stream, addVideoStream, setPeers });
-
-  usePeerOnLeftRoom({ peers, videoRefs });
+    setVideos((prev) => ({
+      ...prev,
+      [id]: (
+        <div
+          key={id}
+          ref={(node) => {
+            if (node) setVideoRefs((prev) => ({ ...prev, [id]: node }));
+          }}
+          className="drop-shadow-2xl shadow-indigo-500/50"
+        >
+          <PeerVideo isMe={isMe} stream={stream} name={name} />
+        </div>
+      ),
+    }));
+  };
 
   useEffect(() => {
-    socket?.on('member-muted', (memberId: string) => {
-      if (!videoRefs[memberId]) return;
+    if (!stream) return;
 
-      setIsMuted((prev) => ({ ...prev, [memberId]: !isMuted[memberId] }));
+    addVideoStream({ id: me, stream, isMe: true });
+  }, [me]);
+
+  usePeerOnJoinRoom({ peer, stream, addVideoStream, setPeers, socket });
+  usePeerOnAnswer({ peer, stream, addVideoStream, setPeers });
+
+  usePeerOnLeftRoom({ peers, videoRefs, socket });
+
+  useEffect(() => {
+    socket?.on('member-muted', (peerId: string) => {
+      if (!videoRefs[peerId]) return;
+
+      toggle('audio', peerId);
     });
-  }, [toggle, Object.keys(videoRefs).length]);
+
+    return () => {
+      socket?.off('member-muted');
+    };
+  }, [Object.keys(videoRefs).length]);
 
   return (
     <div className="grid h-screen place-items-center place-content-center">
@@ -104,11 +143,8 @@ const Qora: NextPage = () => {
                   <HostControlPanel
                     onHangUp={() => handleHangUp(id)}
                     onToggleAudio={() => {
-                      // * mute peer across other peers
                       socket?.emit('mute-peer', id);
-
-                      // * mute peer on host room
-                      toggle('audio', id);
+                      setIsMuted((prev) => ({ ...prev, [id]: !prev[id] }));
                     }}
                   />
                 )}
@@ -123,8 +159,9 @@ const Qora: NextPage = () => {
           <ControlPanel
             onVideo={() => toggle('video')}
             onAudio={() => {
-              toggle('audio');
+              // toggle('audio');
               socket?.emit('mute-peer', me);
+              setIsMuted((prev) => ({ ...prev, [me]: !prev[me] }));
             }}
             onHangUp={() => router.push('/')}
             isMuted={isMuted[me]}

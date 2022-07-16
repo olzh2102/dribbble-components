@@ -3,11 +3,10 @@ import { useEffect, useState } from 'react';
 import useGetRoomId from './use-get-room-id';
 import useSocketContext from './use-socket-context';
 
-const useOnOpenPeer = ({ peer }: { peer: any }) => {
+const useOnOpenPeer = ({ peer, socket }: any) => {
   const roomId = useGetRoomId();
 
   const [me, setMe] = useState('');
-  const { socket } = useSocketContext();
   const { user } = useUser();
 
   useEffect(() => {
