@@ -33,6 +33,10 @@ const socketHandler = (req: NextApiRequest, res: NextApiResponseServerIO) => {
           socket.to(roomId).emit('member-muted', userId);
         });
 
+        socket.on('toggle-audio-status', (userId) => {
+          socket.to(roomId).emit('audio-status-toggled', userId);
+        });
+
         socket.on('send-message', ({ text, userId }) => {
           socket.to(roomId).emit('message-from-peer', { text, userId });
         });

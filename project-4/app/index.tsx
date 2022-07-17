@@ -42,11 +42,17 @@ const App = () => {
   useEffect(() => {
     socket.on('member-muted', (peerId: string) => {
       if (!videoRefs[peerId]) return;
-      toggle('audio', peerId);
+
+      if (peerId === me) toggle('audio', peerId);
+    });
+
+    socket.on('audio-status-toggled', (peerId) => {
+      setIsMuted((prev) => ({ ...prev, [peerId]: !prev[peerId] }));
     });
 
     return () => {
       socket.off('member-muted');
+      socket.off('audio-status-toggled');
     };
   }, [Object.keys(videoRefs).length]);
 
@@ -55,6 +61,7 @@ const App = () => {
   usePeerOnLeftRoom({ peers, videoRefs });
 
   function toggle(type: 'audio' | 'video', peerId = me) {
+    console.log('TOGGLE AUDIO');
     const stream: any = (videoRefs[peerId].children[0] as HTMLVideoElement)
       .srcObject;
 
@@ -124,6 +131,7 @@ const App = () => {
                       socket.emit('mute-peer', id);
                       setIsMuted((prev) => ({ ...prev, [id]: !prev[id] }));
                     }}
+                    isMuted={isMuted[id]}
                   />
                 )}
 
@@ -139,8 +147,8 @@ const App = () => {
           <ControlPanel
             onVideo={() => toggle('video')}
             onAudio={() => {
-              socket.emit('mute-peer', me);
-              setIsMuted((prev) => ({ ...prev, [me]: !prev[me] }));
+              socket.emit('toggle-audio-status', me);
+              toggle('audio', me);
             }}
             onHangUp={() => router.push('/')}
             isMuted={isMuted[me]}
