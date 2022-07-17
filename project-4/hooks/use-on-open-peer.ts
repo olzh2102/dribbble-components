@@ -1,10 +1,11 @@
 import { useUser } from '@auth0/nextjs-auth0';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { SocketContext } from '../pages/qora/[qoraId]';
 import useGetRoomId from './use-get-room-id';
-import useSocketContext from './use-socket-context';
 
-const useOnOpenPeer = ({ peer, socket }: any) => {
+const useOnOpenPeer = (peer: any) => {
   const roomId = useGetRoomId();
+  const socket = useContext(SocketContext);
 
   const [me, setMe] = useState('');
   const { user } = useUser();
@@ -24,7 +25,7 @@ const useOnOpenPeer = ({ peer, socket }: any) => {
     });
   }, [peer, socket, user]);
 
-  return { me };
+  return me;
 };
 
 export default useOnOpenPeer;

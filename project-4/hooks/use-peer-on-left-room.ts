@@ -1,16 +1,15 @@
-import { useEffect } from 'react';
-import { useSocketContext } from './';
+import { useContext, useEffect } from 'react';
+import { KeyValue } from '../app';
+import { SocketContext } from '../pages/qora/[qoraId]';
 
 const usePeerOnLeftRoom = ({
   peers,
   videoRefs,
-  socket,
 }: {
   peers: Record<string, any>;
-  videoRefs: Record<string, HTMLDivElement>;
-  socket: any;
+  videoRefs: KeyValue<HTMLDivElement>;
 }) => {
-  // const { socket } = useSocketContext();
+  const socket = useContext(SocketContext);
 
   useEffect(() => {
     if (!socket) return;

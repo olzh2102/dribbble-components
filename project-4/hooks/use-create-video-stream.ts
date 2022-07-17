@@ -16,7 +16,7 @@ const useCreateVideoStream = (constraints = { audio: false, video: false }) => {
     getStream();
   }, []);
 
-  return { stream };
+  return stream;
 };
 
 export default useCreateVideoStream;

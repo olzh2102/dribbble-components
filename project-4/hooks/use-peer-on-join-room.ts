@@ -1,13 +1,12 @@
 import { useUser } from '@auth0/nextjs-auth0';
-import { Dispatch, SetStateAction, useEffect } from 'react';
-import { useSocketContext } from './';
+import { Dispatch, SetStateAction, useContext, useEffect } from 'react';
+import { SocketContext } from '../pages/qora/[qoraId]';
 
 const usePeerOnJoinRoom = ({
   stream,
   peer,
   addVideoStream,
   setPeers,
-  socket,
 }: {
   peer: any;
   stream: MediaStream | null;
@@ -21,9 +20,8 @@ const usePeerOnJoinRoom = ({
     stream: MediaStream;
   }) => void;
   setPeers: Dispatch<SetStateAction<Record<string, any>>>;
-  socket: any;
 }) => {
-  // const { socket } = useSocketContext();
+  const socket = useContext(SocketContext);
   const { user } = useUser();
 
   useEffect(() => {
