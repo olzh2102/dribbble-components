@@ -5,6 +5,7 @@ import Header from './header';
 import PeerVideo from './peer';
 import ActiveSpeaker from './active-speaker';
 import HostControlPanel from './host-control-panel';
+import Notification from './notification';
 
 export {
   JoinRoom,
@@ -14,4 +15,5 @@ export {
   PeerVideo,
   ActiveSpeaker,
   HostControlPanel,
+  Notification,
 };

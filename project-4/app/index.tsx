@@ -1,7 +1,12 @@
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 import { MutedIcon } from '../assets/icons';
-import { ControlPanel, HostControlPanel, PeerVideo } from '../components';
+import {
+  ControlPanel,
+  HostControlPanel,
+  PeerVideo,
+  Notification,
+} from '../components';
 
 import {
   useCreateVideoStream,
@@ -15,6 +20,7 @@ import {
 import { SocketContext } from '../pages/qora/[qoraId]';
 
 const App = () => {
+  console.log('render app');
   const router = useRouter();
   const roomId = useGetRoomId();
   const socket = useContext(SocketContext);
@@ -61,7 +67,6 @@ const App = () => {
   usePeerOnLeftRoom({ peers, videoRefs });
 
   function toggle(type: 'audio' | 'video', peerId = me) {
-    console.log('TOGGLE AUDIO');
     const stream: any = (videoRefs[peerId].children[0] as HTMLVideoElement)
       .srcObject;
 
@@ -75,10 +80,11 @@ const App = () => {
       setIsMuted((prev) => ({ ...prev, [peerId]: !prev[peerId] }));
   }
 
-  function handleHangUp(id: string) {
+  function handleRemovePeer(id: string) {
     socket.emit('remove-peer', id);
     peers[id]?.close();
     videoRefs[id]?.remove();
+    console.log(`Peer with id ${id} left the room`);
   }
 
   function addVideoStream({
@@ -126,7 +132,7 @@ const App = () => {
 
                 {isHost && me !== id && (
                   <HostControlPanel
-                    onHangUp={() => handleHangUp(id)}
+                    onHangUp={() => handleRemovePeer(id)}
                     onToggleAudio={() => {
                       socket.emit('mute-peer', id);
                       setIsMuted((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -136,9 +142,12 @@ const App = () => {
                 )}
 
                 {isMuted[id] && (
-                  <div className="absolute top-3 right-3">
-                    <MutedIcon />
-                  </div>
+                  <>
+                    <div className="absolute top-3 right-3">
+                      <MutedIcon />
+                    </div>
+                    <Notification />
+                  </>
                 )}
               </div>
             ))}
