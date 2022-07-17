@@ -13,7 +13,7 @@ const useCreatePeer = () => {
     })();
   }, []);
 
-  return { peer };
+  return peer;
 };
 
 export default useCreatePeer;
