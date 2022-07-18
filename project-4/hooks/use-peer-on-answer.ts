@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction, useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 const usePeerOnAnswer = ({
   peer,
@@ -38,7 +39,7 @@ const usePeerOnAnswer = ({
       });
 
       call.on('close', () => {
-        console.log(`${call.peer} has left qora`);
+        toast(`${call.metadata.username} has left the room`);
       });
     });
   }, [peer, stream]);
