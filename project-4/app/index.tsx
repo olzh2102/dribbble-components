@@ -7,6 +7,7 @@ import {
   PeerVideo,
   Notification,
 } from '../components';
+import Chat from '../components/chat';
 
 import {
   useCreateVideoStream,
@@ -20,6 +21,8 @@ import {
 import { SocketContext } from '../pages/qora/[qoraId]';
 
 const App = () => {
+  const [isHeadlessOpen, setIsHeadlessOpen] = useState(false);
+
   console.log('render app');
   const router = useRouter();
   const roomId = useGetRoomId();
@@ -166,6 +169,18 @@ const App = () => {
               audio: true,
             }}
           />
+
+          <button onClick={() => setIsHeadlessOpen(!isHeadlessOpen)}>
+            show chat
+          </button>
+
+          <Chat
+            open={isHeadlessOpen}
+            setOpen={setIsHeadlessOpen}
+            title="Item Details"
+          >
+            chat will be here
+          </Chat>
         </>
       )}
     </>
