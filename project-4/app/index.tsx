@@ -45,11 +45,15 @@ const App = () => {
   }, [me]);
 
   useEffect(() => {
-    socket.on('member-muted', (peerId: string) => {
-      if (!videoRefs[peerId]) return;
+    socket.on(
+      'member-muted',
+      ({ userId, username }: { userId: string; username: string }) => {
+        if (!videoRefs[userId]) return;
 
-      if (peerId === me) toggle('audio', peerId);
-    });
+        if (userId === me) toggle('audio', userId);
+        toast(`${username} is muted`);
+      }
+    );
 
     socket.on('audio-status-toggled', (peerId) => {
       setIsMuted((prev) => ({ ...prev, [peerId]: !prev[peerId] }));
@@ -132,7 +136,10 @@ const App = () => {
                   <HostControlPanel
                     onHangUp={() => handleRemovePeer(id)}
                     onToggleAudio={() => {
-                      socket.emit('mute-peer', id);
+                      socket.emit('mute-peer', {
+                        userId: id,
+                        username: element.props.children.props.name,
+                      });
                       setIsMuted((prev) => ({ ...prev, [id]: !prev[id] }));
                     }}
                     isMuted={isMuted[id]}
