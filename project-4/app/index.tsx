@@ -1,7 +1,7 @@
-import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { MutedIcon } from '../assets/icons';
+import { toggleAudio } from '../common/utils';
 import { ControlPanel, HostControlPanel, PeerVideo } from '../components';
 import Chat from '../components/chat';
 
@@ -20,7 +20,6 @@ const App = () => {
   const [isHeadlessOpen, setIsHeadlessOpen] = useState(false);
 
   console.log('render app');
-  const router = useRouter();
   const roomId = useGetRoomId();
   const socket = useContext(SocketContext);
   const peer = useCreatePeer();
@@ -49,8 +48,10 @@ const App = () => {
       'member-muted',
       ({ userId, username }: { userId: string; username: string }) => {
         if (!videoRefs[userId]) return;
-
-        if (userId === me) toggle('audio', userId);
+        const stream: any = (videoRefs[userId].children[0] as HTMLVideoElement)
+          .srcObject;
+        toggleAudio(stream);
+        setIsMuted((prev) => ({ ...prev, [userId]: true }));
         toast(`${username} is muted`);
       }
     );
@@ -63,30 +64,30 @@ const App = () => {
       socket.off('member-muted');
       socket.off('audio-status-toggled');
     };
-  }, [Object.keys(videoRefs).length]);
+  }, [videoRefs]);
 
   usePeerOnJoinRoom({ peer, stream, addVideoStream, setPeers });
   usePeerOnAnswer({ peer, stream, addVideoStream, setPeers });
   usePeerOnLeftRoom({ peers, videoRefs });
 
-  function toggle(type: 'audio' | 'video', peerId = me) {
-    const stream: any = (videoRefs[peerId].children[0] as HTMLVideoElement)
-      .srcObject;
-
-    const tracks =
-      type === 'video' ? stream.getTracks() : stream.getAudioTracks();
-    const track = tracks.find((track: any) => track.kind == type);
-
-    track.enabled = !track.enabled;
-
-    if (type === 'audio')
-      setIsMuted((prev) => ({ ...prev, [peerId]: !prev[peerId] }));
+  function handleMutePeer(id: string, name: string) {
+    socket.emit('mute-peer', {
+      userId: id,
+      username: name,
+    });
+    setIsMuted((prev) => ({ ...prev, [id]: true }));
   }
 
   function handleRemovePeer(id: string) {
     socket.emit('remove-peer', id);
     peers[id]?.close();
     videoRefs[id]?.remove();
+  }
+
+  function handleAudio() {
+    socket.emit('toggle-audio-status', me);
+    setIsMuted((prev) => ({ ...prev, [me]: !prev[me] }));
+    if (stream) toggleAudio(stream);
   }
 
   function addVideoStream({
@@ -134,37 +135,27 @@ const App = () => {
 
                 {isHost && me !== id && (
                   <HostControlPanel
-                    onHangUp={() => handleRemovePeer(id)}
-                    onToggleAudio={() => {
-                      socket.emit('mute-peer', {
-                        userId: id,
-                        username: element.props.children.props.name,
-                      });
-                      setIsMuted((prev) => ({ ...prev, [id]: !prev[id] }));
-                    }}
+                    onRemovePeer={() => handleRemovePeer(id)}
+                    onMutePeer={() =>
+                      handleMutePeer(id, element.props.children.props.name)
+                    }
                     isMuted={isMuted[id]}
                   />
                 )}
 
                 {isMuted[id] && (
-                  <>
-                    <div className="absolute top-3 right-3">
-                      <MutedIcon />
-                    </div>
-                  </>
+                  <div className="absolute top-3 right-3">
+                    <MutedIcon />
+                  </div>
                 )}
               </div>
             ))}
           </div>
 
           <ControlPanel
-            onVideo={() => toggle('video')}
-            onAudio={() => {
-              socket.emit('toggle-audio-status', me);
-              toggle('audio', me);
-            }}
-            onHangUp={() => router.push('/')}
             isMuted={isMuted[me]}
+            stream={stream}
+            onAudio={handleAudio}
             constraints={{
               video: true,
               audio: true,

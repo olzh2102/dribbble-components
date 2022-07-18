@@ -54,6 +54,10 @@ const usePeerOnJoinRoom = ({
         setPeers((prevState) => ({ ...prevState, [userId]: call }));
       }
     );
+
+    return () => {
+      socket.off('member-joined');
+    };
   }, [socket, stream, peer]);
 };
 
