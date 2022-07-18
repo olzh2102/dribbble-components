@@ -1,12 +1,8 @@
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import { MutedIcon } from '../assets/icons';
-import {
-  ControlPanel,
-  HostControlPanel,
-  PeerVideo,
-  Notification,
-} from '../components';
+import { ControlPanel, HostControlPanel, PeerVideo } from '../components';
 
 import {
   useCreateVideoStream,
@@ -84,7 +80,6 @@ const App = () => {
     socket.emit('remove-peer', id);
     peers[id]?.close();
     videoRefs[id]?.remove();
-    console.log(`Peer with id ${id} left the room`);
   }
 
   function addVideoStream({
@@ -146,7 +141,6 @@ const App = () => {
                     <div className="absolute top-3 right-3">
                       <MutedIcon />
                     </div>
-                    <Notification />
                   </>
                 )}
               </div>

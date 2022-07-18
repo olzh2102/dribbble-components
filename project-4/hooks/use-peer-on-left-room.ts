@@ -17,7 +17,6 @@ const usePeerOnLeftRoom = ({
     socket.on('member-left', (friendId: string) => {
       peers[friendId]?.close();
       videoRefs[friendId]?.remove();
-      console.log(`Peer with id ${friendId} left the room`);
     });
 
     return () => {
