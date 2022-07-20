@@ -1,9 +1,20 @@
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { VideoIcon, MicrophoneIcon, HangUpIcon } from '../../assets/icons';
+import {
+  VideoIcon,
+  MicrophoneIcon,
+  HangUpIcon,
+  ShareScreenIcon,
+} from '../../assets/icons';
 import { toggleVideo } from '../../common/utils';
 
-const ControlPanel = ({ stream, onAudio, constraints, isMuted }: any) => {
+const ControlPanel = ({
+  stream,
+  onAudio,
+  constraints,
+  isMuted,
+  onShareScreen,
+}: any) => {
   const router = useRouter();
   const [videoActive, setVideoActive] = useState(constraints.video);
 
@@ -48,6 +59,13 @@ const ControlPanel = ({ stream, onAudio, constraints, isMuted }: any) => {
         className="inline-flex items-center p-3 border border-transparent rounded-xl shadow-sm text-white bg-red-600 hover:bg-red-400"
       >
         <HangUpIcon />
+      </button>
+      <button
+        onClick={onShareScreen}
+        type="button"
+        className="inline-flex items-center p-3 border border-transparent rounded-xl shadow-sm text-white bg-red-600 hover:bg-red-400"
+      >
+        <ShareScreenIcon />
       </button>
     </div>
   );

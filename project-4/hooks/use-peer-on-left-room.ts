@@ -1,3 +1,4 @@
+import { MediaConnection } from 'peerjs';
 import { useContext, useEffect } from 'react';
 import { KeyValue } from '../app';
 import { SocketContext } from '../pages/qora/[qoraId]';
@@ -6,7 +7,7 @@ const usePeerOnLeftRoom = ({
   peers,
   videoRefs,
 }: {
-  peers: Record<string, any>;
+  peers: KeyValue<MediaConnection>;
   videoRefs: KeyValue<HTMLDivElement>;
 }) => {
   const socket = useContext(SocketContext);
@@ -14,7 +15,7 @@ const usePeerOnLeftRoom = ({
   useEffect(() => {
     if (!socket) return;
 
-    socket.on('member-left', (friendId: string) => {
+    socket.on('member-left', (friendId) => {
       peers[friendId]?.close();
       videoRefs[friendId]?.remove();
     });

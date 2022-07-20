@@ -4,6 +4,7 @@ import MicrophoneIcon from './microphone';
 import HangUpIcon from './hang-up';
 import SpeakerIcon from './speaker';
 import MutedIcon from './muted';
+import ShareScreenIcon from './share-screen';
 
 export {
   UserIcon,
@@ -12,4 +13,5 @@ export {
   HangUpIcon,
   SpeakerIcon,
   MutedIcon,
+  ShareScreenIcon,
 };
