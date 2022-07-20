@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^1.7.0",
-    "@headlessui/react": "^1.6.1",
+    "@headlessui/react": "^1.6.6",
     "@heroicons/react": "^1.0.6",
     "next": "12.1.5",
     "peerjs": "^1.4.4",

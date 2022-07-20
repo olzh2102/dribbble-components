@@ -1,8 +1,14 @@
 import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { MutedIcon } from '../assets/icons';
+import {
+  ControlPanel,
+  HostControlPanel,
+  PeerVideo,
+} from '../components';
+import Chat from '../components/chat';
 import { toggleAudio } from '../common/utils';
-import { ControlPanel, HostControlPanel, PeerVideo } from '../components';
+
 
 import {
   useCreateVideoStream,
@@ -16,6 +22,8 @@ import {
 import { SocketContext } from '../pages/qora/[qoraId]';
 
 const App = () => {
+  const [isHeadlessOpen, setIsHeadlessOpen] = useState(false);
+
   console.log('render app');
   const roomId = useGetRoomId();
   const socket = useContext(SocketContext);
@@ -158,6 +166,18 @@ const App = () => {
               audio: true,
             }}
           />
+
+          <button onClick={() => setIsHeadlessOpen(!isHeadlessOpen)}>
+            show chat
+          </button>
+
+          <Chat
+            open={isHeadlessOpen}
+            setOpen={setIsHeadlessOpen}
+            title="Item Details"
+          >
+            chat will be here
+          </Chat>
         </>
       )}
     </>
