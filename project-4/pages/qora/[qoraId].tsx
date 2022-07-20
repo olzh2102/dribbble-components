@@ -1,12 +1,19 @@
 import { NextPage } from 'next';
-import { createContext, useEffect, useState } from 'react';
+import { createContext } from 'react';
+import { ToastContainer, ToastContainerProps } from 'react-toastify';
 import { io } from 'socket.io-client';
 
 import App from '../../app';
-import { TSocket } from '../../common/types';
+import 'react-toastify/dist/ReactToastify.css';
 
 const s = io('/', { path: '/api/socketio' });
 export const SocketContext = createContext(s);
+
+const TOAST_PROPS: ToastContainerProps = {
+  position: 'bottom-left',
+  theme: 'dark',
+  autoClose: 3000,
+};
 
 const Qora: NextPage = () => {
   return (
@@ -14,10 +21,9 @@ const Qora: NextPage = () => {
       <div className="grid h-screen place-items-center place-content-center">
         <App />
       </div>
+      <ToastContainer {...TOAST_PROPS} />
     </SocketContext.Provider>
   );
 };
 
 export default Qora;
-
-type VideoRefsType = Record<string, HTMLDivElement>;

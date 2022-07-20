@@ -1,5 +1,6 @@
 import { useUser } from '@auth0/nextjs-auth0';
 import { Dispatch, SetStateAction, useContext, useEffect } from 'react';
+import { toast } from 'react-toastify';
 import { SocketContext } from '../pages/qora/[qoraId]';
 
 const usePeerOnJoinRoom = ({
@@ -47,12 +48,16 @@ const usePeerOnJoinRoom = ({
         });
 
         call.on('close', () => {
-          console.log(`${userId} has left the room`);
+          toast(`${username} has left the room`);
         });
 
         setPeers((prevState) => ({ ...prevState, [userId]: call }));
       }
     );
+
+    return () => {
+      socket.off('member-joined');
+    };
   }, [socket, stream, peer]);
 };
 
