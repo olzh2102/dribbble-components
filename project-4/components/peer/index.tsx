@@ -7,7 +7,7 @@ const PeerVideo = ({ isMe, stream, name }: any) => {
         ref={(node) => {
           if (node) node.srcObject = stream;
         }}
-        className="rounded-[40px] w-96 h-72 object-cover"
+        className="rounded-[40px] w-96 h-72 object-cover -scale-x-100"
         autoPlay
         muted={isMe}
       />

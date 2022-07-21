@@ -19,8 +19,3 @@ a {
 * {
   box-sizing: border-box;
 }
-
-video {
-  -webkit-transform: scaleX(-1);
-  transform: scaleX(-1);
-}

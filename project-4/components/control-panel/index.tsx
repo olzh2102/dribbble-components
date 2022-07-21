@@ -13,6 +13,7 @@ const ControlPanel = ({
   onAudio,
   constraints,
   isMuted,
+  isSharingScreen,
   onShareScreen,
 }: any) => {
   const router = useRouter();
@@ -64,6 +65,7 @@ const ControlPanel = ({
         onClick={onShareScreen}
         type="button"
         className="inline-flex items-center p-3 border border-transparent rounded-xl shadow-sm text-white bg-red-600 hover:bg-red-400"
+        disabled={isSharingScreen}
       >
         <ShareScreenIcon />
       </button>
