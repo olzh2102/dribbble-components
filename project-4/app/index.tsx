@@ -3,14 +3,9 @@ import { MediaConnection } from 'peerjs';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import { MutedIcon } from '../assets/icons';
-import {
-  ControlPanel,
-  HostControlPanel,
-  PeerVideo,
-} from '../components';
+import { ControlPanel, HostControlPanel, PeerVideo } from '../components';
 import Chat from '../components/chat';
 import { toggleAudio } from '../common/utils';
-
 
 import {
   useCreateVideoStream,
@@ -184,11 +179,6 @@ const App = () => {
       ) : (
         <>
           <div className={`flex gap-4`}>
-            {/* <div
-            className={`grid  gap-4 ${
-              sharedScreenTrack ? 'w-1/5' : 'justify-center grid-cols-4'
-            }`}
-          > */}
             <div
               className={`flex flex-wrap gap-4 justify-around ${
                 sharedScreenTrack ? 'basis-1/6' : ''
