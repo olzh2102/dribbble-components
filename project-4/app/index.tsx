@@ -171,28 +171,41 @@ const App = () => {
         </div>
       ) : (
         <>
-          <div className="flex w-full flex-wrap gap-4 justify-center">
-            {Object.entries(videos).map(([id, element]) => (
-              <div key={id} className="relative group">
-                {element}
+          <div className={`flex gap-4 ${sharedScreenTrack ? "w-1/5" : "justify-center grid-cols-4"}`}>
+            {
+              Object.entries(videos).map(([id, element]) => (
+                <div key={id} className="relative group">
+                  {element}
 
-                {isHost && me !== id && (
-                  <HostControlPanel
-                    onRemovePeer={() => handleRemovePeer(id)}
-                    onMutePeer={() =>
-                      handleMutePeer(id, element.props.children.props.name)
-                    }
-                    isMuted={isMuted[id]}
-                  />
-                )}
+                  {isHost && me !== id && (
+                    <HostControlPanel
+                      onRemovePeer={() => handleRemovePeer(id)}
+                      onMutePeer={() =>
+                        handleMutePeer(id, element.props.children.props.name)
+                      }
+                      isMuted={isMuted[id]}
+                    />
+                  )}
 
-                {isMuted[id] && (
-                  <div className="absolute top-3 right-3">
-                    <MutedIcon />
-                  </div>
-                )}
-              </div>
-            ))}
+                  {isMuted[id] && (
+                    <div className="absolute top-3 right-3">
+                      <MutedIcon />
+                    </div>
+                  )}
+                </div>
+              ))      
+            }
+
+            {sharedScreenTrack && (
+            <video
+              className="rounded-[20px] w-full h-full object-cover"
+              ref={(node) => {
+                if (node) node.srcObject = new MediaStream([sharedScreenTrack]);
+              }}
+              autoPlay
+              muted
+            />
+          )}
           </div>
 
           <ControlPanel
@@ -206,17 +219,6 @@ const App = () => {
               audio: true,
             }}
           />
-
-          {sharedScreenTrack && (
-            <video
-              className="rounded-[40px] w-96 h-72 object-cover"
-              ref={(node) => {
-                if (node) node.srcObject = new MediaStream([sharedScreenTrack]);
-              }}
-              autoPlay
-              muted
-            />
-          )}
         </>
       )}
     </>
