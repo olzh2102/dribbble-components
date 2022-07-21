@@ -1,3 +1,4 @@
+import { useUser } from '@auth0/nextjs-auth0';
 import { MediaConnection } from 'peerjs';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -25,6 +26,7 @@ const App = () => {
   const socket = useContext(SocketContext);
   const peer = useCreatePeer();
 
+  const { user } = useUser();
   const me = useOnOpenPeer(peer);
   const isHost =
     typeof window !== 'undefined' && !!window.localStorage.getItem(roomId);
@@ -33,6 +35,9 @@ const App = () => {
   const [videos, setVideos] = useState<KeyValue<JSX.Element>>({});
   const [peers, setPeers] = useState<KeyValue<MediaConnection>>({});
   const [isMuted, setIsMuted] = useState<KeyValue<boolean>>({});
+
+  const [sharedScreenTrack, setSharedScreenTrack] =
+    useState<MediaStreamTrack | null>(null);
 
   const stream = useCreateVideoStream({
     video: true,
@@ -116,78 +121,32 @@ const App = () => {
         </div>
       ),
     }));
-    // const screenTrack = stream.getVideoTracks()[1];
-    // if (screenTrack) {
-    //   const s = new MediaStream([screenTrack]);
-    //   setVideos((prev) => ({
-    //     ...prev,
-    //     [`${id}-screen`]: (
-    //       <div
-    //         key={id}
-    //         ref={(node) =>
-    //           node &&
-    //           setVideoRefs((prev) => ({ ...prev, [`${id}-screen`]: node }))
-    //         }
-    //         className="drop-shadow-2xl shadow-indigo-500/50"
-    //       >
-    //         <PeerVideo isMe={isMe} stream={s} name={name} />
-    //       </div>
-    //     ),
-    //   }));
-    // }
+
+    const screenTrack = stream.getVideoTracks()[1];
+    if (screenTrack) setSharedScreenTrack(screenTrack);
   }
 
-  const screenVideoRef = useRef<HTMLVideoElement>(null);
-
   useEffect(() => {
-    if (!peer) return;
+    socket.on('screen-shared', (username) => {
+      peer?.disconnect();
+      peer?.reconnect();
+      toast(`${username} is sharing his screen`);
+    });
 
-    socket.on('screen-shared', (userId) => {
-      peer.on('call', (call) => {
-        call.answer(stream);
-
-        call.on('stream', (stream) => {
-          console.log('CALL STREAM:', stream);
-        });
-      });
-
-      const stream: any = (videoRefs[userId].children[0] as HTMLVideoElement)
-        .srcObject;
-      const screenTrack = stream?.getVideoTracks()[1];
-      console.log('SHARED STREAM:', stream);
-      console.log('SHARED TRACK:', stream.getVideoTracks());
-      if (screenTrack && screenVideoRef.current) {
-        screenVideoRef.current.srcObject = new MediaStream([screenTrack]);
-      }
+    socket.on('screen-sharing-stopped', () => {
+      setSharedScreenTrack(null);
     });
 
     return () => {
       socket.off('screen-shared');
+      socket.off('screen-sharing-stopped');
     };
-  }, [peer, videoRefs]);
-
-  function replaceTrack(track: MediaStreamTrack) {
-    return (peer: MediaConnection) => {
-      const sender = peer.peerConnection
-        .getSenders()
-        .find((s) => s.track?.kind === track.kind);
-
-      console.log('found sender:', sender);
-      sender?.replaceTrack(track);
-    };
-  }
-
-  Object.entries(videoRefs).forEach(([key, video]) => {
-    const stream: any = (video.children[0] as HTMLVideoElement).srcObject;
-    console.log('VIDEO TRACKS:', key, stream.getVideoTracks());
-  });
+  }, [peer]);
 
   function stopShareScreen(screenTrack: MediaStreamTrack) {
-    const streamTrack = stream?.getVideoTracks()[0];
-    if (!streamTrack) return;
     stream?.removeTrack(screenTrack);
-
-    Object.values(peers).forEach(replaceTrack(streamTrack));
+    setSharedScreenTrack(null);
+    socket.emit('stop-sharing-my-screen');
   }
 
   async function handleShareScreen() {
@@ -197,44 +156,11 @@ const App = () => {
     });
     const screenTrack = screenStream.getTracks()[0];
     stream?.addTrack(screenTrack);
+    setSharedScreenTrack(screenTrack);
 
-    // peer.dis();
-    if (peer && stream) {
-      peer.call(me, stream, {
-        metadata: { username: 'Baigus' },
-      });
-    }
-
-    if (screenVideoRef.current) screenVideoRef.current.srcObject = screenStream;
-
-    socket.emit('share-my-screen', { username: me });
-    // addVideoStream({ id: 'me', stream: screenStream });
-
-    Object.values(peers).forEach(replaceTrack(screenTrack));
+    socket.emit('share-my-screen', { username: user?.name });
 
     screenTrack.onended = () => stopShareScreen(screenTrack);
-    // senders.current.find(sender => sender.track.kind === 'video').replaceTrack(screenTrack);
-    // screenTrack.onended = function() {
-    //     senders.current.find(sender => sender.track.kind === "video").replaceTrack(userStream.current.getTracks()[1]);
-    // }
-    // });
-
-    /* 
-      let screenShare = document.getElementById('shareScreen');
-    screenShare.addEventListener('click', async () => {
-        captureStream = await navigator.mediaDevices.getDisplayMedia({
-            audio: true,
-            video: { mediaSource: "screen" }
-        });
-        //Instead of adminId, pass peerId who will taking captureStream in call
-        myPeer.call(adminId, captureStream);
-    })
-
-    screenShare = stream
-                    let video = document.getElementById("local-video");
-                    video.srcObject = stream;
-                    video.play()
-      */
   }
 
   return (
@@ -274,6 +200,7 @@ const App = () => {
 
           <ControlPanel
             isMuted={isMuted[me]}
+            isSharingScreen={!!sharedScreenTrack}
             stream={stream}
             onAudio={handleAudio}
             onShareScreen={handleShareScreen}
@@ -294,6 +221,16 @@ const App = () => {
           >
             chat will be here
           </Chat>
+          {sharedScreenTrack && (
+            <video
+              className="rounded-[40px] w-96 h-72 object-cover"
+              ref={(node) => {
+                if (node) node.srcObject = new MediaStream([sharedScreenTrack]);
+              }}
+              autoPlay
+              muted
+            />
+          )}
         </>
       )}
     </>
