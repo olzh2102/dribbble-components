@@ -1,4 +1,6 @@
-import { useContext, useEffect, useState } from 'react';
+import { useUser } from '@auth0/nextjs-auth0';
+import { MediaConnection } from 'peerjs';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import { MutedIcon } from '../assets/icons';
 import {
@@ -29,14 +31,21 @@ const App = () => {
   const socket = useContext(SocketContext);
   const peer = useCreatePeer();
 
+  const { user } = useUser();
   const me = useOnOpenPeer(peer);
   const isHost =
     typeof window !== 'undefined' && !!window.localStorage.getItem(roomId);
 
   const [videoRefs, setVideoRefs] = useState<KeyValue<HTMLDivElement>>({});
   const [videos, setVideos] = useState<KeyValue<JSX.Element>>({});
-  const [peers, setPeers] = useState<KeyValue<any>>({});
+  const [peers, setPeers] = useState<KeyValue<MediaConnection>>({});
   const [isMuted, setIsMuted] = useState<KeyValue<boolean>>({});
+
+  const [sharedScreenTrack, setSharedScreenTrack] =
+    useState<MediaStreamTrack | null>(null);
+
+  const isSharing = !!sharedScreenTrack;
+  console.log('IS SHARING:', isSharing);
 
   const stream = useCreateVideoStream({
     video: true,
@@ -53,8 +62,8 @@ const App = () => {
       'member-muted',
       ({ userId, username }: { userId: string; username: string }) => {
         if (!videoRefs[userId]) return;
-        const stream: any = (videoRefs[userId].children[0] as HTMLVideoElement)
-          .srcObject;
+        const stream = (videoRefs[userId].children[0] as HTMLVideoElement)
+          .srcObject as MediaStream;
         toggleAudio(stream);
         setIsMuted((prev) => ({ ...prev, [userId]: true }));
         toast(`${username} is muted`);
@@ -106,6 +115,7 @@ const App = () => {
     stream: MediaStream;
     isMe?: boolean;
   }) {
+    // stream.getVideoTracks()[0].enabled = false;
     setVideos((prev) => ({
       ...prev,
       [id]: (
@@ -120,6 +130,46 @@ const App = () => {
         </div>
       ),
     }));
+
+    const screenTrack = stream.getVideoTracks()[1];
+    if (screenTrack) setSharedScreenTrack(screenTrack);
+  }
+
+  useEffect(() => {
+    socket.on('screen-shared', (username) => {
+      peer?.disconnect();
+      peer?.reconnect();
+      toast(`${username} is sharing his screen`);
+    });
+
+    socket.on('screen-sharing-stopped', () => {
+      setSharedScreenTrack(null);
+    });
+
+    return () => {
+      socket.off('screen-shared');
+      socket.off('screen-sharing-stopped');
+    };
+  }, [peer]);
+
+  function stopShareScreen(screenTrack: MediaStreamTrack) {
+    stream?.removeTrack(screenTrack);
+    setSharedScreenTrack(null);
+    socket.emit('stop-sharing-my-screen');
+  }
+
+  async function handleShareScreen() {
+    const screenStream = await navigator.mediaDevices.getDisplayMedia({
+      video: true,
+      audio: false,
+    });
+    const screenTrack = screenStream.getTracks()[0];
+    stream?.addTrack(screenTrack);
+    setSharedScreenTrack(screenTrack);
+
+    socket.emit('share-my-screen', { username: user?.name });
+
+    screenTrack.onended = () => stopShareScreen(screenTrack);
   }
 
   return (
@@ -133,34 +183,61 @@ const App = () => {
         </div>
       ) : (
         <>
-          <div className="flex w-full flex-wrap gap-4 justify-center">
-            {Object.entries(videos).map(([id, element]) => (
-              <div key={id} className="relative group">
-                {element}
+          <div className={`flex gap-4`}>
+            {/* <div
+            className={`grid  gap-4 ${
+              sharedScreenTrack ? 'w-1/5' : 'justify-center grid-cols-4'
+            }`}
+          > */}
+            <div
+              className={`flex flex-wrap gap-4 justify-around ${
+                sharedScreenTrack ? 'basis-1/6' : ''
+              }`}
+            >
+              {Object.entries(videos).map(([id, element]) => (
+                <div key={id} className="relative group">
+                  {element}
 
-                {isHost && me !== id && (
-                  <HostControlPanel
-                    onRemovePeer={() => handleRemovePeer(id)}
-                    onMutePeer={() =>
-                      handleMutePeer(id, element.props.children.props.name)
-                    }
-                    isMuted={isMuted[id]}
-                  />
-                )}
+                  {isHost && me !== id && (
+                    <HostControlPanel
+                      onRemovePeer={() => handleRemovePeer(id)}
+                      onMutePeer={() =>
+                        handleMutePeer(id, element.props.children.props.name)
+                      }
+                      isMuted={isMuted[id]}
+                    />
+                  )}
 
-                {isMuted[id] && (
-                  <div className="absolute top-3 right-3">
-                    <MutedIcon />
-                  </div>
-                )}
+                  {isMuted[id] && (
+                    <div className="absolute top-3 right-3">
+                      <MutedIcon />
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {sharedScreenTrack && (
+              <div className="basis-5/6">
+                <video
+                  className="rounded-[20px] object-cover"
+                  ref={(node) => {
+                    if (node)
+                      node.srcObject = new MediaStream([sharedScreenTrack]);
+                  }}
+                  autoPlay
+                  muted
+                />
               </div>
-            ))}
+            )}
           </div>
 
           <ControlPanel
             isMuted={isMuted[me]}
+            isSharingScreen={!!sharedScreenTrack}
             stream={stream}
             onAudio={handleAudio}
+            onShareScreen={handleShareScreen}
             constraints={{
               video: true,
               audio: true,
