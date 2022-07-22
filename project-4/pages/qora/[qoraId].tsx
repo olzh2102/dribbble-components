@@ -18,7 +18,7 @@ const TOAST_PROPS: ToastContainerProps = {
 const Qora: NextPage = () => {
   return (
     <SocketContext.Provider value={s}>
-      <div className="grid h-screen place-items-center place-content-center">
+      <div className="grid h-screen place-items-center place-content-center relative">
         <App />
       </div>
       <ToastContainer {...TOAST_PROPS} />
