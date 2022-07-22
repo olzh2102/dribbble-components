@@ -36,6 +36,9 @@ const App = () => {
   const [sharedScreenTrack, setSharedScreenTrack] =
     useState<MediaStreamTrack | null>(null);
 
+  const isSharing = !!sharedScreenTrack;
+  console.log('IS SHARING:', isSharing);
+
   const stream = useCreateVideoStream({
     video: true,
     audio: true,
@@ -51,8 +54,8 @@ const App = () => {
       'member-muted',
       ({ userId, username }: { userId: string; username: string }) => {
         if (!videoRefs[userId]) return;
-        const stream: any = (videoRefs[userId].children[0] as HTMLVideoElement)
-          .srcObject;
+        const stream = (videoRefs[userId].children[0] as HTMLVideoElement)
+          .srcObject as MediaStream;
         toggleAudio(stream);
         setIsMuted((prev) => ({ ...prev, [userId]: true }));
         toast(`${username} is muted`);
@@ -104,6 +107,7 @@ const App = () => {
     stream: MediaStream;
     isMe?: boolean;
   }) {
+    // stream.getVideoTracks()[0].enabled = false;
     setVideos((prev) => ({
       ...prev,
       [id]: (
@@ -171,28 +175,53 @@ const App = () => {
         </div>
       ) : (
         <>
-          <div className="flex w-full flex-wrap gap-4 justify-center">
-            {Object.entries(videos).map(([id, element]) => (
-              <div key={id} className="relative group">
-                {element}
+          <div className={`flex gap-4`}>
+            {/* <div
+            className={`grid  gap-4 ${
+              sharedScreenTrack ? 'w-1/5' : 'justify-center grid-cols-4'
+            }`}
+          > */}
+            <div
+              className={`flex flex-wrap gap-4 justify-around ${
+                sharedScreenTrack ? 'basis-1/6' : ''
+              }`}
+            >
+              {Object.entries(videos).map(([id, element]) => (
+                <div key={id} className="relative group">
+                  {element}
 
-                {isHost && me !== id && (
-                  <HostControlPanel
-                    onRemovePeer={() => handleRemovePeer(id)}
-                    onMutePeer={() =>
-                      handleMutePeer(id, element.props.children.props.name)
-                    }
-                    isMuted={isMuted[id]}
-                  />
-                )}
+                  {isHost && me !== id && (
+                    <HostControlPanel
+                      onRemovePeer={() => handleRemovePeer(id)}
+                      onMutePeer={() =>
+                        handleMutePeer(id, element.props.children.props.name)
+                      }
+                      isMuted={isMuted[id]}
+                    />
+                  )}
 
-                {isMuted[id] && (
-                  <div className="absolute top-3 right-3">
-                    <MutedIcon />
-                  </div>
-                )}
+                  {isMuted[id] && (
+                    <div className="absolute top-3 right-3">
+                      <MutedIcon />
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {sharedScreenTrack && (
+              <div className="basis-5/6">
+                <video
+                  className="rounded-[20px] object-cover"
+                  ref={(node) => {
+                    if (node)
+                      node.srcObject = new MediaStream([sharedScreenTrack]);
+                  }}
+                  autoPlay
+                  muted
+                />
               </div>
-            ))}
+            )}
           </div>
 
           <ControlPanel
@@ -206,17 +235,6 @@ const App = () => {
               audio: true,
             }}
           />
-
-          {sharedScreenTrack && (
-            <video
-              className="rounded-[40px] w-96 h-72 object-cover"
-              ref={(node) => {
-                if (node) node.srcObject = new MediaStream([sharedScreenTrack]);
-              }}
-              autoPlay
-              muted
-            />
-          )}
         </>
       )}
     </>
