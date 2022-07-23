@@ -1,10 +1,15 @@
 import { useUser } from '@auth0/nextjs-auth0';
 import { MediaConnection } from 'peerjs';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { MutedIcon } from '../assets/icons';
 import { toggleAudio } from '../common/utils';
-import { ControlPanel, HostControlPanel, PeerVideo } from '../components';
+import {
+  ControlPanel,
+  HostControlPanel,
+  PeerVideo,
+  SharedScreen,
+} from '../components';
 
 import {
   useCreateVideoStream,
@@ -51,8 +56,8 @@ const App = () => {
       'member-muted',
       ({ userId, username }: { userId: string; username: string }) => {
         if (!videoRefs[userId]) return;
-        const stream: any = (videoRefs[userId].children[0] as HTMLVideoElement)
-          .srcObject;
+        const stream = (videoRefs[userId].children[0] as HTMLVideoElement)
+          .srcObject as MediaStream;
         toggleAudio(stream);
         setIsMuted((prev) => ({ ...prev, [userId]: true }));
         toast(`${username} is muted`);
@@ -104,6 +109,7 @@ const App = () => {
     stream: MediaStream;
     isMe?: boolean;
   }) {
+    // stream.getVideoTracks()[0].enabled = false;
     setVideos((prev) => ({
       ...prev,
       [id]: (
@@ -171,10 +177,14 @@ const App = () => {
         </div>
       ) : (
         <>
-          <div className={`flex gap-4 ${sharedScreenTrack ? "w-1/5" : "justify-center grid-cols-4"}`}>
-            {
-              Object.entries(videos).map(([id, element]) => (
-                <div key={id} className="relative group">
+          <div className={`flex gap-4 items-start`}>
+            <div
+              className={`flex flex-wrap gap-4 justify-around ${
+                sharedScreenTrack ? 'basis-1/6' : ''
+              }`}
+            >
+              {Object.entries(videos).map(([id, element]) => (
+                <div key={id} className="relative group h-fit">
                   {element}
 
                   {isHost && me !== id && (
@@ -193,19 +203,10 @@ const App = () => {
                     </div>
                   )}
                 </div>
-              ))      
-            }
+              ))}
+            </div>
 
-            {sharedScreenTrack && (
-            <video
-              className="rounded-[20px] w-full h-full object-cover"
-              ref={(node) => {
-                if (node) node.srcObject = new MediaStream([sharedScreenTrack]);
-              }}
-              autoPlay
-              muted
-            />
-          )}
+            <SharedScreen sharedScreenTrack={sharedScreenTrack} />
           </div>
 
           <ControlPanel
