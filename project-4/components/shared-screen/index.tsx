@@ -6,7 +6,7 @@ const SharedScreen = ({
   sharedScreenTrack: MediaStreamTrack | null;
 }) => {
   return sharedScreenTrack ? (
-    <div className="basis-5/6">
+    <div className="basis-5/6 flex justify-center">
       <video
         className="rounded-[12px] object-cover"
         ref={(node) => {
