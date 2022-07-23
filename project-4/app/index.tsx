@@ -177,19 +177,14 @@ const App = () => {
         </div>
       ) : (
         <>
-          <div className={`flex gap-4`}>
-            {/* <div
-            className={`grid  gap-4 ${
-              sharedScreenTrack ? 'w-1/5' : 'justify-center grid-cols-4'
-            }`}
-          > */}
+          <div className={`flex gap-4 items-start`}>
             <div
               className={`flex flex-wrap gap-4 justify-around ${
                 sharedScreenTrack ? 'basis-1/6' : ''
               }`}
             >
               {Object.entries(videos).map(([id, element]) => (
-                <div key={id} className="relative group">
+                <div key={id} className="relative group h-fit">
                   {element}
 
                   {isHost && me !== id && (
@@ -212,20 +207,6 @@ const App = () => {
             </div>
 
             <SharedScreen sharedScreenTrack={sharedScreenTrack} />
-
-            {/* {sharedScreenTrack && (
-              <div className="basis-5/6">
-                <video
-                  className="rounded-[20px] object-cover"
-                  ref={(node) => {
-                    if (node)
-                      node.srcObject = new MediaStream([sharedScreenTrack]);
-                  }}
-                  autoPlay
-                  muted
-                />
-              </div>
-            )} */}
           </div>
 
           <ControlPanel
