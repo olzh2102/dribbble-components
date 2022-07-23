@@ -177,7 +177,7 @@ const App = () => {
         </div>
       ) : (
         <>
-          <div className={`flex gap-4 items-start`}>
+          <div className={`flex gap-4 items-start w-full`}>
             <div
               className={`flex flex-wrap gap-4 justify-around ${
                 sharedScreenTrack ? 'basis-1/6' : ''
