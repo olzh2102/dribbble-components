@@ -1,7 +1,9 @@
-import { useUser } from '@auth0/nextjs-auth0';
-import { MediaConnection } from 'peerjs';
 import { useContext, useEffect, useState } from 'react';
+import { MediaConnection } from 'peerjs';
+import { useUser } from '@auth0/nextjs-auth0';
 import { toast } from 'react-toastify';
+import { Transition } from '@headlessui/react';
+
 import { MutedIcon } from '../assets/icons';
 import Chat from '../components/chat';
 import { toggleAudio } from '../common/utils';
@@ -209,7 +211,17 @@ const App = () => {
               ))}
             </div>
 
-            <SharedScreen sharedScreenTrack={sharedScreenTrack} />
+            <Transition
+              show={Boolean(sharedScreenTrack)}
+              enter="transition-opacity duration-800"
+              enterFrom="opacity-0"
+              enterTo="opacity-100"
+              leave="transition-opacity duration-150"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+            >
+              <SharedScreen sharedScreenTrack={sharedScreenTrack} />
+            </Transition>
           </div>
 
           <ControlPanel
