@@ -1,11 +1,16 @@
 import { useUser } from '@auth0/nextjs-auth0';
 import { MediaConnection } from 'peerjs';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { MutedIcon } from '../assets/icons';
-import { ControlPanel, HostControlPanel, PeerVideo } from '../components';
 import Chat from '../components/chat';
 import { toggleAudio } from '../common/utils';
+import {
+  ControlPanel,
+  HostControlPanel,
+  PeerVideo,
+  SharedScreen,
+} from '../components';
 
 import {
   useCreateVideoStream,
@@ -38,9 +43,6 @@ const App = () => {
 
   const [sharedScreenTrack, setSharedScreenTrack] =
     useState<MediaStreamTrack | null>(null);
-
-  const isSharing = !!sharedScreenTrack;
-  console.log('IS SHARING:', isSharing);
 
   const stream = useCreateVideoStream({
     video: true,
@@ -207,19 +209,7 @@ const App = () => {
               ))}
             </div>
 
-            {sharedScreenTrack && (
-              <div className="basis-5/6">
-                <video
-                  className="rounded-[20px] object-cover"
-                  ref={(node) => {
-                    if (node)
-                      node.srcObject = new MediaStream([sharedScreenTrack]);
-                  }}
-                  autoPlay
-                  muted
-                />
-              </div>
-            )}
+            <SharedScreen sharedScreenTrack={sharedScreenTrack} />
           </div>
 
           <ControlPanel
