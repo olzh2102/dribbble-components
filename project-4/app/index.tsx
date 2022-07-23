@@ -180,14 +180,14 @@ const App = () => {
         </div>
       ) : (
         <>
-          <div className={`flex gap-4`}>
+          <div className={`flex gap-4 items-start`}>
             <div
               className={`flex flex-wrap gap-4 justify-around ${
                 sharedScreenTrack ? 'basis-1/6' : ''
               }`}
             >
               {Object.entries(videos).map(([id, element]) => (
-                <div key={id} className="relative group">
+                <div key={id} className="relative group h-fit">
                   {element}
 
                   {isHost && me !== id && (

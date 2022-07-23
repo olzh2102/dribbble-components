@@ -8,7 +8,7 @@ const SharedScreen = ({
   return sharedScreenTrack ? (
     <div className="basis-5/6">
       <video
-        className="rounded-[20px] object-cover"
+        className="rounded-[12px] object-cover"
         ref={(node) => {
           if (node) node.srcObject = new MediaStream([sharedScreenTrack]);
         }}
