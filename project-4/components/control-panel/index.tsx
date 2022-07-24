@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import {
   VideoIcon,
   MicrophoneIcon,
@@ -7,16 +7,20 @@ import {
   ShareScreenIcon,
 } from '../../assets/icons';
 import { toggleVideo } from '../../common/utils';
+import { SocketContext } from '../../pages/qora/[qoraId]';
 
 const ControlPanel = ({
   stream,
   onAudio,
   constraints,
+  isHost,
   isMuted,
   isSharingScreen,
   onShareScreen,
+  onStopShareScreen,
 }: any) => {
   const router = useRouter();
+  const socket = useContext(SocketContext);
   const [videoActive, setVideoActive] = useState(constraints.video);
 
   const handleVideo = () => {
@@ -69,6 +73,17 @@ const ControlPanel = ({
       >
         <ShareScreenIcon />
       </button>
+      {isHost && isSharingScreen && (
+        <button
+          onClick={() => {
+            socket.emit('remove-peer-shared-video');
+          }}
+          type="button"
+          className="inline-flex items-center p-3 border border-transparent rounded-xl shadow-sm text-white bg-green hover:bg-green-400"
+        >
+          <ShareScreenIcon />
+        </button>
+      )}
     </div>
   );
 };
