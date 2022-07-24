@@ -142,13 +142,20 @@ const App = () => {
       setSharedScreenTrack(null);
     });
 
+    socket.on('shared-video-removed', () => {
+      const sharedScreenTrack = stream?.getVideoTracks()[1];
+      if (sharedScreenTrack) stopShareScreen(sharedScreenTrack);
+    });
+
     return () => {
       socket.off('screen-shared');
       socket.off('screen-sharing-stopped');
+      socket.off('shared-video-removed');
     };
   }, [peer]);
 
   function stopShareScreen(screenTrack: MediaStreamTrack) {
+    screenTrack.stop();
     stream?.removeTrack(screenTrack);
     setSharedScreenTrack(null);
     socket.emit('stop-sharing-my-screen');
@@ -180,6 +187,8 @@ const App = () => {
       ) : (
         <>
           <div className={`flex gap-4 items-start w-full`}>
+            <SharedScreen sharedScreenTrack={sharedScreenTrack} />
+
             <div
               className={`flex flex-wrap gap-4 justify-around ${
                 sharedScreenTrack ? 'basis-1/6' : ''
@@ -207,26 +216,16 @@ const App = () => {
                 </div>
               ))}
             </div>
-
-            <Transition
-              show={Boolean(sharedScreenTrack)}
-              enter="transition-opacity duration-800"
-              enterFrom="opacity-0"
-              enterTo="opacity-100"
-              leave="transition-opacity duration-150"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
-            >
-              <SharedScreen sharedScreenTrack={sharedScreenTrack} />
-            </Transition>
           </div>
 
           <ControlPanel
             isMuted={isMuted[me]}
             isSharingScreen={!!sharedScreenTrack}
+            isHost={isHost}
             stream={stream}
             onAudio={handleAudio}
             onShareScreen={handleShareScreen}
+            onStopShareScreen={stopShareScreen}
             constraints={{
               video: true,
               audio: true,
