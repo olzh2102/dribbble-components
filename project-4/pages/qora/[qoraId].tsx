@@ -1,5 +1,5 @@
 import { NextPage } from 'next';
-import { createContext } from 'react';
+import { createContext, useEffect } from 'react';
 import { ToastContainer, ToastContainerProps } from 'react-toastify';
 import { io } from 'socket.io-client';
 
@@ -16,6 +16,12 @@ const TOAST_PROPS: ToastContainerProps = {
 };
 
 const Qora: NextPage = () => {
+  useEffect(() => {
+    return () => {
+      s.disconnect();
+    };
+  }, []);
+
   return (
     <SocketContext.Provider value={s}>
       <div className="grid h-screen place-items-center place-content-center relative p-6">
