@@ -35,6 +35,16 @@ const Home: NextPage = () => {
             </button>
           </Link>
 
+          <Link href={`/bolme/${roomId}`}>
+            <button
+              onClick={() => window.localStorage.setItem(roomId, '*')}
+              type="button"
+              className="inline-flex items-center px-6 py-2 border border-transparent text-sm font-medium rounded-md text-emerald-800 bg-emerald-300 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              Jańa qora
+            </button>
+          </Link>
+
           <input
             type="text"
             name="email"
