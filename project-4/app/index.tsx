@@ -46,6 +46,8 @@ const App = () => {
   const [sharedScreenTrack, setSharedScreenTrack] =
     useState<MediaStreamTrack | null>(null);
 
+  const [isMyScreenSharing, setIsMyScreenSharing] = useState(false);
+
   const stream = useCreateVideoStream({
     video: true,
     audio: true,
@@ -161,6 +163,7 @@ const App = () => {
     screenTrack.stop();
     stream?.removeTrack(screenTrack);
     setSharedScreenTrack(null);
+    setIsMyScreenSharing(false);
     socket.emit('stop-sharing-my-screen');
   }
 
@@ -172,6 +175,7 @@ const App = () => {
     const screenTrack = screenStream.getTracks()[0];
     stream?.addTrack(screenTrack);
     setSharedScreenTrack(screenTrack);
+    setIsMyScreenSharing(true);
 
     socket.emit('share-my-screen', { username: user?.name });
 
@@ -223,7 +227,8 @@ const App = () => {
 
           <ControlPanel
             isMuted={isMuted[me]}
-            isSharingScreen={!!sharedScreenTrack}
+            sharedScreenTrack={sharedScreenTrack}
+            isMyScreenSharing={isMyScreenSharing}
             isHost={isHost}
             stream={stream}
             onAudio={handleAudio}

@@ -13,9 +13,10 @@ const ControlPanel = ({
   stream,
   onAudio,
   constraints,
+  sharedScreenTrack,
   isHost,
   isMuted,
-  isSharingScreen,
+  isMyScreenSharing,
   onShareScreen,
   onStopShareScreen,
 }: any) => {
@@ -66,24 +67,23 @@ const ControlPanel = ({
         <HangUpIcon />
       </button>
       <button
-        onClick={onShareScreen}
+        onClick={() => {
+          console.log('host click');
+          if (isHost && !isMyScreenSharing && sharedScreenTrack) {
+            socket.emit('remove-peer-shared-video');
+            return;
+          }
+          if (!sharedScreenTrack) onShareScreen();
+          else onStopShareScreen(sharedScreenTrack);
+        }}
         type="button"
-        className="inline-flex items-center p-3 border border-transparent rounded-xl shadow-sm text-white bg-red-600 hover:bg-red-400"
-        disabled={isSharingScreen}
+        className={`inline-flex items-center p-3 border border-transparent rounded-xl shadow-sm text-white bg-${
+          sharedScreenTrack ? 'indigo' : 'red'
+        }-600 hover:bg-${sharedScreenTrack ? 'indigo' : 'red'}-400`}
+        disabled={!isHost && sharedScreenTrack && !isMyScreenSharing}
       >
         <ShareScreenIcon />
       </button>
-      {isHost && isSharingScreen && (
-        <button
-          onClick={() => {
-            socket.emit('remove-peer-shared-video');
-          }}
-          type="button"
-          className="inline-flex items-center p-3 border border-transparent rounded-xl shadow-sm text-white bg-green hover:bg-green-400"
-        >
-          <ShareScreenIcon />
-        </button>
-      )}
     </div>
   );
 };
