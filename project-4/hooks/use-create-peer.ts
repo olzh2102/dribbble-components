@@ -1,7 +1,8 @@
+import Peer from 'peerjs';
 import { useEffect, useState } from 'react';
 
 const useCreatePeer = () => {
-  const [peer, setPeer] = useState<any>();
+  const [peer, setPeer] = useState<Peer | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -13,7 +14,7 @@ const useCreatePeer = () => {
     })();
   }, []);
 
-  return { peer };
+  return peer;
 };
 
 export default useCreatePeer;

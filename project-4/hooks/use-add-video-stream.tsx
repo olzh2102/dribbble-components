@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction, useCallback } from 'react';
+import { PeerVideo } from '../components';
 
 const useAddVideoStream = ({
   setVideoRefs,
@@ -7,58 +8,35 @@ const useAddVideoStream = ({
   setVideoRefs: Dispatch<SetStateAction<Record<string, HTMLDivElement>>>;
   setVideos: Dispatch<SetStateAction<Record<string, JSX.Element>>>;
 }) => {
-  const addVideoStream = useCallback(
-    ({
-      id,
-      name,
-      stream,
-      isMe,
-    }: {
-      id: string;
-      name?: string;
-      stream: MediaStream;
-      isMe?: boolean;
-    }) => {
-      if (!id) return;
+  const addVideoStream = ({
+    id,
+    name,
+    stream,
+    isMe,
+  }: {
+    id: string;
+    name?: string;
+    stream: MediaStream;
+    isMe?: boolean;
+  }) => {
+    if (!id) return;
+    console.log('add video stream:', id);
 
-      setVideos((prev) => ({
-        ...prev,
-        [id]: (
-          <div
-            key={id}
-            ref={(node) => {
-              if (node) setVideoRefs((prev) => ({ ...prev, [id]: node }));
-            }}
-            style={{ position: 'relative' }}
-          >
-            <video
-              ref={(node) => {
-                if (node) {
-                  node.srcObject = stream;
-                }
-              }}
-              className="rounded-3xl w-80 h-72 object-cover"
-              autoPlay
-              muted={isMe}
-            />
-            {/* {isSpeaking && <span>Helllllo</span>} */}
-            <p
-              className="font-medium"
-              style={{
-                position: 'absolute',
-                bottom: '13px',
-                fontSize: '12px',
-                left: '10px',
-              }}
-            >
-              <span className="text-white">{isMe ? 'You' : name}</span>
-            </p>
-          </div>
-        ),
-      }));
-    },
-    []
-  );
+    setVideos((prev) => ({
+      ...prev,
+      [id]: (
+        <div
+          key={id}
+          ref={(node) => {
+            if (node) setVideoRefs((prev) => ({ ...prev, [id]: node }));
+          }}
+          className="drop-shadow-2xl shadow-indigo-500/50"
+        >
+          <PeerVideo isMe={isMe} stream={stream} name={name} />
+        </div>
+      ),
+    }));
+  };
 
   return addVideoStream;
 };

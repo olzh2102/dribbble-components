@@ -25,6 +25,33 @@ const socketHandler = (req: NextApiRequest, res: NextApiResponseServerIO) => {
           socket.to(roomId).emit('member-left', userId);
         });
 
+        socket.on('remove-peer', (userId) => {
+          socket.to(roomId).emit('member-left', userId);
+        });
+
+        socket.on('mute-peer', ({ userId, username }) => {
+          socket.to(roomId).emit('member-muted', { userId, username });
+        });
+
+        socket.on('toggle-audio-status', (userId) => {
+          socket.to(roomId).emit('audio-status-toggled', userId);
+        });
+
+        socket.on('share-my-screen', ({ username }) => {
+          socket.to(roomId).emit('screen-shared', username);
+        });
+
+        socket.on('stop-sharing-my-screen', () => {
+          socket.to(roomId).emit('screen-sharing-stopped', username);
+<<<<<<< HEAD
+=======
+        });
+
+        socket.on('remove-peer-shared-video', () => {
+          socket.to(roomId).emit('shared-video-removed');
+>>>>>>> 2543ae5b7c30abc9f255f0a927959bfc9963caba
+        });
+
         socket.on('send-message', ({ text, userId }) => {
           socket.to(roomId).emit('message-from-peer', { text, userId });
         });

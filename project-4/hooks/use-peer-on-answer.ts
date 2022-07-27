@@ -1,4 +1,7 @@
+import Peer, { MediaConnection } from 'peerjs';
 import { Dispatch, SetStateAction, useEffect } from 'react';
+import { toast } from 'react-toastify';
+import { KeyValue } from '../app';
 
 const usePeerOnAnswer = ({
   peer,
@@ -6,7 +9,7 @@ const usePeerOnAnswer = ({
   addVideoStream,
   setPeers,
 }: {
-  peer: any;
+  peer: Peer | null;
   stream: MediaStream | null;
   addVideoStream: ({
     id,
@@ -17,29 +20,34 @@ const usePeerOnAnswer = ({
     name: string;
     stream: MediaStream;
   }) => void;
-  setPeers: Dispatch<SetStateAction<Record<string, any>>>;
+  setPeers: Dispatch<SetStateAction<KeyValue<MediaConnection>>>;
 }) => {
   useEffect(() => {
     if (!peer || !stream) return;
 
-    peer.on('call', (call: any) => {
-      setPeers((prev: any) => ({ ...prev, [call.peer]: call }));
+    peer.on('call', (call) => {
+      setPeers((prev) => ({ ...prev, [call.peer]: call }));
 
       call.answer(stream);
 
-      call.on('stream', (hostStream: MediaStream) => {
+      call.on('stream', (hostStream) => {
         console.log('answer call stream');
-        addVideoStream({
-          id: call.peer,
-          name: call.metadata.username,
-          stream: hostStream,
-        });
+        call.peer &&
+          addVideoStream({
+            id: call.peer,
+            name: call.metadata.username,
+            stream: hostStream,
+          });
       });
 
       call.on('close', () => {
-        console.log(`${call.peer} has left qora`);
+        toast(`${call.metadata.username} has left the room`);
       });
     });
+
+    return () => {
+      peer.off('call');
+    };
   }, [peer, stream]);
 };
 

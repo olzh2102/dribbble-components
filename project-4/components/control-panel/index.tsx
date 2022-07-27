@@ -1,50 +1,88 @@
-import { useState } from 'react';
-import { VideoIcon, MicrophoneIcon, HangUpIcon } from '../../assets/icons';
+import { useRouter } from 'next/router';
+import { useContext, useState } from 'react';
+import {
+  VideoIcon,
+  MicrophoneIcon,
+  HangUpIcon,
+  ShareScreenIcon,
+} from '../../assets/icons';
+import { toggleVideo } from '../../common/utils';
+import { SocketContext } from '../../pages/qora/[qoraId]';
 
-const ControlPanel = ({ onVideo, onAudio, onHangUp, constraints }: any) => {
+const ControlPanel = ({
+  stream,
+  onAudio,
+  constraints,
+  sharedScreenTrack,
+  isHost,
+  isMuted,
+  isMyScreenSharing,
+  onShareScreen,
+  onStopShareScreen,
+}: any) => {
+  const router = useRouter();
+  const socket = useContext(SocketContext);
   const [videoActive, setVideoActive] = useState(constraints.video);
-  const [audioActive, setAudioActive] = useState(constraints.audio);
 
   const handleVideo = () => {
     setVideoActive(!videoActive);
-    onVideo();
+    toggleVideo(stream);
   };
 
-  const handleAudio = () => {
-    setAudioActive(!audioActive);
-    onAudio();
-  };
+  const handleHangUp = () => router.push('/');
 
   return (
-    <div className="flex gap-4 place-content-center">
-      {onVideo && (
-        <button
-          onClick={handleVideo}
-          type="button"
-          className="inline-flex items-center p-2 border border-transparent rounded-xl shadow-sm text-white bg-slate-800 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 relative"
-        >
-          <VideoIcon />
-          {!videoActive && (
-            <div className="bg-current absolute w-3/4 h-0.5 left-1/2 -translate-x-1/2 rotate-45" />
-          )}
-        </button>
-      )}
+    <div className="flex gap-6 mt-6 place-content-center">
       <button
-        onClick={handleAudio}
+        onClick={handleVideo}
         type="button"
-        className="inline-flex items-center p-2 border border-transparent rounded-xl shadow-sm text-white bg-slate-800 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 relative"
+        className="inline-flex items-center p-3 border border-transparent rounded-xl shadow-sm text-white bg-slate-800 hover:bg-indigo-700 relative"
       >
-        <MicrophoneIcon />
-        {!audioActive && (
-          <div className="bg-current absolute w-3/4 h-0.5 left-1/2 -translate-x-1/2 rotate-45" />
+        <VideoIcon />
+        {!videoActive && (
+          <>
+            <div className="bg-current absolute w-2/3 h-0.5 left-1/2 -translate-x-1/2 -rotate-45" />
+            <div className="bg-slate-800 absolute w-2/3 h-0.5 left-1/2 -translate-x-1/2 translate-y-0.5 -rotate-45" />
+          </>
         )}
       </button>
       <button
-        onClick={onHangUp}
+        onClick={onAudio}
         type="button"
-        className="inline-flex items-center p-2 border border-transparent rounded-xl shadow-sm text-white bg-red-600 hover:bg-red-400	focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        className="inline-flex items-center p-3 border border-transparent rounded-xl shadow-sm text-white bg-slate-800 hover:bg-indigo-700 relative"
+      >
+        <MicrophoneIcon />
+        {isMuted && (
+          <>
+            <div className="bg-current absolute w-2/3 h-0.5 left-1/2 -translate-x-1/2 -rotate-45" />
+            <div className="bg-slate-800 absolute w-2/3 h-0.5 left-1/2 -translate-x-1/2 translate-y-0.5 -rotate-45" />
+          </>
+        )}
+      </button>
+      <button
+        onClick={handleHangUp}
+        type="button"
+        className="inline-flex items-center p-3 border border-transparent rounded-xl shadow-sm text-white bg-red-600 hover:bg-red-400"
       >
         <HangUpIcon />
+      </button>
+      <button
+        onClick={() => {
+          console.log('host click');
+          if (isHost && !isMyScreenSharing && sharedScreenTrack) {
+            socket.emit('remove-peer-shared-video');
+            return;
+          }
+          if (!sharedScreenTrack) onShareScreen();
+          else onStopShareScreen(sharedScreenTrack);
+        }}
+        type="button"
+        className={`inline-flex items-center p-3 border border-transparent rounded-xl shadow-sm text-white bg-${
+          sharedScreenTrack ? 'indigo' : 'red'
+        }-600 hover:bg-${sharedScreenTrack ? 'indigo' : 'red'}-400`}
+        disabled={!isHost && sharedScreenTrack && !isMyScreenSharing}
+      >
+        <ShareScreenIcon />
       </button>
     </div>
   );
