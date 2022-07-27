@@ -1,16 +1,18 @@
-import { useUser } from '@auth0/nextjs-auth0';
+import { useContext, useEffect, useState } from 'react';
 import { MediaConnection } from 'peerjs';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useUser } from '@auth0/nextjs-auth0';
 import { toast } from 'react-toastify';
+import { Transition } from '@headlessui/react';
+
 import { MutedIcon } from '../assets/icons';
+import Chat from '../components/chat';
+import { toggleAudio } from '../common/utils';
 import {
   ControlPanel,
   HostControlPanel,
   PeerVideo,
+  SharedScreen,
 } from '../components';
-import Chat from '../components/chat';
-import { toggleAudio } from '../common/utils';
-
 
 import {
   useCreateVideoStream,
@@ -44,8 +46,7 @@ const App = () => {
   const [sharedScreenTrack, setSharedScreenTrack] =
     useState<MediaStreamTrack | null>(null);
 
-  const isSharing = !!sharedScreenTrack;
-  console.log('IS SHARING:', isSharing);
+  const [isMyScreenSharing, setIsMyScreenSharing] = useState(false);
 
   const stream = useCreateVideoStream({
     video: true,
@@ -146,15 +147,23 @@ const App = () => {
       setSharedScreenTrack(null);
     });
 
+    socket.on('shared-video-removed', () => {
+      const sharedScreenTrack = stream?.getVideoTracks()[1];
+      if (sharedScreenTrack) stopShareScreen(sharedScreenTrack);
+    });
+
     return () => {
       socket.off('screen-shared');
       socket.off('screen-sharing-stopped');
+      socket.off('shared-video-removed');
     };
   }, [peer]);
 
   function stopShareScreen(screenTrack: MediaStreamTrack) {
+    screenTrack.stop();
     stream?.removeTrack(screenTrack);
     setSharedScreenTrack(null);
+    setIsMyScreenSharing(false);
     socket.emit('stop-sharing-my-screen');
   }
 
@@ -166,6 +175,7 @@ const App = () => {
     const screenTrack = screenStream.getTracks()[0];
     stream?.addTrack(screenTrack);
     setSharedScreenTrack(screenTrack);
+    setIsMyScreenSharing(true);
 
     socket.emit('share-my-screen', { username: user?.name });
 
@@ -183,19 +193,16 @@ const App = () => {
         </div>
       ) : (
         <>
-          <div className={`flex gap-4`}>
-            {/* <div
-            className={`grid  gap-4 ${
-              sharedScreenTrack ? 'w-1/5' : 'justify-center grid-cols-4'
-            }`}
-          > */}
+          <div className={`flex gap-4 items-start w-full`}>
+            <SharedScreen sharedScreenTrack={sharedScreenTrack} />
+
             <div
               className={`flex flex-wrap gap-4 justify-around ${
                 sharedScreenTrack ? 'basis-1/6' : ''
               }`}
             >
               {Object.entries(videos).map(([id, element]) => (
-                <div key={id} className="relative group">
+                <div key={id} className="relative group h-fit">
                   {element}
 
                   {isHost && me !== id && (
@@ -216,28 +223,17 @@ const App = () => {
                 </div>
               ))}
             </div>
-
-            {sharedScreenTrack && (
-              <div className="basis-5/6">
-                <video
-                  className="rounded-[20px] object-cover"
-                  ref={(node) => {
-                    if (node)
-                      node.srcObject = new MediaStream([sharedScreenTrack]);
-                  }}
-                  autoPlay
-                  muted
-                />
-              </div>
-            )}
           </div>
 
           <ControlPanel
             isMuted={isMuted[me]}
-            isSharingScreen={!!sharedScreenTrack}
+            sharedScreenTrack={sharedScreenTrack}
+            isMyScreenSharing={isMyScreenSharing}
+            isHost={isHost}
             stream={stream}
             onAudio={handleAudio}
             onShareScreen={handleShareScreen}
+            onStopShareScreen={stopShareScreen}
             constraints={{
               video: true,
               audio: true,

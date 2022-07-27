@@ -1,18 +1,20 @@
-import { useState } from 'react';
+import { createContext, useState } from 'react';
 import type { AppProps } from 'next/app';
 import { UserProvider } from '@auth0/nextjs-auth0';
 
-import { SocketContext } from '../hooks/use-socket-context';
 import { TSocket } from '../common/types';
 
 import '../styles/globals.css';
+import { io } from 'socket.io-client';
+
+export const SocketContext = createContext({});
+
+const socket = io('/', { path: '/api/socketio' });
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const [socket, setSocket] = useState<TSocket | null>(null);
-
   return (
     <UserProvider>
-      <SocketContext.Provider value={{ socket, setSocket }}>
+      <SocketContext.Provider value={{ socket }}>
         <Component {...pageProps} />
       </SocketContext.Provider>
     </UserProvider>
