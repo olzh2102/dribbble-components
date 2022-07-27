@@ -54,6 +54,11 @@ const socketHandler = (req: NextApiRequest, res: NextApiResponseServerIO) => {
         socket.on('send-message', ({ text, userId }) => {
           socket.to(roomId).emit('message-from-peer', { text, userId });
         });
+
+        socket.on('chat:post', (data) => {
+          console.log('incoming message');
+          console.log('data: ', data);
+        });
       });
     });
   }
