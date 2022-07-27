@@ -1,11 +1,13 @@
 import { NextPage } from 'next';
 import { createContext, useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
-import Peer from 'peerjs';
-import { pipe } from 'ramda';
+import Peer, { MediaConnection } from 'peerjs';
+import { pipe, mergeLeft } from 'ramda';
 import App from '../../app/bolme';
 import { useGetRoomId } from '../../hooks';
 import { useUser } from '@auth0/nextjs-auth0';
+import { PeerVideo } from '../../components';
+import { useRouter } from 'next/router';
 
 export const RoomContext = createContext<any>({});
 
@@ -15,87 +17,82 @@ const log = console.log;
 const logE = console.error;
 
 const Bolme: NextPage = () => {
-  const roomId = useGetRoomId();
+  
+  useEffect(() => {
+    init();
+
+    async function init() {
+      const Peer = (await import('peerjs')).default;
+      const peer = new Peer();
+
+      const stream = await createStream({ video: true, audio: true })
+      addVideoStream(me, stream)({ isMe: true, name: user.name })
+
+      peer.on('call', (call) => {
+        
+      })
+    }
+  }, [])
+
+  return (
+    <SocketContext.Provider value={{ ws: s }}>
+      <RoomContext.Provider
+        value={{ 
+          videos, 
+          sharedScreenTrack: shared, 
+          peer, 
+          me, 
+          isHost, 
+          peers 
+        }}
+      >
+        <App />
+      </RoomContext.Provider>
+    </SocketContext.Provider>
+  );
+
+export default Bolme;
+
+type Nullable<T> = T | null;
+type KeyValue<T> = Record<string, T>
+
+// * --- helpers ---
+async function createStream(constrains: any) {
+  const stream = await navigator.mediaDevices.getUserMedia(constrains) 
+  return stream
+} 
+
+/* 
+const router = useRouter();
+  const { bolmeId: roomId } = router.query as { bolmeId: string };
   const { user } = useUser();
 
   const isHost =
     typeof window !== 'undefined' && !!window.localStorage.getItem(roomId);
 
   const [videos, setVideos] = useState<any>({});
+  const [videoRefs, setVideoRefs] = useState<KeyValue<HTMLDivElement>>({});
   const [shared, setShared] = useState<Nullable<MediaStreamTrack>>(null);
   const [peer, setPeer] = useState<Nullable<Peer>>(null);
   const [me, setMe] = useState('');
   const [stream, setStream] = useState<Nullable<MediaStream>>(null);
+  const [peers, setPeers] = useState<KeyValue<MediaConnection>>({});
 
   useEffect(() => {
     (async () => {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
-      setStream(stream)
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: true,
+        video: true,
+      });
+      setStream(stream);
 
       const Peer = (await import('peerjs')).default;
       const peer = new Peer();
 
       setPeer(peer);
 
-      peer.on('open', setMe);
-      s.emit('join-room', {userId: me, username: user?.name, roomId})
-      log('your device id is: ', me);
-      
-      s.on('member-joined', pipe(callPeer, receiveCall, appendJoinedPeer))
-
-      peer.on('error', (err) => {
-        logE('peer connection error: ', err);
-      });
+      peer.on('open', handlePeerOnOpen);
+      peer.on('error', handlePeerOnError);
     })();
-  }, []);
-
-  return (
-    <SocketContext.Provider value={{ ws: s }}>
-      <RoomContext.Provider
-        value={{ videos, sharedScreenTrack: shared, peer, me, isHost }}
-      >
-        <App />;
-      </RoomContext.Provider>
-    </SocketContext.Provider>
-  );
-
-  function callPeer({userId, username}: any) {
-    const call = peer?.call(userId, (stream as any), { metadata: { username } })
-    
-    log('call friend with name and id:', username, userId);
-
-    return { call, userId, username }
-  }
-
-  function receiveCall({call, userId, username}: any) {
-    call.on('stream', (friendStream: any) => {
-      log('friend stream', friendStream);
-
-      setVideos((prev) => ({
-        ...prev,
-        [userId]: (
-          <div
-            key={id}
-            ref={(node) =>
-              node && setVideoRefs((prev) => ({ ...prev, [id]: node }))
-            }
-            className="drop-shadow-2xl shadow-indigo-500/50"
-          >
-            <PeerVideo isMe={userId === me} stream={friendStream} name={username} />
-          </div>
-        )
-      
-
-
-        addVideoStream({
-          id: userId,
-          name: username,
-          stream: friendStream,
-        });
-    });
-  }
-};
-
-export default Bolme;
-
-type Nullable<T> = T | null;
+  }, [user]);
+*/

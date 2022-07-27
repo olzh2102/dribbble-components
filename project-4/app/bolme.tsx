@@ -18,7 +18,13 @@ const Bolme = () => {
           className={`flex flex-wrap gap-4 justify-around ${
             false ? 'basis-1/6' : ''
           }`}
-        ></div>
+        >
+          {Object.entries(room.videos).map(([id, video]) => (
+            <div key={id} className="relative group h-fit">
+              {video as any}
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* control panel */}
