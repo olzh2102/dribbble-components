@@ -1,6 +1,8 @@
-import { Fragment } from 'react';
+import { Fragment, useContext } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
+import { SocketContext } from '../../pages/qora/[qoraId]';
+import { useUser } from '@auth0/nextjs-auth0';
 
 const Chat = ({ open, setOpen, title, children }: any) => {
   return (
@@ -8,7 +10,7 @@ const Chat = ({ open, setOpen, title, children }: any) => {
       <Dialog
         as="div"
         static
-        className="fixed overflow-hidden"
+        className="fixed overflow-hidden relative"
         open={open}
         onClose={setOpen}
       >
