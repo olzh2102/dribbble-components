@@ -1,7 +1,6 @@
-import { Fragment, useContext } from 'react';
+import { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
-import { useUser } from '@auth0/nextjs-auth0';
 
 const Chat = ({
   setOpen,

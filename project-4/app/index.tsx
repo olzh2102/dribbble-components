@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { ChatAltIcon as ChatIcon } from '@heroicons/react/outline';
 
 import { MutedIcon } from '../assets/icons';
 import { toggleAudio } from 'common/utils';
@@ -157,14 +156,6 @@ const App = () => {
   }
 
   if (!peer || !stream) return <span>Loading...</span>;
-  async function postNewMessage(user: string, text: string) {
-    const data = {
-      user,
-      text,
-    };
-
-    socket.emit('chat:post', data);
-  }
 
   return (
     <>
@@ -204,58 +195,23 @@ const App = () => {
                 </div>
               )}
             </div>
-          </div>
-
-          <div className="flex p-6 w-screen items-center fixed bottom-0">
-            <div className="w-14 flex-none" />
-            <div className="grow">
-              <ControlPanel
-                isMuted={isMuted[me]}
-                sharedScreenTrack={sharedScreenTrack}
-                isMyScreenSharing={isMyScreenSharing}
-                isHost={isHost}
-                stream={stream}
-                onAudio={handleAudio}
-                onShareScreen={handleShareScreen}
-                onStopShareScreen={stopShareScreen}
-                constraints={{
-                  video: true,
-                  audio: true,
-                }}
-              />
-            </div>
-            <div className="flex-none w-9 h-9">
-              <button onClick={() => setIsHeadlessOpen(!isHeadlessOpen)}>
-                <ChatIcon className="w-full stroke-white" />
-              </button>
-            </div>
-          </div>
-
-          <Chat
-            open={isHeadlessOpen}
-            setOpen={setIsHeadlessOpen}
-            title="In-call messages"
-          >
-            <div className="p-4 flex items-center justify-center bg-white inset-x-0 bottom-0 absolute">
-              <div className="w-full max-w-xs mx-auto">
-                <div className="mt-1">
-                  <input
-                    autoComplete="off"
-                    type="text"
-                    name="name"
-                    id="name"
-                    onChange={(e: any) =>
-                      postNewMessage('Baigus', e.target.value)
-                    }
-                    className="p-4 bg-gray-200 outline-none block w-full sm:text-sm border-gray-300 px-4 rounded-full"
-                    placeholder="Send a message to everyone"
-                  />
-                </div>
-              </div>
-            </div>
-          </Chat>
-        </>
-      )}
+          ))}
+        </div>
+      </div>
+      <ControlPanel
+        isMuted={isMuted[me]}
+        sharedScreenTrack={sharedScreenTrack}
+        isMyScreenSharing={isMyScreenSharing}
+        isHost={isHost}
+        stream={stream}
+        onAudio={handleAudio}
+        onShareScreen={handleShareScreen}
+        onStopShareScreen={stopShareScreen}
+        constraints={{
+          video: true,
+          audio: true,
+        }}
+      />
     </>
   );
 };

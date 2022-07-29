@@ -3,6 +3,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { MediaConnection } from 'peerjs';
 import { useUser } from '@auth0/nextjs-auth0';
 import { ToastContainer, ToastContainerProps } from 'react-toastify';
+import { ChatAltIcon as ChatIcon } from '@heroicons/react/outline';
 
 import VideoRoom from '@app/index';
 import Chat from '@components/chat';
@@ -49,6 +50,15 @@ const Qora: NextPage = () => {
 
   if (typeof window !== 'undefined' && !user.user)
     window.location.href = '/api/auth/login';
+
+  async function postNewMessage(user: string, text: string) {
+    const data = {
+      user,
+      text,
+    };
+
+    socket.emit('chat:post', data);
+  }
 
   return (
     <QoraContext.Provider
