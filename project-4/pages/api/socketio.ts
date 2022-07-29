@@ -56,8 +56,7 @@ const socketHandler = (req: NextApiRequest, res: NextApiResponseServerIO) => {
         });
 
         socket.on('chat:post', (data) => {
-          console.log('incoming message');
-          console.log('data: ', data);
+          socket.to(roomId).emit('chat:get', { ...data, time: Date.now() });
         });
       });
     });

@@ -51,15 +51,6 @@ const Qora: NextPage = () => {
   if (typeof window !== 'undefined' && !user.user)
     window.location.href = '/api/auth/login';
 
-  async function postNewMessage(user: string, text: string) {
-    const data = {
-      user,
-      text,
-    };
-
-    socket.emit('chat:post', data);
-  }
-
   return (
     <QoraContext.Provider
       value={{
