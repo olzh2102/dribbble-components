@@ -3,6 +3,7 @@ import { createContext, useContext, useState } from 'react';
 import { MediaConnection } from 'peerjs';
 import { useUser } from '@auth0/nextjs-auth0';
 import { ToastContainer, ToastContainerProps } from 'react-toastify';
+import { ChatAltIcon as ChatIcon } from '@heroicons/react/outline';
 
 import { SocketContext } from '@pages/_app';
 import VideoRoom from '@app/index';
@@ -39,6 +40,15 @@ const Qora: NextPage = () => {
 
   const [isHeadlessOpen, setIsHeadlessOpen] = useState(false);
 
+  async function postNewMessage(user: string, text: string) {
+    const data = {
+      user,
+      text,
+    };
+
+    socket.emit('chat:post', data);
+  }
+
   return (
     <QoraContext.Provider
       value={{
@@ -56,17 +66,34 @@ const Qora: NextPage = () => {
       <div className="grid h-screen place-items-center place-content-center relative p-6">
         <VideoRoom />
 
-        <button onClick={() => setIsHeadlessOpen(!isHeadlessOpen)}>
-          show chat
-        </button>
-
         <Chat
           open={isHeadlessOpen}
           setOpen={setIsHeadlessOpen}
-          title="Item Details"
+          title="In-call messages"
         >
-          chat will be here
+          <div className="p-4 flex items-center justify-center bg-white inset-x-0 bottom-0 absolute">
+            <div className="w-full max-w-xs mx-auto">
+              <div className="mt-1">
+                <input
+                  autoComplete="off"
+                  type="text"
+                  name="name"
+                  id="name"
+                  onChange={(e: any) =>
+                    postNewMessage('Baigus', e.target.value)
+                  }
+                  className="p-4 bg-gray-200 outline-none block w-full sm:text-sm border-gray-300 px-4 rounded-full"
+                  placeholder="Send a message to everyone"
+                />
+              </div>
+            </div>
+          </div>
         </Chat>
+        <div className="absolute bottom-6 right-6 w-9 h-9">
+          <button onClick={() => setIsHeadlessOpen(!isHeadlessOpen)}>
+            <ChatIcon className="w-full stroke-white" />
+          </button>
+        </div>
       </div>
 
       <ToastContainer {...TOAST_PROPS} />
