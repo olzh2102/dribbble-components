@@ -1,7 +1,7 @@
 import { useUser } from '@auth0/nextjs-auth0';
 import Peer from 'peerjs';
 import { useContext, useEffect, useState } from 'react';
-import { SocketContext } from '../pages/qora/[qoraId]';
+import { SocketContext } from '@pages/_app';
 import useGetRoomId from './use-get-room-id';
 
 const useOnOpenPeer = (peer: Peer | null) => {

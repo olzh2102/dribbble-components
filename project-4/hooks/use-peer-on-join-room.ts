@@ -3,16 +3,9 @@ import Peer, { MediaConnection } from 'peerjs';
 import { Dispatch, SetStateAction, useContext, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { KeyValue } from '../app';
-import { SocketContext } from '../pages/qora/[qoraId]';
+import { QoraContext } from '@pages/qora/[qoraId]';
 
-const usePeerOnJoinRoom = ({
-  stream,
-  peer,
-  addVideoStream,
-  setPeers,
-}: {
-  peer: Peer | null;
-  stream: MediaStream | null;
+const usePeerOnJoinRoom = (
   addVideoStream: ({
     id,
     name,
@@ -21,23 +14,21 @@ const usePeerOnJoinRoom = ({
     id: string;
     name: string;
     stream: MediaStream;
-  }) => void;
-  setPeers: Dispatch<SetStateAction<KeyValue<MediaConnection>>>;
-}) => {
-  const socket = useContext(SocketContext);
-  const { user } = useUser();
+  }) => void
+) => {
+  const { socket, peer, setPeers, user, stream } = useContext(QoraContext);
 
   useEffect(() => {
-    if (!socket || !stream || !peer) return;
+    if (!socket || !stream || !peer || !setPeers) return;
 
-    socket.on('member-joined', ({ userId, username }) => {
+    socket.on('member-joined', ({ userId, username }: any) => {
       const call = peer.call(userId, stream, {
         metadata: { username: user?.name },
       });
       console.log('call friend with name:', username);
       console.log('call friend with id:', userId);
 
-      call.on('stream', (friendStream) => {
+      call.on('stream', (friendStream: any) => {
         console.log('friend stream');
         userId &&
           addVideoStream({
@@ -51,7 +42,7 @@ const usePeerOnJoinRoom = ({
         toast(`${username} has left the room`);
       });
 
-      setPeers((prevState) => ({ ...prevState, [userId]: call }));
+      setPeers((prevState: any) => ({ ...prevState, [userId]: call }));
     });
 
     return () => {

@@ -7,7 +7,7 @@ import {
   ShareScreenIcon,
 } from '../../assets/icons';
 import { toggleVideo } from '../../common/utils';
-import { SocketContext } from '../../pages/qora/[qoraId]';
+import { SocketContext } from '@pages/_app';
 
 const ControlPanel = ({
   stream,
