@@ -32,7 +32,7 @@ const ControlPanel = ({
   const handleHangUp = () => router.push('/');
 
   return (
-    <div className="flex gap-6 place-content-center">
+    <div className="flex mt-6 gap-6 place-content-center absolute bottom-6">
       <button
         onClick={handleVideo}
         type="button"
