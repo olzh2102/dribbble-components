@@ -1,8 +1,46 @@
-import { Fragment } from 'react';
+import { Fragment, useContext, useEffect, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
+import { QoraContext } from '@pages/qora/[qoraId]';
 
-const Chat = ({ open, setOpen, title, children }: any) => {
+const Chat = ({ open, setOpen, title }: any) => {
+  const { socket, user } = useContext(QoraContext);
+
+  const [message, setMessage] = useState('');
+  const [messages, setMessages] = useState<any[]>([]);
+
+  useEffect(() => {
+    socket.on('chat:get', (message: any) => {
+      setMessages((prev) => [...prev, message]);
+    });
+  }, []);
+
+  async function postNewMessage(user: string, text: string) {
+    const data = {
+      user,
+      text,
+    };
+
+    socket.emit('chat:post', data);
+  }
+
+  function handleChangeMessage(e: React.ChangeEvent<HTMLInputElement>) {
+    setMessage(e.target.value);
+  }
+
+  function handleSendMessage(e: React.KeyboardEvent<HTMLInputElement>) {
+    const message = (e.target as HTMLInputElement).value;
+
+    if (e.key === 'Enter' && message) {
+      postNewMessage(user?.name || 'Bot', message);
+      setMessages((prev) => [
+        ...prev,
+        { user: user?.name, text: message, time: Date.now() },
+      ]);
+      setMessage('');
+    }
+  }
+
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog
@@ -59,11 +97,35 @@ const Chat = ({ open, setOpen, title, children }: any) => {
                     <Dialog.Title className="text-lg font-medium text-gray-900">
                       {title}
                     </Dialog.Title>
+                    {messages.map((message) => (
+                      <div key={message.time}>
+                        <span>{message.user}</span>
+                        <span>
+                          {new Date(message.time).getHours()} :{' '}
+                          {new Date(message.time).getMinutes()}
+                        </span>
+                        <span>{message.text}</span>
+                      </div>
+                    ))}
                   </div>
                   <div className="mt-6 relative flex-1 px-4 sm:px-6">
-                    {/* Replace with your content */}
-                    {children}
-                    {/* /End replace */}
+                    <div className="p-4 flex items-center justify-center bg-white inset-x-0 bottom-0 absolute">
+                      <div className="w-full max-w-xs mx-auto">
+                        <div className="mt-1">
+                          <input
+                            autoComplete="off"
+                            type="text"
+                            name="name"
+                            id="name"
+                            value={message}
+                            onChange={handleChangeMessage}
+                            onKeyDown={handleSendMessage}
+                            className="p-4 bg-gray-200 outline-none block w-full sm:text-sm border-gray-300 px-4 rounded-full"
+                            placeholder="Send a message to everyone"
+                          />
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
