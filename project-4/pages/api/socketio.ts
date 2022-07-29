@@ -43,13 +43,10 @@ const socketHandler = (req: NextApiRequest, res: NextApiResponseServerIO) => {
 
         socket.on('stop-sharing-my-screen', () => {
           socket.to(roomId).emit('screen-sharing-stopped', username);
-<<<<<<< HEAD
-=======
         });
 
         socket.on('remove-peer-shared-video', () => {
           socket.to(roomId).emit('shared-video-removed');
->>>>>>> 2543ae5b7c30abc9f255f0a927959bfc9963caba
         });
 
         socket.on('send-message', ({ text, userId }) => {

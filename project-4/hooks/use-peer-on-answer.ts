@@ -1,16 +1,10 @@
+import { QoraContext } from '@pages/qora/[qoraId]';
 import Peer, { MediaConnection } from 'peerjs';
-import { Dispatch, SetStateAction, useEffect } from 'react';
+import { Dispatch, SetStateAction, useContext, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { KeyValue } from '../app';
 
-const usePeerOnAnswer = ({
-  peer,
-  stream,
-  addVideoStream,
-  setPeers,
-}: {
-  peer: Peer | null;
-  stream: MediaStream | null;
+const usePeerOnAnswer = (
   addVideoStream: ({
     id,
     name,
@@ -19,18 +13,19 @@ const usePeerOnAnswer = ({
     id: string;
     name: string;
     stream: MediaStream;
-  }) => void;
-  setPeers: Dispatch<SetStateAction<KeyValue<MediaConnection>>>;
-}) => {
-  useEffect(() => {
-    if (!peer || !stream) return;
+  }) => void
+) => {
+  const { peer, setPeers, stream } = useContext(QoraContext);
 
-    peer.on('call', (call) => {
-      setPeers((prev) => ({ ...prev, [call.peer]: call }));
+  useEffect(() => {
+    if (!peer || !stream || !setPeers) return;
+
+    peer.on('call', (call: any) => {
+      setPeers((prev: any) => ({ ...prev, [call.peer]: call }));
 
       call.answer(stream);
 
-      call.on('stream', (hostStream) => {
+      call.on('stream', (hostStream: any) => {
         console.log('answer call stream');
         call.peer &&
           addVideoStream({
