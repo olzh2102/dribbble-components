@@ -9,3 +9,11 @@ function toggle(type: 'audio' | 'video') {
 
 export const toggleVideo = toggle('video');
 export const toggleAudio = toggle('audio');
+
+export function formatTimeHHMM(milliseconds: number) {
+  return new Date(milliseconds).toLocaleTimeString(undefined, {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  });
+}

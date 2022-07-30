@@ -2,6 +2,7 @@ import { Fragment, useContext, useEffect, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
 import { QoraContext } from '@pages/qora/[qoraId]';
+import { formatTimeHHMM } from 'common/utils';
 
 const Chat = ({
   setOpen,
@@ -21,7 +22,7 @@ const Chat = ({
     });
   }, []);
 
-  async function postNewMessage(user: string, text: string) {
+  function postNewMessage(user: string, text: string) {
     const data = {
       user,
       text,
@@ -41,7 +42,7 @@ const Chat = ({
       postNewMessage(user?.name || 'Bot', message);
       setMessages((prev) => [
         ...prev,
-        { user: user?.name, text: message, time: Date.now() },
+        { user: 'You', text: message, time: Date.now() },
       ]);
       setMessage('');
     }
@@ -93,38 +94,40 @@ const Chat = ({
                     </button>
                   </div>
                 </Transition.Child>
-                <div className="h-full flex flex-col py-6 bg-white shadow-xl overflow-y-scroll">
-                  <div className="px-4 sm:px-6">
-                    <Dialog.Title className="text-lg font-medium text-gray-900">
+                <div className="h-screen flex flex-col py-6 bg-white shadow-xl">
+                  <div>
+                    <Dialog.Title className="text-lg font-medium text-gray-900 pl-4">
                       {title}
                     </Dialog.Title>
-                    {messages.map((message) => (
-                      <div key={message.time}>
-                        <span>{message.user}</span>
-                        <span>
-                          {new Date(message.time).getHours()} :{' '}
-                          {new Date(message.time).getMinutes()}
-                        </span>
-                        <span>{message.text}</span>
-                      </div>
-                    ))}
+                    <div className="overflow-y-auto h-[calc(100vh-10rem)] pl-4">
+                      {messages.map((message, index) => (
+                        <div
+                          key={`${message.time}-${index}`}
+                          className="my-4 font-mono text-xs"
+                        >
+                          <span className="font-bold mr-2">{message.user}</span>
+                          <span className="text-slate-400">
+                            {formatTimeHHMM(message.time)}
+                          </span>
+                          <span className="block mt-1">{message.text}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                   <div className="mt-6 relative flex-1 px-4 sm:px-6">
-                    <div className="p-4 flex items-center justify-center bg-white inset-x-0 bottom-0 absolute">
+                    <div className="p-4 flex items-center justify-center bg-white inset-x-0">
                       <div className="w-full max-w-xs mx-auto">
-                        <div className="mt-1">
-                          <input
-                            autoComplete="off"
-                            type="text"
-                            name="name"
-                            id="name"
-                            value={message}
-                            onChange={handleChangeMessage}
-                            onKeyDown={handleSendMessage}
-                            className="p-4 bg-gray-200 outline-none block w-full sm:text-sm border-gray-300 px-4 rounded-full"
-                            placeholder="Send a message to everyone"
-                          />
-                        </div>
+                        <input
+                          autoComplete="off"
+                          type="text"
+                          name="name"
+                          id="name"
+                          value={message}
+                          onChange={handleChangeMessage}
+                          onKeyDown={handleSendMessage}
+                          className="p-4 bg-gray-200 outline-none block w-full sm:text-sm border-gray-300 px-4 rounded-full"
+                          placeholder="Send a message to everyone"
+                        />
                       </div>
                     </div>
                   </div>
