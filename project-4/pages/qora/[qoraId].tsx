@@ -51,6 +51,12 @@ const Qora: NextPage = () => {
   if (typeof window !== 'undefined' && !user.user)
     window.location.href = '/api/auth/login';
 
+  useEffect(() => {
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
   return (
     <QoraContext.Provider
       value={{
