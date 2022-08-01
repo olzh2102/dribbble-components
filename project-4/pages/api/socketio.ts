@@ -1,13 +1,15 @@
 import { NextApiRequest } from 'next';
 import { Server as ServerIO } from 'socket.io';
-import { NextApiResponseServerIO } from '../../common/types';
+
+import { NextApiResponseServerIO } from 'common/types';
+import { SOCKET_PATH } from 'common/constants';
 
 const socketHandler = (req: NextApiRequest, res: NextApiResponseServerIO) => {
   if (!res.socket.server.io) {
     console.log('Socket is initializing');
 
     const httpServer = res.socket.server;
-    const io = new ServerIO(httpServer, { path: '/api/socketio' });
+    const io = new ServerIO(httpServer, { path: SOCKET_PATH });
     res.socket.server.io = io;
 
     io.on('connection', (socket) => {
