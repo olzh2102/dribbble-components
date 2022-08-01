@@ -10,14 +10,14 @@ const useAddVideoStream = ({
 }) => {
   const addVideoStream = ({
     id,
-    name,
+    name = '',
     stream,
-    isMe,
+    isMe = false,
   }: {
     id: string;
-    name?: string;
+    name: string;
     stream: MediaStream;
-    isMe?: boolean;
+    isMe: boolean;
   }) => {
     if (!id) return;
     console.log('add video stream:', id);

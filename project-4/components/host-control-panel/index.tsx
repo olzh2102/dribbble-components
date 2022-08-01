@@ -1,6 +1,14 @@
 import { HangUpIcon, MicrophoneIcon } from '../../assets/icons';
 
-const HostControlPanel = ({ onMutePeer, onRemovePeer, isMuted }: any) => {
+const HostControlPanel = ({
+  onMutePeer,
+  onRemovePeer,
+  isMuted,
+}: {
+  onMutePeer: () => void;
+  isMuted: boolean;
+  onRemovePeer: () => void;
+}) => {
   return (
     <div className="absolute bottom-3 left-1/2 -translate-x-1/2 hidden group-hover:block">
       <div className="flex items-center justify-center opacity-50">

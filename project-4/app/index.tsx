@@ -2,7 +2,8 @@ import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { MutedIcon } from '../assets/icons';
-import { toggleAudio } from '../common/utils';
+import { toggleAudio } from 'common/utils';
+import { KeyValue, Nullable } from 'common/types';
 import {
   ControlPanel,
   HostControlPanel,
@@ -28,7 +29,7 @@ const App = () => {
   const [isMuted, setIsMuted] = useState<KeyValue<boolean>>({});
 
   const [sharedScreenTrack, setSharedScreenTrack] =
-    useState<MediaStreamTrack | null>(null);
+    useState<Nullable<MediaStreamTrack>>(null);
 
   const [isMyScreenSharing, setIsMyScreenSharing] = useState(false);
 
@@ -50,7 +51,7 @@ const App = () => {
       }
     );
 
-    socket.on('audio-status-toggled', (peerId: any) => {
+    socket.on('audio-status-toggled', (peerId: string) => {
       setIsMuted((prev) => ({ ...prev, [peerId]: !prev[peerId] }));
     });
 
@@ -86,14 +87,14 @@ const App = () => {
 
   function addVideoStream({
     id,
-    name,
+    name = '',
     stream,
-    isMe,
+    isMe = false,
   }: {
     id: string;
-    name?: string;
+    name: string;
     stream: MediaStream;
-    isMe?: boolean;
+    isMe: boolean;
   }) {
     // stream.getVideoTracks()[0].enabled = false;
     setVideos((prev) => ({
@@ -116,7 +117,7 @@ const App = () => {
   }
 
   useEffect(() => {
-    socket.on('screen-shared', (username: any) => {
+    socket.on('screen-shared', (username: string) => {
       peer.disconnect();
       peer.reconnect();
       toast(`${username} is sharing his screen`);
@@ -224,5 +225,3 @@ const App = () => {
 };
 
 export default App;
-
-export type KeyValue<T> = Record<string, T>;

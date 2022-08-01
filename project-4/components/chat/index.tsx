@@ -2,7 +2,17 @@ import { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
 
-const Chat = ({ open, setOpen, title, children }: any) => {
+const Chat = ({
+  open,
+  setOpen,
+  title,
+  children,
+}: {
+  open: boolean;
+  title: string;
+  setOpen: (arg: boolean) => void;
+  children: React.ReactNode;
+}) => {
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog
