@@ -1,5 +1,5 @@
 import { NextPage } from 'next';
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { MediaConnection } from 'peerjs';
 import { useUser } from '@auth0/nextjs-auth0';
 import { ToastContainer, ToastContainerProps } from 'react-toastify';
@@ -39,6 +39,12 @@ const Qora: NextPage = () => {
     typeof window !== 'undefined' && !!window.localStorage.getItem(roomId);
 
   const [isHeadlessOpen, setIsHeadlessOpen] = useState(false);
+
+  useEffect(() => {
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   return (
     <QoraContext.Provider

@@ -6,9 +6,9 @@ const PeerVideo = ({
   stream,
   name,
 }: {
-  isMe: boolean;
   stream: MediaStream;
-  name: string;
+  isMe?: boolean;
+  name?: string;
 }) => {
   return (
     <>
