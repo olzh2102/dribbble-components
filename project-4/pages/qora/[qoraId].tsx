@@ -1,5 +1,5 @@
 import { NextPage } from 'next';
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { MediaConnection } from 'peerjs';
 import { useUser } from '@auth0/nextjs-auth0';
 import { ToastContainer, ToastContainerProps } from 'react-toastify';
@@ -15,6 +15,7 @@ import {
 } from '@hooks/index';
 
 import 'react-toastify/dist/ReactToastify.css';
+import { useRouter } from 'next/router';
 
 export const QoraContext = createContext<any>({});
 
@@ -25,6 +26,8 @@ const TOAST_PROPS: ToastContainerProps = {
 };
 
 const Qora: NextPage = () => {
+  const router = useRouter();
+
   const socket = useContext(SocketContext);
   const roomId = useGetRoomId();
   const peer = useCreatePeer();
@@ -38,6 +41,11 @@ const Qora: NextPage = () => {
     typeof window !== 'undefined' && !!window.localStorage.getItem(roomId);
 
   const [isHeadlessOpen, setIsHeadlessOpen] = useState(false);
+
+  if (user.isLoading) return <span>Loading...</span>;
+
+  if (typeof window !== 'undefined' && !user.user)
+    window.location.href = '/api/auth/login';
 
   return (
     <QoraContext.Provider
