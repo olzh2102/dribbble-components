@@ -1,7 +1,8 @@
+import { Nullable } from 'common/types';
 import { useEffect, useState } from 'react';
 
 const useCreateVideoStream = (constraints = { audio: false, video: false }) => {
-  const [stream, setStream] = useState<MediaStream | null>(null);
+  const [stream, setStream] = useState<Nullable<MediaStream>>(null);
 
   useEffect(() => {
     async function getStream() {

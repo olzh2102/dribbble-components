@@ -1,8 +1,5 @@
-import { useUser } from '@auth0/nextjs-auth0';
-import Peer, { MediaConnection } from 'peerjs';
-import { Dispatch, SetStateAction, useContext, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { toast } from 'react-toastify';
-import { KeyValue } from '../app';
 import { QoraContext } from '@pages/qora/[qoraId]';
 
 const usePeerOnJoinRoom = (
