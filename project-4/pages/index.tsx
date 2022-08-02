@@ -1,14 +1,15 @@
-import { useState } from 'react';
 import type { NextPage } from 'next';
+import { useState } from 'react';
 import Link from 'next/link';
 import { v4 as uuid } from 'uuid';
+
+import { ROOM_NAME } from 'common/constants';
 
 import { Header, WelcomeContainer } from '../components';
 
 const Home: NextPage = () => {
-  const [value, setValue] = useState('');
-
   const roomId = uuid();
+  const [value, setValue] = useState('');
 
   return (
     <>
@@ -54,7 +55,7 @@ const Home: NextPage = () => {
             placeholder="room id"
           />
 
-          <Link href={value.length > 0 ? `/qora/${value}` : '/'}>
+          <Link href={value.length > 0 ? `/${ROOM_NAME}/${value}` : '/'}>
             <button
               onClick={() => window.localStorage.setItem(roomId, '*')}
               type="button"

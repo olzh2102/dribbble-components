@@ -19,7 +19,8 @@
       "@components/*": ["components/*"],
       "@pages/*": ["pages/*"],
       "@hooks/*": ["hooks/*"],
-      "@app/*": ["app"]
+      "@app/*": ["app"],
+      "@common/*": ["common/*"]
     }
   },
   "include": [

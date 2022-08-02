@@ -1,3 +1,4 @@
+import { MYSELF } from 'common/constants';
 import ActiveSpeakerIcon from '../active-speaker';
 
 const PeerVideo = ({ isMe, stream, name }: any) => {
@@ -12,7 +13,7 @@ const PeerVideo = ({ isMe, stream, name }: any) => {
         muted={isMe}
       />
       <p className="font-medium absolute bottom-3 left-4 text-xs">
-        <span className="text-white">{isMe ? 'You' : name}</span>
+        <span className="text-white">{isMe ? MYSELF : name}</span>
       </p>
       {/* <ActiveSpeakerIcon stream={stream} /> */}
     </>

@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+
+import { WINDOW_SIZE_IN_SAMPLES } from 'common/constants';
 import { SpeakerIcon } from '../../assets/icons';
 
 const ActiveSpeaker = ({ stream }: { stream: MediaStream }) => {
@@ -9,7 +11,7 @@ const ActiveSpeaker = ({ stream }: { stream: MediaStream }) => {
     const analyser = audioContext.createAnalyser();
     const source = audioContext.createMediaStreamSource(stream);
     source.connect(analyser);
-    analyser.fftSize = 1024;
+    analyser.fftSize = WINDOW_SIZE_IN_SAMPLES;
     const dataArray = new Uint8Array(analyser.frequencyBinCount);
     const update = () => {
       requestAnimationFrame(update);
