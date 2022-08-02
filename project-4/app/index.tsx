@@ -16,13 +16,15 @@ import {
   usePeerOnLeftRoom,
 } from '@hooks/index';
 import { QoraContext } from '@pages/qora/[qoraId]';
+import { useRouter } from 'next/router';
 
 const App = () => {
   console.log('render app');
+  const router = useRouter();
 
   const { socket, peer, user, stream, isHost, me, peers } =
     useContext(QoraContext);
-
+  console.log(user);
   const [videos, setVideos] = useState<KeyValue<JSX.Element>>({});
   const [videoRefs, setVideoRefs] = useState<KeyValue<HTMLDivElement>>({});
   const [isMuted, setIsMuted] = useState<KeyValue<boolean>>({});
@@ -36,6 +38,10 @@ const App = () => {
     if (!stream) return;
     if (me) addVideoStream({ id: me, stream, isMe: true });
   }, [me]);
+
+  useEffect(() => {
+    if (!user) router.push('/api/auth/login');
+  }, []);
 
   useEffect(() => {
     socket.on(
