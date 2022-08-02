@@ -7,13 +7,17 @@ import { formatTimeHHMM } from 'common/utils';
 const Chat = ({ open, setOpen, title }: any) => {
   const { socket, user } = useContext(QoraContext);
 
-  const [message, setMessage] = useState('');
+  const [text, setText] = useState('');
   const [messages, setMessages] = useState<any[]>([]);
 
   useEffect(() => {
     socket.on('chat:get', (message: any) => {
-      setMessages((prev) => [...prev, message]);
+      setMessages((prev) => prev.concat(message));
     });
+
+    return () => {
+      socket.off('chat:get');
+    };
   }, []);
 
   function postNewMessage(user: string, text: string) {
@@ -26,7 +30,7 @@ const Chat = ({ open, setOpen, title }: any) => {
   }
 
   function handleChangeMessage(e: React.ChangeEvent<HTMLInputElement>) {
-    setMessage(e.target.value);
+    setText(e.target.value);
   }
 
   function handleSendMessage(e: React.KeyboardEvent<HTMLInputElement>) {
@@ -34,11 +38,10 @@ const Chat = ({ open, setOpen, title }: any) => {
 
     if (e.key === 'Enter' && message) {
       postNewMessage(user?.name || 'Bot', message);
-      setMessages((prev) => [
-        ...prev,
-        { user: 'You', text: message, time: Date.now() },
-      ]);
-      setMessage('');
+      setMessages((prev) =>
+        prev.concat({ user: 'You', text: message, time: Date.now() })
+      );
+      setText('');
     }
   }
 
@@ -121,7 +124,7 @@ const Chat = ({ open, setOpen, title }: any) => {
                           type="text"
                           name="name"
                           id="name"
-                          value={message}
+                          value={text}
                           onChange={handleChangeMessage}
                           onKeyDown={handleSendMessage}
                           className="p-4 bg-gray-200 outline-none block w-full sm:text-sm border-gray-300 px-4 rounded-full"
