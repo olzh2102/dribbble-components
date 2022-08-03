@@ -16,6 +16,7 @@ import {
 } from '@hooks/index';
 
 import 'react-toastify/dist/ReactToastify.css';
+import { Nullable } from '@common/types';
 
 export const QoraContext = createContext<any>({});
 
@@ -34,6 +35,9 @@ const Qora: NextPage = () => {
   const me = useOnOpenPeer(peer);
 
   const [peers, setPeers] = useState<KeyValue<MediaConnection>>({});
+
+  const [sharedScreenTrack, setSharedScreenTrack] =
+    useState<Nullable<MediaStreamTrack>>(null);
 
   const isHost =
     typeof window !== 'undefined' && !!window.localStorage.getItem(roomId);
@@ -60,6 +64,8 @@ const Qora: NextPage = () => {
         me,
         peers,
         setPeers,
+        sharedScreenTrack,
+        setSharedScreenTrack,
       }}
     >
       <div className="grid h-screen place-items-center place-content-center relative p-4">

@@ -2,8 +2,16 @@ import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { QoraContext } from '@pages/qora/[qoraId]';
 
-const useScreenShare = ({ sharedScreenTrack, setSharedScreenTrack }: any) => {
-  const { socket, peer, user, isHost, stream } = useContext(QoraContext);
+const useScreenShare = () => {
+  const {
+    socket,
+    peer,
+    user,
+    isHost,
+    stream,
+    sharedScreenTrack,
+    setSharedScreenTrack,
+  } = useContext(QoraContext);
 
   const [isMyScreenSharing, setIsMyScreenSharing] = useState(false);
 

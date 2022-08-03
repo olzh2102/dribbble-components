@@ -1,12 +1,5 @@
 import { useRouter } from 'next/router';
-import {
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
-import { toast } from 'react-toastify';
+import { useContext, useState } from 'react';
 
 import {
   VideoCameraIcon,
@@ -14,24 +7,19 @@ import {
   PhoneMissedCallIcon as HangUpIcon,
   UploadIcon as ShareScreenIcon,
 } from '@heroicons/react/solid';
-import { toggleVideo } from '../../common/utils';
-import { Nullable } from 'common/types';
+import { toggleVideo } from 'common/utils';
 import { QoraContext } from '@pages/qora/[qoraId]';
 import { useScreenShare } from '@hooks/index';
 
 const ControlPanel = ({
   onAudio,
-  sharedScreenTrack,
   isMuted,
-  setSharedScreenTrack,
 }: {
   onAudio: () => void;
-  sharedScreenTrack: Nullable<MediaStreamTrack>;
   isMuted: boolean;
-  setSharedScreenTrack: Dispatch<SetStateAction<Nullable<MediaStreamTrack>>>;
 }) => {
   const router = useRouter();
-  const { isHost, stream } = useContext(QoraContext);
+  const { isHost, stream, sharedScreenTrack } = useContext(QoraContext);
   const [videoActive, setVideoActive] = useState(true);
 
   const handleVideo = () => {
@@ -39,12 +27,7 @@ const ControlPanel = ({
     toggleVideo(stream);
   };
 
-  const handleHangUp = () => router.push('/');
-
-  const { isMyScreenSharing, toggleScreenShare } = useScreenShare({
-    sharedScreenTrack,
-    setSharedScreenTrack,
-  });
+  const { isMyScreenSharing, toggleScreenShare } = useScreenShare();
 
   return (
     <>
@@ -75,7 +58,7 @@ const ControlPanel = ({
         )}
       </button>
       <button
-        onClick={handleHangUp}
+        onClick={() => router.push('/')}
         type="button"
         className="inline-flex items-center p-3 border border-transparent rounded-xl shadow-sm text-white bg-red-600 hover:bg-red-400"
       >
