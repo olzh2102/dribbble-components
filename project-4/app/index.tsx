@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 
 import { MutedIcon } from '../assets/icons';
 import { toggleAudio } from 'common/utils';
-import { KeyValue, Nullable } from 'common/types';
+import { KeyValue } from 'common/types';
 import {
   ControlPanel,
   HostControlPanel,
@@ -21,14 +21,20 @@ import { QoraContext } from '@pages/qora/[qoraId]';
 const App = ({ children }: { children: ReactElement }) => {
   console.log('render app');
 
-  const { socket, peer, stream, isHost, me, peers } = useContext(QoraContext);
+  const {
+    socket,
+    peer,
+    stream,
+    isHost,
+    me,
+    peers,
+    sharedScreenTrack,
+    setSharedScreenTrack,
+  } = useContext(QoraContext);
 
   const [videos, setVideos] = useState<KeyValue<JSX.Element>>({});
   const [videoRefs, setVideoRefs] = useState<KeyValue<HTMLDivElement>>({});
   const [isMuted, setIsMuted] = useState<KeyValue<boolean>>({});
-
-  const [sharedScreenTrack, setSharedScreenTrack] =
-    useState<Nullable<MediaStreamTrack>>(null);
 
   useEffect(() => {
     if (!stream) return;
@@ -152,12 +158,7 @@ const App = ({ children }: { children: ReactElement }) => {
       <div className="flex w-screen px-6 absolute bottom-6 items-center z-50">
         <div className="w-9" />
         <div className="flex flex-auto gap-6 place-content-center">
-          <ControlPanel
-            isMuted={isMuted[me]}
-            sharedScreenTrack={sharedScreenTrack}
-            onAudio={handleAudio}
-            setSharedScreenTrack={setSharedScreenTrack}
-          />
+          <ControlPanel isMuted={isMuted[me]} onAudio={handleAudio} />
         </div>
         <div className="w-9">{children}</div>
       </div>

@@ -16,6 +16,7 @@ import {
 
 import 'react-toastify/dist/ReactToastify.css';
 import { SocketContext } from '@pages/_app';
+import { Nullable } from '@common/types';
 
 export const QoraContext = createContext<any>({});
 
@@ -35,6 +36,9 @@ const Qora: NextPage = () => {
 
   const [peers, setPeers] = useState<KeyValue<MediaConnection>>({});
 
+  const [sharedScreenTrack, setSharedScreenTrack] =
+    useState<Nullable<MediaStreamTrack>>(null);
+
   const isHost =
     typeof window !== 'undefined' && !!window.localStorage.getItem(roomId);
 
@@ -51,7 +55,7 @@ const Qora: NextPage = () => {
   if (typeof window !== 'undefined' && !user.user)
     window.location.href = '/api/auth/login';
 
-  console.log(isHeadlessOpen);
+  console.log(isChatOpen);
 
   useEffect(() => {
     return () => {
@@ -71,6 +75,8 @@ const Qora: NextPage = () => {
         me,
         peers,
         setPeers,
+        sharedScreenTrack,
+        setSharedScreenTrack,
       }}
     >
       <div className="flex h-screen place-items-center place-content-center relative p-6">
