@@ -39,6 +39,11 @@ const Qora: NextPage = () => {
 
   const [isHeadlessOpen, setIsHeadlessOpen] = useState(false);
 
+  if (user.isLoading) return <span>Loading...</span>;
+
+  if (typeof window !== 'undefined' && !user.user)
+    window.location.href = '/api/auth/login';
+
   return (
     <QoraContext.Provider
       value={{
