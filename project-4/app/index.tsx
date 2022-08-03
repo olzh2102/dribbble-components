@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { ReactElement, useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { MutedIcon } from '../assets/icons';
@@ -18,7 +18,7 @@ import {
 } from '@hooks/index';
 import { QoraContext } from '@pages/qora/[qoraId]';
 
-const App = () => {
+const App = ({ children }: { children: ReactElement }) => {
   console.log('render app');
 
   const { socket, peer, stream, isHost, me, peers } = useContext(QoraContext);
@@ -149,12 +149,18 @@ const App = () => {
           ))}
         </div>
       </div>
-      <ControlPanel
-        isMuted={isMuted[me]}
-        sharedScreenTrack={sharedScreenTrack}
-        onAudio={handleAudio}
-        setSharedScreenTrack={setSharedScreenTrack}
-      />
+      <div className="flex w-screen px-6 absolute bottom-6 items-center z-50">
+        <div className="w-9" />
+        <div className="flex flex-auto gap-6 place-content-center">
+          <ControlPanel
+            isMuted={isMuted[me]}
+            sharedScreenTrack={sharedScreenTrack}
+            onAudio={handleAudio}
+            setSharedScreenTrack={setSharedScreenTrack}
+          />
+        </div>
+        <div className="w-9">{children}</div>
+      </div>
     </>
   );
 };

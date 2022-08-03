@@ -51,6 +51,8 @@ const Qora: NextPage = () => {
   if (typeof window !== 'undefined' && !user.user)
     window.location.href = '/api/auth/login';
 
+  console.log(isHeadlessOpen);
+
   useEffect(() => {
     return () => {
       socket.disconnect();

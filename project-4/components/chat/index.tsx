@@ -97,12 +97,12 @@ const Chat = ({
                     </button>
                   </div>
                 </Transition.Child>
-                <div className="h-screen flex flex-col py-6 bg-white shadow-xl">
+                <div className="flex flex-col py-6 bg-white shadow-xl h-[calc(100vh-6rem)]">
                   <div>
                     <Dialog.Title className="text-lg font-medium text-gray-900 pl-4">
                       {title}
                     </Dialog.Title>
-                    <div className="overflow-y-auto h-[calc(100vh-10rem)] pl-4">
+                    <div className="overflow-y-auto h-[calc(100vh-16rem)] pl-4">
                       {messages.map((message, index) => (
                         <div
                           key={`${message.time}-${index}`}
