@@ -1,3 +1,4 @@
+import { Nullable } from 'common/types';
 import { useEffect } from 'react';
 
 const useCreateVideoOnPageOpen = ({
@@ -6,7 +7,7 @@ const useCreateVideoOnPageOpen = ({
   addVideoStream,
 }: {
   id: string;
-  stream: MediaStream | null;
+  stream: Nullable<MediaStream>;
   addVideoStream: ({
     id,
     stream,

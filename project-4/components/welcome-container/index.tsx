@@ -1,4 +1,4 @@
-const WelcomeContainer = ({ children }: any) => {
+const WelcomeContainer = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="relative overflow-hidden">
       <div className="max-w-7xl mx-auto">

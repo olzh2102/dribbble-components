@@ -1,7 +1,15 @@
 import { MYSELF } from 'common/constants';
 import ActiveSpeakerIcon from '../active-speaker';
 
-const PeerVideo = ({ isMe, stream, name }: any) => {
+const PeerVideo = ({
+  isMe,
+  stream,
+  name,
+}: {
+  isMe: boolean;
+  stream: MediaStream;
+  name: string;
+}) => {
   return (
     <>
       <video

@@ -8,6 +8,7 @@ import {
 } from '../../assets/icons';
 import { toggleVideo } from '../../common/utils';
 import { SocketContext } from '@pages/_app';
+import { Nullable } from 'common/types';
 
 const ControlPanel = ({
   stream,
@@ -19,7 +20,17 @@ const ControlPanel = ({
   isMyScreenSharing,
   onShareScreen,
   onStopShareScreen,
-}: any) => {
+}: {
+  stream: MediaStream;
+  onAudio: () => void;
+  constraints: any;
+  sharedScreenTrack: Nullable<MediaStreamTrack>;
+  isHost: boolean;
+  isMuted: boolean;
+  isMyScreenSharing: boolean;
+  onShareScreen: () => void;
+  onStopShareScreen: (arg: MediaStreamTrack) => void;
+}) => {
   const router = useRouter();
   const socket = useContext(SocketContext);
   const [videoActive, setVideoActive] = useState(constraints.video);
@@ -80,7 +91,7 @@ const ControlPanel = ({
         className={`inline-flex items-center p-3 border border-transparent rounded-xl shadow-sm text-white bg-${
           sharedScreenTrack ? 'indigo' : 'red'
         }-600 hover:bg-${sharedScreenTrack ? 'indigo' : 'red'}-400`}
-        disabled={!isHost && sharedScreenTrack && !isMyScreenSharing}
+        disabled={!isHost && (sharedScreenTrack as any) && !isMyScreenSharing}
       >
         <ShareScreenIcon />
       </button>

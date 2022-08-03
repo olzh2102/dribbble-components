@@ -1,8 +1,6 @@
 import { QoraContext } from '@pages/qora/[qoraId]';
-import Peer, { MediaConnection } from 'peerjs';
-import { Dispatch, SetStateAction, useContext, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { toast } from 'react-toastify';
-import { KeyValue } from '../app';
 
 const usePeerOnAnswer = (
   addVideoStream: ({

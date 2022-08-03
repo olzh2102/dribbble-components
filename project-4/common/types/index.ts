@@ -14,3 +14,6 @@ export type NextApiResponseServerIO = NextApiResponse & {
 };
 
 export type TSocket = ClientSocket<DefaultEventsMap, DefaultEventsMap>;
+
+export type KeyValue<T> = Record<string, T>;
+export type Nullable<T> = T | null;

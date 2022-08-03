@@ -3,8 +3,9 @@ import Peer from 'peerjs';
 import { useContext, useEffect, useState } from 'react';
 import { SocketContext } from '@pages/_app';
 import useGetRoomId from './use-get-room-id';
+import { Nullable } from 'common/types';
 
-const useOnOpenPeer = (peer: Peer | null) => {
+const useOnOpenPeer = (peer: Nullable<Peer>) => {
   const roomId = useGetRoomId();
   const socket = useContext(SocketContext);
 
