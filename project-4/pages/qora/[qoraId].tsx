@@ -40,6 +40,8 @@ const Qora: NextPage = () => {
 
   const [isHeadlessOpen, setIsHeadlessOpen] = useState(false);
 
+  console.log(isHeadlessOpen);
+
   useEffect(() => {
     return () => {
       socket.disconnect();
@@ -60,19 +62,18 @@ const Qora: NextPage = () => {
         setPeers,
       }}
     >
-      <div className="grid h-screen place-items-center place-content-center relative p-6">
-        <VideoRoom />
+      <div className="grid h-screen place-items-center place-content-center relative p-4">
+        <VideoRoom>
+          <button onClick={() => setIsHeadlessOpen(!isHeadlessOpen)}>
+            <ChatIcon className="w-9 h-9 stroke-white" />
+          </button>
+        </VideoRoom>
 
         <Chat
           open={isHeadlessOpen}
           setOpen={setIsHeadlessOpen}
           title="In-call messages"
         />
-        <div className="absolute bottom-6 right-6 w-9 h-9">
-          <button onClick={() => setIsHeadlessOpen(!isHeadlessOpen)}>
-            <ChatIcon className="w-full stroke-white" />
-          </button>
-        </div>
       </div>
 
       <ToastContainer {...TOAST_PROPS} />

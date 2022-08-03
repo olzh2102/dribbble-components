@@ -47,7 +47,7 @@ const ControlPanel = ({
   });
 
   return (
-    <div className="flex mt-6 gap-6 place-content-center absolute bottom-6">
+    <>
       <button
         onClick={handleVideo}
         type="button"
@@ -91,7 +91,7 @@ const ControlPanel = ({
       >
         <ShareScreenIcon className="h-6 w-6" />
       </button>
-    </div>
+    </>
   );
 };
 
