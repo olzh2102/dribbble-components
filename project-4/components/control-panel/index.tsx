@@ -17,6 +17,7 @@ import {
 import { toggleVideo } from '../../common/utils';
 import { Nullable } from 'common/types';
 import { QoraContext } from '@pages/qora/[qoraId]';
+import { useScreenShare } from '@hooks/index';
 
 const ControlPanel = ({
   onAudio,
@@ -30,7 +31,7 @@ const ControlPanel = ({
   setSharedScreenTrack: Dispatch<SetStateAction<Nullable<MediaStreamTrack>>>;
 }) => {
   const router = useRouter();
-  const { socket, peer, user, isHost, stream } = useContext(QoraContext);
+  const { isHost, stream } = useContext(QoraContext);
   const [videoActive, setVideoActive] = useState(true);
 
   const handleVideo = () => {
@@ -40,62 +41,10 @@ const ControlPanel = ({
 
   const handleHangUp = () => router.push('/');
 
-  const [isMyScreenSharing, setIsMyScreenSharing] = useState(false);
-
-  useEffect(() => {
-    socket.on('screen-shared', (username: any) => {
-      peer.disconnect();
-      peer.reconnect();
-      toast(`${username} is sharing his screen`);
-    });
-
-    socket.on('screen-sharing-stopped', () => {
-      setSharedScreenTrack(null);
-    });
-
-    socket.on('shared-video-removed', () => {
-      const sharedScreenTrack = stream?.getVideoTracks()[1];
-      if (sharedScreenTrack) stopShareScreen(sharedScreenTrack);
-    });
-
-    return () => {
-      socket.off('screen-shared');
-      socket.off('screen-sharing-stopped');
-      socket.off('shared-video-removed');
-    };
-  }, [peer]);
-
-  function stopShareScreen(screenTrack: MediaStreamTrack) {
-    screenTrack.stop();
-    stream?.removeTrack(screenTrack);
-    setSharedScreenTrack(null);
-    setIsMyScreenSharing(false);
-    socket.emit('stop-sharing-my-screen');
-  }
-
-  async function handleShareScreen() {
-    const screenStream = await navigator.mediaDevices.getDisplayMedia({
-      video: true,
-      audio: false,
-    });
-    const screenTrack = screenStream.getTracks()[0];
-    stream?.addTrack(screenTrack);
-    setSharedScreenTrack(screenTrack);
-    setIsMyScreenSharing(true);
-
-    socket.emit('share-my-screen', { username: user?.name });
-
-    screenTrack.onended = () => stopShareScreen(screenTrack);
-  }
-
-  function toggleShareScreen() {
-    if (isHost && !isMyScreenSharing && sharedScreenTrack) {
-      socket.emit('remove-peer-shared-video');
-      return;
-    }
-    if (!sharedScreenTrack) handleShareScreen();
-    else stopShareScreen(sharedScreenTrack);
-  }
+  const { isMyScreenSharing, toggleScreenShare } = useScreenShare({
+    sharedScreenTrack,
+    setSharedScreenTrack,
+  });
 
   return (
     <div className="flex gap-6 mt-6 place-content-center absolute bottom-6">
@@ -133,7 +82,7 @@ const ControlPanel = ({
         <HangUpIcon className="h-6 w-6" />
       </button>
       <button
-        onClick={toggleShareScreen}
+        onClick={toggleScreenShare}
         type="button"
         className={`inline-flex items-center p-3 border border-transparent rounded-xl shadow-sm text-white bg-${
           sharedScreenTrack ? 'indigo' : 'red'
