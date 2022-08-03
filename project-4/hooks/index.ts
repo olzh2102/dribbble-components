@@ -7,6 +7,7 @@ import usePeerOnJoinRoom from './use-peer-on-join-room';
 import usePeerOnLeftRoom from './use-peer-on-left-room';
 import usePeerOnAnswer from './use-peer-on-answer';
 import useCreateVideoOnPageOpen from './use-create-video-on-page-open';
+import useScreenShare from './use-screen-share';
 
 export {
   useCreatePeer,
@@ -18,4 +19,5 @@ export {
   usePeerOnLeftRoom,
   usePeerOnAnswer,
   useCreateVideoOnPageOpen,
+  useScreenShare,
 };
