@@ -36,7 +36,7 @@ const App = () => {
   useEffect(() => {
     if (!stream) return;
     if (me) addVideoStream({ id: me, stream, isMe: true });
-  }, [me]);
+  }, [me, stream]);
 
   useEffect(() => {
     socket.on(
