@@ -1,10 +1,10 @@
 import { NextPage } from 'next';
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { MediaConnection } from 'peerjs';
+import { io } from 'socket.io-client';
 import { useUser } from '@auth0/nextjs-auth0';
 import { ToastContainer, ToastContainerProps } from 'react-toastify';
 
-import { SocketContext } from '@pages/_app';
 import VideoRoom from '@app/index';
 import Chat from '@components/chat';
 import {
@@ -15,6 +15,7 @@ import {
 } from '@hooks/index';
 
 import 'react-toastify/dist/ReactToastify.css';
+import { SocketContext } from '@pages/_app';
 
 export const QoraContext = createContext<any>({});
 
@@ -38,6 +39,12 @@ const Qora: NextPage = () => {
     typeof window !== 'undefined' && !!window.localStorage.getItem(roomId);
 
   const [isHeadlessOpen, setIsHeadlessOpen] = useState(false);
+
+  useEffect(() => {
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   if (user.isLoading) return <span>Loading...</span>;
 
