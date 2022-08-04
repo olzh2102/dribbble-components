@@ -73,12 +73,6 @@ const App = () => {
     setIsMuted((prev) => ({ ...prev, [id]: true }));
   }
 
-  function handleRemovePeer(id: string) {
-    socket.emit('remove-peer', id);
-    peers[id].close();
-    videoRefs[id].remove();
-  }
-
   function handleAudio() {
     socket.emit('toggle-audio-status', me);
     setIsMuted((prev) => ({ ...prev, [me]: !prev[me] }));
@@ -87,16 +81,15 @@ const App = () => {
 
   function addVideoStream({
     id,
-    name = '',
+    name,
     stream,
-    isMe = false,
+    isMe,
   }: {
     id: string;
-    name: string;
+    name?: string;
     stream: MediaStream;
-    isMe: boolean;
+    isMe?: boolean;
   }) {
-    // stream.getVideoTracks()[0].enabled = false;
     setVideos((prev) => ({
       ...prev,
       [id]: (
@@ -188,7 +181,7 @@ const App = () => {
 
               {isHost && me !== id && (
                 <HostControlPanel
-                  onRemovePeer={() => handleRemovePeer(id)}
+                  onRemovePeer={() => socket.emit('remove-peer', id)}
                   onMutePeer={() =>
                     handleMutePeer(id, element.props.children.props.name)
                   }
