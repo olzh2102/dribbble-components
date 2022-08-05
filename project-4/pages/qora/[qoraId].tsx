@@ -1,7 +1,6 @@
 import { NextPage } from 'next';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { MediaConnection } from 'peerjs';
-import { io } from 'socket.io-client';
 import { useUser } from '@auth0/nextjs-auth0';
 import { ToastContainer, ToastContainerProps } from 'react-toastify';
 
@@ -38,7 +37,7 @@ const Qora: NextPage = () => {
   const isHost =
     typeof window !== 'undefined' && !!window.localStorage.getItem(roomId);
 
-  const [isHeadlessOpen, setIsHeadlessOpen] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   useEffect(() => {
     return () => {
@@ -65,20 +64,23 @@ const Qora: NextPage = () => {
         setPeers,
       }}
     >
-      <div className="grid h-screen place-items-center place-content-center relative p-6">
-        <VideoRoom />
+      <div className="flex h-screen place-items-center place-content-center relative p-6">
+        <div className={`${isChatOpen ? 'basis-4/6' : 'basis-6/6'}`}>
+          <VideoRoom />
+        </div>
 
-        <button onClick={() => setIsHeadlessOpen(!isHeadlessOpen)}>
+        <button
+          className="absolute right-6 bottom-6"
+          onClick={() => setIsChatOpen(!isChatOpen)}
+        >
           show chat
         </button>
 
-        <Chat
-          open={isHeadlessOpen}
-          setOpen={setIsHeadlessOpen}
-          title="Item Details"
-        >
-          chat will be here
-        </Chat>
+        <div className={`${isChatOpen ? 'basis-2/6' : 'hidden'}`}>
+          <Chat setOpen={setIsChatOpen} title="Item Details">
+            chat will be here
+          </Chat>
+        </div>
       </div>
 
       <ToastContainer {...TOAST_PROPS} />

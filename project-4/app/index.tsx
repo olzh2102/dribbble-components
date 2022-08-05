@@ -159,7 +159,7 @@ const App = () => {
 
   return (
     <>
-      <div className="flex gap-4 items-start w-full">
+      <div className="flex gap-4">
         {/* shared screen stream video */}
         <div
           className={`${
