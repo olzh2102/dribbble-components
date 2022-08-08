@@ -43,7 +43,6 @@ const App = ({ toggleChat }: { toggleChat: () => void }) => {
 
   useEffect(() => {
     socket.on('member-muted', (peerId: string) => {
-      console.log('MUTED', peerId);
       toggleAudio(stream);
       setIsMuted((prev) => ({ ...prev, [peerId]: true }));
       if (peerId === me) toast('You are muted');
