@@ -1,15 +1,8 @@
-import { MYSELF } from 'common/constants';
-import ActiveSpeakerIcon from '../active-speaker';
+import { memo } from 'react';
+import ActiveSpeakerIcon from '@components/active-speaker';
+import { MYSELF } from '@common/constants';
 
-const PeerVideo = ({
-  isMe,
-  stream,
-  name,
-}: {
-  stream: MediaStream;
-  isMe?: boolean;
-  name?: string;
-}) => {
+const PeerVideo = ({ stream, name }: { stream: MediaStream; name: string }) => {
   return (
     <>
       <video
@@ -18,14 +11,16 @@ const PeerVideo = ({
         }}
         className="rounded-[12px] w-96 aspect-video object-cover -scale-x-100"
         autoPlay
-        muted={isMe}
+        muted={name === MYSELF}
       />
+
       <p className="font-medium absolute bottom-3 left-4 text-xs">
-        <span className="text-white">{isMe ? MYSELF : name}</span>
+        <span className="text-white">{name}</span>
       </p>
-      {/* <ActiveSpeakerIcon stream={stream} /> */}
+
+      {/* <ActiveSpeakerIcon /> */}
     </>
   );
 };
 
-export default PeerVideo;
+export default memo(PeerVideo);

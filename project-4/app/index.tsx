@@ -1,58 +1,52 @@
-import { ReactElement, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
-import { MutedIcon } from '../assets/icons';
+import { QoraContext } from '@pages/qora/[qoraId]';
+import { HostControlPanel, PeerVideo, SharedScreen } from '@components/index';
+import { usePeerOnJoinRoom, usePeerOnAnswer } from '@hooks/index';
 import { toggleAudio } from 'common/utils';
 import { KeyValue } from 'common/types';
-import {
-  ControlPanel,
-  HostControlPanel,
-  PeerVideo,
-  SharedScreen,
-} from '@components/index';
+import { MutedIcon } from 'assets/icons';
 
-import {
-  usePeerOnJoinRoom,
-  usePeerOnAnswer,
-  usePeerOnLeftRoom,
-} from '@hooks/index';
-import { QoraContext } from '@pages/qora/[qoraId]';
-
-const App = ({ children }: { children: ReactElement }) => {
+const App = ({
+  setAmIMuted,
+}: {
+  setAmIMuted: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   console.log('render app');
 
   const {
-    socket,
-    peer,
-    stream,
-    isHost,
     me,
+    isHost,
+    peer,
     peers,
+    stream,
+    socket,
     sharedScreenTrack,
     setSharedScreenTrack,
   } = useContext(QoraContext);
 
   const [videos, setVideos] = useState<KeyValue<JSX.Element>>({});
-  const [videoRefs, setVideoRefs] = useState<KeyValue<HTMLDivElement>>({});
+  const [isRemoved, setIsRemoved] = useState<KeyValue<boolean>>({});
   const [isMuted, setIsMuted] = useState<KeyValue<boolean>>({});
 
-  useEffect(() => {
-    if (!stream) return;
-    if (me) addVideoStream({ id: me, stream, isMe: true });
-  }, [me, stream]);
+  usePeerOnJoinRoom(addVideoStream);
+  usePeerOnAnswer(addVideoStream);
 
   useEffect(() => {
-    socket.on(
-      'member-muted',
-      ({ userId, username }: { userId: string; username: string }) => {
-        if (!videoRefs[userId]) return;
-        const stream = (videoRefs[userId].children[0] as HTMLVideoElement)
-          .srcObject as MediaStream;
-        toggleAudio(stream);
-        setIsMuted((prev) => ({ ...prev, [userId]: true }));
-        toast(`${username} is muted`);
+    socket.on('member-muted', (peerId: string) => {
+      toggleAudio(stream);
+      setIsMuted((prev) => ({ ...prev, [peerId]: true }));
+      if (peerId === me) {
+        toast('You are muted');
+        setAmIMuted(true);
       }
-    );
+    });
+
+    socket.on('member-left', (peerId: string) => {
+      peers[peerId]?.close();
+      setIsRemoved((prev) => ({ ...prev, [peerId]: true }));
+    });
 
     socket.on('audio-status-toggled', (peerId: string) => {
       setIsMuted((prev) => ({ ...prev, [peerId]: !prev[peerId] }));
@@ -60,56 +54,38 @@ const App = ({ children }: { children: ReactElement }) => {
 
     return () => {
       socket.off('member-muted');
+      socket.off('member-left');
       socket.off('audio-status-toggled');
     };
-  }, [videoRefs]);
-
-  usePeerOnJoinRoom(addVideoStream);
-  usePeerOnAnswer(addVideoStream);
-  usePeerOnLeftRoom(videoRefs);
-
-  function handleMutePeer(id: string, name: string) {
-    socket.emit('mute-peer', {
-      userId: id,
-      username: name,
-    });
-    setIsMuted((prev) => ({ ...prev, [id]: true }));
-  }
-
-  function handleAudio() {
-    socket.emit('toggle-audio-status', me);
-    setIsMuted((prev) => ({ ...prev, [me]: !prev[me] }));
-    if (stream) toggleAudio(stream);
-  }
+  }, [peers]);
 
   function addVideoStream({
     id,
     name,
     stream,
-    isMe,
   }: {
     id: string;
-    name?: string;
+    name: string;
     stream: MediaStream;
-    isMe?: boolean;
   }) {
     setVideos((prev) => ({
       ...prev,
-      [id]: (
-        <div
-          key={id}
-          ref={(node) =>
-            node && setVideoRefs((prev) => ({ ...prev, [id]: node }))
-          }
-          className="drop-shadow-2xl shadow-indigo-500/50"
-        >
-          <PeerVideo isMe={isMe} stream={stream} name={name} />
-        </div>
-      ),
+      [id]: <PeerVideo key={id} stream={stream} name={name} />,
     }));
 
     const screenTrack = stream.getVideoTracks()[1];
     if (screenTrack) setSharedScreenTrack(screenTrack);
+  }
+
+  function handleRemovePeer(peerId: string) {
+    socket.emit('remove-peer', peerId);
+    peers[peerId]?.close();
+  }
+
+  function handleMutePeer(peerId: string) {
+    console.log(peerId);
+    socket.emit('mute-peer', peerId);
+    setIsMuted((prev) => ({ ...prev, [peerId]: true }));
   }
 
   if (!peer || !stream) return <span>Loading...</span>;
@@ -118,13 +94,11 @@ const App = ({ children }: { children: ReactElement }) => {
     <>
       <div className="flex gap-4">
         {/* shared screen stream video */}
-        <div
-          className={`${
-            sharedScreenTrack ? 'basis-5/6 flex justify-center' : ''
-          }`}
-        >
-          <SharedScreen sharedScreenTrack={sharedScreenTrack} />
-        </div>
+        {sharedScreenTrack && (
+          <div className="basis-5/6 flex justify-center">
+            <SharedScreen sharedScreenTrack={sharedScreenTrack} />
+          </div>
+        )}
 
         {/* peer stream videos */}
         <div
@@ -132,35 +106,32 @@ const App = ({ children }: { children: ReactElement }) => {
             sharedScreenTrack ? 'basis-1/6' : ''
           }`}
         >
-          {Object.entries(videos).map(([id, element]) => (
-            <div key={id} className="relative group h-fit">
-              {element}
+          {Object.entries(videos).map(
+            ([id, element]) =>
+              !isRemoved[id] && (
+                <div
+                  key={id}
+                  className="relative group h-fit drop-shadow-2xl shadow-indigo-500/50"
+                >
+                  {element}
 
-              {isHost && me !== id && (
-                <HostControlPanel
-                  onRemovePeer={() => socket.emit('remove-peer', id)}
-                  onMutePeer={() =>
-                    handleMutePeer(id, element.props.children.props.name)
-                  }
-                  isMuted={isMuted[id]}
-                />
-              )}
+                  {isHost && (
+                    <HostControlPanel
+                      onRemovePeer={() => handleRemovePeer(id)}
+                      onMutePeer={() => handleMutePeer(id)}
+                      isMuted={isMuted[id]}
+                    />
+                  )}
 
-              {isMuted[id] && (
-                <div className="absolute top-3 right-3">
-                  <MutedIcon />
+                  {isMuted[id] && (
+                    <div className="absolute top-3 right-3">
+                      <MutedIcon />
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-          ))}
+              )
+          )}
         </div>
-      </div>
-      <div className="flex w-screen px-6 absolute bottom-6 items-center z-50">
-        <div className="w-9" />
-        <div className="flex flex-auto gap-6 place-content-center">
-          <ControlPanel isMuted={isMuted[me]} onAudio={handleAudio} />
-        </div>
-        <div className="w-9">{children}</div>
       </div>
     </>
   );

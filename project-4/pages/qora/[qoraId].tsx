@@ -3,20 +3,20 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { MediaConnection } from 'peerjs';
 import { useUser } from '@auth0/nextjs-auth0';
 import { ToastContainer, ToastContainerProps } from 'react-toastify';
-import { ChatAltIcon as ChatIcon } from '@heroicons/react/outline';
 
 import VideoRoom from '@app/index';
 import Chat from '@components/chat';
+import MyVideo from '@components/my-video';
 import {
   useCreatePeer,
   useCreateVideoStream,
   useGetRoomId,
   useOnOpenPeer,
 } from '@hooks/index';
-
-import 'react-toastify/dist/ReactToastify.css';
 import { SocketContext } from '@pages/_app';
 import { Nullable } from '@common/types';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 export const QoraContext = createContext<any>({});
 
@@ -44,6 +44,8 @@ const Qora: NextPage = () => {
 
   const [isChatOpen, setIsChatOpen] = useState(false);
 
+  const [amIMuted, setAmIMuted] = useState(false);
+
   useEffect(() => {
     return () => {
       socket.disconnect();
@@ -54,14 +56,6 @@ const Qora: NextPage = () => {
 
   if (typeof window !== 'undefined' && !user.user)
     window.location.href = '/api/auth/login';
-
-  console.log(isChatOpen);
-
-  useEffect(() => {
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
 
   return (
     <QoraContext.Provider
@@ -81,20 +75,17 @@ const Qora: NextPage = () => {
     >
       <div className="flex h-screen place-items-center place-content-center relative p-6">
         <div className={`${isChatOpen ? 'basis-4/6' : 'basis-6/6'}`}>
-          <VideoRoom />
+          <VideoRoom setAmIMuted={setAmIMuted} />
         </div>
 
-        <button
-          className="absolute right-6 bottom-6"
-          onClick={() => setIsChatOpen(!isChatOpen)}
-        >
-          show chat
-        </button>
+        <MyVideo
+          onToggleChat={() => setIsChatOpen(!isChatOpen)}
+          amIMuted={amIMuted}
+          setAmIMuted={setAmIMuted}
+        />
 
         <div className={`${isChatOpen ? 'basis-2/6' : 'hidden'}`}>
-          <Chat setOpen={setIsChatOpen} title="Item Details">
-            chat will be here
-          </Chat>
+          <Chat setOpen={setIsChatOpen} title="Item Details" />
         </div>
       </div>
 
