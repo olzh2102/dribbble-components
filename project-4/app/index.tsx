@@ -1,6 +1,9 @@
 import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { ChatAltIcon as ChatIcon } from '@heroicons/react/outline';
+import {
+  ChatAltIcon as ChatIcon,
+  ArrowsExpandIcon,
+} from '@heroicons/react/outline';
 
 import { QoraContext } from '@pages/qora/[qoraId]';
 import {
@@ -158,13 +161,11 @@ const App = ({ toggleChat }: { toggleChat: () => void }) => {
       <div className="flex w-screen px-6 absolute bottom-6 items-center z-50">
         {sharedScreenTrack && (
           <button
-            className="bg-white"
-            onClick={() => {
-              setFullscreen(!fullscreen);
-              console.log('here');
-            }}
+            onClick={() => setFullscreen(!fullscreen)}
+            type="button"
+            className="inline-flex items-center p-3 border border-transparent rounded-xl shadow-sm text-white bg-slate-800 hover:bg-indigo-700 relative"
           >
-            To full screen
+            <ArrowsExpandIcon className="w-6 h-6" />
           </button>
         )}
         <div className="w-9" />
