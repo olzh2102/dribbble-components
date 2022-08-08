@@ -6,7 +6,6 @@ import { ToastContainer, ToastContainerProps } from 'react-toastify';
 
 import VideoRoom from '@app/index';
 import Chat from '@components/chat';
-import MyVideo from '@components/my-video';
 import {
   useCreatePeer,
   useCreateVideoStream,
@@ -44,8 +43,6 @@ const Qora: NextPage = () => {
 
   const [isChatOpen, setIsChatOpen] = useState(false);
 
-  const [amIMuted, setAmIMuted] = useState(false);
-
   useEffect(() => {
     return () => {
       socket.disconnect();
@@ -74,15 +71,7 @@ const Qora: NextPage = () => {
       }}
     >
       <div className="flex h-screen place-items-center place-content-center relative p-6">
-        <div className={`${isChatOpen ? 'basis-4/6' : 'basis-6/6'}`}>
-          <VideoRoom setAmIMuted={setAmIMuted} />
-        </div>
-
-        <MyVideo
-          onToggleChat={() => setIsChatOpen(!isChatOpen)}
-          amIMuted={amIMuted}
-          setAmIMuted={setAmIMuted}
-        />
+        <VideoRoom toggleChat={() => setIsChatOpen(!isChatOpen)} />
 
         <div className={`${isChatOpen ? 'basis-2/6' : 'hidden'}`}>
           <Chat setOpen={setIsChatOpen} title="Item Details" />

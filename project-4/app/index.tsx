@@ -1,18 +1,21 @@
 import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { ChatAltIcon as ChatIcon } from '@heroicons/react/outline';
 
 import { QoraContext } from '@pages/qora/[qoraId]';
-import { HostControlPanel, PeerVideo, SharedScreen } from '@components/index';
+import {
+  ControlPanel,
+  HostControlPanel,
+  PeerVideo,
+  SharedScreen,
+} from '@components/index';
 import { usePeerOnJoinRoom, usePeerOnAnswer } from '@hooks/index';
 import { toggleAudio } from 'common/utils';
 import { KeyValue } from 'common/types';
 import { MutedIcon } from 'assets/icons';
+import { MYSELF } from '@common/constants';
 
-const App = ({
-  setAmIMuted,
-}: {
-  setAmIMuted: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
+const App = ({ toggleChat }: { toggleChat: () => void }) => {
   console.log('render app');
 
   const {
@@ -34,13 +37,16 @@ const App = ({
   usePeerOnAnswer(addVideoStream);
 
   useEffect(() => {
+    if (!stream) return;
+    if (me) addVideoStream({ id: me, stream, isMe: true, name: MYSELF });
+  }, [me, stream]);
+
+  useEffect(() => {
     socket.on('member-muted', (peerId: string) => {
+      console.log('MUTED', peerId);
       toggleAudio(stream);
       setIsMuted((prev) => ({ ...prev, [peerId]: true }));
-      if (peerId === me) {
-        toast('You are muted');
-        setAmIMuted(true);
-      }
+      if (peerId === me) toast('You are muted');
     });
 
     socket.on('member-left', (peerId: string) => {
@@ -63,14 +69,16 @@ const App = ({
     id,
     name,
     stream,
+    isMe,
   }: {
     id: string;
     name: string;
     stream: MediaStream;
+    isMe?: boolean;
   }) {
     setVideos((prev) => ({
       ...prev,
-      [id]: <PeerVideo key={id} stream={stream} name={name} />,
+      [id]: <PeerVideo key={id} stream={stream} name={name} isMe={isMe} />,
     }));
 
     const screenTrack = stream.getVideoTracks()[1];
@@ -86,6 +94,12 @@ const App = ({
     console.log(peerId);
     socket.emit('mute-peer', peerId);
     setIsMuted((prev) => ({ ...prev, [peerId]: true }));
+  }
+
+  function handleAudio() {
+    socket.emit('toggle-audio-status', me);
+    setIsMuted((prev) => ({ ...prev, [me]: !prev[me] }));
+    toggleAudio(stream);
   }
 
   if (!peer || !stream) return <span>Loading...</span>;
@@ -115,7 +129,7 @@ const App = ({
                 >
                   {element}
 
-                  {isHost && (
+                  {isHost && me !== id && (
                     <HostControlPanel
                       onRemovePeer={() => handleRemovePeer(id)}
                       onMutePeer={() => handleMutePeer(id)}
@@ -131,6 +145,18 @@ const App = ({
                 </div>
               )
           )}
+        </div>
+      </div>
+
+      <div className="flex w-screen px-6 absolute bottom-6 items-center z-50">
+        <div className="w-9" />
+        <div className="flex flex-auto gap-6 place-content-center">
+          <ControlPanel isMuted={isMuted[me]} onAudio={handleAudio} />
+        </div>
+        <div className="w-9">
+          <button onClick={toggleChat}>
+            <ChatIcon className="w-9 h-9 stroke-white" />
+          </button>
         </div>
       </div>
     </>
