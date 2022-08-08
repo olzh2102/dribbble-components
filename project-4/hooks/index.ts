@@ -4,9 +4,9 @@ import useGetRoomId from './use-get-room-id';
 import useAddVideoStream from './use-add-video-stream';
 import useOnOpenPeer from './use-on-open-peer';
 import usePeerOnJoinRoom from './use-peer-on-join-room';
-import usePeerOnLeftRoom from './use-peer-on-left-room';
 import usePeerOnAnswer from './use-peer-on-answer';
 import useCreateVideoOnPageOpen from './use-create-video-on-page-open';
+import useScreenShare from './use-screen-share';
 
 export {
   useCreatePeer,
@@ -15,7 +15,7 @@ export {
   useAddVideoStream,
   useOnOpenPeer,
   usePeerOnJoinRoom,
-  usePeerOnLeftRoom,
   usePeerOnAnswer,
   useCreateVideoOnPageOpen,
+  useScreenShare,
 };

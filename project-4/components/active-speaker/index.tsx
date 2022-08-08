@@ -1,12 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import { WINDOW_SIZE_IN_SAMPLES } from 'common/constants';
 import { SpeakerIcon } from '../../assets/icons';
+import { QoraContext } from '@pages/qora/[qoraId]';
 
-const ActiveSpeaker = ({ stream }: { stream: MediaStream }) => {
+const ActiveSpeaker = () => {
+  const { stream } = useContext(QoraContext);
   const [isSpeaking, setIsSpeaking] = useState(false);
 
   useEffect(() => {
+    if (!stream) return;
+
     const audioContext = new AudioContext();
     const analyser = audioContext.createAnalyser();
     const source = audioContext.createMediaStreamSource(stream);
@@ -28,7 +32,7 @@ const ActiveSpeaker = ({ stream }: { stream: MediaStream }) => {
       }
     };
     update();
-  }, []);
+  }, [stream]);
 
   return isSpeaking ? (
     <div className="animate-[wiggle_1s_ease-in-out_infinite] rounded-full bg-indigo-400 absolute top-3 right-3 p-1">

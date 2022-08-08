@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from 'react';
+import { createContext } from 'react';
 import type { AppProps } from 'next/app';
 import { UserProvider } from '@auth0/nextjs-auth0';
 
