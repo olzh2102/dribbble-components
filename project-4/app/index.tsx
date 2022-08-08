@@ -1,6 +1,9 @@
 import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { ChatAltIcon as ChatIcon } from '@heroicons/react/outline';
+import {
+  ChatAltIcon as ChatIcon,
+  ArrowsExpandIcon,
+} from '@heroicons/react/outline';
 
 import { QoraContext } from '@pages/qora/[qoraId]';
 import {
@@ -28,6 +31,7 @@ const App = ({ toggleChat }: { toggleChat: () => void }) => {
     sharedScreenTrack,
     setSharedScreenTrack,
   } = useContext(QoraContext);
+  const [fullscreen, setFullscreen] = useState(false);
 
   const [videos, setVideos] = useState<KeyValue<JSX.Element>>({});
   const [isRemoved, setIsRemoved] = useState<KeyValue<boolean>>({});
@@ -103,19 +107,26 @@ const App = ({ toggleChat }: { toggleChat: () => void }) => {
 
   if (!peer || !stream) return <span>Loading...</span>;
 
+  let sharedScreenClasses = '';
+  if (sharedScreenTrack) {
+    sharedScreenClasses += 'flex justify-center';
+    if (fullscreen) sharedScreenClasses += 'basis-6/6';
+    else sharedScreenClasses += 'basis-5/6';
+  }
+
   return (
     <>
       <div className="flex gap-4">
         {/* shared screen stream video */}
-        {sharedScreenTrack && (
-          <div className="basis-5/6 flex justify-center">
-            <SharedScreen sharedScreenTrack={sharedScreenTrack} />
-          </div>
-        )}
+        <div className={sharedScreenClasses}>
+          <SharedScreen sharedScreenTrack={sharedScreenTrack} />
+        </div>
 
         {/* peer stream videos */}
         <div
-          className={`flex flex-wrap gap-4 justify-around ${
+          className={`${
+            fullscreen && sharedScreenTrack ? 'hidden' : ''
+          } flex flex-wrap gap-4 justify-around ${
             sharedScreenTrack ? 'basis-1/6' : ''
           }`}
         >
@@ -148,6 +159,15 @@ const App = ({ toggleChat }: { toggleChat: () => void }) => {
       </div>
 
       <div className="flex w-screen px-6 absolute bottom-6 items-center z-50">
+        {sharedScreenTrack && (
+          <button
+            onClick={() => setFullscreen(!fullscreen)}
+            type="button"
+            className="inline-flex items-center p-3 border border-transparent rounded-xl shadow-sm text-white bg-slate-800 hover:bg-indigo-700 relative"
+          >
+            <ArrowsExpandIcon className="w-6 h-6" />
+          </button>
+        )}
         <div className="w-9" />
         <div className="flex flex-auto gap-6 place-content-center">
           <ControlPanel isMuted={isMuted[me]} onAudio={handleAudio} />
