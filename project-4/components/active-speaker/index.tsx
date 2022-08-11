@@ -14,6 +14,7 @@ const ActiveSpeaker = () => {
     const audioContext = new AudioContext();
     const analyser = audioContext.createAnalyser();
     const source = audioContext.createMediaStreamSource(stream);
+    console.log('audio context:', source);
     source.connect(analyser);
     analyser.fftSize = WINDOW_SIZE_IN_SAMPLES;
     const dataArray = new Uint8Array(analyser.frequencyBinCount);
