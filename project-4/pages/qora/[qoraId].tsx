@@ -12,10 +12,11 @@ import {
   useGetRoomId,
   useOnOpenPeer,
 } from '@hooks/index';
-import { SocketContext } from '@pages/_app';
+import { InitialStreamSettingsContext, SocketContext } from '@pages/_app';
 import { Nullable } from '@common/types';
 
 import 'react-toastify/dist/ReactToastify.css';
+import { useRouter } from 'next/router';
 
 export const QoraContext = createContext<any>({});
 
@@ -31,16 +32,17 @@ const INITIAL = {
 };
 
 const Qora: NextPage = () => {
+  const { isMuted, isVisible } = useContext<any>(InitialStreamSettingsContext);
   const socket = useContext(SocketContext);
   const roomId = useGetRoomId();
   const peer = useCreatePeer();
   const user = useUser();
   const stream = useCreateVideoStream({ video: true, audio: true });
-  const me = useOnOpenPeer(peer, INITIAL.isMuted);
+  const me = useOnOpenPeer(peer, isMuted);
 
   const [peers, setPeers] = useState<KeyValue<MediaConnection>>({});
 
-  if (stream) stream.getVideoTracks()[0].enabled = false;
+  if (stream) stream.getVideoTracks()[0].enabled = isVisible;
 
   const [sharedScreenTrack, setSharedScreenTrack] =
     useState<Nullable<MediaStreamTrack>>(null);
@@ -79,7 +81,10 @@ const Qora: NextPage = () => {
     >
       <div className="flex h-screen place-items-center place-content-center relative p-6">
         <VideoRoom
-          initial={INITIAL}
+          initial={{
+            isMuted,
+            video: isVisible,
+          }}
           toggleChat={() => setIsChatOpen(!isChatOpen)}
         />
 
