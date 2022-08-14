@@ -1,5 +1,5 @@
-import { QoraContext } from '@pages/qora/[qoraId]';
-import { useContext, useEffect } from 'react';
+import { KeyValue, QoraContext } from '@pages/qora/[qoraId]';
+import { Dispatch, SetStateAction, useContext, useEffect } from 'react';
 import { toast } from 'react-toastify';
 
 const usePeerOnAnswer = (
@@ -11,7 +11,8 @@ const usePeerOnAnswer = (
     id: string;
     name: string;
     stream: MediaStream;
-  }) => void
+  }) => void,
+  setIsMuted: Dispatch<SetStateAction<KeyValue<boolean>>>
 ) => {
   const { peer, setPeers, stream } = useContext(QoraContext);
 
@@ -20,6 +21,10 @@ const usePeerOnAnswer = (
 
     peer.on('call', (call: any) => {
       setPeers((prev: any) => ({ ...prev, [call.peer]: call }));
+      setIsMuted((prev) => ({
+        ...prev,
+        [call.peer]: call.metadata.isMuted,
+      }));
 
       call.answer(stream);
 

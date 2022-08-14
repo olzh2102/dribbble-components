@@ -25,15 +25,22 @@ const TOAST_PROPS: ToastContainerProps = {
   autoClose: 3000,
 };
 
+const INITIAL = {
+  isMuted: true,
+  video: true,
+};
+
 const Qora: NextPage = () => {
   const socket = useContext(SocketContext);
   const roomId = useGetRoomId();
   const peer = useCreatePeer();
   const user = useUser();
   const stream = useCreateVideoStream({ video: true, audio: true });
-  const me = useOnOpenPeer(peer);
+  const me = useOnOpenPeer(peer, INITIAL.isMuted);
 
   const [peers, setPeers] = useState<KeyValue<MediaConnection>>({});
+
+  if (stream) stream.getVideoTracks()[0].enabled = false;
 
   const [sharedScreenTrack, setSharedScreenTrack] =
     useState<Nullable<MediaStreamTrack>>(null);
@@ -71,7 +78,10 @@ const Qora: NextPage = () => {
       }}
     >
       <div className="flex h-screen place-items-center place-content-center relative p-6">
-        <VideoRoom toggleChat={() => setIsChatOpen(!isChatOpen)} />
+        <VideoRoom
+          initial={INITIAL}
+          toggleChat={() => setIsChatOpen(!isChatOpen)}
+        />
 
         <div className={`${isChatOpen ? 'basis-2/6' : 'hidden'}`}>
           <Chat setOpen={setIsChatOpen} title="Item Details" />
