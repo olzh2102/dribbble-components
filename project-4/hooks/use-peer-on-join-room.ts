@@ -1,6 +1,6 @@
-import { useContext, useEffect } from 'react';
+import { Dispatch, SetStateAction, useContext, useEffect } from 'react';
 import { toast } from 'react-toastify';
-import { QoraContext } from '@pages/qora/[qoraId]';
+import { KeyValue, QoraContext } from '@pages/qora/[qoraId]';
 
 const usePeerOnJoinRoom = (
   addVideoStream: ({
@@ -11,16 +11,21 @@ const usePeerOnJoinRoom = (
     id: string;
     name: string;
     stream: MediaStream;
-  }) => void
+  }) => void,
+  isMuted: boolean,
+  setIsMuted: Dispatch<SetStateAction<KeyValue<boolean>>>
 ) => {
   const { socket, peer, setPeers, user, stream } = useContext(QoraContext);
 
   useEffect(() => {
     if (!socket || !stream || !peer || !setPeers) return;
 
-    socket.on('member-joined', ({ userId, username }: any) => {
+    socket.on('member-joined', ({ userId, username, isPeerMuted }: any) => {
       const call = peer.call(userId, stream, {
-        metadata: { username: user?.name },
+        metadata: {
+          username: user?.name,
+          isMuted,
+        },
       });
       console.log('call friend with name:', username);
       console.log('call friend with id:', userId);
@@ -40,12 +45,13 @@ const usePeerOnJoinRoom = (
       });
 
       setPeers((prevState: any) => ({ ...prevState, [userId]: call }));
+      setIsMuted((prev) => ({ ...prev, [userId]: isPeerMuted }));
     });
 
     return () => {
       socket.off('member-joined');
     };
-  }, [socket, stream, peer]);
+  }, [socket, stream, peer, isMuted]);
 };
 
 export default usePeerOnJoinRoom;

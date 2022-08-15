@@ -15,13 +15,15 @@ const socketHandler = (req: NextApiRequest, res: NextApiResponseServerIO) => {
     io.on('connection', (socket) => {
       console.log('connected');
 
-      socket.on('join-room', ({ roomId, userId, username }) => {
+      socket.on('join-room', ({ roomId, userId, username, isPeerMuted }) => {
         console.log('USER ID: ', userId);
         console.log('ROOM ID: ', roomId);
         console.log('NAME: ', username);
 
         socket.join(roomId);
-        socket.to(roomId).emit('member-joined', { userId, username });
+        socket
+          .to(roomId)
+          .emit('member-joined', { userId, username, isPeerMuted });
 
         socket.on('disconnect', () => {
           socket.to(roomId).emit('member-left', userId);

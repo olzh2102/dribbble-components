@@ -37,7 +37,6 @@ const Home: NextPage = () => {
 
           <Link href={value.length > 0 ? `/${ROOM_NAME}/${value}` : '/'}>
             <button
-              onClick={() => window.localStorage.setItem(roomId, '*')}
               type="button"
               className="inline-flex items-center px-6 py-2 border border-transparent text-sm font-medium rounded-md text-sky-100 bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >

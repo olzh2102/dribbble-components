@@ -18,7 +18,13 @@ import { KeyValue } from 'common/types';
 import { MutedIcon } from 'assets/icons';
 import { MYSELF } from '@common/constants';
 
-const App = ({ toggleChat }: { toggleChat: () => void }) => {
+const App = ({
+  initial,
+  toggleChat,
+}: {
+  initial: { isMuted: boolean; video: boolean };
+  toggleChat: () => void;
+}) => {
   console.log('render app');
 
   const {
@@ -37,12 +43,13 @@ const App = ({ toggleChat }: { toggleChat: () => void }) => {
   const [isRemoved, setIsRemoved] = useState<KeyValue<boolean>>({});
   const [isMuted, setIsMuted] = useState<KeyValue<boolean>>({});
 
-  usePeerOnJoinRoom(addVideoStream);
-  usePeerOnAnswer(addVideoStream);
+  usePeerOnJoinRoom(addVideoStream, isMuted[me], setIsMuted);
+  usePeerOnAnswer(addVideoStream, setIsMuted);
 
   useEffect(() => {
-    if (!stream) return;
-    if (me) addVideoStream({ id: me, stream, isMe: true, name: MYSELF });
+    if (!stream || !me) return;
+    addVideoStream({ id: me, stream, isMe: true, name: MYSELF });
+    setIsMuted((prev) => ({ ...prev, [me]: initial.isMuted }));
   }, [me, stream]);
 
   useEffect(() => {

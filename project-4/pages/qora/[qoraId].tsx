@@ -4,16 +4,16 @@ import { MediaConnection } from 'peerjs';
 import { useUser } from '@auth0/nextjs-auth0';
 import { ToastContainer, ToastContainerProps } from 'react-toastify';
 
+import { Nullable } from '@common/types';
 import VideoRoom from '@app/index';
-import Chat from '@components/chat';
+import { SocketContext } from '@pages/_app';
+import { Lobby, Chat } from '@components/index';
 import {
   useCreatePeer,
   useCreateVideoStream,
   useGetRoomId,
   useOnOpenPeer,
 } from '@hooks/index';
-import { SocketContext } from '@pages/_app';
-import { Nullable } from '@common/types';
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -26,12 +26,45 @@ const TOAST_PROPS: ToastContainerProps = {
 };
 
 const Qora: NextPage = () => {
+  const [isLobby, setIsLobby] = useState(true);
+  const [isMuted, setIsMuted] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+
+  const stream = useCreateVideoStream({ video: true, audio: true });
+
+  if (stream) stream.getVideoTracks()[0].enabled = isVisible;
+
+  return isLobby ? (
+    <Lobby
+      stream={stream}
+      isMuted={isMuted}
+      isVisible={isVisible}
+      setIsLobby={() => setIsLobby(!isLobby)}
+      setIsMuted={() => setIsMuted(!isMuted)}
+      setIsVisible={() => setIsVisible(!isVisible)}
+    />
+  ) : (
+    <Room stream={stream} isMuted={isMuted} isVisible={isVisible} />
+  );
+};
+
+export default Qora;
+export type KeyValue<T> = Record<string, T>;
+
+const Room = ({
+  stream,
+  isMuted,
+  isVisible,
+}: {
+  stream: Nullable<MediaStream>;
+  isMuted: boolean;
+  isVisible: boolean;
+}) => {
   const socket = useContext(SocketContext);
   const roomId = useGetRoomId();
   const peer = useCreatePeer();
   const user = useUser();
-  const stream = useCreateVideoStream({ video: true, audio: true });
-  const me = useOnOpenPeer(peer);
+  const me = useOnOpenPeer(peer, isMuted);
 
   const [peers, setPeers] = useState<KeyValue<MediaConnection>>({});
 
@@ -71,7 +104,13 @@ const Qora: NextPage = () => {
       }}
     >
       <div className="flex h-screen place-items-center place-content-center relative p-6">
-        <VideoRoom toggleChat={() => setIsChatOpen(!isChatOpen)} />
+        <VideoRoom
+          initial={{
+            isMuted,
+            video: isVisible,
+          }}
+          toggleChat={() => setIsChatOpen(!isChatOpen)}
+        />
 
         <div className={`${isChatOpen ? 'basis-2/6' : 'hidden'}`}>
           <Chat setOpen={setIsChatOpen} title="Item Details" />
@@ -82,6 +121,3 @@ const Qora: NextPage = () => {
     </QoraContext.Provider>
   );
 };
-
-export default Qora;
-export type KeyValue<T> = Record<string, T>;

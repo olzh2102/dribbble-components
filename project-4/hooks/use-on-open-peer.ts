@@ -5,7 +5,7 @@ import { SocketContext } from '@pages/_app';
 import useGetRoomId from './use-get-room-id';
 import { Nullable } from 'common/types';
 
-const useOnOpenPeer = (peer: Nullable<Peer>) => {
+const useOnOpenPeer = (peer: Nullable<Peer>, isPeerMuted: boolean) => {
   const roomId = useGetRoomId();
   const socket = useContext(SocketContext);
 
@@ -21,6 +21,7 @@ const useOnOpenPeer = (peer: Nullable<Peer>) => {
         userId: id,
         roomId,
         username: user.name,
+        isPeerMuted,
       });
 
       console.log('Your device ID is: ', id);
