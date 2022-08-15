@@ -17,7 +17,7 @@ const usePeerOnAnswer = (
   const { peer, setPeers, stream } = useContext(QoraContext);
 
   useEffect(() => {
-    if (!peer || !stream || !setPeers) return;
+    if (!peer || !stream) return;
 
     peer.on('call', (call: any) => {
       setPeers((prev: any) => ({ ...prev, [call.peer]: call }));

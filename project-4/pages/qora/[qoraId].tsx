@@ -4,19 +4,18 @@ import { MediaConnection } from 'peerjs';
 import { useUser } from '@auth0/nextjs-auth0';
 import { ToastContainer, ToastContainerProps } from 'react-toastify';
 
+import { Nullable } from '@common/types';
 import VideoRoom from '@app/index';
-import Chat from '@components/chat';
+import { SocketContext } from '@pages/_app';
+import { Lobby, Chat } from '@components/index';
 import {
   useCreatePeer,
   useCreateVideoStream,
   useGetRoomId,
   useOnOpenPeer,
 } from '@hooks/index';
-import { InitialStreamSettingsContext, SocketContext } from '@pages/_app';
-import { Nullable } from '@common/types';
 
 import 'react-toastify/dist/ReactToastify.css';
-import { useRouter } from 'next/router';
 
 export const QoraContext = createContext<any>({});
 
@@ -26,23 +25,48 @@ const TOAST_PROPS: ToastContainerProps = {
   autoClose: 3000,
 };
 
-const INITIAL = {
-  isMuted: true,
-  video: true,
+const Qora: NextPage = () => {
+  const [isLobby, setIsLobby] = useState(true);
+  const [isMuted, setIsMuted] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+
+  const stream = useCreateVideoStream({ video: true, audio: true });
+
+  if (stream) stream.getVideoTracks()[0].enabled = isVisible;
+
+  return isLobby ? (
+    <Lobby
+      stream={stream}
+      isMuted={isMuted}
+      isVisible={isVisible}
+      setIsLobby={() => setIsLobby(!isLobby)}
+      setIsMuted={() => setIsMuted(!isMuted)}
+      setIsVisible={() => setIsVisible(!isVisible)}
+    />
+  ) : (
+    <Room stream={stream} isMuted={isMuted} isVisible={isVisible} />
+  );
 };
 
-const Qora: NextPage = () => {
-  const { isMuted, isVisible } = useContext<any>(InitialStreamSettingsContext);
+export default Qora;
+export type KeyValue<T> = Record<string, T>;
+
+const Room = ({
+  stream,
+  isMuted,
+  isVisible,
+}: {
+  stream: Nullable<MediaStream>;
+  isMuted: boolean;
+  isVisible: boolean;
+}) => {
   const socket = useContext(SocketContext);
   const roomId = useGetRoomId();
   const peer = useCreatePeer();
   const user = useUser();
-  const stream = useCreateVideoStream({ video: true, audio: true });
   const me = useOnOpenPeer(peer, isMuted);
 
   const [peers, setPeers] = useState<KeyValue<MediaConnection>>({});
-
-  if (stream) stream.getVideoTracks()[0].enabled = isVisible;
 
   const [sharedScreenTrack, setSharedScreenTrack] =
     useState<Nullable<MediaStreamTrack>>(null);
@@ -97,6 +121,3 @@ const Qora: NextPage = () => {
     </QoraContext.Provider>
   );
 };
-
-export default Qora;
-export type KeyValue<T> = Record<string, T>;
