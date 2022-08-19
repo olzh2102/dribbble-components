@@ -86,6 +86,7 @@ const App = ({
     stream: MediaStream;
     isMe?: boolean;
   }) {
+    // console.log('STREAM TRACKS', id, stream.getTracks());
     setVideos((prev) => ({
       ...prev,
       [id]: <PeerVideo key={id} stream={stream} name={name} isMe={isMe} />,
@@ -177,7 +178,11 @@ const App = ({
         )}
         <div className="w-9" />
         <div className="flex flex-auto gap-6 place-content-center">
-          <ControlPanel isMuted={isMuted[me]} onAudio={handleAudio} />
+          <ControlPanel
+            isMuted={isMuted[me]}
+            onAudio={handleAudio}
+            addVideoStream={addVideoStream}
+          />
         </div>
         <div className="w-9">
           <button onClick={toggleChat}>

@@ -30,6 +30,7 @@ const usePeerOnAnswer = (
 
       call.on('stream', (hostStream: any) => {
         console.log('answer call stream');
+        console.log('HOST STREAM TRACKS', hostStream.getTracks());
         call.peer &&
           addVideoStream({
             id: call.peer,

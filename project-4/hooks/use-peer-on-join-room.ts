@@ -30,8 +30,9 @@ const usePeerOnJoinRoom = (
       console.log('call friend with name:', username);
       console.log('call friend with id:', userId);
 
-      call.on('stream', (friendStream: any) => {
+      call.on('stream', async (friendStream: any) => {
         console.log('friend stream');
+        console.log('FRIEND STREAM TRACKS', friendStream.getTracks());
         userId &&
           addVideoStream({
             id: userId,

@@ -26,7 +26,7 @@ const TOAST_PROPS: ToastContainerProps = {
 };
 
 const Qora: NextPage = () => {
-  const [isLobby, setIsLobby] = useState(true);
+  const [isLobby, setIsLobby] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
 

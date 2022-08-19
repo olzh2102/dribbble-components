@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import {
   VideoCameraIcon,
@@ -10,21 +10,66 @@ import {
 import { toggleVideo } from 'common/utils';
 import { QoraContext } from '@pages/qora/[qoraId]';
 import { useScreenShare } from '@hooks/index';
+import Peer, { MediaConnection } from 'peerjs';
+import { KeyValue } from '@common/types';
 
 const ControlPanel = ({
   onAudio,
   isMuted,
+  addVideoStream,
 }: {
   onAudio: () => void;
   isMuted: boolean;
+  addVideoStream: ({
+    id,
+    name,
+    stream,
+  }: {
+    id: string;
+    name: string;
+    stream: MediaStream;
+  }) => void;
 }) => {
   const router = useRouter();
-  const { isHost, stream, sharedScreenTrack } = useContext(QoraContext);
+  const { isHost, me, peers, stream, sharedScreenTrack } =
+    useContext(QoraContext);
   const [videoActive, setVideoActive] = useState(true);
 
-  const handleVideo = () => {
+  console.log('BANANA:', stream.getTracks());
+
+  function replaceTrack(track: MediaStreamTrack) {
+    return (peer: MediaConnection) => {
+      const sender = peer.peerConnection
+        ?.getSenders()
+        .find((s) => s.track?.kind === track.kind);
+
+      console.log('found sender:', sender);
+      sender?.replaceTrack(track);
+    };
+  }
+
+  const handleVideo = async () => {
     setVideoActive(!videoActive);
-    toggleVideo(stream);
+    // toggleVideo(stream);
+
+    const currentVideoTrack = stream.getVideoTracks()[0];
+
+    if (currentVideoTrack) {
+      currentVideoTrack.stop();
+      stream.removeTrack(currentVideoTrack);
+      addVideoStream({ id: me, name: 'You', stream });
+    } else {
+      const videoStream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: false,
+      });
+      const videoTrack = videoStream.getVideoTracks()[0];
+      Object.values(peers as KeyValue<MediaConnection>).forEach(
+        replaceTrack(videoTrack)
+      );
+      stream.addTrack(videoTrack);
+      addVideoStream({ id: me, name: 'You', stream });
+    }
   };
 
   const { isMyScreenSharing, toggleScreenShare } = useScreenShare();
