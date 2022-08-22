@@ -16,19 +16,9 @@ import { KeyValue } from '@common/types';
 const ControlPanel = ({
   onAudio,
   isMuted,
-  addVideoStream,
 }: {
   onAudio: () => void;
   isMuted: boolean;
-  addVideoStream: ({
-    id,
-    name,
-    stream,
-  }: {
-    id: string;
-    name: string;
-    stream: MediaStream;
-  }) => void;
 }) => {
   const router = useRouter();
   const { isHost, me, peers, stream, sharedScreenTrack } =
@@ -48,27 +38,42 @@ const ControlPanel = ({
     };
   }
 
-  const handleVideo = async () => {
+  // * ------------------
+  // if (vidTrack && toggle && vidTrack.readyState == "ended") {
+  //   let newVideoStreamGrab = await navigator.mediaDevices.getUserMedia({
+  //     video: true
+  //   })
+  //   this.stream.removeTrack(this.stream.getVideoTracks()[0])
+  //   this.stream.addTrack(newVideoStreamGrab.getVideoTracks()[0])
+  // } else {
+  //   vidTrack.stop()
+  // }
+
+  // * ------------------
+
+  const handleVideo = () => {
     setVideoActive(!videoActive);
     // toggleVideo(stream);
 
-    const currentVideoTrack = stream.getVideoTracks()[0];
+    const currentVideoTrack: MediaStreamTrack = stream.getVideoTracks()[0];
 
-    if (currentVideoTrack) {
+    if (currentVideoTrack.readyState === 'live') {
       currentVideoTrack.stop();
-      stream.removeTrack(currentVideoTrack);
-      addVideoStream({ id: me, name: 'You', stream });
     } else {
-      const videoStream = await navigator.mediaDevices.getUserMedia({
-        video: true,
-        audio: false,
-      });
-      const videoTrack = videoStream.getVideoTracks()[0];
-      Object.values(peers as KeyValue<MediaConnection>).forEach(
-        replaceTrack(videoTrack)
-      );
-      stream.addTrack(videoTrack);
-      addVideoStream({ id: me, name: 'You', stream });
+      navigator.mediaDevices
+        .getUserMedia({
+          video: true,
+          audio: true,
+        })
+        .then((videoStream) => {
+          const videoTrack = videoStream.getVideoTracks()[0];
+          Object.values(peers as KeyValue<MediaConnection>).forEach(
+            replaceTrack(videoTrack)
+          );
+
+          stream.removeTrack(currentVideoTrack);
+          stream.addTrack(videoTrack);
+        });
     }
   };
 
