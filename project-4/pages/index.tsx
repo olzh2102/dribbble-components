@@ -1,14 +1,16 @@
 import type { NextPage } from 'next';
 import { useState } from 'react';
 import Link from 'next/link';
-import { v4 as uuid } from 'uuid';
+import { customAlphabet } from 'nanoid';
 
 import { ROOM_NAME } from 'common/constants';
 
 import { Header, WelcomeContainer } from '../components';
 
+const nanoId = customAlphabet('abcdefghijklmnopqrstuvxyz', 10);
+
 const Home: NextPage = () => {
-  const roomId = uuid();
+  const roomId = nanoId();
   const [value, setValue] = useState('');
 
   return (
