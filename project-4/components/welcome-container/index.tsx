@@ -17,7 +17,7 @@ const WelcomeContainer = ({ children }: { children: React.ReactNode }) => {
                 For secure business and friendly meetings. It is free and for
                 all.
               </p>
-              {children}
+              <div className="flex gap-4 justify-start mt-4">{children}</div>
             </div>
           </main>
         </div>
