@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const useIsAudioActive = ({ stream, fftSize = 1024 }: any) => {
+const useIsAudioActive = ({ stream, fftSize = 1024 }: UseIsAudioActive) => {
   const [isSpeaking, setIsSpeaking] = useState(false);
 
   useEffect(() => {
@@ -35,3 +35,21 @@ const useIsAudioActive = ({ stream, fftSize = 1024 }: any) => {
 };
 
 export default useIsAudioActive;
+
+type UseIsAudioActive = {
+  stream: MediaStream | null;
+  fftSize: FftSize;
+};
+
+type FftSize =
+  | 32
+  | 64
+  | 128
+  | 256
+  | 512
+  | 1024
+  | 2048
+  | 4096
+  | 8192
+  | 16384
+  | 32768;
