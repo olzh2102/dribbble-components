@@ -4,6 +4,8 @@ import { createContext } from 'react';
 import { UserProvider } from '@auth0/nextjs-auth0';
 import { io } from 'socket.io-client';
 
+import '../styles/globals.css';
+
 const socket = io('/', { path: '/api/socketio' });
 export const SocketContext = createContext(socket);
 

@@ -1,6 +1,7 @@
-import { KeyValue, QoraContext } from '@pages/qora/[qoraId]';
 import { Dispatch, SetStateAction, useContext, useEffect } from 'react';
 import { toast } from 'react-toastify';
+import { QoraContext } from '@pages/qora/[qoraId]';
+import { KeyValue } from '@common/types';
 
 const usePeerOnAnswer = (
   addVideoStream: ({
@@ -42,10 +43,6 @@ const usePeerOnAnswer = (
         toast(`${call.metadata.username} has left the room`);
       });
     });
-
-    return () => {
-      peer.off('call');
-    };
   }, [peer, stream]);
 };
 
