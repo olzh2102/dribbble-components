@@ -46,6 +46,7 @@ const App = ({
 
   useEffect(() => {
     if (!stream || !me) return;
+
     addVideoStream({ id: me, stream, isMe: true, name: MYSELF });
     setIsMuted((prev) => ({ ...prev, [me]: initial.isMuted }));
   }, [me, stream]);
@@ -122,12 +123,10 @@ const App = ({
   return (
     <>
       <div className="flex gap-4">
-        {/* shared screen stream video */}
         <div className={sharedScreenClasses}>
           <SharedScreen sharedScreenTrack={sharedScreenTrack} />
         </div>
 
-        {/* peer stream videos */}
         <div
           className={`${
             fullscreen && sharedScreenTrack ? 'hidden' : ''
