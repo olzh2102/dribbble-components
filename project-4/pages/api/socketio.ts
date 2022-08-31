@@ -15,50 +15,47 @@ const socketHandler = (req: NextApiRequest, res: NextApiResponseServerIO) => {
     io.on('connection', (socket) => {
       console.log('connected');
 
-      socket.on('join-room', ({ roomId, userId, username, isPeerMuted }) => {
-        console.log('USER ID: ', userId);
-        console.log('ROOM ID: ', roomId);
-        console.log('NAME: ', username);
+      socket.on('room:join', ({ room, user }) => {
+        console.table({
+          'room-id': room,
+          'used-id': user.id,
+          'user-name': user.name,
+        });
 
-        socket.join(roomId);
-        socket
-          .to(roomId)
-          .emit('member-joined', { userId, username, isPeerMuted });
+        socket.join(room);
+
+        socket.to(room).emit('user:joined', user);
 
         socket.on('disconnect', () => {
-          socket.to(roomId).emit('member-left', userId);
+          socket.to(room).emit('user:left', user.id);
         });
 
-        socket.on('remove-peer', (userId) => {
-          socket.to(roomId).emit('member-left', userId);
+        socket.on('user:leave', (userId) => {
+          socket.to(room).emit('user:left', userId);
         });
 
-        socket.on('mute-peer', (userId) => {
-          socket.to(roomId).emit('member-muted', userId);
+        socket.on('host:mute-user', (userId) => {
+          socket.to(room).emit('host:muted-user', userId);
         });
 
-        socket.on('toggle-audio-status', (userId) => {
-          socket.to(roomId).emit('audio-status-toggled', userId);
+        socket.on('host:remove-user-shared-screen', () => {
+          socket.to(room).emit('host:removed-user-shared-screen');
         });
 
-        socket.on('share-my-screen', ({ username }) => {
-          socket.to(roomId).emit('screen-shared', username);
+        socket.on('user:toggle-audio', (userId) => {
+          socket.to(room).emit('user:toggled-audio', userId);
         });
 
-        socket.on('stop-sharing-my-screen', () => {
-          socket.to(roomId).emit('screen-sharing-stopped', username);
+        socket.on('user:share-screen', ({ username }) => {
+          socket.to(room).emit('user:shared-screen', username);
         });
 
-        socket.on('remove-peer-shared-video', () => {
-          socket.to(roomId).emit('shared-video-removed');
-        });
-
-        socket.on('send-message', ({ text, userId }) => {
-          socket.to(roomId).emit('message-from-peer', { text, userId });
+        socket.on('user:stop-share-screen', () => {
+          socket.to(room).emit('user:stopped-screen-share', user.name);
         });
 
         socket.on('chat:post', (data) => {
-          socket.to(roomId).emit('chat:get', { ...data, time: Date.now() });
+          socket.to(room).emit('chat:get', { ...data, time: Date.now() });
         });
       });
     });

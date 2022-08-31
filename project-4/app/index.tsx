@@ -17,7 +17,6 @@ import { toggleAudio } from 'common/utils';
 import { KeyValue } from 'common/types';
 import { MutedIcon } from 'assets/icons';
 import { MYSELF } from '@common/constants';
-
 const App = ({
   initial,
   toggleChat,
@@ -26,7 +25,6 @@ const App = ({
   toggleChat: () => void;
 }) => {
   console.log('render app');
-
   const {
     me,
     isHost,
@@ -53,25 +51,25 @@ const App = ({
   }, [me, stream]);
 
   useEffect(() => {
-    socket.on('member-muted', (peerId: string) => {
+    socket.on('host:muted-user', (peerId: string) => {
       toggleAudio(stream);
       setIsMuted((prev) => ({ ...prev, [peerId]: true }));
       if (peerId === me) toast('You are muted');
     });
 
-    socket.on('member-left', (peerId: string) => {
+    socket.on('user:left', (peerId: string) => {
       peers[peerId]?.close();
       setIsRemoved((prev) => ({ ...prev, [peerId]: true }));
     });
 
-    socket.on('audio-status-toggled', (peerId: string) => {
+    socket.on('user:toggled-audio', (peerId: string) => {
       setIsMuted((prev) => ({ ...prev, [peerId]: !prev[peerId] }));
     });
 
     return () => {
-      socket.off('member-muted');
-      socket.off('member-left');
-      socket.off('audio-status-toggled');
+      socket.off('host:muted-user');
+      socket.off('user:left');
+      socket.off('user:toggled-audio');
     };
   }, [peers]);
 
@@ -96,18 +94,18 @@ const App = ({
   }
 
   function handleRemovePeer(peerId: string) {
-    socket.emit('remove-peer', peerId);
+    socket.emit('user:leave', peerId);
     peers[peerId]?.close();
   }
 
   function handleMutePeer(peerId: string) {
     console.log(peerId);
-    socket.emit('mute-peer', peerId);
+    socket.emit('host:mute-user', peerId);
     setIsMuted((prev) => ({ ...prev, [peerId]: true }));
   }
 
   function handleAudio() {
-    socket.emit('toggle-audio-status', me);
+    socket.emit('user:toggle-audio', me);
     setIsMuted((prev) => ({ ...prev, [me]: !prev[me] }));
     toggleAudio(stream);
   }

@@ -16,25 +16,25 @@ const useScreenShare = () => {
   const [isMyScreenSharing, setIsMyScreenSharing] = useState(false);
 
   useEffect(() => {
-    socket.on('screen-shared', (username: any) => {
+    socket.on('user:shared-screen', (username: any) => {
       peer.disconnect();
       peer.reconnect();
       toast(`${username} is sharing his screen`);
     });
 
-    socket.on('screen-sharing-stopped', () => {
+    socket.on('user:stopped-screen-share', () => {
       setSharedScreenTrack(null);
     });
 
-    socket.on('shared-video-removed', () => {
+    socket.on('host:removed-user-shared-screen', () => {
       const sharedScreenTrack = stream?.getVideoTracks()[1];
       if (sharedScreenTrack) stopScreenShare(sharedScreenTrack);
     });
 
     return () => {
-      socket.off('screen-shared');
-      socket.off('screen-sharing-stopped');
-      socket.off('shared-video-removed');
+      socket.off('user:shared-screen');
+      socket.off('user:stopped-screen-share');
+      socket.off('host:removed-user-shared-screen');
     };
   }, [peer]);
 
@@ -43,7 +43,7 @@ const useScreenShare = () => {
     stream?.removeTrack(screenTrack);
     setSharedScreenTrack(null);
     setIsMyScreenSharing(false);
-    socket.emit('stop-sharing-my-screen');
+    socket.emit('user:stop-screen-share');
   }
 
   async function handleScreenShare() {
@@ -56,14 +56,14 @@ const useScreenShare = () => {
     setSharedScreenTrack(screenTrack);
     setIsMyScreenSharing(true);
 
-    socket.emit('share-my-screen', { username: user?.name });
+    socket.emit('user:share-screen', { username: user?.name });
 
     screenTrack.onended = () => stopScreenShare(screenTrack);
   }
 
   function toggleScreenShare() {
     if (isHost && !isMyScreenSharing && sharedScreenTrack) {
-      socket.emit('remove-peer-shared-video');
+      socket.emit('host:remove-user-shared-screen');
       return;
     }
     if (!sharedScreenTrack) handleScreenShare();
