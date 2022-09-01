@@ -1,3 +1,6 @@
+import { RoomId } from '@common/types';
+import { customAlphabet } from 'nanoid';
+
 function toggle(type: 'audio' | 'video') {
   return (s: MediaStream) => {
     const tracks = type === 'video' ? s.getTracks() : s.getAudioTracks();
@@ -16,4 +19,13 @@ export function formatTimeHHMM(milliseconds: number) {
     minute: '2-digit',
     hour12: false,
   });
+}
+
+export function createRoomId(): RoomId {
+  const nanoid = customAlphabet('abcdefghijklmnopqrstuvxyz', 10);
+  return nanoid();
+}
+
+export function createHost(roomId: RoomId): void {
+  window.localStorage.setItem(roomId, '*');
 }
