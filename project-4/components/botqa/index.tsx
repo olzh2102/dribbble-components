@@ -19,10 +19,10 @@ import { MutedIcon } from 'assets/icons';
 import { MYSELF } from '@common/constants';
 
 const Botqa = ({
-  initial,
+  media,
   toggleChat,
 }: {
-  initial: { isMuted: boolean; video: boolean };
+  media: { isMuted: boolean; video: boolean };
   toggleChat: () => void;
 }) => {
   console.log('render app');
@@ -49,7 +49,7 @@ const Botqa = ({
   useEffect(() => {
     if (!stream || !peer) return;
     addVideoStream({ id: peer.id, stream, isMe: true, name: MYSELF });
-    setIsMuted((prev) => ({ ...prev, [peer.id]: initial.isMuted }));
+    setIsMuted((prev) => ({ ...prev, [peer.id]: media.isMuted }));
   }, [peer, stream]);
 
   useEffect(() => {

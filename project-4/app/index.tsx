@@ -69,7 +69,7 @@ const App = ({
     >
       <div className="flex h-screen place-items-center place-content-center relative p-6">
         <Botqa
-          initial={{
+          media={{
             isMuted,
             video: isVisible,
           }}
