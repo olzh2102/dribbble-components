@@ -28,7 +28,6 @@ const Botqa = ({
   console.log('render app');
 
   const {
-    me,
     isHost,
     peer,
     peers,
@@ -44,20 +43,20 @@ const Botqa = ({
   const [isRemoved, setIsRemoved] = useState<KeyValue<boolean>>({});
   const [isMuted, setIsMuted] = useState<KeyValue<boolean>>({});
 
-  usePeerOnJoinRoom(addVideoStream, isMuted[me], setIsMuted);
+  usePeerOnJoinRoom(addVideoStream, isMuted[peer?.id], setIsMuted);
   usePeerOnAnswer(addVideoStream, setIsMuted);
 
   useEffect(() => {
-    if (!stream || !me) return;
-    addVideoStream({ id: me, stream, isMe: true, name: MYSELF });
-    setIsMuted((prev) => ({ ...prev, [me]: initial.isMuted }));
-  }, [me, stream]);
+    if (!stream || !peer) return;
+    addVideoStream({ id: peer.id, stream, isMe: true, name: MYSELF });
+    setIsMuted((prev) => ({ ...prev, [peer.id]: initial.isMuted }));
+  }, [peer, stream]);
 
   useEffect(() => {
     socket.on('host:muted-user', (peerId: string) => {
       toggleAudio(stream);
       setIsMuted((prev) => ({ ...prev, [peerId]: true }));
-      if (peerId === me) toast('You are muted');
+      if (peerId === peer.id) toast('You are muted');
     });
 
     socket.on('user:left', (peerId: string) => {
@@ -108,8 +107,8 @@ const Botqa = ({
   }
 
   function handleAudio() {
-    socket.emit('user:toggle-audio', me);
-    setIsMuted((prev) => ({ ...prev, [me]: !prev[me] }));
+    socket.emit('user:toggle-audio', peer.id);
+    setIsMuted((prev) => ({ ...prev, [peer.id]: !prev[peer.id] }));
     toggleAudio(stream);
   }
 
@@ -147,7 +146,7 @@ const Botqa = ({
                 >
                   {element}
 
-                  {isHost && me !== id && (
+                  {isHost && peer.id !== id && (
                     <HostControlPanel
                       onRemovePeer={() => handleRemovePeer(id)}
                       onMutePeer={() => handleMutePeer(id)}
@@ -178,7 +177,7 @@ const Botqa = ({
         )}
         <div className="w-9" />
         <div className="flex flex-auto gap-6 place-content-center">
-          <ControlPanel isMuted={isMuted[me]} onAudio={handleAudio} />
+          <ControlPanel isMuted={isMuted[peer.id]} onAudio={handleAudio} />
         </div>
         <div className="w-9">
           <button onClick={toggleChat}>

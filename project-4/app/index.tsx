@@ -6,7 +6,7 @@ import { ToastContainer, ToastContainerProps } from 'react-toastify';
 import { SocketContext } from '@pages/_app';
 import Botqa from '@components/botqa';
 import Chat from '@components/chat';
-import { useCreatePeer, useGetRoomId, useOnOpenPeer } from '@hooks/index';
+import { useGetRoomId, usePeer } from '@hooks/index';
 import { KeyValue, Nullable } from '@common/types';
 import { QoraContext } from '@pages/qora/[qoraId]';
 
@@ -27,9 +27,9 @@ const App = ({
 }) => {
   const socket = useContext(SocketContext);
   const roomId = useGetRoomId();
-  const peer = useCreatePeer();
+  const peer = usePeer(isMuted);
   const user = useUser();
-  const me = useOnOpenPeer(peer, isMuted);
+  console.log('PEER:', peer);
 
   const [peers, setPeers] = useState<KeyValue<MediaConnection>>({});
 
@@ -61,7 +61,6 @@ const App = ({
         user: user.user,
         isHost,
         stream,
-        me,
         peers,
         setPeers,
         sharedScreenTrack,
