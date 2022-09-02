@@ -18,16 +18,14 @@ const TOAST_PROPS: ToastContainerProps = {
 
 const App = ({
   stream,
-  isMuted,
-  isVisible,
+  media,
 }: {
   stream: Nullable<MediaStream>;
-  isMuted: boolean;
-  isVisible: boolean;
+  media: { isMuted: boolean; isVisible: boolean };
 }) => {
   const socket = useContext(SocketContext);
   const roomId = useGetRoomId();
-  const peer = usePeer(isMuted);
+  const peer = usePeer(media.isMuted);
   const user = useUser();
   console.log('PEER:', peer);
 
@@ -68,13 +66,7 @@ const App = ({
       }}
     >
       <div className="flex h-screen place-items-center place-content-center relative p-6">
-        <Botqa
-          media={{
-            isMuted,
-            video: isVisible,
-          }}
-          toggleChat={() => setIsChatOpen(!isChatOpen)}
-        />
+        <Botqa media={media} toggleChat={() => setIsChatOpen(!isChatOpen)} />
 
         <div className={`${isChatOpen ? 'basis-2/6' : 'hidden'}`}>
           <Chat setOpen={setIsChatOpen} title="Item Details" />
