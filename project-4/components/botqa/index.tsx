@@ -22,7 +22,7 @@ const Botqa = ({
   media,
   toggleChat,
 }: {
-  media: { isMuted: boolean; video: boolean };
+  media: { isMuted: boolean; isVisible: boolean };
   toggleChat: () => void;
 }) => {
   console.log('render app');
