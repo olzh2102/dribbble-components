@@ -2,22 +2,22 @@ import { useContext, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 import { QoraContext } from '@pages/qora/[qoraId]';
-import { KeyValue } from 'common/types';
+import { KeyValue } from '@common/types';
 
 const usePeerOnLeftRoom = (videoRefs: KeyValue<HTMLDivElement>) => {
   const router = useRouter();
-  const { me, socket, peers } = useContext(QoraContext);
+  const { peer, socket, peers } = useContext(QoraContext);
 
   useEffect(() => {
-    socket.on('member-left', (friendId: string) => {
+    socket.on('user:left', (friendId: string) => {
       peers[friendId]?.close();
       videoRefs[friendId]?.remove();
 
-      if (me === friendId) router.push('/');
+      if (peer.id === friendId) router.push('/');
     });
 
     return () => {
-      socket.off('member-left');
+      socket.off('user:left');
     };
   }, [peers, videoRefs]);
 };

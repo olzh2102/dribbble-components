@@ -5,8 +5,7 @@ import { PeerVideo } from '..';
 
 const Lobby = ({
   stream,
-  isVisible,
-  isMuted,
+  media,
   setIsVisible,
   setIsMuted,
   setIsLobby,
@@ -25,7 +24,7 @@ const Lobby = ({
             className="inline-flex items-center p-3 mr-2 border border-transparent rounded-xl shadow-sm text-white bg-slate-800 hover:bg-indigo-700 relative"
           >
             <VideoCameraIcon className="h-6 w-6" />
-            {!isVisible && (
+            {!media.isVisible && (
               <>
                 <div className="bg-current absolute w-2/3 h-0.5 left-1/2 -translate-x-1/2 -rotate-45" />
                 <div className="bg-slate-800 absolute w-2/3 h-0.5 left-1/2 -translate-x-1/2 translate-y-0.5 -rotate-45" />
@@ -38,7 +37,7 @@ const Lobby = ({
             className="inline-flex items-center p-3 border border-transparent rounded-xl shadow-sm text-white bg-slate-800 hover:bg-indigo-700 relative"
           >
             <MicrophoneIcon className="h-6 w-6" />
-            {isMuted && (
+            {media.isMuted && (
               <>
                 <div className="bg-current absolute w-2/3 h-0.5 left-1/2 -translate-x-1/2 -rotate-45" />
                 <div className="bg-slate-800 absolute w-2/3 h-0.5 left-1/2 -translate-x-1/2 translate-y-0.5 -rotate-45" />

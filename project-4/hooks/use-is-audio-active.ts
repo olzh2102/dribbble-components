@@ -29,6 +29,10 @@ const useIsAudioActive = ({ stream, fftSize = 1024 }: UseIsAudioActive) => {
 
       requestAnimationFrame(update);
     }
+
+    return () => {
+      setIsSpeaking(false);
+    };
   }, [stream]);
 
   return isSpeaking;
@@ -38,7 +42,7 @@ export default useIsAudioActive;
 
 type UseIsAudioActive = {
   stream: MediaStream | null;
-  fftSize: FftSize;
+  fftSize?: FftSize;
 };
 
 type FftSize =

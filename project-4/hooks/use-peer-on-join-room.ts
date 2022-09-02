@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction, useContext, useEffect } from 'react';
 import { toast } from 'react-toastify';
-import { KeyValue, QoraContext } from '@pages/qora/[qoraId]';
+import { QoraContext } from '@pages/qora/[qoraId]';
+import { KeyValue } from '@common/types';
 
 const usePeerOnJoinRoom = (
   addVideoStream: ({
