@@ -1,59 +1,52 @@
 import type { NextPage } from 'next';
-import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { customAlphabet } from 'nanoid';
+import { useState } from 'react';
 
 import { ROOM_NAME } from 'common/constants';
+import { createRoomId, createHost } from '@common/utils';
 
 import { Header, WelcomeContainer } from '../components';
-import Button from '@common/components/button';
-
-const nanoId = customAlphabet('abcdefghijklmnopqrstuvxyz', 10);
 
 const Home: NextPage = () => {
   const router = useRouter();
-  const roomId = nanoId();
-  const [value, setValue] = useState('');
+  const [roomId, setRoomId] = useState('');
 
-  function handleCreateJanaQora() {
-    window.localStorage.setItem(roomId, '*');
-    router.push(`/qora/${roomId}`);
+  function createRoom() {
+    const roomId = createRoomId();
+
+    createHost(roomId);
+    router.push(`/${ROOM_NAME}/${roomId}`);
   }
 
-  function handleJoinQora() {
-    value.length > 0 ? router.push(`/${ROOM_NAME}/${value}`) : router.push('/');
+  function joinRoom() {
+    router.push(`/${ROOM_NAME}/${roomId}`);
   }
 
   return (
     <>
       <Header />
+
       <WelcomeContainer>
-        <Button
-          label="Jańa qora"
-          onClick={handleCreateJanaQora}
-          classes={['text-emerald-800', 'hover:bg-indigo-200']}
-        />
+        <button
+          onClick={createRoom}
+          className="p-3 bg-emerald-300 hover:bg-indigo-200 rounded-md text-emerald-800 text-sm founded-medium"
+        >
+          Jańa qora
+        </button>
 
         <input
-          type="text"
-          name="email"
-          id="email"
-          onChange={(e: any) => setValue(e.target.value)}
-          className={`
-            rounded
-            focus:outline-none 
-            focus:ring 
-            px-3 w-80 
-            focus:border-emerald-500 
-          `}
-          placeholder="room id"
+          onChange={(e: any) => setRoomId(e.target.value)}
+          placeholder="Enter or paste room id"
+          className="px-4 py-1 w-80 rounded-md"
         />
 
-        <Button
-          label="Join"
-          onClick={handleJoinQora}
-          classes={['text-sky-100', 'hover:bg-blue-700']}
-        />
+        <button
+          onClick={joinRoom}
+          disabled={roomId.length == 0}
+          className="p-3 bg-emerald-500 hover:bg-indigo-300 rounded-md text-emerald-800 text-sm founded-medium disabled:bg-gray-300 disabled:cursor-not-allowed"
+        >
+          Join
+        </button>
       </WelcomeContainer>
     </>
   );

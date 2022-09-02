@@ -34,3 +34,5 @@ export type QoraContextType = {
   sharedScreenTrack: Nullable<MediaStreamTrack>;
   setSharedScreenTrack: Dispatch<SetStateAction<Nullable<MediaStreamTrack>>>;
 };
+
+export type RoomId = string;
