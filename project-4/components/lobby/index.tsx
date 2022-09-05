@@ -1,6 +1,9 @@
 import { VideoCameraIcon, MicrophoneIcon } from '@heroicons/react/solid';
+
 import { MYSELF } from '@common/constants';
 import { toggleVideo } from '@common/utils';
+import CrossLineDiv from '@common/components/cross-line-div';
+
 import { PeerVideo } from '..';
 
 const Lobby = ({ stream, media, setMedia, redirectToRoom }: LobbyProps) => {
@@ -54,9 +57,3 @@ type LobbyProps = {
   setMedia: (key: 'isMuted' | 'isVisible') => void;
   redirectToRoom: () => void;
 };
-
-// ****************************************************************
-
-const CrossLineDiv = () => (
-  <div className="bg-current absolute w-2/3 h-0.5 left-1/2 top-6 -translate-x-1/2 -rotate-45" />
-);
