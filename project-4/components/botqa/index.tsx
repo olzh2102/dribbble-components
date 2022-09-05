@@ -30,6 +30,7 @@ const Botqa = ({
   const {
     isHost,
     peer,
+    myId,
     peers,
     stream,
     socket,
@@ -47,16 +48,16 @@ const Botqa = ({
   usePeerOnAnswer(addVideoStream, setIsMuted);
 
   useEffect(() => {
-    if (!stream || !peer) return;
-    addVideoStream({ id: peer.id, stream, isMe: true, name: MYSELF });
-    setIsMuted((prev) => ({ ...prev, [peer.id]: media.isMuted }));
-  }, [peer, stream]);
+    if (!stream || !myId) return;
+    addVideoStream({ id: myId, stream, isMe: true, name: MYSELF });
+    setIsMuted((prev) => ({ ...prev, [myId]: media.isMuted }));
+  }, [myId, stream]);
 
   useEffect(() => {
     socket.on('host:muted-user', (peerId: string) => {
       toggleAudio(stream);
       setIsMuted((prev) => ({ ...prev, [peerId]: true }));
-      if (peerId === peer.id) toast('You are muted');
+      if (peerId === myId) toast('You are muted');
     });
 
     socket.on('user:left', (peerId: string) => {
@@ -107,8 +108,8 @@ const Botqa = ({
   }
 
   function handleAudio() {
-    socket.emit('user:toggle-audio', peer.id);
-    setIsMuted((prev) => ({ ...prev, [peer.id]: !prev[peer.id] }));
+    socket.emit('user:toggle-audio', myId);
+    setIsMuted((prev) => ({ ...prev, [myId]: !prev[myId] }));
     toggleAudio(stream);
   }
 
@@ -146,7 +147,7 @@ const Botqa = ({
                 >
                   {element}
 
-                  {isHost && peer.id !== id && (
+                  {isHost && myId !== id && (
                     <HostControlPanel
                       onRemovePeer={() => handleRemovePeer(id)}
                       onMutePeer={() => handleMutePeer(id)}
@@ -177,7 +178,7 @@ const Botqa = ({
         )}
         <div className="w-9" />
         <div className="flex flex-auto gap-6 place-content-center">
-          <ControlPanel isMuted={isMuted[peer.id]} onAudio={handleAudio} />
+          <ControlPanel isMuted={isMuted[myId]} onAudio={handleAudio} />
         </div>
         <div className="w-9">
           <button onClick={toggleChat}>

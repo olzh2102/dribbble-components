@@ -10,6 +10,7 @@ const usePeer = (isMuted: boolean) => {
   const room = useGetRoomId();
   const { user } = useUser();
   const [peer, setPeer] = useState<Nullable<Peer>>(null);
+  const [myId, setMyId] = useState<Nullable<string>>(null);
 
   useEffect(() => {
     async function createPeer() {
@@ -25,6 +26,7 @@ const usePeer = (isMuted: boolean) => {
             room,
             user: { id, name: user.name, muted: isMuted },
           });
+          setMyId(id);
 
           console.log('Your device ID is: ', id);
         });
@@ -40,7 +42,7 @@ const usePeer = (isMuted: boolean) => {
     createPeer();
   }, [user]);
 
-  return peer;
+  return { peer, myId };
 };
 
 export default usePeer;
