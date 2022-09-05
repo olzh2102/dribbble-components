@@ -175,8 +175,7 @@ const Botqa = ({
             <ArrowsExpandIcon className="w-6 h-6" />
           </button>
         )}
-        <div className="w-9" />
-        <div className="flex flex-auto gap-6 place-content-center">
+        <div className="flex flex-auto gap-4 place-content-center">
           <ControlPanel isMuted={isMuted[peer.id]} onAudio={handleAudio} />
         </div>
         <div className="w-9">
