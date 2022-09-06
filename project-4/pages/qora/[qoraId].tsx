@@ -13,7 +13,7 @@ const Qora: NextPage = () => {
   const [media, setMedia] = useState<any>({ isMuted: false, isVisible: true });
   const stream = useCreateVideoStream({ video: true, audio: true });
 
-  return isLobby && stream ? (
+  return isLobby ? (
     <Lobby
       stream={stream}
       media={media}

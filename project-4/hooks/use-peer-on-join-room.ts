@@ -25,43 +25,46 @@ const usePeerOnJoinRoom = (
   } = useContext(QoraContext);
 
   useEffect(() => {
-    if (!socket || !stream || !peer || !setPeers) return;
+    socket.on('user:joined', (user: UserConfig) => {
+      const call = peer.call(user.id, stream, {
+        metadata: {
+          username: myself?.name,
+          isMuted,
+        },
+      });
 
-    socket.on(
-      'user:joined',
-      (user: { id: string; name: string; muted: boolean }) => {
-        const call = peer.call(user.id, stream, {
-          metadata: {
-            username: myself?.name,
-            isMuted,
-          },
+      console.table({
+        'call-friend': 'call friend',
+        'user-id': user.id,
+        'user-name': user.name,
+      });
+
+      call.on('stream', (friendStream: MediaStream) => {
+        addVideoStream({
+          id: user.id,
+          name: user.name,
+          stream: friendStream,
         });
-        console.log('call friend with name:', user.name);
-        console.log('call friend with id:', user.id);
+      });
 
-        call.on('stream', (friendStream: any) => {
-          console.log('friend stream');
-          user.id &&
-            addVideoStream({
-              id: user.id,
-              name: user.name,
-              stream: friendStream,
-            });
-        });
+      call.on('close', () => {
+        toast(`${user.name} has left the room`);
+      });
 
-        call.on('close', () => {
-          toast(`${user.name} has left the room`);
-        });
-
-        setPeers((prevState: any) => ({ ...prevState, [user.id]: call }));
-        setIsMuted((prev) => ({ ...prev, [user.id]: user.muted }));
-      }
-    );
+      setPeers((prevState: any) => ({ ...prevState, [user.id]: call }));
+      setIsMuted((prev) => ({ ...prev, [user.id]: user.muted }));
+    });
 
     return () => {
       socket.off('user:joined');
     };
-  }, [socket, stream, peer, isMuted]);
+  }, [isMuted]);
 };
 
 export default usePeerOnJoinRoom;
+
+type UserConfig = {
+  id: string;
+  name: string;
+  muted: boolean;
+};
