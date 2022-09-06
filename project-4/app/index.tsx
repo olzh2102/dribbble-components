@@ -25,7 +25,7 @@ const App = ({
 }) => {
   const socket = useContext(SocketContext);
   const roomId = useGetRoomId();
-  const peer = usePeer(media.isMuted);
+  const { peer, myId } = usePeer(media.isMuted);
   const user = useUser();
   console.log('PEER:', peer);
 
@@ -56,6 +56,7 @@ const App = ({
         socket,
         roomId,
         peer,
+        myId,
         user: user.user,
         isHost,
         stream,

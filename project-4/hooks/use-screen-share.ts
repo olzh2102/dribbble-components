@@ -43,7 +43,7 @@ const useScreenShare = () => {
     stream?.removeTrack(screenTrack);
     setSharedScreenTrack(null);
     setIsMyScreenSharing(false);
-    socket.emit('user:stop-screen-share');
+    socket.emit('user:stop-share-screen');
   }
 
   async function handleScreenShare() {

@@ -18,7 +18,7 @@ const usePeerOnAnswer = (
   const { peer, setPeers, stream } = useContext(QoraContext);
 
   useEffect(() => {
-    if (!peer || !stream) return;
+    if (!peer) return;
 
     peer.on('call', (call: any) => {
       setPeers((prev: any) => ({ ...prev, [call.peer]: call }));
@@ -29,21 +29,25 @@ const usePeerOnAnswer = (
 
       call.answer(stream);
 
+      console.table({
+        'answer-friend': 'answer friend',
+        'user-id': call.peer,
+        'user-name': call.metadata.username,
+      });
+
       call.on('stream', (hostStream: any) => {
-        console.log('answer call stream');
-        call.peer &&
-          addVideoStream({
-            id: call.peer,
-            name: call.metadata.username,
-            stream: hostStream,
-          });
+        addVideoStream({
+          id: call.peer,
+          name: call.metadata.username,
+          stream: hostStream,
+        });
       });
 
       call.on('close', () => {
         toast(`${call.metadata.username} has left the room`);
       });
     });
-  }, [peer, stream]);
+  }, [peer]);
 };
 
 export default usePeerOnAnswer;
