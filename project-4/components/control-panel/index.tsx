@@ -16,7 +16,12 @@ import { QoraContext } from '@pages/qora/[qoraId]';
 import { useScreenShare } from '@hooks/index';
 import CrossLineDiv from '@common/components/cross-line-div';
 
-const ControlPanel = ({ onAudio, isMuted, toggleChat }: ControlPanelProps) => {
+const ControlPanel = ({
+  onFullscreen,
+  onAudio,
+  isMuted,
+  toggleChat,
+}: ControlPanelProps) => {
   const router = useRouter();
 
   const [videoActive, setVideoActive] = useState(true);
@@ -33,7 +38,7 @@ const ControlPanel = ({ onAudio, isMuted, toggleChat }: ControlPanelProps) => {
     <>
       {shared && (
         <button
-          onClick={() => console.log('FULLSCREEN')}
+          onClick={onFullscreen}
           className={`${common} bg-slate-800 hover:bg-indigo-700 relative`}
         >
           <ArrowsExpandIcon className="w-6 h-6" />
@@ -88,6 +93,7 @@ type ControlPanelProps = {
   onAudio: () => void;
   isMuted: boolean;
   toggleChat: () => void;
+  onFullscreen: () => void;
 };
 
 const common = 'p-3 rounded-xl text-white';

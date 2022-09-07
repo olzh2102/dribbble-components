@@ -9,10 +9,12 @@ import { KeyValue } from 'common/types';
 
 const Botqa = ({
   amIMuted,
+  fullscreen,
   setAmIMuted,
   children,
 }: {
   amIMuted: boolean;
+  fullscreen: boolean;
   setAmIMuted: React.Dispatch<React.SetStateAction<boolean>>;
   children: React.ReactNode;
 }) => {
@@ -27,8 +29,6 @@ const Botqa = ({
     sharedScreenTrack,
     setSharedScreenTrack,
   } = useContext(QoraContext);
-
-  const [fullscreen, setFullscreen] = useState(false);
 
   const [videos, setVideos] = useState<KeyValue<JSX.Element>>({});
   const [isRemoved, setIsRemoved] = useState<KeyValue<boolean>>({});
@@ -106,12 +106,10 @@ const Botqa = ({
   return (
     <>
       <div className="flex gap-4">
-        {/* shared screen stream video */}
         <div className={sharedScreenClasses}>
           <SharedScreen sharedScreenTrack={sharedScreenTrack} />
         </div>
 
-        {/* peer stream videos */}
         <div
           className={`${
             fullscreen && sharedScreenTrack ? 'hidden' : ''

@@ -40,6 +40,8 @@ const App = ({
   const [sharedScreenTrack, setSharedScreenTrack] =
     useState<Nullable<MediaStreamTrack>>(null);
 
+  const [fullscreen, setFullscreen] = useState(false);
+
   const isHost =
     typeof window !== 'undefined' && !!window.localStorage.getItem(roomId);
 
@@ -80,7 +82,11 @@ const App = ({
       }}
     >
       <div className="flex h-screen place-items-center place-content-center relative p-6">
-        <Botqa amIMuted={amIMuted} setAmIMuted={setAmIMuted}>
+        <Botqa
+          amIMuted={amIMuted}
+          setAmIMuted={setAmIMuted}
+          fullscreen={fullscreen}
+        >
           <VideoContainer id="me" isMuted={amIMuted}>
             {stream && <PeerVideo stream={stream} name={MYSELF} isMe={true} />}
           </VideoContainer>
@@ -88,6 +94,7 @@ const App = ({
 
         <div className="flex w-screen px-6 absolute bottom-6 items-center z-50">
           <ControlPanel
+            onFullscreen={() => setFullscreen(!fullscreen)}
             isMuted={amIMuted}
             onAudio={handleAudio}
             toggleChat={() => setIsChatOpen(!isChatOpen)}
