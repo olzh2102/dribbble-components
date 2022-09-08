@@ -1,48 +1,64 @@
 import { useContext, useEffect, useState } from 'react';
-import Peer from 'peerjs';
 import { useUser } from '@auth0/nextjs-auth0';
-import { SocketContext } from '@pages/_app';
-import useGetRoomId from './use-get-room-id';
-import { Nullable } from '@common/types';
+import Peer from 'peerjs';
 
-const usePeer = (isMuted: boolean) => {
+import { SocketContext } from '@pages/_app';
+import { error } from '@common/utils';
+import { Nullable, PeerId } from '@common/types';
+
+import useGetRoomId from './use-get-room-id';
+
+/**
+ * Sets up a peer
+ *
+ * 1. creates a peer
+ * 2. announces everyone in the room he/she joined
+ */
+const usePeer = (isMuted: boolean): { peer: Nullable<Peer>; myId: PeerId } => {
   const socket = useContext(SocketContext);
+
   const room = useGetRoomId();
   const { user } = useUser();
+
   const [peer, setPeer] = useState<Nullable<Peer>>(null);
-  const [myId, setMyId] = useState('');
+  const [me, setMe] = useState<PeerId>('');
 
   useEffect(() => {
-    async function createPeer() {
+    (async function () {
       if (!user) return;
 
       try {
-        const PeerJs = (await import('peerjs')).default;
-        const peer = new PeerJs();
+        const Peer = (await import('peerjs')).default;
+        const peer = new Peer();
         setPeer(peer);
 
         peer.on('open', (id) => {
-          socket.emit('room:join', {
-            room,
-            user: { id, name: user.name, muted: isMuted },
-          });
-          setMyId(id);
-
-          console.log('Your device ID is: ', id);
+          setMe(id);
+          socket.emit('room:join', getInUser(id, user.name, isMuted, room));
+          console.log('your device id: ', id);
         });
 
-        peer.on('error', (error) => {
-          console.log('Peer connection error:', error);
-        });
-      } catch (error) {
-        console.log('Unable to create peer', error);
+        peer.on('error', error('Failed to setup peer connection'));
+      } catch (e) {
+        error('Unable to create peer')(e);
       }
-    }
-
-    createPeer();
+    })();
   }, [user]);
 
-  return { peer, myId };
+  return { peer, myId: me };
 };
 
 export default usePeer;
+
+// **************************************
+function getInUser(
+  id: string,
+  name: string | null | undefined,
+  muted: boolean,
+  room: string
+): {
+  room: string;
+  user: { id: string; name: string | null | undefined; muted: boolean };
+} {
+  return { room, user: { id, name, muted } };
+}

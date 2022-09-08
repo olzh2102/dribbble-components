@@ -29,3 +29,10 @@ export function createRoomId(): RoomId {
 export function createHost(roomId: RoomId): void {
   window.localStorage.setItem(roomId, '*');
 }
+
+export function error(message: string) {
+  return (error: any) => {
+    console.error(message);
+    console.error(error);
+  };
+}

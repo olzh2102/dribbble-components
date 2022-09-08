@@ -36,3 +36,4 @@ export type QoraContextType = {
 };
 
 export type RoomId = string;
+export type PeerId = string;
