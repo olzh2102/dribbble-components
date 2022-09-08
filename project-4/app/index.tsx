@@ -9,6 +9,10 @@ import Chat from '@components/chat';
 import { useGetRoomId, usePeer } from '@hooks/index';
 import { KeyValue, Nullable } from '@common/types';
 import { QoraContext } from '@pages/qora/[qoraId]';
+import ControlPanel from '@components/control-panel';
+import { toggleAudio } from '@common/utils';
+import { PeerVideo, VideoContainer } from '@components/index';
+import { MYSELF } from '@common/constants';
 
 const TOAST_PROPS: ToastContainerProps = {
   position: 'bottom-left',
@@ -27,12 +31,16 @@ const App = ({
   const roomId = useGetRoomId();
   const { peer, myId } = usePeer(media.isMuted);
   const user = useUser();
+  console.log('ME', myId);
   console.log('PEER:', peer);
 
   const [peers, setPeers] = useState<KeyValue<MediaConnection>>({});
 
+  const [amIMuted, setAmIMuted] = useState(media.isMuted);
   const [sharedScreenTrack, setSharedScreenTrack] =
     useState<Nullable<MediaStreamTrack>>(null);
+
+  const [fullscreen, setFullscreen] = useState(false);
 
   const isHost =
     typeof window !== 'undefined' && !!window.localStorage.getItem(roomId);
@@ -44,6 +52,13 @@ const App = ({
       socket.disconnect();
     };
   }, []);
+
+  function handleAudio() {
+    setAmIMuted(!amIMuted);
+    if (stream) toggleAudio(stream);
+
+    socket.emit('user:toggle-audio', myId);
+  }
 
   if (user.isLoading) return <span>Loading...</span>;
 
@@ -67,7 +82,24 @@ const App = ({
       }}
     >
       <div className="flex h-screen place-items-center place-content-center relative p-6">
-        <Botqa media={media} toggleChat={() => setIsChatOpen(!isChatOpen)} />
+        <Botqa
+          amIMuted={amIMuted}
+          setAmIMuted={setAmIMuted}
+          fullscreen={fullscreen}
+        >
+          <VideoContainer id={myId} isMuted={amIMuted}>
+            {stream && <PeerVideo stream={stream} name={MYSELF} isMe={true} />}
+          </VideoContainer>
+        </Botqa>
+
+        <div className="flex w-screen px-6 absolute bottom-6 items-center z-50">
+          <ControlPanel
+            onFullscreen={() => setFullscreen(!fullscreen)}
+            isMuted={amIMuted}
+            onAudio={handleAudio}
+            toggleChat={() => setIsChatOpen(!isChatOpen)}
+          />
+        </div>
 
         <div className={`${isChatOpen ? 'basis-2/6' : 'hidden'}`}>
           <Chat setOpen={setIsChatOpen} title="Item Details" />

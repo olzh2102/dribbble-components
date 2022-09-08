@@ -25,6 +25,8 @@ const usePeerOnJoinRoom = (
   } = useContext(QoraContext);
 
   useEffect(() => {
+    if (!peer) return;
+
     socket.on('user:joined', (user: UserConfig) => {
       const call = peer.call(user.id, stream, {
         metadata: {
@@ -58,7 +60,7 @@ const usePeerOnJoinRoom = (
     return () => {
       socket.off('user:joined');
     };
-  }, [isMuted]);
+  }, [isMuted, peer]);
 };
 
 export default usePeerOnJoinRoom;

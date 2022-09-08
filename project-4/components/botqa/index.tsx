@@ -1,34 +1,26 @@
 import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import {
-  ChatAltIcon as ChatIcon,
-  ArrowsExpandIcon,
-} from '@heroicons/react/outline';
 
 import { QoraContext } from '@pages/qora/[qoraId]';
-import {
-  ControlPanel,
-  HostControlPanel,
-  PeerVideo,
-  SharedScreen,
-} from '@components/index';
+import { PeerVideo, SharedScreen, VideoContainer } from '@components/index';
 import { usePeerOnJoinRoom, usePeerOnAnswer } from '@hooks/index';
 import { toggleAudio } from 'common/utils';
 import { KeyValue } from 'common/types';
-import { MutedIcon } from 'assets/icons';
-import { MYSELF } from '@common/constants';
 
 const Botqa = ({
-  media,
-  toggleChat,
+  amIMuted,
+  fullscreen,
+  setAmIMuted,
+  children,
 }: {
-  media: { isMuted: boolean; isVisible: boolean };
-  toggleChat: () => void;
+  amIMuted: boolean;
+  fullscreen: boolean;
+  setAmIMuted: React.Dispatch<React.SetStateAction<boolean>>;
+  children: React.ReactNode;
 }) => {
   console.log('render app');
 
   const {
-    isHost,
     peer,
     myId,
     peers,
@@ -38,26 +30,22 @@ const Botqa = ({
     setSharedScreenTrack,
   } = useContext(QoraContext);
 
-  const [fullscreen, setFullscreen] = useState(false);
-
   const [videos, setVideos] = useState<KeyValue<JSX.Element>>({});
   const [isRemoved, setIsRemoved] = useState<KeyValue<boolean>>({});
   const [isMuted, setIsMuted] = useState<KeyValue<boolean>>({});
 
-  usePeerOnJoinRoom(addVideoStream, isMuted[peer?.id], setIsMuted);
+  usePeerOnJoinRoom(addVideoStream, amIMuted, setIsMuted);
   usePeerOnAnswer(addVideoStream, setIsMuted);
 
   useEffect(() => {
-    if (!stream || !myId) return;
-    addVideoStream({ id: myId, stream, isMe: true, name: MYSELF });
-    setIsMuted((prev) => ({ ...prev, [myId]: media.isMuted }));
-  }, [myId, stream]);
-
-  useEffect(() => {
     socket.on('host:muted-user', (peerId: string) => {
-      toggleAudio(stream);
-      setIsMuted((prev) => ({ ...prev, [peerId]: true }));
-      if (peerId === myId) toast('You are muted');
+      if (peerId === myId) {
+        toggleAudio(stream);
+        setAmIMuted(true);
+        toast('You are muted');
+      } else {
+        setIsMuted((prev) => ({ ...prev, [peerId]: true }));
+      }
     });
 
     socket.on('user:left', (peerId: string) => {
@@ -74,7 +62,7 @@ const Botqa = ({
       socket.off('user:left');
       socket.off('user:toggled-audio');
     };
-  }, [peers]);
+  }, [peers, myId]);
 
   function addVideoStream({
     id,
@@ -89,7 +77,7 @@ const Botqa = ({
   }) {
     setVideos((prev) => ({
       ...prev,
-      [id]: <PeerVideo key={id} stream={stream} name={name} isMe={isMe} />,
+      [id]: <PeerVideo stream={stream} name={name} isMe={isMe} />,
     }));
 
     const screenTrack = stream.getVideoTracks()[1];
@@ -102,15 +90,8 @@ const Botqa = ({
   }
 
   function handleMutePeer(peerId: string) {
-    console.log(peerId);
     socket.emit('host:mute-user', peerId);
     setIsMuted((prev) => ({ ...prev, [peerId]: true }));
-  }
-
-  function handleAudio() {
-    socket.emit('user:toggle-audio', myId);
-    setIsMuted((prev) => ({ ...prev, [myId]: !prev[myId] }));
-    toggleAudio(stream);
   }
 
   if (!peer || !stream) return <span>Loading...</span>;
@@ -125,12 +106,10 @@ const Botqa = ({
   return (
     <>
       <div className="flex gap-4">
-        {/* shared screen stream video */}
         <div className={sharedScreenClasses}>
           <SharedScreen sharedScreenTrack={sharedScreenTrack} />
         </div>
 
-        {/* peer stream videos */}
         <div
           className={`${
             fullscreen && sharedScreenTrack ? 'hidden' : ''
@@ -138,51 +117,21 @@ const Botqa = ({
             sharedScreenTrack ? 'basis-1/6' : ''
           }`}
         >
+          {children}
           {Object.entries(videos).map(
             ([id, element]) =>
               !isRemoved[id] && (
-                <div
+                <VideoContainer
                   key={id}
-                  className="relative group h-fit drop-shadow-2xl shadow-indigo-500/50"
+                  id={id}
+                  isMuted={isMuted[id]}
+                  onMutePeer={handleMutePeer}
+                  onRemovePeer={handleRemovePeer}
                 >
                   {element}
-
-                  {isHost && myId !== id && (
-                    <HostControlPanel
-                      onRemovePeer={() => handleRemovePeer(id)}
-                      onMutePeer={() => handleMutePeer(id)}
-                      isMuted={isMuted[id]}
-                    />
-                  )}
-
-                  {isMuted[id] && (
-                    <div className="absolute top-3 right-3">
-                      <MutedIcon />
-                    </div>
-                  )}
-                </div>
+                </VideoContainer>
               )
           )}
-        </div>
-      </div>
-
-      <div className="flex w-screen px-6 absolute bottom-6 items-center z-50">
-        {sharedScreenTrack && (
-          <button
-            onClick={() => setFullscreen(!fullscreen)}
-            type="button"
-            className="inline-flex items-center p-3 border border-transparent rounded-xl shadow-sm text-white bg-slate-800 hover:bg-indigo-700 relative"
-          >
-            <ArrowsExpandIcon className="w-6 h-6" />
-          </button>
-        )}
-        <div className="flex flex-auto gap-4 place-content-center">
-          <ControlPanel isMuted={isMuted[myId]} onAudio={handleAudio} />
-        </div>
-        <div className="w-9">
-          <button onClick={toggleChat}>
-            <ChatIcon className="w-9 h-9 stroke-white" />
-          </button>
         </div>
       </div>
     </>

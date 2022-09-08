@@ -10,7 +10,7 @@ const usePeer = (isMuted: boolean) => {
   const room = useGetRoomId();
   const { user } = useUser();
   const [peer, setPeer] = useState<Nullable<Peer>>(null);
-  const [myId, setMyId] = useState<Nullable<string>>(null);
+  const [myId, setMyId] = useState('');
 
   useEffect(() => {
     async function createPeer() {
