@@ -29,3 +29,10 @@ export function createRoomId(): RoomId {
 export function createHost(roomId: RoomId): void {
   window.localStorage.setItem(roomId, '*');
 }
+
+export function append(kv: Record<string, any>) {
+  return (target: Record<string, any>) => ({
+    ...target,
+    ...kv,
+  });
+}
