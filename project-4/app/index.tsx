@@ -87,9 +87,11 @@ const App = ({
           setAmIMuted={setAmIMuted}
           fullscreen={fullscreen}
         >
-          <VideoContainer id={myId} isMuted={amIMuted}>
-            {stream && <PeerVideo stream={stream} name={MYSELF} isMe={true} />}
-          </VideoContainer>
+          {stream && (
+            <VideoContainer id={myId} isMuted={amIMuted} stream={stream}>
+              <PeerVideo stream={stream} name={MYSELF} isMe={true} />
+            </VideoContainer>
+          )}
         </Botqa>
 
         <div className="flex w-screen px-6 absolute bottom-6 items-center z-50">

@@ -126,6 +126,7 @@ const Botqa = ({
                   key={id}
                   id={id}
                   isMuted={isMuted[id]}
+                  stream={element.props.stream}
                   onMutePeer={handleMutePeer}
                   onRemovePeer={handleRemovePeer}
                 >

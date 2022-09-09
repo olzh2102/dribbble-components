@@ -1,12 +1,13 @@
 import { QoraContext } from '@pages/qora/[qoraId]';
 import { MutedIcon } from 'assets/icons';
 import { useContext } from 'react';
-import { HostControlPanel } from '..';
+import { ActiveSpeaker, HostControlPanel } from '..';
 
 const VideoContainer = ({
   id,
   isMuted,
   children,
+  stream,
   onMutePeer,
   onRemovePeer,
 }: SingleVideoProps) => {
@@ -24,10 +25,12 @@ const VideoContainer = ({
         />
       )}
 
-      {isMuted && (
+      {isMuted ? (
         <div className="absolute top-3 right-3">
           <MutedIcon />
         </div>
+      ) : (
+        <ActiveSpeaker stream={stream} />
       )}
     </div>
   );
@@ -39,6 +42,7 @@ type SingleVideoProps = {
   id: string;
   isMuted: boolean;
   children: React.ReactNode;
+  stream: MediaStream;
   onMutePeer?: (id: string) => void;
   onRemovePeer?: (id: string) => void;
 };

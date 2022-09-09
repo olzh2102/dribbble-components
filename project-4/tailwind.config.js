@@ -5,6 +5,7 @@ module.exports = {
     "./hooks/**/*.{js,ts,jsx,tsx}",
     "./assets/**/*.{js,ts,jsx,tsx}",
     "./app/**/*.{js,ts,jsx,tsx}",
+    "./common/**/*.{js,ts,jsx,tsx}"
   ],
   theme: {
     extend: {},
