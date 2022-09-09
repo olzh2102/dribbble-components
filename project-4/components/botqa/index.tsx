@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { QoraContext } from '@pages/qora/[qoraId]';
 import { PeerVideo, SharedScreen, VideoContainer } from '@components/index';
 import { usePeerOnJoinRoom, usePeerOnAnswer } from '@hooks/index';
-import { toggleAudio } from 'common/utils';
+import { append, toggleAudio } from 'common/utils';
 import { KeyValue } from 'common/types';
 
 const Botqa = ({
@@ -67,21 +67,22 @@ const Botqa = ({
   function addVideoStream({
     id,
     name,
-    stream,
     isMe,
   }: {
     id: string;
     name: string;
-    stream: MediaStream;
     isMe?: boolean;
   }) {
-    setVideos((prev) => ({
-      ...prev,
-      [id]: <PeerVideo stream={stream} name={name} isMe={isMe} />,
-    }));
+    return (stream: MediaStream) => {
+      setVideos(
+        append({
+          [id]: <PeerVideo stream={stream} name={name} isMe={isMe} />,
+        })
+      );
 
-    const screenTrack = stream.getVideoTracks()[1];
-    if (screenTrack) setSharedScreenTrack(screenTrack);
+      const [_, screenTrack] = stream.getVideoTracks();
+      if (screenTrack) setSharedScreenTrack(screenTrack);
+    };
   }
 
   function handleRemovePeer(peerId: string) {

@@ -30,6 +30,13 @@ export function createHost(roomId: RoomId): void {
   window.localStorage.setItem(roomId, '*');
 }
 
+export function append(kv: Record<string, any>) {
+  return (target: Record<string, any>) => ({
+    ...target,
+    ...kv,
+  });
+}
+
 export function error(message: string) {
   return (error: any) => {
     console.error(message);

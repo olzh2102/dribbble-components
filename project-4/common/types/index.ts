@@ -36,4 +36,14 @@ export type QoraContextType = {
 };
 
 export type RoomId = string;
+
+export type AppendVideoStream = ({
+  id,
+  name,
+}: {
+  id: string;
+  name: string;
+}) => (stream: MediaStream) => void;
+
 export type PeerId = string;
+

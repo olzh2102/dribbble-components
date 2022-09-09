@@ -1,18 +1,22 @@
 import { Dispatch, SetStateAction, useContext, useEffect } from 'react';
 import { toast } from 'react-toastify';
+
 import { QoraContext } from '@pages/qora/[qoraId]';
-import { KeyValue } from '@common/types';
+import { AppendVideoStream, KeyValue } from '@common/types';
+import { append } from '@common/utils';
+
+/**
+ * Actor - user that just joined the room
+ * Answers a call from who is already in the room
+ *
+ * @param cb - appends stream of user in the rrom
+ *
+ * @param setIsMuted - answerer receives "isMuted" param from calling user and records it into dictionary into his/her id.
+ * Note: id is also coming to the receiver aloing with his/her stream and name, id
+ */
 
 const usePeerOnAnswer = (
-  addVideoStream: ({
-    id,
-    name,
-    stream,
-  }: {
-    id: string;
-    name: string;
-    stream: MediaStream;
-  }) => void,
+  cb: AppendVideoStream,
   setIsMuted: Dispatch<SetStateAction<KeyValue<boolean>>>
 ) => {
   const { peer, setPeers, stream } = useContext(QoraContext);
@@ -21,31 +25,23 @@ const usePeerOnAnswer = (
     if (!peer) return;
 
     peer.on('call', (call: any) => {
-      setPeers((prev: any) => ({ ...prev, [call.peer]: call }));
-      setIsMuted((prev) => ({
-        ...prev,
-        [call.peer]: call.metadata.isMuted,
-      }));
+      const { peer, metadata } = call;
+      const { username, isMuted } = metadata;
 
-      call.answer(stream);
+      setPeers(append({ [peer]: call }));
+      setIsMuted(append({ [peer]: isMuted }));
+
+      call.answer(stream); // * answers incoming call with his/her stream
 
       console.table({
         'answer-friend': 'answer friend',
-        'user-id': call.peer,
-        'user-name': call.metadata.username,
+        'user-id': peer,
+        'user-name': username,
       });
 
-      call.on('stream', (hostStream: any) => {
-        addVideoStream({
-          id: call.peer,
-          name: call.metadata.username,
-          stream: hostStream,
-        });
-      });
+      call.on('stream', cb({ id: peer, name: username })); // * receiver's stream
 
-      call.on('close', () => {
-        toast(`${call.metadata.username} has left the room`);
-      });
+      call.on('close', () => toast(`${username} has left the room`));
     });
   }, [peer]);
 };

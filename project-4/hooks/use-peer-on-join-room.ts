@@ -1,60 +1,55 @@
 import { Dispatch, SetStateAction, useContext, useEffect } from 'react';
 import { toast } from 'react-toastify';
+
 import { QoraContext } from '@pages/qora/[qoraId]';
-import { KeyValue } from '@common/types';
+import { AppendVideoStream, KeyValue } from '@common/types';
+import { append } from '@common/utils';
+
+/**
+ * Actor - user that is in the room already.
+ * Listens whether an user joined the room
+ *
+ * 1. Makes a call to the joined user's id with his/her stream, name and isMuted
+ * 2. Receiver adds a stream, name, and id of joined user
+ *
+ * @param cb - appends upcoming stream
+ *
+ * @param isMuted - receiver tells to the joined user whether he/she is muted.
+ * Note: that is for displaying mic icon on video
+ *
+ * @param setIsMuted - receiver receives "isMuted" param from joined user and records it into dictionary into his/her id.
+ * Note: id is also coming to the receiver aloing with his/her stream and name
+ */
 
 const usePeerOnJoinRoom = (
-  addVideoStream: ({
-    id,
-    name,
-    stream,
-  }: {
-    id: string;
-    name: string;
-    stream: MediaStream;
-  }) => void,
+  cb: AppendVideoStream,
   isMuted: boolean,
   setIsMuted: Dispatch<SetStateAction<KeyValue<boolean>>>
 ) => {
-  const {
-    socket,
-    peer,
-    setPeers,
-    user: myself,
-    stream,
-  } = useContext(QoraContext);
+  const { socket, peer, setPeers, user: me, stream } = useContext(QoraContext);
 
   useEffect(() => {
     if (!peer) return;
 
-    socket.on('user:joined', (user: UserConfig) => {
-      const call = peer.call(user.id, stream, {
+    socket.on('user:joined', ({ id, name, muted }: UserConfig) => {
+      console.table({
+        'call-friend': 'call friend',
+        'user-id': id,
+        'user-name': name,
+      });
+
+      const call = peer.call(id, stream, {
         metadata: {
-          username: myself?.name,
+          username: me?.name,
           isMuted,
         },
       });
 
-      console.table({
-        'call-friend': 'call friend',
-        'user-id': user.id,
-        'user-name': user.name,
-      });
+      call.on('stream', cb({ id, name })); // * friend's stream
+      call.on('close', () => toast(`${name} has left the room`));
 
-      call.on('stream', (friendStream: MediaStream) => {
-        addVideoStream({
-          id: user.id,
-          name: user.name,
-          stream: friendStream,
-        });
-      });
-
-      call.on('close', () => {
-        toast(`${user.name} has left the room`);
-      });
-
-      setPeers((prevState: any) => ({ ...prevState, [user.id]: call }));
-      setIsMuted((prev) => ({ ...prev, [user.id]: user.muted }));
+      setPeers(append({ [id]: call }));
+      setIsMuted(append({ [id]: muted }));
     });
 
     return () => {
