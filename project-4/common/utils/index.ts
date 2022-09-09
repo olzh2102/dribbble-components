@@ -36,3 +36,10 @@ export function append(kv: Record<string, any>) {
     ...kv,
   });
 }
+
+export function error(message: string) {
+  return (error: any) => {
+    console.error(message);
+    console.error(error);
+  };
+}
