@@ -43,3 +43,30 @@ export function error(message: string) {
     console.error(error);
   };
 }
+
+export function getTracks(type: 'video' | 'audio' | 'all', pos: any) {
+  return (stream: MediaStream): MediaStreamTrack[] | MediaStreamTrack => {
+    if (pos >= 0) {
+      switch (type) {
+        case 'audio': {
+          return stream.getAudioTracks()[pos];
+        }
+        case 'video':
+          return stream.getVideoTracks()[pos];
+        case 'all':
+        default:
+          return stream.getTracks()[pos];
+      }
+    } else {
+      switch (type) {
+        case 'audio':
+          return stream.getAudioTracks();
+        case 'video':
+          return stream.getVideoTracks();
+        case 'all':
+        default:
+          return stream.getTracks();
+      }
+    }
+  };
+}
