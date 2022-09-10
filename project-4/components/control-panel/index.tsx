@@ -26,7 +26,12 @@ const ControlPanel = ({
 
   const [videoActive, setVideoActive] = useState(true);
 
-  const { isHost, stream, sharedScreenTrack: shared } = useContext(QoraContext);
+  const {
+    isHost,
+    stream,
+    sharedScreenTrack: shared,
+    socket,
+  } = useContext(QoraContext);
   const { isMyScreenSharing, toggleScreenShare } = useScreenShare();
 
   function handleVideo() {
@@ -67,7 +72,11 @@ const ControlPanel = ({
           <HangUpIcon className="h-6 w-6" />
         </button>
         <button
-          onClick={toggleScreenShare}
+          onClick={() => {
+            isHost && !isMyScreenSharing && shared
+              ? socket.emit('host:remove-user-shared-screen')
+              : toggleScreenShare();
+          }}
           disabled={!isHost && (shared as any) && !isMyScreenSharing}
           className={`${common} ${
             shared

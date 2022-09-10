@@ -1,35 +1,24 @@
 import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { QoraContext } from '@pages/qora/[qoraId]';
+import { error } from '@common/utils';
 
 const useScreenShare = () => {
   const {
     socket,
     peer,
-    user,
-    isHost,
+    user: { name: username = '' },
     stream,
-    sharedScreenTrack,
+    sharedScreenTrack: sharedTrack,
     setSharedScreenTrack,
   } = useContext(QoraContext);
 
-  const [isMyScreenSharing, setIsMyScreenSharing] = useState(false);
+  const [amISharing, setAmISharing] = useState(false);
 
   useEffect(() => {
-    socket.on('user:shared-screen', (username: any) => {
-      peer.disconnect();
-      peer.reconnect();
-      toast(`${username} is sharing his screen`);
-    });
-
-    socket.on('user:stopped-screen-share', () => {
-      setSharedScreenTrack(null);
-    });
-
-    socket.on('host:removed-user-shared-screen', () => {
-      const sharedScreenTrack = stream?.getVideoTracks()[1];
-      if (sharedScreenTrack) stopScreenShare(sharedScreenTrack);
-    });
+    socket.on('user:shared-screen', resetPeer);
+    socket.on('user:stopped-screen-share', () => setSharedScreenTrack(null));
+    socket.on('host:removed-user-shared-screen', stopScreenShareByHost);
 
     return () => {
       socket.off('user:shared-screen');
@@ -38,42 +27,56 @@ const useScreenShare = () => {
     };
   }, [peer]);
 
+  return {
+    isMyScreenSharing: amISharing,
+    toggleScreenShare: () => {
+      !sharedTrack ? startScreenShare() : stopScreenShare(sharedTrack);
+    },
+  };
+
+  // ******************************
+
   function stopScreenShare(screenTrack: MediaStreamTrack) {
     screenTrack.stop();
     stream?.removeTrack(screenTrack);
+
     setSharedScreenTrack(null);
-    setIsMyScreenSharing(false);
+    setAmISharing(false);
+
     socket.emit('user:stop-share-screen');
   }
 
-  async function handleScreenShare() {
-    const screenStream = await navigator.mediaDevices.getDisplayMedia({
-      video: true,
-      audio: false,
-    });
-    const screenTrack = screenStream.getTracks()[0];
-    stream?.addTrack(screenTrack);
-    setSharedScreenTrack(screenTrack);
-    setIsMyScreenSharing(true);
-
-    socket.emit('user:share-screen', { username: user?.name });
-
-    screenTrack.onended = () => stopScreenShare(screenTrack);
+  function stopScreenShareByHost() {
+    const [_, sharedTrack] = stream?.getVideoTracks();
+    if (sharedTrack) stopScreenShare(sharedTrack);
   }
 
-  function toggleScreenShare() {
-    if (isHost && !isMyScreenSharing && sharedScreenTrack) {
-      socket.emit('host:remove-user-shared-screen');
-      return;
-    }
-    if (!sharedScreenTrack) handleScreenShare();
-    else stopScreenShare(sharedScreenTrack);
+  function startScreenShare() {
+    navigator.mediaDevices
+      .getDisplayMedia({
+        video: true,
+        audio: false,
+      })
+      .then((screenStream) => {
+        const [screenTrack] = screenStream.getTracks();
+        stream?.addTrack(screenTrack);
+
+        setSharedScreenTrack(screenTrack);
+        setAmISharing(true);
+
+        socket.emit('user:share-screen', { username });
+
+        screenTrack.onended = () => stopScreenShare(screenTrack);
+      })
+      .catch(error('Failed to share screen'));
   }
 
-  return {
-    isMyScreenSharing,
-    toggleScreenShare,
-  };
+  function resetPeer(sharingScreenUsername: string): void {
+    peer.disconnect();
+    peer.reconnect();
+
+    toast(`${sharingScreenUsername} is sharing his screen`); // * side effect
+  }
 };
 
 export default useScreenShare;
