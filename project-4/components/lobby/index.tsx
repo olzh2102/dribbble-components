@@ -1,4 +1,5 @@
 import { VideoCameraIcon, MicrophoneIcon } from '@heroicons/react/solid';
+import Tooltip from 'react-tooltip';
 
 import { MYSELF } from '@common/constants';
 import { toggleVideo } from '@common/utils';
@@ -22,19 +23,25 @@ const Lobby = ({ stream, media, setMedia, redirectToRoom }: LobbyProps) => {
         <div className="flex justify-end gap-2">
           <button
             onClick={setVisibility}
+            data-for="visibility"
+            data-tip={`${media.isVisible ? 'switch off' : 'switch on'}`}
             className="p-3 rounded-xl text-white bg-slate-800 hover:bg-indigo-700 relative"
           >
             <VideoCameraIcon className="h-6 w-6" />
             {!media.isVisible && <CrossLineDiv />}
           </button>
+          <Tooltip id="visibility" effect="solid" />
 
           <button
             onClick={() => setMedia('isMuted')}
+            data-for="audio"
+            data-tip={`${media.isMuted ? 'unmute' : 'mute'}`}
             className="p-3 rounded-xl text-white bg-slate-800 hover:bg-indigo-700 relative"
           >
             <MicrophoneIcon className="h-6 w-6" />
             {media.isMuted && <CrossLineDiv />}
           </button>
+          <Tooltip id="audio" effect="solid" />
         </div>
       </div>
 
