@@ -9,6 +9,7 @@ import SharedScreen from './shared-screen';
 import Lobby from './lobby';
 import Chat from './chat';
 import VideoContainer from './video-container';
+import Message from './message';
 
 export {
   JoinRoom,
@@ -22,4 +23,5 @@ export {
   Lobby,
   Chat,
   VideoContainer,
+  Message,
 };

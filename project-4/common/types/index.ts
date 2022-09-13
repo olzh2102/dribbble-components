@@ -47,3 +47,8 @@ export type AppendVideoStream = ({
 
 export type PeerId = string;
 
+export type UserMessage = {
+  user: string;
+  text: string;
+  time: number;
+};
