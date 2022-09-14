@@ -43,3 +43,7 @@ export function error(message: string) {
     console.error(error);
   };
 }
+
+export function isHost(roomId: RoomId): boolean {
+  return typeof window !== 'undefined' && !!window.localStorage.getItem(roomId);
+}

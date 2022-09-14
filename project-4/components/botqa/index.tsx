@@ -5,19 +5,9 @@ import { QoraContext } from '@pages/qora/[qoraId]';
 import { PeerVideo, SharedScreen, VideoContainer } from '@components/index';
 import { usePeerOnJoinRoom, usePeerOnAnswer } from '@hooks/index';
 import { append, toggleAudio } from 'common/utils';
-import { KeyValue } from 'common/types';
+import { KeyValue, PeerId } from 'common/types';
 
-const Botqa = ({
-  amIMuted,
-  fullscreen,
-  setAmIMuted,
-  children,
-}: {
-  amIMuted: boolean;
-  fullscreen: boolean;
-  setAmIMuted: React.Dispatch<React.SetStateAction<boolean>>;
-  children: React.ReactNode;
-}) => {
+const Botqa = ({ fullscreen, setAmIMuted, children }: RoomProps) => {
   console.log('render app');
 
   const {
@@ -26,6 +16,7 @@ const Botqa = ({
     peers,
     stream,
     socket,
+    amIMuted,
     sharedScreenTrack,
     setSharedScreenTrack,
   } = useContext(QoraContext);
@@ -38,24 +29,16 @@ const Botqa = ({
   usePeerOnAnswer(addVideoStream, setIsMuted);
 
   useEffect(() => {
-    socket.on('host:muted-user', (peerId: string) => {
-      if (peerId === myId) {
-        toggleAudio(stream);
-        setAmIMuted(true);
-        toast('You are muted');
-      } else {
-        setIsMuted((prev) => ({ ...prev, [peerId]: true }));
-      }
-    });
+    socket.on('host:muted-user', mutedByHost);
 
-    socket.on('user:left', (peerId: string) => {
+    socket.on('user:left', (peerId: PeerId) => {
       peers[peerId]?.close();
-      setIsRemoved((prev) => ({ ...prev, [peerId]: true }));
+      setIsRemoved(append({ [peerId]: true }));
     });
 
-    socket.on('user:toggled-audio', (peerId: string) => {
-      setIsMuted((prev) => ({ ...prev, [peerId]: !prev[peerId] }));
-    });
+    socket.on('user:toggled-audio', (peerId: PeerId) =>
+      setIsMuted(append({ [peerId]: !isMuted[peerId] }))
+    );
 
     return () => {
       socket.off('host:muted-user');
@@ -64,38 +47,15 @@ const Botqa = ({
     };
   }, [peers, myId]);
 
-  function addVideoStream({
-    id,
-    name,
-    isMe,
-  }: {
-    id: string;
-    name: string;
-    isMe?: boolean;
-  }) {
-    return (stream: MediaStream) => {
-      setVideos(
-        append({
-          [id]: <PeerVideo stream={stream} name={name} isMe={isMe} />,
-        })
-      );
-
-      const [_, screenTrack] = stream.getVideoTracks();
-      if (screenTrack) setSharedScreenTrack(screenTrack);
-    };
-  }
-
-  function handleRemovePeer(peerId: string) {
+  function removePeer(peerId: string) {
     socket.emit('user:leave', peerId);
     peers[peerId]?.close();
   }
 
-  function handleMutePeer(peerId: string) {
+  function mutePeer(peerId: string) {
     socket.emit('host:mute-user', peerId);
-    setIsMuted((prev) => ({ ...prev, [peerId]: true }));
+    setIsMuted(append({ [peerId]: true }));
   }
-
-  if (!peer || !stream) return <span>Loading...</span>;
 
   let sharedScreenClasses = '';
   if (sharedScreenTrack) {
@@ -127,8 +87,8 @@ const Botqa = ({
                   id={id}
                   isMuted={isMuted[id]}
                   stream={element.props.stream}
-                  onMutePeer={handleMutePeer}
-                  onRemovePeer={handleRemovePeer}
+                  onMutePeer={mutePeer}
+                  onRemovePeer={removePeer}
                 >
                   {element}
                 </VideoContainer>
@@ -138,6 +98,43 @@ const Botqa = ({
       </div>
     </>
   );
+
+  // ********************************
+
+  function mutedByHost(peerId: PeerId) {
+    if (peerId === myId) {
+      toggleAudio(stream);
+      setAmIMuted(true);
+      toast('You are muted');
+    } else {
+      setIsMuted((prev) => ({ ...prev, [peerId]: true }));
+    }
+  }
+
+  function addVideoStream({ id, name, isMe }: AppendVideoStream) {
+    return (stream: MediaStream) => {
+      setVideos(
+        append({
+          [id]: <PeerVideo stream={stream} name={name} isMe={isMe} />,
+        })
+      );
+
+      const [_, screenTrack] = stream.getVideoTracks();
+      if (screenTrack) setSharedScreenTrack(screenTrack);
+    };
+  }
 };
 
 export default Botqa;
+
+type RoomProps = {
+  fullscreen: boolean;
+  setAmIMuted: React.Dispatch<React.SetStateAction<boolean>>;
+  children: React.ReactNode;
+};
+
+type AppendVideoStream = {
+  id: PeerId;
+  name: string;
+  isMe?: boolean;
+};

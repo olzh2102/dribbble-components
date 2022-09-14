@@ -1,5 +1,6 @@
 import { NextPage } from 'next';
 import { createContext, useState } from 'react';
+import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 
 import Room from '@app/index';
 import { Lobby } from '@components/index';
@@ -28,3 +29,5 @@ const Qora: NextPage = () => {
 };
 
 export default Qora;
+
+export const getServerSideProps = withPageAuthRequired();

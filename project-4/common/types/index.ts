@@ -46,4 +46,7 @@ export type AppendVideoStream = ({
 }) => (stream: MediaStream) => void;
 
 export type PeerId = string;
-
+export type User = {
+  id: string;
+  name: string;
+};
