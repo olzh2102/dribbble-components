@@ -74,7 +74,7 @@ const App = ({ stream, media }: AppProps) => {
           </Botqa>
         )}
 
-        <div className="flex w-screen px-6 absolute bottom-6 items-center z-50">
+        <div className="flex w-screen px-6 absolute bottom-6 items-center">
           <ControlPanel
             onFullscreen={() => setFullscreen(!fullscreen)}
             onAudio={handleAudio}
@@ -83,7 +83,7 @@ const App = ({ stream, media }: AppProps) => {
         </div>
 
         <div className={`${isChatOpen ? 'basis-2/6' : 'hidden'}`}>
-          <Chat setOpen={setIsChatOpen} title="Item Details" />
+          <Chat title="Meeting Chat" onClose={() => setIsChatOpen(false)} />
         </div>
       </div>
 

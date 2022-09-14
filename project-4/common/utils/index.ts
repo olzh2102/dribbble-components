@@ -1,4 +1,4 @@
-import { RoomId } from '@common/types';
+import { KeyValue, RoomId } from '@common/types';
 import { customAlphabet } from 'nanoid';
 
 function toggle(type: 'audio' | 'video') {
@@ -30,11 +30,12 @@ export function createHost(roomId: RoomId): void {
   window.localStorage.setItem(roomId, '*');
 }
 
-export function append(kv: Record<string, any>) {
-  return (target: Record<string, any>) => ({
-    ...target,
-    ...kv,
-  });
+export function append<T>(appendant: any) {
+  return (target: KeyValue<T> | T[]) => {
+    if (target instanceof Array) return target.concat(appendant);
+
+    return { ...target, ...appendant };
+  };
 }
 
 export function error(message: string) {
