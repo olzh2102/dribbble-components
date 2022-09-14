@@ -42,7 +42,7 @@ const Chat = ({ title, onClose }: { title: string; onClose: () => void }) => {
   }
 
   return (
-    <div className="fixed inset-y-0 right-0 pl-10 max-w-full flex">
+    <>
       <div className="relative w-screen max-w-md">
         <div className="h-screen bg-[#1e262e] text-gray-300 shadow-xl rounded-l-3xl">
           <div className="flex flex-col pl-6 py-6 h-full justify-between">
@@ -80,7 +80,7 @@ const Chat = ({ title, onClose }: { title: string; onClose: () => void }) => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

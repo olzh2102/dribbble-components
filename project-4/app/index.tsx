@@ -63,28 +63,36 @@ const App = ({ stream, media }: AppProps) => {
         setSharedScreenTrack,
       }}
     >
-      <div className="flex h-screen place-items-center place-content-center relative p-6">
-        {!stream || !peer ? (
-          <span className="text-white">Getting the room ready...</span>
-        ) : (
-          <Botqa setAmIMuted={setAmIMuted} fullscreen={fullscreen}>
-            <VideoContainer id={myId} isMuted={amIMuted} stream={stream}>
-              <PeerVideo stream={stream} name={MYSELF} isMe={true} />
-            </VideoContainer>
-          </Botqa>
+      <div className="flex">
+        <div
+          className={`${
+            isChatOpen ? 'sm:flex hidden' : 'flex'
+          } h-screen w-full place-items-center place-content-center relative p-6`}
+        >
+          {!stream || !peer ? (
+            <span className="text-white">Getting the room ready...</span>
+          ) : (
+            <Botqa setAmIMuted={setAmIMuted} fullscreen={fullscreen}>
+              <VideoContainer id={myId} isMuted={amIMuted} stream={stream}>
+                <PeerVideo stream={stream} name={MYSELF} isMe={true} />
+              </VideoContainer>
+            </Botqa>
+          )}
+
+          <div className="flex w-full absolute bottom-6 items-center z-50">
+            <ControlPanel
+              onFullscreen={() => setFullscreen(!fullscreen)}
+              onAudio={handleAudio}
+              toggleChat={() => setIsChatOpen(!isChatOpen)}
+            />
+          </div>
+        </div>
+
+        {isChatOpen && (
+          <div className="h-screen">
+            <Chat onClose={() => setIsChatOpen(false)} title="Item Details" />
+          </div>
         )}
-
-        <div className="flex w-screen px-6 absolute bottom-6 items-center">
-          <ControlPanel
-            onFullscreen={() => setFullscreen(!fullscreen)}
-            onAudio={handleAudio}
-            toggleChat={() => setIsChatOpen(!isChatOpen)}
-          />
-        </div>
-
-        <div className={`${isChatOpen ? 'basis-2/6' : 'hidden'}`}>
-          <Chat title="Meeting Chat" onClose={() => setIsChatOpen(false)} />
-        </div>
       </div>
 
       <ToastContainer {...TOAST_PROPS} />
