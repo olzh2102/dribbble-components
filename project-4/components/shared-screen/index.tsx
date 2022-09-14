@@ -1,9 +1,10 @@
-import React from 'react';
+import { memo } from 'react';
+import { Nullable } from '@common/types';
 
 const SharedScreen = ({
   sharedScreenTrack,
 }: {
-  sharedScreenTrack: MediaStreamTrack | null;
+  sharedScreenTrack: Nullable<MediaStreamTrack>;
 }) => {
   if (!sharedScreenTrack) return null;
 
@@ -19,4 +20,4 @@ const SharedScreen = ({
   );
 };
 
-export default React.memo(SharedScreen);
+export default memo(SharedScreen);

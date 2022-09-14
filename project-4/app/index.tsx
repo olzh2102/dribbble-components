@@ -3,36 +3,24 @@ import { MediaConnection } from 'peerjs';
 import { useUser } from '@auth0/nextjs-auth0';
 import { ToastContainer, ToastContainerProps } from 'react-toastify';
 
+import { KeyValue, Nullable } from '@common/types';
+import { isHost, toggleAudio } from '@common/utils';
+import { MYSELF, TOAST_PROPS } from '@common/constants';
+
+import { useGetRoomId, usePeer } from '@hooks/index';
 import { SocketContext } from '@pages/_app';
+import { QoraContext } from '@pages/qora/[qoraId]';
+
 import Botqa from '@components/botqa';
 import Chat from '@components/chat';
-import { useGetRoomId, usePeer } from '@hooks/index';
-import { KeyValue, Nullable } from '@common/types';
-import { QoraContext } from '@pages/qora/[qoraId]';
 import ControlPanel from '@components/control-panel';
-import { toggleAudio } from '@common/utils';
 import { PeerVideo, VideoContainer } from '@components/index';
-import { MYSELF } from '@common/constants';
 
-const TOAST_PROPS: ToastContainerProps = {
-  position: 'bottom-left',
-  theme: 'dark',
-  autoClose: 3000,
-};
-
-const App = ({
-  stream,
-  media,
-}: {
-  stream: Nullable<MediaStream>;
-  media: { isMuted: boolean; isVisible: boolean };
-}) => {
+const App = ({ stream, media }: AppProps) => {
   const socket = useContext(SocketContext);
   const roomId = useGetRoomId();
   const { peer, myId } = usePeer(media.isMuted);
-  const user = useUser();
-  console.log('ME', myId);
-  console.log('PEER:', peer);
+  const { isLoading, user } = useUser();
 
   const [peers, setPeers] = useState<KeyValue<MediaConnection>>({});
 
@@ -41,10 +29,6 @@ const App = ({
     useState<Nullable<MediaStreamTrack>>(null);
 
   const [fullscreen, setFullscreen] = useState(false);
-
-  const isHost =
-    typeof window !== 'undefined' && !!window.localStorage.getItem(roomId);
-
   const [isChatOpen, setIsChatOpen] = useState(false);
 
   useEffect(() => {
@@ -60,10 +44,7 @@ const App = ({
     socket.emit('user:toggle-audio', myId);
   }
 
-  if (user.isLoading) return <span>Loading...</span>;
-
-  if (typeof window !== 'undefined' && !user.user)
-    window.location.href = '/api/auth/login';
+  if (isLoading) return <span>Loading...</span>;
 
   return (
     <QoraContext.Provider
@@ -72,8 +53,9 @@ const App = ({
         roomId,
         peer,
         myId,
-        user: user.user,
-        isHost,
+        user,
+        isHost: isHost(roomId),
+        amIMuted,
         stream,
         peers,
         setPeers,
@@ -82,22 +64,19 @@ const App = ({
       }}
     >
       <div className="flex h-screen place-items-center place-content-center relative p-6">
-        <Botqa
-          amIMuted={amIMuted}
-          setAmIMuted={setAmIMuted}
-          fullscreen={fullscreen}
-        >
-          {stream && (
+        {!stream || !peer ? (
+          <span className="text-white">Getting the room ready...</span>
+        ) : (
+          <Botqa setAmIMuted={setAmIMuted} fullscreen={fullscreen}>
             <VideoContainer id={myId} isMuted={amIMuted} stream={stream}>
               <PeerVideo stream={stream} name={MYSELF} isMe={true} />
             </VideoContainer>
-          )}
-        </Botqa>
+          </Botqa>
+        )}
 
         <div className="flex w-screen px-6 absolute bottom-6 items-center">
           <ControlPanel
             onFullscreen={() => setFullscreen(!fullscreen)}
-            isMuted={amIMuted}
             onAudio={handleAudio}
             toggleChat={() => setIsChatOpen(!isChatOpen)}
           />
@@ -114,3 +93,8 @@ const App = ({
 };
 
 export default App;
+
+type AppProps = {
+  stream: Nullable<MediaStream>;
+  media: { isMuted: boolean; isVisible: boolean };
+};

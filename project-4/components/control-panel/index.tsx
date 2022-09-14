@@ -20,7 +20,6 @@ import CrossLineDiv from '@common/components/cross-line-div';
 const ControlPanel = ({
   onFullscreen,
   onAudio,
-  isMuted,
   toggleChat,
 }: ControlPanelProps) => {
   const router = useRouter();
@@ -30,6 +29,7 @@ const ControlPanel = ({
   const {
     isHost,
     stream,
+    amIMuted: isMuted,
     sharedScreenTrack: shared,
     socket,
   } = useContext(QoraContext);
@@ -122,7 +122,6 @@ export default ControlPanel;
 
 type ControlPanelProps = {
   onAudio: () => void;
-  isMuted: boolean;
   toggleChat: () => void;
   onFullscreen: () => void;
 };
