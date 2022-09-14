@@ -94,7 +94,7 @@ const App = ({
           )}
         </Botqa>
 
-        <div className="flex w-screen px-6 absolute bottom-6 items-center z-0">
+        <div className="flex w-screen px-6 absolute bottom-6 items-center">
           <ControlPanel
             onFullscreen={() => setFullscreen(!fullscreen)}
             isMuted={amIMuted}

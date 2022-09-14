@@ -1,9 +1,10 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { XIcon } from '@heroicons/react/outline';
 import { QoraContext } from '@pages/qora/[qoraId]';
-import { Message } from '..';
 import { UserMessage } from '@common/types';
 import { MYSELF } from '@common/constants';
+import { append } from '@common/utils';
+import { Message } from '..';
 
 const Chat = ({ title, onClose }: { title: string; onClose: () => void }) => {
   const { socket, user } = useContext(QoraContext);
@@ -12,9 +13,9 @@ const Chat = ({ title, onClose }: { title: string; onClose: () => void }) => {
   const [messages, setMessages] = useState<UserMessage[]>([]);
 
   useEffect(() => {
-    socket.on('chat:get', (message: UserMessage) => {
-      setMessages((prev) => prev.concat(message));
-    });
+    socket.on('chat:get', (message: UserMessage) =>
+      setMessages(append(message))
+    );
 
     return () => {
       socket.off('chat:get');
@@ -35,9 +36,7 @@ const Chat = ({ title, onClose }: { title: string; onClose: () => void }) => {
 
     if (e.key === 'Enter' && message) {
       postNewMessage(user.name, message);
-      setMessages((prev) =>
-        prev.concat({ user: MYSELF, text: message, time: Date.now() })
-      );
+      setMessages(append({ user: MYSELF, text: message, time: Date.now() }));
       setText('');
     }
   }
