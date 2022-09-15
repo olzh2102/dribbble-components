@@ -3,7 +3,7 @@ import { XIcon } from '@heroicons/react/outline';
 import { QoraContext } from '@pages/qora/[qoraId]';
 import { UserMessage } from '@common/types';
 import { MYSELF } from '@common/constants';
-import { append } from '@common/utils';
+import { append, formatTimeHHMM } from '@common/utils';
 import { Message } from '..';
 
 const Chat = ({ title, onClose }: { title: string; onClose: () => void }) => {
@@ -22,21 +22,22 @@ const Chat = ({ title, onClose }: { title: string; onClose: () => void }) => {
     };
   }, []);
 
-  function postNewMessage(user: string, text: string) {
-    const data = {
-      user,
-      text,
-    };
+  function sendMessage(e: React.KeyboardEvent<HTMLInputElement>) {
+    const messageText = (e.target as HTMLInputElement).value;
+    const lastMessage = messages.at(-1);
 
-    socket.emit('chat:post', data);
-  }
+    if (e.key === 'Enter' && messageText) {
+      const timeHHMM = formatTimeHHMM(Date.now());
+      const message = {
+        user: user.name,
+        text: messageText,
+        time: timeHHMM,
+        shouldAggregate:
+          lastMessage?.user === MYSELF && lastMessage?.time === timeHHMM,
+      };
 
-  function handleSendMessage(e: React.KeyboardEvent<HTMLInputElement>) {
-    const message = (e.target as HTMLInputElement).value;
-
-    if (e.key === 'Enter' && message) {
-      postNewMessage(user.name, message);
-      setMessages(append({ user: MYSELF, text: message, time: Date.now() }));
+      socket.emit('chat:post', message);
+      setMessages(append({ ...message, user: MYSELF }));
       setText('');
     }
   }
@@ -71,7 +72,7 @@ const Chat = ({ title, onClose }: { title: string; onClose: () => void }) => {
               id="name"
               value={text}
               onChange={(e) => setText(e.target.value)}
-              onKeyDown={handleSendMessage}
+              onKeyDown={sendMessage}
               className="p-4 bg-transparent outline-none block w-full text-sm border border-gray-300/[.5] rounded-2xl"
               placeholder="Send a message to everyone"
             />

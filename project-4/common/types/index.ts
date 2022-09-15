@@ -49,10 +49,11 @@ export type PeerId = string;
 export type User = {
   id: string;
   name: string;
-}
+};
 
 export type UserMessage = {
   user: string;
   text: string;
-  time: number;
+  time: string;
+  shouldAggregate: boolean;
 };
