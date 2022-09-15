@@ -54,8 +54,8 @@ const socketHandler = (req: NextApiRequest, res: NextApiResponseServerIO) => {
           socket.to(room).emit('user:stopped-screen-share', user.name);
         });
 
-        socket.on('chat:post', (data) => {
-          socket.to(room).emit('chat:get', { ...data, time: Date.now() });
+        socket.on('chat:post', (message) => {
+          socket.to(room).emit('chat:get', message);
         });
       });
     });
