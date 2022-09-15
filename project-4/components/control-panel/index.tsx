@@ -31,6 +31,7 @@ const ControlPanel = ({
     isHost,
     stream,
     amIMuted: isMuted,
+    isChatOpen,
     sharedScreenTrack: shared,
     socket,
   } = useContext(QoraContext);
@@ -46,18 +47,18 @@ const ControlPanel = ({
       {shared && (
         <button
           onClick={onFullscreen}
-          className={`${common} bg-slate-800 hover:bg-indigo-700 relative`}
+          className={`${common} bg-slate-800 hover:bg-emerald-700`}
         >
           <ArrowsExpandIcon className="w-6 h-6" />
         </button>
       )}
 
-      <div className="flex flex-auto gap-6 place-content-center">
+      <div className="flex flex-auto gap-6 place-content-center items-center">
         <button
           onClick={handleVideo}
           data-for="visibility"
           data-tip={`${videoActive ? 'switch off' : 'switch on'}`}
-          className={`${common} + bg-slate-800 hover:bg-indigo-700 relative`}
+          className={`${common} bg-slate-800 hover:bg-emerald-700 relative`}
         >
           <VideoCameraIcon className="h-6 w-6" />
           {!videoActive && <CrossLineDiv />}
@@ -68,7 +69,7 @@ const ControlPanel = ({
           onClick={onAudio}
           data-for="audio"
           data-tip={`${videoActive ? 'unmute' : 'mute'}`}
-          className={`${common} bg-slate-800 hover:bg-indigo-700 relative`}
+          className={`${common} bg-slate-800 hover:bg-emerald-700 relative`}
         >
           <MicrophoneIcon className="h-6 w-6" />
           {isMuted && <CrossLineDiv />}
@@ -79,9 +80,9 @@ const ControlPanel = ({
           onClick={() => router.push('/')}
           data-for="hangUp"
           data-tip="hang up"
-          className={`${common} bg-red-600 hover:bg-red-400`}
+          className={`${common} bg-red-600 hover:bg-red-500`}
         >
-          <HangUpIcon className="h-6 w-6" />
+          <HangUpIcon className="h-7 w-7" />
         </button>
         <Tooltip id="hangUp" effect="solid" />
 
@@ -94,8 +95,8 @@ const ControlPanel = ({
           disabled={!isHost && (shared as any) && !isMyScreenSharing}
           className={`${common} ${
             shared
-              ? 'bg-indigo-600 hover:bg-indigo-400'
-              : 'bg-red-600 hover:bg-red-400'
+              ? 'bg-emerald-600 hover:bg-emerald-500'
+              : 'bg-slate-800 hover:bg-emerald-700'
           }`}
           data-for="shareScreen"
           data-tip="share your screen"
@@ -103,16 +104,21 @@ const ControlPanel = ({
           <ShareScreenIcon className="h-6 w-6" />
         </button>
         <Tooltip id="shareScreen" effect="solid" />
-      </div>
 
       <div className="flex gap-4">
         <ParticipantsCount count={usersCount} />
+
         <button
           data-for="chat"
           data-tip="chat with everyone"
           onClick={toggleChat}
+          className={`${common} ${
+            isChatOpen
+              ? 'bg-emerald-600 hover:bg-emerald-500'
+              : 'bg-slate-800 hover:bg-emerald-700'
+          }`}
         >
-          <ChatIcon className="w-9 h-9 stroke-white" />
+          <ChatIcon className="w-6 h-6" />
         </button>
         <Tooltip id="chat" effect="solid" />
       </div>
