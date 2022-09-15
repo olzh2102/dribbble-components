@@ -7,33 +7,39 @@ import { usePeerOnJoinRoom, usePeerOnAnswer } from '@hooks/index';
 import { append, toggleAudio } from 'common/utils';
 import { KeyValue, PeerId } from 'common/types';
 
-const Botqa = ({ fullscreen, setAmIMuted, children }: RoomProps) => {
+const Room = ({ fullscreen, setAmIMuted, children }: RoomProps) => {
   console.log('render app');
 
   const {
-    peer,
     myId,
     peers,
     stream,
     socket,
     amIMuted,
+    setCount,
     sharedScreenTrack,
     setSharedScreenTrack,
   } = useContext(QoraContext);
 
-  const [videos, setVideos] = useState<KeyValue<JSX.Element>>({});
-  const [isRemoved, setIsRemoved] = useState<KeyValue<boolean>>({});
+  const [videos, setVideos] = useState<Record<PeerId, JSX.Element>>({});
   const [isMuted, setIsMuted] = useState<KeyValue<boolean>>({});
+
+  const videosEntries = Object.entries(videos);
+  setCount(videosEntries.length);
 
   usePeerOnJoinRoom(addVideoStream, amIMuted, setIsMuted);
   usePeerOnAnswer(addVideoStream, setIsMuted);
+
+  console.log('peers: ', peers);
+  console.log('peers count: ', Object.keys(peers).length);
 
   useEffect(() => {
     socket.on('host:muted-user', mutedByHost);
 
     socket.on('user:left', (peerId: PeerId) => {
       peers[peerId]?.close();
-      setIsRemoved(append({ [peerId]: true }));
+      delete videos[peerId];
+      setVideos(videos);
     });
 
     socket.on('user:toggled-audio', (peerId: PeerId) =>
@@ -78,21 +84,18 @@ const Botqa = ({ fullscreen, setAmIMuted, children }: RoomProps) => {
           }`}
         >
           {children}
-          {Object.entries(videos).map(
-            ([id, element]) =>
-              !isRemoved[id] && (
-                <VideoContainer
-                  key={id}
-                  id={id}
-                  isMuted={isMuted[id]}
-                  stream={element.props.stream}
-                  onMutePeer={mutePeer}
-                  onRemovePeer={removePeer}
-                >
-                  {element}
-                </VideoContainer>
-              )
-          )}
+          {videosEntries.map(([id, element]) => (
+            <VideoContainer
+              key={id}
+              id={id}
+              isMuted={isMuted[id]}
+              stream={element.props.stream}
+              onMutePeer={mutePeer}
+              onRemovePeer={removePeer}
+            >
+              {element}
+            </VideoContainer>
+          ))}
         </div>
       </div>
     </>
@@ -124,7 +127,7 @@ const Botqa = ({ fullscreen, setAmIMuted, children }: RoomProps) => {
   }
 };
 
-export default Botqa;
+export default Room;
 
 type RoomProps = {
   fullscreen: boolean;

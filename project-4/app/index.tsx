@@ -30,6 +30,7 @@ const App = ({ stream, media }: AppProps) => {
 
   const [fullscreen, setFullscreen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [count, setCount] = useState(1);
 
   useEffect(() => {
     return () => {
@@ -59,6 +60,7 @@ const App = ({ stream, media }: AppProps) => {
         isChatOpen,
         stream,
         peers,
+        setCount,
         setPeers,
         sharedScreenTrack,
         setSharedScreenTrack,
@@ -79,11 +81,12 @@ const App = ({ stream, media }: AppProps) => {
                   <PeerVideo stream={stream} name={MYSELF} isMe={true} />
                 </VideoContainer>
               </Botqa>
-            </div>
+             </div>
           )}
 
           <div className="flex w-full items-center">
             <ControlPanel
+              usersCount={count + Number(Boolean(myId))}
               onFullscreen={() => setFullscreen(!fullscreen)}
               onAudio={handleAudio}
               toggleChat={() => setIsChatOpen(!isChatOpen)}
