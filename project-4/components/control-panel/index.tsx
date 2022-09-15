@@ -18,6 +18,7 @@ import { useScreenShare } from '@hooks/index';
 import CrossLineDiv from '@common/components/cross-line-div';
 
 const ControlPanel = ({
+  usersCount,
   onFullscreen,
   onAudio,
   toggleChat,
@@ -116,7 +117,7 @@ const ControlPanel = ({
             </svg>
           </span>
           <span className="place-content-center absolute top-0 right-0 block h-4 w-4 transform -translate-y-1/2 translate-x-1/2 rounded-full bg-amber-300 text-xs text-center text-black">
-            5
+            {usersCount}
           </span>
         </span>
         <button
@@ -135,6 +136,7 @@ const ControlPanel = ({
 export default ControlPanel;
 
 type ControlPanelProps = {
+  usersCount: number;
   onAudio: () => void;
   toggleChat: () => void;
   onFullscreen: () => void;
