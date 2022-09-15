@@ -56,6 +56,7 @@ const App = ({ stream, media }: AppProps) => {
         user,
         isHost: isHost(roomId),
         amIMuted,
+        isChatOpen,
         stream,
         peers,
         setPeers,

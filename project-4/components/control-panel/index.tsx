@@ -30,6 +30,7 @@ const ControlPanel = ({
     isHost,
     stream,
     amIMuted: isMuted,
+    isChatOpen,
     sharedScreenTrack: shared,
     socket,
   } = useContext(QoraContext);
@@ -78,7 +79,7 @@ const ControlPanel = ({
           onClick={() => router.push('/')}
           data-for="hangUp"
           data-tip="hang up"
-          className={`${common} bg-red-600 hover:bg-red-400`}
+          className={`${common} bg-red-600 hover:bg-red-500`}
         >
           <HangUpIcon className="h-7 w-7" />
         </button>
@@ -93,7 +94,7 @@ const ControlPanel = ({
           disabled={!isHost && (shared as any) && !isMyScreenSharing}
           className={`${common} ${
             shared
-              ? 'bg-emerald-600 hover:bg-emerald-400'
+              ? 'bg-emerald-600 hover:bg-emerald-500'
               : 'bg-slate-800 hover:bg-emerald-700'
           }`}
           data-for="shareScreen"
@@ -107,7 +108,11 @@ const ControlPanel = ({
           data-for="chat"
           data-tip="chat with everyone"
           onClick={toggleChat}
-          className={`${common} bg-slate-800 hover:bg-emerald-700`}
+          className={`${common} ${
+            isChatOpen
+              ? 'bg-emerald-600 hover:bg-emerald-500'
+              : 'bg-slate-800 hover:bg-emerald-700'
+          }`}
         >
           <ChatIcon className="w-6 h-6" />
         </button>
