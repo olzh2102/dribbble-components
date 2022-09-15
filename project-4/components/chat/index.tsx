@@ -43,40 +43,38 @@ const Chat = ({ title, onClose }: { title: string; onClose: () => void }) => {
 
   return (
     <>
-      <div className="relative w-screen max-w-md">
-        <div className="h-screen bg-[#1e262e] text-gray-300 shadow-xl rounded-l-3xl">
-          <div className="flex flex-col pl-6 py-6 h-full justify-between">
-            <div className="flex justify-between mr-6 mb-3">
-              <h2 className="text-lg font-medium text-gray-300">{title}</h2>
-              <button
-                className="text-gray-300 hover:text-white focus:outline-none"
-                onClick={onClose}
-              >
-                <XIcon className="h-6 w-6" aria-hidden="true" />
-              </button>
-            </div>
-            <div className="overflow-y-auto h-[calc(100vh-8rem)]">
-              {messages.map((message, index) => (
-                <Message
-                  key={`${message.time}-${index}`}
-                  message={message}
-                  isLast={index === messages.length - 1}
-                />
-              ))}
-            </div>
-            <div className="flex items-center justify-center pr-6 gap-4">
-              <input
-                autoComplete="off"
-                type="text"
-                name="name"
-                id="name"
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                onKeyDown={handleSendMessage}
-                className="p-4 bg-transparent outline-none block w-full text-sm border border-gray-300/[.5] rounded-2xl"
-                placeholder="Send a message to everyone"
+      <div className="h-full bg-[#1e262e] text-gray-300 shadow-xl rounded-l-3xl">
+        <div className="flex flex-col pl-6 py-6 h-full justify-between">
+          <div className="flex justify-between mr-6 mb-3">
+            <h2 className="text-lg font-medium text-gray-300">{title}</h2>
+            <button
+              className="text-gray-300 hover:text-white focus:outline-none"
+              onClick={onClose}
+            >
+              <XIcon className="h-6 w-6" aria-hidden="true" />
+            </button>
+          </div>
+          <div className="overflow-y-auto h-[calc(100vh-8rem)]">
+            {messages.map((message, index) => (
+              <Message
+                key={`${message.time}-${index}`}
+                message={message}
+                isLast={index === messages.length - 1}
               />
-            </div>
+            ))}
+          </div>
+          <div className="flex items-center justify-center pr-6 pt-6 gap-4">
+            <input
+              autoComplete="off"
+              type="text"
+              name="name"
+              id="name"
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              onKeyDown={handleSendMessage}
+              className="p-4 bg-transparent outline-none block w-full text-sm border border-gray-300/[.5] rounded-2xl"
+              placeholder="Send a message to everyone"
+            />
           </div>
         </div>
       </div>

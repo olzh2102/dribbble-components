@@ -57,19 +57,18 @@ const Botqa = ({ fullscreen, setAmIMuted, children }: RoomProps) => {
     setIsMuted(append({ [peerId]: true }));
   }
 
-  let sharedScreenClasses = '';
-  if (sharedScreenTrack) {
-    sharedScreenClasses += 'flex justify-center';
-    if (fullscreen) sharedScreenClasses += 'basis-6/6';
-    else sharedScreenClasses += 'basis-5/6';
-  }
+  let sharedScreenClasses = 'flex justify-center';
+  if (fullscreen) sharedScreenClasses += 'basis-6/6';
+  else sharedScreenClasses += 'basis-5/6';
 
   return (
     <>
       <div className="flex gap-4">
-        <div className={sharedScreenClasses}>
-          <SharedScreen sharedScreenTrack={sharedScreenTrack} />
-        </div>
+        {sharedScreenTrack && (
+          <div className={sharedScreenClasses}>
+            <SharedScreen sharedScreenTrack={sharedScreenTrack} />
+          </div>
+        )}
 
         <div
           className={`${

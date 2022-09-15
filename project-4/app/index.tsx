@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { MediaConnection } from 'peerjs';
 import { useUser } from '@auth0/nextjs-auth0';
-import { ToastContainer, ToastContainerProps } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 
 import { KeyValue, Nullable } from '@common/types';
 import { isHost, toggleAudio } from '@common/utils';
@@ -67,19 +67,21 @@ const App = ({ stream, media }: AppProps) => {
         <div
           className={`${
             isChatOpen ? 'sm:flex hidden' : 'flex'
-          } h-screen w-full place-items-center place-content-center relative p-6`}
+          } w-full h-screen flex-col p-4`}
         >
           {!stream || !peer ? (
             <span className="text-white">Getting the room ready...</span>
           ) : (
-            <Botqa setAmIMuted={setAmIMuted} fullscreen={fullscreen}>
-              <VideoContainer id={myId} isMuted={amIMuted} stream={stream}>
-                <PeerVideo stream={stream} name={MYSELF} isMe={true} />
-              </VideoContainer>
-            </Botqa>
+            <div className="flex h-full place-items-center place-content-center">
+              <Botqa setAmIMuted={setAmIMuted} fullscreen={fullscreen}>
+                <VideoContainer id={myId} isMuted={amIMuted} stream={stream}>
+                  <PeerVideo stream={stream} name={MYSELF} isMe={true} />
+                </VideoContainer>
+              </Botqa>
+            </div>
           )}
 
-          <div className="flex w-full absolute bottom-6 items-center z-50">
+          <div className="flex w-full items-center">
             <ControlPanel
               onFullscreen={() => setFullscreen(!fullscreen)}
               onAudio={handleAudio}
@@ -88,11 +90,13 @@ const App = ({ stream, media }: AppProps) => {
           </div>
         </div>
 
-        {isChatOpen && (
-          <div className="h-screen">
-            <Chat onClose={() => setIsChatOpen(false)} title="Item Details" />
-          </div>
-        )}
+        <div
+          className={`${
+            isChatOpen ? '' : 'hidden'
+          } h-screen w-screen max-w-full sm:max-w-md`}
+        >
+          <Chat onClose={() => setIsChatOpen(false)} title="Item Details" />
+        </div>
       </div>
 
       <ToastContainer {...TOAST_PROPS} />
