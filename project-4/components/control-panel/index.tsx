@@ -105,9 +105,6 @@ const ControlPanel = ({
         </button>
         <Tooltip id="shareScreen" effect="solid" />
 
-      <div className="flex gap-4">
-        <ParticipantsCount count={usersCount} />
-
         <button
           data-for="chat"
           data-tip="chat with everyone"
@@ -122,6 +119,8 @@ const ControlPanel = ({
         </button>
         <Tooltip id="chat" effect="solid" />
       </div>
+
+      <ParticipantsCount count={usersCount} />
     </>
   );
 };
