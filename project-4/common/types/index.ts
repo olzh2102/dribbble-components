@@ -59,6 +59,6 @@ export type UserMessage = {
 };
 
 export type InitSetup = {
-  isMuted: boolean; 
-  isVisible: boolean
-}
+  isMuted: boolean;
+  isHidden: boolean;
+};

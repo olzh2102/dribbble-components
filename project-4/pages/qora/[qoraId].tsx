@@ -13,7 +13,10 @@ export const QoraContext = createContext<any>({});
 const Qora: NextPage = () => {
   const [isLobby, setIsLobby] = useState(true);
 
-  const [initSetup, setInitSetup] = useState<InitSetup>({ isMuted: false, isVisible: true });
+  const [initSetup, setInitSetup] = useState<InitSetup>({
+    isMuted: false,
+    isHidden: false,
+  });
   const { stream, isLoading } = useStream({ video: true, audio: true });
 
   if (isLoading)
@@ -35,7 +38,9 @@ const Qora: NextPage = () => {
       stream={stream}
       initSetup={initSetup}
       redirectToRoom={() => setIsLobby(false)}
-      setup={(key: keyof InitSetup) => setInitSetup(append({ [key]: !initSetup[key] }))}
+      setup={(key: keyof InitSetup) =>
+        setInitSetup(append({ [key]: !initSetup[key] }))
+      }
     />
   ) : (
     <Room stream={stream} initSetup={initSetup} />

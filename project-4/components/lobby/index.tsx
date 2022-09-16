@@ -8,10 +8,8 @@ import CrossLineDiv from '@common/components/cross-line-div';
 import { PeerVideo } from '..';
 
 const Lobby = ({ stream, initSetup, setup, redirectToRoom }: LobbyProps) => {
-  if (stream) stream.getVideoTracks()[0].enabled = initSetup.isVisible;
-
   function setVisibility() {
-    setup('isVisible');
+    setup('isHidden');
     toggleVideo(stream);
   }
 
@@ -24,11 +22,11 @@ const Lobby = ({ stream, initSetup, setup, redirectToRoom }: LobbyProps) => {
           <button
             onClick={setVisibility}
             data-for="visibility"
-            data-tip={`${initSetup.isVisible ? 'switch off' : 'switch on'}`}
+            data-tip={`${initSetup.isHidden ? 'switch on' : 'switch off'}`}
             className="p-3 rounded-xl text-white bg-slate-800 hover:bg-indigo-700 relative"
           >
             <VideoCameraIcon className="h-6 w-6" />
-            {!initSetup.isVisible && <CrossLineDiv />}
+            {initSetup.isHidden && <CrossLineDiv />}
           </button>
           <Tooltip id="visibility" effect="solid" />
 
@@ -60,7 +58,7 @@ export default Lobby;
 
 type LobbyProps = {
   stream: MediaStream;
-  initSetup: { isMuted: boolean; isVisible: boolean };
-  setup: (key: 'isMuted' | 'isVisible') => void;
+  initSetup: { isMuted: boolean; isHidden: boolean };
+  setup: (key: 'isMuted' | 'isHidden') => void;
   redirectToRoom: () => void;
 };
