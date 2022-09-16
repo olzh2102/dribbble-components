@@ -30,7 +30,18 @@ const App = ({ stream, media }: AppProps) => {
 
   const [fullscreen, setFullscreen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [chatClassName, setChatClassName] = useState<
+    'hidden' | 'animate-on-open-chat' | 'animate-on-close-chat' | null
+  >(null);
   const [count, setCount] = useState(1);
+
+  useEffect(() => {
+    if (!chatClassName) setChatClassName('hidden');
+    else
+      setChatClassName(
+        isChatOpen ? 'animate-on-open-chat' : 'animate-on-close-chat'
+      );
+  }, [isChatOpen]);
 
   useEffect(() => {
     return () => {
@@ -81,7 +92,7 @@ const App = ({ stream, media }: AppProps) => {
                   <PeerVideo stream={stream} name={MYSELF} isMe={true} />
                 </VideoContainer>
               </Botqa>
-             </div>
+            </div>
           )}
 
           <div className="flex w-full items-center">
@@ -95,11 +106,9 @@ const App = ({ stream, media }: AppProps) => {
         </div>
 
         <div
-          className={`${
-            isChatOpen ? '' : 'hidden'
-          } h-screen w-screen max-w-full sm:max-w-md`}
+          className={`${chatClassName} h-screen w-screen max-w-full sm:max-w-md`}
         >
-          <Chat onClose={() => setIsChatOpen(false)} title="Item Details" />
+          <Chat onClose={() => setIsChatOpen(false)} title="Meeting Chat" />
         </div>
       </div>
 
