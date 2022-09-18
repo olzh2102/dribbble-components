@@ -16,7 +16,7 @@ const Qora: NextPage = () => {
 
   return isLobby ? (
     <Lobby
-      stream={stream}
+      stream={stream!}
       media={media}
       redirectToRoom={() => setIsLobby(false)}
       setMedia={(key: string) =>

@@ -22,6 +22,7 @@ const ControlPanel = ({
   onFullscreen,
   onAudio,
   toggleChat,
+  toggleParticipants
 }: ControlPanelProps) => {
   const router = useRouter();
 
@@ -44,6 +45,7 @@ const ControlPanel = ({
 
   return (
     <>
+      {/* 📺 make fullscreen */}
       {shared && (
         <button
           onClick={onFullscreen}
@@ -54,6 +56,7 @@ const ControlPanel = ({
       )}
 
       <div className="flex flex-auto gap-6 place-content-center items-center">
+        {/* 🎥 toggle your video */}
         <button
           onClick={handleVideo}
           data-for="visibility"
@@ -64,7 +67,8 @@ const ControlPanel = ({
           {!videoActive && <CrossLineDiv />}
         </button>
         <Tooltip id="visibility" effect="solid" />
-
+        
+        {/* 📣 toggle your audio */}
         <button
           onClick={onAudio}
           data-for="audio"
@@ -76,6 +80,7 @@ const ControlPanel = ({
         </button>
         <Tooltip id="audio" effect="solid" />
 
+        {/* 📞 leave the call */}
         <button
           onClick={() => router.push('/')}
           data-for="hangUp"
@@ -86,6 +91,7 @@ const ControlPanel = ({
         </button>
         <Tooltip id="hangUp" effect="solid" />
 
+        {/* 🖥 share your screen */}
         <button
           onClick={() => {
             isHost && !isMyScreenSharing && shared
@@ -93,22 +99,23 @@ const ControlPanel = ({
               : toggleScreenShare();
           }}
           disabled={!isHost && (shared as any) && !isMyScreenSharing}
+          data-for="shareScreen"
+          data-tip="share your screen"
           className={`${common} ${
             shared
               ? 'bg-emerald-600 hover:bg-emerald-500'
               : 'bg-slate-800 hover:bg-emerald-700'
           }`}
-          data-for="shareScreen"
-          data-tip="share your screen"
         >
           <ShareScreenIcon className="h-6 w-6" />
         </button>
         <Tooltip id="shareScreen" effect="solid" />
 
+        {/* 💬 chat with everyone */}
         <button
+          onClick={toggleChat}
           data-for="chat"
           data-tip="chat with everyone"
-          onClick={toggleChat}
           className={`${common} ${
             isChatOpen
               ? 'bg-emerald-600 hover:bg-emerald-500'
@@ -120,7 +127,8 @@ const ControlPanel = ({
         <Tooltip id="chat" effect="solid" />
       </div>
 
-      <ParticipantsCount count={usersCount} />
+      {/* 👨‍👩‍👧‍👦 check participants statuses */}
+      <ParticipantsCount count={usersCount} onToggleParticipants={toggleParticipants} />
     </>
   );
 };
@@ -131,15 +139,16 @@ type ControlPanelProps = {
   usersCount: number;
   onAudio: () => void;
   toggleChat: () => void;
+  toggleParticipants: () => void;
   onFullscreen: () => void;
 };
 
 const common = 'p-3 rounded-xl text-white';
 
-const ParticipantsCount = ({ count }: { count: number }) => {
+const ParticipantsCount = ({ count, onToggleParticipants }: { count: number, onToggleParticipants: () => void }) => {
   return (
     <div className="inline-block relative">
-      <button className="inline-block h-10 w-10 rounded-xl overflow-hidden bg-gray-100">
+      <button onClick={onToggleParticipants} className="inline-block h-10 w-10 rounded-xl overflow-hidden bg-gray-100">
         <svg
           className="h-full w-full text-gray-300"
           fill="currentColor"
