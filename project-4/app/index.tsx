@@ -3,8 +3,8 @@ import { MediaConnection } from 'peerjs';
 import { useUser } from '@auth0/nextjs-auth0';
 import { ToastContainer } from 'react-toastify';
 
-import { KeyValue, Nullable } from '@common/types';
-import { isHost, toggleAudio } from '@common/utils';
+import { InitSetup, KeyValue, Nullable } from '@common/types';
+import { isHost, toggleAudio, withEvent } from '@common/utils';
 import { MYSELF, TOAST_PROPS } from '@common/constants';
 
 import { useGetRoomId, usePeer } from '@hooks/index';
@@ -16,17 +16,19 @@ import Chat from '@components/chat';
 import ControlPanel from '@components/control-panel';
 import { PeerVideo, VideoContainer } from '@components/index';
 
-const App = ({ stream, media }: AppProps) => {
+const App = ({ stream, initSetup }: { stream: MediaStream; initSetup: InitSetup }) => {
   const socket = useContext(SocketContext);
+  const withSocket = withEvent(socket.emit);
+
   const roomId = useGetRoomId();
-  const { peer, myId } = usePeer(media.isMuted);
+
+  const { peer, myId } = usePeer(initSetup.isMuted);
   const { isLoading, user } = useUser();
 
   const [peers, setPeers] = useState<KeyValue<MediaConnection>>({});
 
-  const [amIMuted, setAmIMuted] = useState(media.isMuted);
-  const [sharedScreenTrack, setSharedScreenTrack] =
-    useState<Nullable<MediaStreamTrack>>(null);
+  const [amIMuted, setAmIMuted] = useState(initSetup.isMuted);
+  const [sharedScreenTrack, setSharedScreenTrack] = useState<Nullable<MediaStreamTrack>>(null);
 
   const [fullscreen, setFullscreen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -37,10 +39,7 @@ const App = ({ stream, media }: AppProps) => {
 
   useEffect(() => {
     if (!chatClassName) setChatClassName('hidden');
-    else
-      setChatClassName(
-        isChatOpen ? 'animate-on-open-chat' : 'animate-on-close-chat'
-      );
+    else setChatClassName(isChatOpen ? 'animate-on-open-chat' : 'animate-on-close-chat');
   }, [isChatOpen]);
 
   useEffect(() => {
@@ -50,10 +49,8 @@ const App = ({ stream, media }: AppProps) => {
   }, []);
 
   function handleAudio() {
+    toggleAudio(stream);
     setAmIMuted(!amIMuted);
-    if (stream) toggleAudio(stream);
-
-    socket.emit('user:toggle-audio', myId);
   }
 
   if (isLoading) return <span>Loading...</span>;
@@ -75,15 +72,12 @@ const App = ({ stream, media }: AppProps) => {
         setPeers,
         sharedScreenTrack,
         setSharedScreenTrack,
+        withSocket,
       }}
     >
       <div className="flex">
-        <div
-          className={`${
-            isChatOpen ? 'sm:flex hidden' : 'flex'
-          } w-full h-screen flex-col p-4`}
-        >
-          {!stream || !peer ? (
+        <div className={`${isChatOpen ? 'sm:flex hidden' : 'flex'} w-full h-screen flex-col p-4`}>
+          {!peer ? (
             <span className="text-white">Getting the room ready...</span>
           ) : (
             <div className="flex h-full place-items-center place-content-center">
@@ -99,15 +93,13 @@ const App = ({ stream, media }: AppProps) => {
             <ControlPanel
               usersCount={count + Number(Boolean(myId))}
               onFullscreen={() => setFullscreen(!fullscreen)}
-              onAudio={handleAudio}
+              onAudio={() => withSocket('user:toggle-audio')(handleAudio)(myId)}
               toggleChat={() => setIsChatOpen(!isChatOpen)}
             />
           </div>
         </div>
 
-        <div
-          className={`${chatClassName} h-screen w-screen max-w-full sm:max-w-md`}
-        >
+        <div className={`${chatClassName} h-screen w-screen max-w-full sm:max-w-md`}>
           <Chat onClose={() => setIsChatOpen(false)} title="Meeting Chat" />
         </div>
       </div>
@@ -118,8 +110,3 @@ const App = ({ stream, media }: AppProps) => {
 };
 
 export default App;
-
-type AppProps = {
-  stream: Nullable<MediaStream>;
-  media: { isMuted: boolean; isVisible: boolean };
-};
