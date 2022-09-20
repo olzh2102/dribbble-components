@@ -19,7 +19,6 @@ const Room = ({ fullscreen, setAmIMuted, children }: RoomProps) => {
     setCount,
     sharedScreenTrack,
     setSharedScreenTrack,
-    withSocket,
   } = useContext(QoraContext);
 
   const [videos, setVideos] = useState<Record<PeerId, JSX.Element>>({});
