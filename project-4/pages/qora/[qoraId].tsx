@@ -16,7 +16,19 @@ const Qora: NextPage = () => {
   const [initSetup, setInitSetup] = useState<InitSetup>({ isMuted: false, isVisible: true });
   const { stream, isLoading } = useStream({ video: true, audio: true });
 
-  if (isLoading) return <span>Hold on. Getting your video stream ready... 🚀</span>;
+  if (isLoading)
+    return (
+      <div className="grid place-items-center h-screen text-white">
+        Hold on. Getting your video stream ready... 🚀
+      </div>
+    );
+
+  if (!stream)
+    return (
+      <div className="grid place-items-center h-screen text-white">
+        Ooops!!! Couldn't create stream for you. Try again later 🫠
+      </div>
+    );
 
   return isLobby ? (
     <Lobby

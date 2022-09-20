@@ -4,7 +4,7 @@ import { useUser } from '@auth0/nextjs-auth0';
 import { ToastContainer } from 'react-toastify';
 
 import { InitSetup, KeyValue, Nullable } from '@common/types';
-import { isHost, toggleAudio, withEvent } from '@common/utils';
+import { isHost, toggleAudio } from '@common/utils';
 import { MYSELF, TOAST_PROPS } from '@common/constants';
 
 import { useGetRoomId, usePeer } from '@hooks/index';
@@ -18,8 +18,6 @@ import { PeerVideo, VideoContainer } from '@components/index';
 
 const App = ({ stream, initSetup }: { stream: MediaStream; initSetup: InitSetup }) => {
   const socket = useContext(SocketContext);
-  const withSocket = withEvent(socket.emit);
-
   const roomId = useGetRoomId();
 
   const { peer, myId } = usePeer(initSetup.isMuted);
@@ -51,6 +49,7 @@ const App = ({ stream, initSetup }: { stream: MediaStream; initSetup: InitSetup 
   function handleAudio() {
     toggleAudio(stream);
     setAmIMuted(!amIMuted);
+    socket.emit('user:toggle-audio', myId);
   }
 
   if (isLoading) return <span>Loading...</span>;
@@ -72,7 +71,6 @@ const App = ({ stream, initSetup }: { stream: MediaStream; initSetup: InitSetup 
         setPeers,
         sharedScreenTrack,
         setSharedScreenTrack,
-        withSocket,
       }}
     >
       <div className="flex">
@@ -91,10 +89,10 @@ const App = ({ stream, initSetup }: { stream: MediaStream; initSetup: InitSetup 
 
           <div className="flex w-full items-center">
             <ControlPanel
-              usersCount={count + Number(Boolean(myId))}
+              onAudio={handleAudio}
               onFullscreen={() => setFullscreen(!fullscreen)}
-              onAudio={() => withSocket('user:toggle-audio')(handleAudio)(myId)}
               toggleChat={() => setIsChatOpen(!isChatOpen)}
+              usersCount={count + Number(Boolean(myId))}
             />
           </div>
         </div>
