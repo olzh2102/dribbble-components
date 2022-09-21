@@ -23,7 +23,7 @@ export type Nullable<T> = T | null;
 
 export type QoraContextType = {
   socket: TSocket;
-  roomId: string;
+  roomId: RoomId;
   peer: Peer;
   user: Pick<UserContext, 'user'>;
   isHost: boolean;
