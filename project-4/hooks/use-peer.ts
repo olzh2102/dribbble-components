@@ -14,8 +14,9 @@ import useGetRoomId from './use-get-room-id';
  * 1. creates a peer
  * 2. announces everyone in the room he/she joined
  */
-const usePeer = (isMuted: boolean): { peer: Nullable<Peer>; myId: PeerId } => {
+const usePeer = (isMuted: boolean) => {
   const socket = useContext(SocketContext);
+  
 
   const room = useGetRoomId();
   const { user } = useUser();

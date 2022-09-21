@@ -14,7 +14,7 @@ const VideoContainer = ({
   const { myId, isHost } = useContext(QoraContext);
 
   return (
-    <div className="relative group h-fit drop-shadow-2xl shadow-indigo-500/50">
+    <div key={id} className="relative group h-fit drop-shadow-2xl shadow-indigo-500/50">
       {children}
 
       {isHost && myId !== id && (
