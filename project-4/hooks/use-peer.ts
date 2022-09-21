@@ -22,20 +22,23 @@ const usePeer = (isMuted: boolean) => {
   const { user } = useUser();
 
   const [peer, setPeer] = useState<Nullable<Peer>>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [me, setMe] = useState<PeerId>('');
 
   useEffect(() => {
-    (async function () {
+    (async function createPeerAndJoinRoom() {
       if (!user) return;
 
       try {
         const Peer = (await import('peerjs')).default;
         const peer = new Peer();
         setPeer(peer);
+        setIsLoading(false)
 
         peer.on('open', (id) => {
           setMe(id);
           socket.emit('room:join', getInUser(id, user.name, isMuted, room));
+
           console.log('your device id: ', id);
         });
 
@@ -46,7 +49,7 @@ const usePeer = (isMuted: boolean) => {
     })();
   }, [user]);
 
-  return { peer, myId: me };
+  return { peer, myId: me, isPeerReady: !isLoading };
 };
 
 export default usePeer;

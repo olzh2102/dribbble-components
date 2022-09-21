@@ -19,9 +19,8 @@ import { PeerVideo, VideoContainer } from '@components/index';
 const App = ({ stream, initSetup }: { stream: MediaStream; initSetup: InitSetup }) => {
   const socket = useContext(SocketContext);
   const roomId = useGetRoomId();
-
-  const { peer, myId } = usePeer(initSetup.isMuted);
-  const { isLoading, user } = useUser();
+  const { peer, myId, isPeerReady } = usePeer(media.isMuted);
+  const { user } = useUser();
 
   const [peers, setPeers] = useState<KeyValue<MediaConnection>>({});
 
@@ -52,7 +51,18 @@ const App = ({ stream, initSetup }: { stream: MediaStream; initSetup: InitSetup 
     socket.emit('user:toggle-audio', myId);
   }
 
-  if (isLoading) return <span>Loading...</span>;
+  if (!isPeerReady)
+    return (
+      <div className="grid place-items-center h-screen text-white">
+        Setting you up... 🎮
+      </div>
+    );
+  if (!peer)
+    return (
+      <div className="grid place-items-center h-screen text-white">
+        Oooops!!! Couldn't create connection. Try again later 🫠
+      </div>
+    );
 
   return (
     <QoraContext.Provider
@@ -75,17 +85,13 @@ const App = ({ stream, initSetup }: { stream: MediaStream; initSetup: InitSetup 
     >
       <div className="flex">
         <div className={`${isChatOpen ? 'sm:flex hidden' : 'flex'} w-full h-screen flex-col p-4`}>
-          {!peer ? (
-            <span className="text-white">Getting the room ready...</span>
-          ) : (
-            <div className="flex h-full place-items-center place-content-center">
-              <Botqa setAmIMuted={setAmIMuted} fullscreen={fullscreen}>
-                <VideoContainer id={myId} isMuted={amIMuted} stream={stream}>
-                  <PeerVideo stream={stream} name={MYSELF} isMe={true} />
-                </VideoContainer>
-              </Botqa>
-            </div>
-          )}
+          <div className="flex h-full place-items-center place-content-center">
+            <Botqa setAmIMuted={setAmIMuted} fullscreen={fullscreen}>
+              <VideoContainer id={myId} isMuted={amIMuted} stream={stream}>
+                <PeerVideo stream={stream} name={MYSELF} isMe={true} />
+              </VideoContainer>
+            </Botqa>
+          </div>
 
           <div className="flex w-full items-center">
             <ControlPanel
