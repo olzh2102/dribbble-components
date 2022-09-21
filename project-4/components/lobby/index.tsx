@@ -7,11 +7,11 @@ import CrossLineDiv from '@common/components/cross-line-div';
 
 import { PeerVideo } from '..';
 
-const Lobby = ({ stream, media, setMedia, redirectToRoom }: LobbyProps) => {
-  if (stream) stream.getVideoTracks()[0].enabled = media.isVisible;
+const Lobby = ({ stream, initSetup, setup, redirectToRoom }: LobbyProps) => {
+  if (stream) stream.getVideoTracks()[0].enabled = initSetup.isVisible;
 
   function setVisibility() {
-    setMedia('isVisible');
+    setup('isVisible');
     toggleVideo(stream);
   }
 
@@ -24,22 +24,22 @@ const Lobby = ({ stream, media, setMedia, redirectToRoom }: LobbyProps) => {
           <button
             onClick={setVisibility}
             data-for="visibility"
-            data-tip={`${media.isVisible ? 'switch off' : 'switch on'}`}
+            data-tip={`${initSetup.isVisible ? 'switch off' : 'switch on'}`}
             className="p-3 rounded-xl text-white bg-slate-800 hover:bg-indigo-700 relative"
           >
             <VideoCameraIcon className="h-6 w-6" />
-            {!media.isVisible && <CrossLineDiv />}
+            {!initSetup.isVisible && <CrossLineDiv />}
           </button>
           <Tooltip id="visibility" effect="solid" />
 
           <button
-            onClick={() => setMedia('isMuted')}
+            onClick={() => setup('isMuted')}
             data-for="audio"
-            data-tip={`${media.isMuted ? 'unmute' : 'mute'}`}
+            data-tip={`${initSetup.isMuted ? 'unmute' : 'mute'}`}
             className="p-3 rounded-xl text-white bg-slate-800 hover:bg-indigo-700 relative"
           >
             <MicrophoneIcon className="h-6 w-6" />
-            {media.isMuted && <CrossLineDiv />}
+            {initSetup.isMuted && <CrossLineDiv />}
           </button>
           <Tooltip id="audio" effect="solid" />
         </div>
@@ -60,7 +60,7 @@ export default Lobby;
 
 type LobbyProps = {
   stream: MediaStream;
-  media: { isMuted: boolean; isVisible: boolean };
-  setMedia: (key: 'isMuted' | 'isVisible') => void;
+  initSetup: { isMuted: boolean; isVisible: boolean };
+  setup: (key: 'isMuted' | 'isVisible') => void;
   redirectToRoom: () => void;
 };

@@ -57,3 +57,8 @@ export type UserMessage = {
   time: string;
   shouldAggregate: boolean;
 };
+
+export type InitSetup = {
+  isMuted: boolean; 
+  isVisible: boolean
+}

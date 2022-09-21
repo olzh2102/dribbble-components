@@ -30,9 +30,6 @@ const Room = ({ fullscreen, setAmIMuted, children }: RoomProps) => {
   usePeerOnJoinRoom(addVideoStream, amIMuted, setIsMuted);
   usePeerOnAnswer(addVideoStream, setIsMuted);
 
-  console.log('peers: ', peers);
-  console.log('peers count: ', Object.keys(peers).length);
-
   useEffect(() => {
     socket.on('host:muted-user', mutedByHost);
 
@@ -59,8 +56,8 @@ const Room = ({ fullscreen, setAmIMuted, children }: RoomProps) => {
   }
 
   function mutePeer(peerId: string) {
-    socket.emit('host:mute-user', peerId);
     setIsMuted(append({ [peerId]: true }));
+    socket.emit('host:mute-user', peerId);
   }
 
   let sharedScreenClasses = 'flex justify-center';
@@ -79,14 +76,12 @@ const Room = ({ fullscreen, setAmIMuted, children }: RoomProps) => {
         <div
           className={`${
             fullscreen && sharedScreenTrack ? 'hidden' : ''
-          } flex flex-wrap gap-4 justify-around ${
-            sharedScreenTrack ? 'basis-1/6' : ''
-          }`}
+          } flex flex-wrap gap-4 justify-around ${sharedScreenTrack ? 'basis-1/6' : ''}`}
         >
           {children}
+
           {videosEntries.map(([id, element]) => (
             <VideoContainer
-              key={id}
               id={id}
               isMuted={isMuted[id]}
               stream={element.props.stream}

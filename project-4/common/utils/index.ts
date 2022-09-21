@@ -48,3 +48,10 @@ export function error(message: string) {
 export function isHost(roomId: RoomId): boolean {
   return typeof window !== 'undefined' && !!window.localStorage.getItem(roomId);
 }
+
+// export function withEvent(socket:any) {
+//   return (eventName: any) => (fn: any) => (...args: any) => {
+//     socket.emit(eventName, ...args)
+//     fn(...args)
+//   }
+// }
