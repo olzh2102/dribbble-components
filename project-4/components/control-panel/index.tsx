@@ -16,12 +16,12 @@ import { QoraContext } from '@pages/qora/[qoraId]';
 import { useScreenShare } from '@hooks/index';
 import CrossLineDiv from '@common/components/cross-line-div';
 import { toggleAudio, toggleVideo } from '@common/utils';
+import { MediaSetup } from '@common/types';
 
 const ControlPanel = ({
   usersCount,
   onFullscreen,
-  toggleAudioIcon,
-  toggleVideoIcon,
+  setMediaSetup,
   toggleChat,
   isChatOpen,
 }: ControlPanelProps) => {
@@ -39,13 +39,13 @@ const ControlPanel = ({
 
   function handleAudio() {
     toggleAudio(stream);
-    toggleAudioIcon();
+    setMediaSetup('isMuted');
     socket.emit('user:toggle-audio', myId);
   }
 
   function handleVideo() {
     toggleVideo(stream);
-    toggleVideoIcon();
+    setMediaSetup('isHidden');
     socket.emit('user:toggle-video', myId);
   }
 
@@ -115,7 +115,7 @@ const ControlPanel = ({
         <button
           data-for="chat"
           data-tip="chat with everyone"
-          onClick={toggleChat}
+          onClick={() => toggleChat(!isChatOpen)}
           className={`${common} ${
             isChatOpen
               ? 'bg-emerald-600 hover:bg-emerald-500'
@@ -137,9 +137,8 @@ export default ControlPanel;
 type ControlPanelProps = {
   usersCount: number;
   isChatOpen: boolean;
-  toggleAudioIcon: () => void;
-  toggleVideoIcon: () => void;
-  toggleChat: () => void;
+  setMediaSetup: (key: keyof MediaSetup) => void;
+  toggleChat: (arg: boolean) => void;
   onFullscreen: () => void;
 };
 

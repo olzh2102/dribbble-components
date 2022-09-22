@@ -3,7 +3,7 @@ import { MediaConnection } from 'peerjs';
 import { ToastContainer } from 'react-toastify';
 
 import { MediaSetup, KeyValue, Nullable, RoomId } from '@common/types';
-import { isHost } from '@common/utils';
+import { append, isHost } from '@common/utils';
 import { MYSELF, TOAST_PROPS } from '@common/constants';
 
 import { usePeer } from '@hooks/index';
@@ -29,8 +29,7 @@ const Room = ({
 
   const [peers, setPeers] = useState<KeyValue<MediaConnection>>({});
 
-  const [amIMuted, setAmIMuted] = useState(initMediaSetup.isMuted);
-  const [amIHidden, setAmIHidden] = useState(initMediaSetup.isHidden);
+  const [mediaSetup, setMediaSetup] = useState(initMediaSetup);
   const [sharedScreenTrack, setSharedScreenTrack] =
     useState<Nullable<MediaStreamTrack>>(null);
 
@@ -76,7 +75,7 @@ const Room = ({
         peer,
         myId,
         isHost: isHost(room),
-        mediaSetup: { isMuted: amIMuted, isHidden: amIHidden },
+        mediaSetup,
         stream,
         peers,
         setCount,
@@ -92,12 +91,11 @@ const Room = ({
           } w-full h-screen flex-col p-4`}
         >
           <div className="flex h-full place-items-center place-content-center">
-            <Botqa onMuteUser={() => setAmIMuted(true)} fullscreen={fullscreen}>
-              <VideoContainer
-                id={myId}
-                mediaSetup={{ isMuted: amIMuted, isHidden: amIHidden }}
-                stream={stream}
-              >
+            <Botqa
+              onMuteUser={() => setMediaSetup(append({ isMuted: true }))}
+              fullscreen={fullscreen}
+            >
+              <VideoContainer id={myId} mediaSetup={mediaSetup} stream={stream}>
                 <PeerVideo stream={stream} name={MYSELF} isMe={true} />
               </VideoContainer>
             </Botqa>
@@ -108,9 +106,10 @@ const Room = ({
               isChatOpen={isChatOpen}
               usersCount={count + Number(Boolean(myId))}
               onFullscreen={() => setFullscreen(!fullscreen)}
-              toggleAudioIcon={() => setAmIMuted(!amIMuted)}
-              toggleVideoIcon={() => setAmIHidden(!amIHidden)}
-              toggleChat={() => setIsChatOpen(!isChatOpen)}
+              setMediaSetup={(key: keyof MediaSetup) =>
+                setMediaSetup(append({ [key]: !mediaSetup[key] }))
+              }
+              toggleChat={setIsChatOpen}
             />
           </div>
         </div>
