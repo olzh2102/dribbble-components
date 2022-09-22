@@ -18,7 +18,8 @@ import { append } from '@common/utils';
 const usePeerOnAnswer = (
   cb: AppendVideoStream,
   setIsMuted: Dispatch<SetStateAction<KeyValue<boolean>>>,
-  setIsHidden: Dispatch<SetStateAction<KeyValue<boolean>>>
+  setIsHidden: Dispatch<SetStateAction<KeyValue<boolean>>>,
+  setUserPictures: Dispatch<SetStateAction<KeyValue<string>>>
 ) => {
   const { peer, setPeers, stream } = useContext(QoraContext);
 
@@ -27,23 +28,24 @@ const usePeerOnAnswer = (
 
     peer.on('call', (call: any) => {
       const { peer, metadata } = call;
-      const { username, mediaSetup } = metadata;
+      const { user, mediaSetup } = metadata;
 
       setPeers(append({ [peer]: call }));
       setIsMuted(append({ [peer]: mediaSetup.isMuted }));
       setIsHidden(append({ [peer]: mediaSetup.isHidden }));
+      setUserPictures(append({ [peer]: user.picture }));
 
       call.answer(stream); // * answers incoming call with his/her stream
 
       console.table({
         'answer-friend': 'answer friend',
         'user-id': peer,
-        'user-name': username,
+        'user-name': user.name,
       });
 
-      call.on('stream', cb({ id: peer, name: username })); // * receiver's stream
+      call.on('stream', cb({ id: peer, name: user.name })); // * receiver's stream
 
-      call.on('close', () => toast(`${username} has left the room`));
+      call.on('close', () => toast(`${user.name} has left the room`));
     });
   }, [peer]);
 };

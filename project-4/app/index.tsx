@@ -1,4 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useUser } from '@auth0/nextjs-auth0';
 import { MediaConnection } from 'peerjs';
 import { ToastContainer } from 'react-toastify';
 
@@ -14,7 +16,6 @@ import Botqa from '@components/botqa';
 import Chat from '@components/chat';
 import ControlPanel from '@components/control-panel';
 import { PeerVideo, VideoContainer } from '@components/index';
-import { useRouter } from 'next/router';
 
 const Room = ({
   stream,
@@ -24,6 +25,7 @@ const Room = ({
   initMediaSetup: MediaSetup;
 }) => {
   const room = useRouter().query.qoraId as RoomId;
+  const userPicture = useUser().user!.picture;
   const socket = useContext(SocketContext);
   const { peer, myId, isPeerReady } = usePeer(initMediaSetup);
 
@@ -99,7 +101,7 @@ const Room = ({
                 id={myId}
                 mediaSetup={mediaSetup}
                 stream={stream}
-                userPicture={user?.picture || ''}
+                userPicture={userPicture || ''}
               >
                 <PeerVideo stream={stream} name={MYSELF} isMe={true} />
               </VideoContainer>

@@ -14,7 +14,7 @@ import { Nullable, PeerId, RoomId } from '@common/types';
 const usePeer = (initMediaSetup: { isMuted: boolean; isHidden: boolean }) => {
   const socket = useContext(SocketContext);
   const room = useRouter().query.qoraId as RoomId;
-  const name = useUser().user!.name;
+  const user = useUser().user!;
 
   const [isLoading, setIsLoading] = useState(true);
   const [peer, setPeer] = useState<Nullable<Peer>>(null);
@@ -32,7 +32,12 @@ const usePeer = (initMediaSetup: { isMuted: boolean; isHidden: boolean }) => {
           setMyId(id);
           socket.emit('room:join', {
             room,
-            user: { id, name, initMediaSetup },
+            user: {
+              id,
+              initMediaSetup,
+              name: user.name,
+              picture: user.picture,
+            },
           });
         });
 

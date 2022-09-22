@@ -12,7 +12,6 @@ const Room = ({ fullscreen, onMuteUser, children }: RoomProps) => {
 
   const {
     myId,
-    user,
     peers,
     stream,
     socket,
@@ -24,12 +23,13 @@ const Room = ({ fullscreen, onMuteUser, children }: RoomProps) => {
   const [videos, setVideos] = useState<Record<PeerId, JSX.Element>>({});
   const [isMuted, setIsMuted] = useState<KeyValue<boolean>>({});
   const [isHidden, setIsHidden] = useState<KeyValue<boolean>>({});
+  const [userPictures, setUserPictures] = useState<KeyValue<string>>({});
 
   const videosEntries = Object.entries(videos);
   setCount(videosEntries.length);
 
-  usePeerOnJoinRoom(addVideoStream, setIsMuted, setIsHidden);
-  usePeerOnAnswer(addVideoStream, setIsMuted, setIsHidden);
+  usePeerOnJoinRoom(addVideoStream, setIsMuted, setIsHidden, setUserPictures);
+  usePeerOnAnswer(addVideoStream, setIsMuted, setIsHidden, setUserPictures);
 
   useEffect(() => {
     socket.on('host:muted-user', mutedByHost);
@@ -92,7 +92,7 @@ const Room = ({ fullscreen, onMuteUser, children }: RoomProps) => {
             <VideoContainer
               id={id}
               mediaSetup={{ isMuted: isMuted[id], isHidden: isHidden[id] }}
-              userPicture={user.picture}
+              userPicture={userPictures[id]}
               stream={element.props.stream}
               onMutePeer={mutePeer}
               onRemovePeer={removePeer}
@@ -113,7 +113,7 @@ const Room = ({ fullscreen, onMuteUser, children }: RoomProps) => {
       onMuteUser();
       toast('You are muted');
     } else {
-      setIsMuted((prev) => ({ ...prev, [peerId]: true }));
+      setIsMuted(append({ [peerId]: true }));
     }
   }
 
