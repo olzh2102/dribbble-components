@@ -9,17 +9,18 @@ const VideoContainer = ({
   mediaSetup,
   children,
   stream,
+  userPicture,
   onMutePeer,
   onRemovePeer,
 }: SingleVideoProps) => {
-  const { myId, isHost, user } = useContext(QoraContext);
+  const { myId, isHost } = useContext(QoraContext);
 
   return (
     <div
       key={id}
       className="relative group h-fit drop-shadow-2xl shadow-indigo-500/50"
     >
-      {mediaSetup.isHidden ? <VideoPlug user={user} /> : children}
+      {mediaSetup.isHidden ? <VideoPlug userPicture={userPicture} /> : children}
 
       {mediaSetup.isMuted ? (
         <div className="absolute top-3 right-3">
@@ -47,6 +48,7 @@ type SingleVideoProps = {
   mediaSetup: MediaSetup;
   children: React.ReactNode;
   stream: MediaStream;
+  userPicture: string;
   onMutePeer?: (id: string) => void;
   onRemovePeer?: (id: string) => void;
 };

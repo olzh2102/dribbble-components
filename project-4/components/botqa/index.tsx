@@ -12,6 +12,7 @@ const Room = ({ fullscreen, onMuteUser, children }: RoomProps) => {
 
   const {
     myId,
+    user,
     peers,
     stream,
     socket,
@@ -91,6 +92,7 @@ const Room = ({ fullscreen, onMuteUser, children }: RoomProps) => {
             <VideoContainer
               id={id}
               mediaSetup={{ isMuted: isMuted[id], isHidden: isHidden[id] }}
+              userPicture={user.picture}
               stream={element.props.stream}
               onMutePeer={mutePeer}
               onRemovePeer={removePeer}

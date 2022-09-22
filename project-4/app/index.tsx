@@ -95,7 +95,12 @@ const Room = ({
               onMuteUser={() => setMediaSetup(append({ isMuted: true }))}
               fullscreen={fullscreen}
             >
-              <VideoContainer id={myId} mediaSetup={mediaSetup} stream={stream}>
+              <VideoContainer
+                id={myId}
+                mediaSetup={mediaSetup}
+                stream={stream}
+                userPicture={user?.picture || ''}
+              >
                 <PeerVideo stream={stream} name={MYSELF} isMe={true} />
               </VideoContainer>
             </Botqa>
