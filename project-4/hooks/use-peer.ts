@@ -14,7 +14,7 @@ import { Nullable, PeerId, RoomId } from '@common/types';
 function usePeer(isMuted: boolean) {
   const socket = useContext(SocketContext);
   const room = useRouter().query.qoraId as RoomId;
-  const user = useUser().user;
+  const name = useUser().user!.name;
 
   const [isLoading, setIsLoading] = useState(true);
   const [peer, setPeer] = useState<Nullable<Peer>>(null);
@@ -32,7 +32,7 @@ function usePeer(isMuted: boolean) {
           setMyId(id);
           socket.emit(
             'room:join',
-            {room, user: {id, name: user!.name, muted: isMuted}}
+            {room, user: {id, name, muted: isMuted}}
           )          
         });
 

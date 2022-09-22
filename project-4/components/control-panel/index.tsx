@@ -22,6 +22,7 @@ const ControlPanel = ({
   onFullscreen,
   onAudio,
   toggleChat,
+  isChatOpen,
 }: ControlPanelProps) => {
   const router = useRouter();
 
@@ -31,7 +32,6 @@ const ControlPanel = ({
     isHost,
     stream,
     amIMuted: isMuted,
-    isChatOpen,
     sharedScreenTrack: shared,
     socket,
   } = useContext(QoraContext);
@@ -108,7 +108,7 @@ const ControlPanel = ({
         <button
           data-for="chat"
           data-tip="chat with everyone"
-          onClick={toggleChat}
+          onClick={() => toggleChat(!isChatOpen)}
           className={`${common} ${
             isChatOpen
               ? 'bg-emerald-600 hover:bg-emerald-500'
@@ -130,7 +130,8 @@ export default ControlPanel;
 type ControlPanelProps = {
   usersCount: number;
   onAudio: () => void;
-  toggleChat: () => void;
+  toggleChat: (arg: boolean) => void;
+  isChatOpen: boolean;
   onFullscreen: () => void;
 };
 
