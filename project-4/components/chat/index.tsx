@@ -26,23 +26,22 @@ const Chat = ({ title, onClose }: { title: string; onClose: () => void }) => {
 
   function sendMessage(e: React.KeyboardEvent<HTMLInputElement>) {
     const messageText = (e.target as HTMLInputElement).value;
-
-    if (!messageText && e.key !== 'Enter') return;
-
     const lastMessage = messages.at(-1);
-    const timeHHMM = formatTimeHHMM(Date.now());
 
-    const message = {
-      user: username,
-      text: messageText,
-      time: timeHHMM,
-      shouldAggregate:
-        lastMessage?.user === MYSELF && lastMessage?.time === timeHHMM,
-    };
+    if (e.key === 'Enter' && messageText) {
+      const timeHHMM = formatTimeHHMM(Date.now());
+      const message = {
+        user: username,
+        text: messageText,
+        time: timeHHMM,
+        shouldAggregate:
+          lastMessage?.user === MYSELF && lastMessage?.time === timeHHMM,
+      };
 
-    socket.emit('chat:post', message);
-    setMessages(append({ ...message, user: MYSELF }));
-    setText('');
+      socket.emit('chat:post', message);
+      setMessages(append({ ...message, user: MYSELF }));
+      setText('');
+    }
   }
 
   return (
@@ -75,7 +74,7 @@ const Chat = ({ title, onClose }: { title: string; onClose: () => void }) => {
 
 export default Chat;
 
-const SidebarContainer = ({ onClose, title }: any) => {
+const SidebarContainer = ({ onClose, title, children }: any) => {
   return (
     <div className="h-full bg-[#1e262e] text-gray-300 shadow-xl rounded-l-3xl">
       <div className="flex flex-col pl-6 py-6 h-full justify-between">
@@ -88,6 +87,7 @@ const SidebarContainer = ({ onClose, title }: any) => {
             <XIcon className="h-6 w-6" aria-hidden="true" />
           </button>
         </div>
+        {children}
       </div>
     </div>
   );
