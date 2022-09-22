@@ -7,7 +7,12 @@ import CrossLineDiv from '@common/components/cross-line-div';
 
 import { PeerVideo } from '..';
 
-const Lobby = ({ stream, initSetup, setup, redirectToRoom }: LobbyProps) => {
+const Lobby = ({
+  stream,
+  initMediaSetup,
+  setup,
+  redirectToRoom,
+}: LobbyProps) => {
   function setVisibility() {
     setup('isHidden');
     toggleVideo(stream);
@@ -27,22 +32,22 @@ const Lobby = ({ stream, initSetup, setup, redirectToRoom }: LobbyProps) => {
           <button
             onClick={setVisibility}
             data-for="visibility"
-            data-tip={`${initSetup.isHidden ? 'switch on' : 'switch off'}`}
+            data-tip={`${initMediaSetup.isHidden ? 'switch on' : 'switch off'}`}
             className="p-3 rounded-xl text-white bg-slate-800 hover:bg-indigo-700 relative"
           >
             <VideoCameraIcon className="h-6 w-6" />
-            {initSetup.isHidden && <CrossLineDiv />}
+            {initMediaSetup.isHidden && <CrossLineDiv />}
           </button>
           <Tooltip id="visibility" effect="solid" />
 
           <button
             onClick={setMuted}
             data-for="audio"
-            data-tip={`${initSetup.isMuted ? 'unmute' : 'mute'}`}
+            data-tip={`${initMediaSetup.isMuted ? 'unmute' : 'mute'}`}
             className="p-3 rounded-xl text-white bg-slate-800 hover:bg-indigo-700 relative"
           >
             <MicrophoneIcon className="h-6 w-6" />
-            {initSetup.isMuted && <CrossLineDiv />}
+            {initMediaSetup.isMuted && <CrossLineDiv />}
           </button>
           <Tooltip id="audio" effect="solid" />
         </div>
@@ -63,7 +68,7 @@ export default Lobby;
 
 type LobbyProps = {
   stream: MediaStream;
-  initSetup: { isMuted: boolean; isHidden: boolean };
+  initMediaSetup: { isMuted: boolean; isHidden: boolean };
   setup: (key: 'isMuted' | 'isHidden') => void;
   redirectToRoom: () => void;
 };

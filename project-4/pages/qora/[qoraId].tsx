@@ -6,14 +6,14 @@ import Room from '@app/index';
 import { Lobby } from '@components/index';
 import { useStream } from '@hooks/index';
 import { append } from '@common/utils';
-import { InitSetup } from '@common/types';
+import { MediaSetup } from '@common/types';
 
 export const QoraContext = createContext<any>({});
 
 const Qora: NextPage = () => {
   const [isLobby, setIsLobby] = useState(true);
 
-  const [initSetup, setInitSetup] = useState<InitSetup>({
+  const [initMediaSetup, setInitMediaSetup] = useState<MediaSetup>({
     isMuted: false,
     isHidden: false,
   });
@@ -36,14 +36,14 @@ const Qora: NextPage = () => {
   return isLobby ? (
     <Lobby
       stream={stream}
-      initSetup={initSetup}
+      initMediaSetup={initMediaSetup}
       redirectToRoom={() => setIsLobby(false)}
-      setup={(key: keyof InitSetup) =>
-        setInitSetup(append({ [key]: !initSetup[key] }))
+      setup={(key: keyof MediaSetup) =>
+        setInitMediaSetup(append({ [key]: !initMediaSetup[key] }))
       }
     />
   ) : (
-    <Room stream={stream} initSetup={initSetup} />
+    <Room stream={stream} initMediaSetup={initMediaSetup} />
   );
 };
 

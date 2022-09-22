@@ -11,7 +11,7 @@ import { Nullable, PeerId, RoomId } from '@common/types';
  * Creates a peer and joins them into the room
  * @returns peer object, its id and meta-state whether is peer fully created
  */
-const usePeer = (initSetup: { isMuted: boolean; isHidden: boolean }) => {
+const usePeer = (initMediaSetup: { isMuted: boolean; isHidden: boolean }) => {
   const socket = useContext(SocketContext);
   const room = useRouter().query.qoraId as RoomId;
   const name = useUser().user!.name;
@@ -32,7 +32,7 @@ const usePeer = (initSetup: { isMuted: boolean; isHidden: boolean }) => {
           setMyId(id);
           socket.emit('room:join', {
             room,
-            user: { id, name, muted: initSetup },
+            user: { id, name, initMediaSetup },
           });
         });
 

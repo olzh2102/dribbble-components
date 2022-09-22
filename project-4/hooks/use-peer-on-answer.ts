@@ -27,11 +27,11 @@ const usePeerOnAnswer = (
 
     peer.on('call', (call: any) => {
       const { peer, metadata } = call;
-      const { username, media } = metadata;
+      const { username, mediaSetup } = metadata;
 
       setPeers(append({ [peer]: call }));
-      setIsMuted(append({ [peer]: media.isMuted }));
-      setIsHidden(append({ [peer]: media.isHidden }));
+      setIsMuted(append({ [peer]: mediaSetup.isMuted }));
+      setIsHidden(append({ [peer]: mediaSetup.isHidden }));
 
       call.answer(stream); // * answers incoming call with his/her stream
 

@@ -58,7 +58,7 @@ export type UserMessage = {
   shouldAggregate: boolean;
 };
 
-export type InitSetup = {
+export type MediaSetup = {
   isMuted: boolean;
   isHidden: boolean;
 };

@@ -28,37 +28,38 @@ const usePeerOnJoinRoom = (
   setIsHidden: Dispatch<SetStateAction<KeyValue<boolean>>>
 ) => {
   const username = useUser().user!.name;
-  const { socket, peer, setPeers, stream } = useContext(QoraContext);
+  const { mediaSetup, socket, peer, setPeers, stream } =
+    useContext(QoraContext);
 
   useEffect(() => {
     if (!peer) return;
 
-    socket.on('user:joined', ({ id, name, media }: UserConfig) => {
+    socket.on('user:joined', ({ id, name, initMediaSetup }: UserConfig) => {
       console.table({
         'call-friend': 'call friend',
         'user-id': id,
         'user-name': name,
-        media,
+        initMediaSetup,
       });
 
       const call = peer.call(
         id,
         stream, // my stream
-        { metadata: { username, media } }
+        { metadata: { username, mediaSetup } }
       );
 
       call.on('stream', cb({ id, name })); // * friend's stream
       call.on('close', () => toast(`${name} has left the room`));
 
       setPeers(append({ [id]: call }));
-      setIsMuted(append({ [id]: media.isMuted }));
-      setIsHidden(append({ [id]: media.isHidden }));
+      setIsMuted(append({ [id]: initMediaSetup.isMuted }));
+      setIsHidden(append({ [id]: initMediaSetup.isHidden }));
     });
 
     return () => {
       socket.off('user:joined');
     };
-  }, [media, peer]);
+  }, [mediaSetup, peer]);
 };
 
 export default usePeerOnJoinRoom;
@@ -66,5 +67,5 @@ export default usePeerOnJoinRoom;
 type UserConfig = {
   id: string;
   name: string;
-  media: { isMuted: boolean; isHidden: boolean };
+  initMediaSetup: { isMuted: boolean; isHidden: boolean };
 };

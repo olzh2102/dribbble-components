@@ -7,7 +7,7 @@ import { usePeerOnJoinRoom, usePeerOnAnswer } from '@hooks/index';
 import { append, toggleAudio } from 'common/utils';
 import { KeyValue, PeerId } from 'common/types';
 
-const Room = ({ fullscreen, toggleAudioIcon, children }: RoomProps) => {
+const Room = ({ fullscreen, onMuteUser, children }: RoomProps) => {
   console.log('render app');
 
   const {
@@ -81,14 +81,16 @@ const Room = ({ fullscreen, toggleAudioIcon, children }: RoomProps) => {
         <div
           className={`${
             fullscreen && sharedScreenTrack ? 'hidden' : ''
-          } flex flex-wrap gap-4 justify-around ${sharedScreenTrack ? 'basis-1/6' : ''}`}
+          } flex flex-wrap gap-4 justify-around ${
+            sharedScreenTrack ? 'basis-1/6' : ''
+          }`}
         >
           {children}
 
           {videosEntries.map(([id, element]) => (
             <VideoContainer
               id={id}
-              media={{ isMuted: isMuted[id], isHidden: isHidden[id] }}
+              mediaSetup={{ isMuted: isMuted[id], isHidden: isHidden[id] }}
               stream={element.props.stream}
               onMutePeer={mutePeer}
               onRemovePeer={removePeer}
@@ -106,7 +108,7 @@ const Room = ({ fullscreen, toggleAudioIcon, children }: RoomProps) => {
   function mutedByHost(peerId: PeerId) {
     if (peerId === myId) {
       toggleAudio(stream);
-      toggleAudioIcon();
+      onMuteUser();
       toast('You are muted');
     } else {
       setIsMuted((prev) => ({ ...prev, [peerId]: true }));
@@ -131,7 +133,7 @@ export default Room;
 
 type RoomProps = {
   fullscreen: boolean;
-  toggleAudioIcon: () => void;
+  onMuteUser: () => void;
   children: React.ReactNode;
 };
 

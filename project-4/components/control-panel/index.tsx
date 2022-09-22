@@ -30,8 +30,8 @@ const ControlPanel = ({
   const {
     myId,
     isHost,
+    mediaSetup,
     stream,
-    media,
     sharedScreenTrack: shared,
     socket,
   } = useContext(QoraContext);
@@ -64,22 +64,22 @@ const ControlPanel = ({
         <button
           onClick={handleVideo}
           data-for="visibility"
-          data-tip={`${media.isHidden ? 'switch on' : 'switch off'}`}
+          data-tip={`${mediaSetup.isHidden ? 'switch on' : 'switch off'}`}
           className={`${common} bg-slate-800 hover:bg-emerald-700 relative`}
         >
           <VideoCameraIcon className="h-6 w-6" />
-          {media.isHidden && <CrossLineDiv />}
+          {mediaSetup.isHidden && <CrossLineDiv />}
         </button>
         <Tooltip id="visibility" effect="solid" />
 
         <button
           onClick={handleAudio}
           data-for="audio"
-          data-tip={`${media.isMuted ? 'unmute' : 'mute'}`}
+          data-tip={`${mediaSetup.isMuted ? 'unmute' : 'mute'}`}
           className={`${common} bg-slate-800 hover:bg-emerald-700 relative`}
         >
           <MicrophoneIcon className="h-6 w-6" />
-          {media.isMuted && <CrossLineDiv />}
+          {mediaSetup.isMuted && <CrossLineDiv />}
         </button>
         <Tooltip id="audio" effect="solid" />
 
