@@ -17,7 +17,8 @@ import { append } from '@common/utils';
 
 const usePeerOnAnswer = (
   cb: AppendVideoStream,
-  setIsMuted: Dispatch<SetStateAction<KeyValue<boolean>>>
+  setIsMuted: Dispatch<SetStateAction<KeyValue<boolean>>>,
+  setIsHidden: Dispatch<SetStateAction<KeyValue<boolean>>>
 ) => {
   const { peer, setPeers, stream } = useContext(QoraContext);
 
@@ -26,10 +27,11 @@ const usePeerOnAnswer = (
 
     peer.on('call', (call: any) => {
       const { peer, metadata } = call;
-      const { username, isMuted } = metadata;
+      const { username, media } = metadata;
 
       setPeers(append({ [peer]: call }));
-      setIsMuted(append({ [peer]: isMuted }));
+      setIsMuted(append({ [peer]: media.isMuted }));
+      setIsHidden(append({ [peer]: media.isHidden }));
 
       call.answer(stream); // * answers incoming call with his/her stream
 

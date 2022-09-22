@@ -24,39 +24,41 @@ import { useUser } from '@auth0/nextjs-auth0';
 
 const usePeerOnJoinRoom = (
   cb: AppendVideoStream,
-  isMuted: boolean,
-  setIsMuted: Dispatch<SetStateAction<KeyValue<boolean>>>
+  setIsMuted: Dispatch<SetStateAction<KeyValue<boolean>>>,
+  setIsHidden: Dispatch<SetStateAction<KeyValue<boolean>>>
 ) => {
   const username = useUser().user!.name;
-  const { socket, peer, setPeers,stream } = useContext(QoraContext);
+  const { socket, peer, setPeers, stream } = useContext(QoraContext);
 
   useEffect(() => {
     if (!peer) return;
 
-    socket.on('user:joined', ({ id, name, muted }: UserConfig) => {
+    socket.on('user:joined', ({ id, name, media }: UserConfig) => {
       console.table({
         'call-friend': 'call friend',
         'user-id': id,
         'user-name': name,
+        media,
       });
 
       const call = peer.call(
-        id, 
+        id,
         stream, // my stream
-        {metadata: {username, isMuted}}
+        { metadata: { username, media } }
       );
 
       call.on('stream', cb({ id, name })); // * friend's stream
       call.on('close', () => toast(`${name} has left the room`));
 
       setPeers(append({ [id]: call }));
-      setIsMuted(append({ [id]: muted }));
+      setIsMuted(append({ [id]: media.isMuted }));
+      setIsHidden(append({ [id]: media.isHidden }));
     });
 
     return () => {
       socket.off('user:joined');
     };
-  }, [isMuted, peer]);
+  }, [media, peer]);
 };
 
 export default usePeerOnJoinRoom;
@@ -64,5 +66,5 @@ export default usePeerOnJoinRoom;
 type UserConfig = {
   id: string;
   name: string;
-  muted: boolean;
+  media: { isMuted: boolean; isHidden: boolean };
 };

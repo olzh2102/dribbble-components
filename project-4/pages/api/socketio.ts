@@ -46,6 +46,10 @@ const socketHandler = (req: NextApiRequest, res: NextApiResponseServerIO) => {
           socket.to(room).emit('user:toggled-audio', userId);
         });
 
+        socket.on('user:toggle-video', (userId) => {
+          socket.to(room).emit('user:toggled-video', userId);
+        });
+
         socket.on('user:share-screen', ({ username }) => {
           socket.to(room).emit('user:shared-screen', username);
         });

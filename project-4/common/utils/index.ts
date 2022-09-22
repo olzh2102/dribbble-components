@@ -1,10 +1,11 @@
-import { KeyValue, RoomId } from '@common/types';
 import { customAlphabet } from 'nanoid';
+import { KeyValue, RoomId } from '@common/types';
 
-function toggle(type: 'audio' | 'video') {
-  return (s: MediaStream) => {
-    const tracks = type === 'video' ? s.getTracks() : s.getAudioTracks();
-    const track = tracks.find((track: any) => track.kind == type);
+function toggle(trackKind: 'audio' | 'video') {
+  return (stream: MediaStream) => {
+    const track = stream
+      .getTracks()
+      .find((track: MediaStreamTrack) => track.kind == trackKind);
 
     if (track) track.enabled = !track.enabled;
   };

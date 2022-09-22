@@ -3,7 +3,7 @@ import { MediaConnection } from 'peerjs';
 import { ToastContainer } from 'react-toastify';
 
 import { InitSetup, KeyValue, Nullable, RoomId } from '@common/types';
-import { isHost, toggleAudio } from '@common/utils';
+import { isHost } from '@common/utils';
 import { MYSELF, TOAST_PROPS } from '@common/constants';
 
 import { usePeer } from '@hooks/index';
@@ -25,13 +25,16 @@ const Room = ({
 }) => {
   const room = useRouter().query.qoraId as RoomId;
   const socket = useContext(SocketContext);
-  const { peer, myId, isPeerReady } = usePeer(initSetup.isMuted);
+  const { peer, myId, isPeerReady } = usePeer(initSetup);
 
   const [peers, setPeers] = useState<KeyValue<MediaConnection>>({});
 
   const [amIMuted, setAmIMuted] = useState(initSetup.isMuted);
+  const [amIHidden, setAmIHidden] = useState(initSetup.isHidden);
   const [sharedScreenTrack, setSharedScreenTrack] =
     useState<Nullable<MediaStreamTrack>>(null);
+
+  console.log('MEDIA IN APP:', { isMuted: amIMuted, isHidden: amIHidden });
 
   const [fullscreen, setFullscreen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -54,12 +57,6 @@ const Room = ({
     };
   }, []);
 
-  function handleAudio() {
-    toggleAudio(stream);
-    setAmIMuted(!amIMuted);
-    socket.emit('user:toggle-audio', myId);
-  }
-
   if (!isPeerReady)
     return (
       <div className="grid place-items-center h-screen text-white">
@@ -81,7 +78,7 @@ const Room = ({
         peer,
         myId,
         isHost: isHost(room),
-        amIMuted,
+        media: { isMuted: amIMuted, isHidden: amIHidden },
         stream,
         peers,
         setCount,
@@ -97,7 +94,10 @@ const Room = ({
           } w-full h-screen flex-col p-4`}
         >
           <div className="flex h-full place-items-center place-content-center">
-            <Botqa setAmIMuted={setAmIMuted} fullscreen={fullscreen}>
+            <Botqa
+              toggleAudioIcon={() => setAmIMuted(!amIMuted)}
+              fullscreen={fullscreen}
+            >
               <VideoContainer id={myId} isMuted={amIMuted} stream={stream}>
                 <PeerVideo stream={stream} name={MYSELF} isMe={true} />
               </VideoContainer>
@@ -106,11 +106,12 @@ const Room = ({
 
           <div className="flex w-full items-center">
             <ControlPanel
-              onAudio={handleAudio}
               isChatOpen={isChatOpen}
-              onFullscreen={() => setFullscreen(!fullscreen)}
-              toggleChat={setIsChatOpen}
               usersCount={count + Number(Boolean(myId))}
+              onFullscreen={() => setFullscreen(!fullscreen)}
+              toggleAudioIcon={() => setAmIMuted(!amIMuted)}
+              toggleVideoIcon={() => setAmIHidden(!amIHidden)}
+              toggleChat={() => setIsChatOpen(!isChatOpen)}
             />
           </div>
         </div>

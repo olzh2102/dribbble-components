@@ -2,7 +2,7 @@ import { VideoCameraIcon, MicrophoneIcon } from '@heroicons/react/solid';
 import Tooltip from 'react-tooltip';
 
 import { MYSELF } from '@common/constants';
-import { toggleVideo } from '@common/utils';
+import { toggleAudio, toggleVideo } from '@common/utils';
 import CrossLineDiv from '@common/components/cross-line-div';
 
 import { PeerVideo } from '..';
@@ -11,6 +11,11 @@ const Lobby = ({ stream, initSetup, setup, redirectToRoom }: LobbyProps) => {
   function setVisibility() {
     setup('isHidden');
     toggleVideo(stream);
+  }
+
+  function setMuted() {
+    setup('isMuted');
+    toggleAudio(stream);
   }
 
   return (
@@ -31,7 +36,7 @@ const Lobby = ({ stream, initSetup, setup, redirectToRoom }: LobbyProps) => {
           <Tooltip id="visibility" effect="solid" />
 
           <button
-            onClick={() => setup('isMuted')}
+            onClick={setMuted}
             data-for="audio"
             data-tip={`${initSetup.isMuted ? 'unmute' : 'mute'}`}
             className="p-3 rounded-xl text-white bg-slate-800 hover:bg-indigo-700 relative"
