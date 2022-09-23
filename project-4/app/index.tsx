@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
 import { MediaConnection } from 'peerjs';
-import { useUser } from '@auth0/nextjs-auth0';
 import { ToastContainer } from 'react-toastify';
 
 import { InitSetup, KeyValue, Nullable, RoomId } from '@common/types';
@@ -24,10 +23,9 @@ const Room = ({
   stream: MediaStream;
   initSetup: InitSetup;
 }) => {
-  const socket = useContext(SocketContext);
   const room = useRouter().query.qoraId as RoomId;
+  const socket = useContext(SocketContext);
   const { peer, myId, isPeerReady } = usePeer(initSetup.isMuted);
-  const { user } = useUser();
 
   const [peers, setPeers] = useState<KeyValue<MediaConnection>>({});
 
@@ -82,10 +80,8 @@ const Room = ({
         socket,
         peer,
         myId,
-        user,
         isHost: isHost(room),
         amIMuted,
-        isChatOpen,
         stream,
         peers,
         setCount,
@@ -111,8 +107,9 @@ const Room = ({
           <div className="flex w-full items-center">
             <ControlPanel
               onAudio={handleAudio}
+              isChatOpen={isChatOpen}
               onFullscreen={() => setFullscreen(!fullscreen)}
-              toggleChat={() => setIsChatOpen(!isChatOpen)}
+              toggleChat={setIsChatOpen}
               usersCount={count + Number(Boolean(myId))}
             />
           </div>

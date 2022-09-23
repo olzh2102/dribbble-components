@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import { QoraContext } from '@pages/qora/[qoraId]';
 import { AppendVideoStream, KeyValue } from '@common/types';
 import { append } from '@common/utils';
+import { useUser } from '@auth0/nextjs-auth0';
 
 /**
  * Actor - user that is in the room already.
@@ -26,7 +27,8 @@ const usePeerOnJoinRoom = (
   isMuted: boolean,
   setIsMuted: Dispatch<SetStateAction<KeyValue<boolean>>>
 ) => {
-  const { socket, peer, setPeers, user: me, stream } = useContext(QoraContext);
+  const username = useUser().user!.name;
+  const { socket, peer, setPeers,stream } = useContext(QoraContext);
 
   useEffect(() => {
     if (!peer) return;
@@ -38,12 +40,11 @@ const usePeerOnJoinRoom = (
         'user-name': name,
       });
 
-      const call = peer.call(id, stream, {
-        metadata: {
-          username: me?.name,
-          isMuted,
-        },
-      });
+      const call = peer.call(
+        id, 
+        stream, // my stream
+        {metadata: {username, isMuted}}
+      );
 
       call.on('stream', cb({ id, name })); // * friend's stream
       call.on('close', () => toast(`${name} has left the room`));
