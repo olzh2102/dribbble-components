@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useContext, useEffect } from 'react';
 import { toast } from 'react-toastify';
 
 import { QoraContext } from '@pages/qora/[qoraId]';
-import { AppendVideoStream, KeyValue } from '@common/types';
+import { AppendVideoStream, KeyValue, MediaSetup } from '@common/types';
 import { append } from '@common/utils';
 import { useUser } from '@auth0/nextjs-auth0';
 
@@ -24,45 +24,62 @@ import { useUser } from '@auth0/nextjs-auth0';
 
 const usePeerOnJoinRoom = (
   cb: AppendVideoStream,
-  isMuted: boolean,
-  setIsMuted: Dispatch<SetStateAction<KeyValue<boolean>>>
+  setIsMuted: Dispatch<SetStateAction<KeyValue<boolean>>>,
+  setIsHidden: Dispatch<SetStateAction<KeyValue<boolean>>>,
+  setUserPictures: Dispatch<SetStateAction<KeyValue<string>>>
 ) => {
-  const username = useUser().user!.name;
-  const { socket, peer, setPeers,stream } = useContext(QoraContext);
+  const user = useUser().user!;
+  const { mediaSetup, socket, peer, setPeers, stream } =
+    useContext(QoraContext);
 
   useEffect(() => {
     if (!peer) return;
 
-    socket.on('user:joined', ({ id, name, muted }: UserConfig) => {
-      console.table({
-        'call-friend': 'call friend',
-        'user-id': id,
-        'user-name': name,
-      });
+    socket.on(
+      'user:joined',
+      ({ id, name, picture, initMediaSetup }: UserConfig) => {
+        console.table({
+          'call-friend': 'call friend',
+          'user-id': id,
+          'user-name': name,
+          initMediaSetup,
+        });
 
-      const call = peer.call(
-        id, 
-        stream, // my stream
-        {metadata: {username, isMuted}}
-      );
+        const call = peer.call(
+          id,
+          stream, // my stream
+          {
+            metadata: {
+              user: {
+                name: user.name,
+                picture: user.picture,
+              },
+              mediaSetup,
+            },
+          }
+        );
 
-      call.on('stream', cb({ id, name })); // * friend's stream
-      call.on('close', () => toast(`${name} has left the room`));
+        call.on('stream', cb({ id, name })); // * friend's stream
+        call.on('close', () => toast(`${name} has left the room`));
 
-      setPeers(append({ [id]: call }));
-      setIsMuted(append({ [id]: muted }));
-    });
+        setPeers(append({ [id]: call }));
+        setIsMuted(append({ [id]: initMediaSetup.isMuted }));
+        setIsHidden(append({ [id]: initMediaSetup.isHidden }));
+        setUserPictures(append({ [id]: picture }));
+      }
+    );
 
     return () => {
       socket.off('user:joined');
     };
-  }, [isMuted, peer]);
+  }, [mediaSetup, peer]);
 };
 
 export default usePeerOnJoinRoom;
 
 type UserConfig = {
   id: string;
+  initMediaSetup: MediaSetup;
   name: string;
-  muted: boolean;
+  picture: string;
 };

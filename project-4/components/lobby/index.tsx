@@ -1,45 +1,64 @@
+import { useUser } from '@auth0/nextjs-auth0';
 import { VideoCameraIcon, MicrophoneIcon } from '@heroicons/react/solid';
 import Tooltip from 'react-tooltip';
 
 import { MYSELF } from '@common/constants';
-import { toggleVideo } from '@common/utils';
+import { toggleAudio, toggleVideo } from '@common/utils';
 import CrossLineDiv from '@common/components/cross-line-div';
+import { MediaSetup } from '@common/types';
 
-import { PeerVideo } from '..';
+import { PeerVideo, VideoContainer } from '..';
 
-const Lobby = ({ stream, initSetup, setup, redirectToRoom }: LobbyProps) => {
-  if (stream) stream.getVideoTracks()[0].enabled = initSetup.isVisible;
+const Lobby = ({
+  stream,
+  initMediaSetup,
+  setup,
+  redirectToRoom,
+}: LobbyProps) => {
+  const user = useUser().user;
 
   function setVisibility() {
-    setup('isVisible');
+    setup('isHidden');
     toggleVideo(stream);
+  }
+
+  function setMuted() {
+    setup('isMuted');
+    toggleAudio(stream);
   }
 
   return (
     <div className="h-screen w-auto grid grid-cols-2 gap-4 place-content-center place-items-center">
       <div className="flex flex-col gap-2">
-        <PeerVideo key="me" stream={stream} name={MYSELF} isMe={true} />
+        <VideoContainer
+          id="me"
+          mediaSetup={initMediaSetup}
+          stream={stream}
+          userPicture={user?.picture || ''}
+        >
+          <PeerVideo key="me" stream={stream} name={MYSELF} isMe={true} />
+        </VideoContainer>
 
         <div className="flex justify-end gap-2">
           <button
             onClick={setVisibility}
             data-for="visibility"
-            data-tip={`${initSetup.isVisible ? 'switch off' : 'switch on'}`}
+            data-tip={`${initMediaSetup.isHidden ? 'switch on' : 'switch off'}`}
             className="p-3 rounded-xl text-white bg-slate-800 hover:bg-indigo-700 relative"
           >
             <VideoCameraIcon className="h-6 w-6" />
-            {!initSetup.isVisible && <CrossLineDiv />}
+            {initMediaSetup.isHidden && <CrossLineDiv />}
           </button>
           <Tooltip id="visibility" effect="solid" />
 
           <button
-            onClick={() => setup('isMuted')}
+            onClick={setMuted}
             data-for="audio"
-            data-tip={`${initSetup.isMuted ? 'unmute' : 'mute'}`}
+            data-tip={`${initMediaSetup.isMuted ? 'unmute' : 'mute'}`}
             className="p-3 rounded-xl text-white bg-slate-800 hover:bg-indigo-700 relative"
           >
             <MicrophoneIcon className="h-6 w-6" />
-            {initSetup.isMuted && <CrossLineDiv />}
+            {initMediaSetup.isMuted && <CrossLineDiv />}
           </button>
           <Tooltip id="audio" effect="solid" />
         </div>
@@ -60,7 +79,7 @@ export default Lobby;
 
 type LobbyProps = {
   stream: MediaStream;
-  initSetup: { isMuted: boolean; isVisible: boolean };
-  setup: (key: 'isMuted' | 'isVisible') => void;
+  initMediaSetup: MediaSetup;
+  setup: (key: keyof MediaSetup) => void;
   redirectToRoom: () => void;
 };

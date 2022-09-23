@@ -10,6 +10,7 @@ import Lobby from './lobby';
 import Chat from './chat';
 import VideoContainer from './video-container';
 import Message from './message';
+import VideoPlug from './video-plug';
 
 export {
   JoinRoom,
@@ -24,4 +25,5 @@ export {
   Chat,
   VideoContainer,
   Message,
+  VideoPlug,
 };

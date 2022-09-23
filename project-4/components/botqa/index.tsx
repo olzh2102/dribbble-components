@@ -7,7 +7,7 @@ import { usePeerOnJoinRoom, usePeerOnAnswer } from '@hooks/index';
 import { append, toggleAudio } from 'common/utils';
 import { KeyValue, PeerId } from 'common/types';
 
-const Room = ({ fullscreen, setAmIMuted, children }: RoomProps) => {
+const Room = ({ fullscreen, onMuteUser, children }: RoomProps) => {
   console.log('render app');
 
   const {
@@ -15,7 +15,6 @@ const Room = ({ fullscreen, setAmIMuted, children }: RoomProps) => {
     peers,
     stream,
     socket,
-    amIMuted,
     setCount,
     sharedScreenTrack,
     setSharedScreenTrack,
@@ -23,12 +22,14 @@ const Room = ({ fullscreen, setAmIMuted, children }: RoomProps) => {
 
   const [videos, setVideos] = useState<Record<PeerId, JSX.Element>>({});
   const [isMuted, setIsMuted] = useState<KeyValue<boolean>>({});
+  const [isHidden, setIsHidden] = useState<KeyValue<boolean>>({});
+  const [userPictures, setUserPictures] = useState<KeyValue<string>>({});
 
   const videosEntries = Object.entries(videos);
   setCount(videosEntries.length);
 
-  usePeerOnJoinRoom(addVideoStream, amIMuted, setIsMuted);
-  usePeerOnAnswer(addVideoStream, setIsMuted);
+  usePeerOnJoinRoom(addVideoStream, setIsMuted, setIsHidden, setUserPictures);
+  usePeerOnAnswer(addVideoStream, setIsMuted, setIsHidden, setUserPictures);
 
   useEffect(() => {
     socket.on('host:muted-user', mutedByHost);
@@ -43,12 +44,17 @@ const Room = ({ fullscreen, setAmIMuted, children }: RoomProps) => {
       setIsMuted(append({ [peerId]: !isMuted[peerId] }))
     );
 
+    socket.on('user:toggled-video', (peerId: PeerId) =>
+      setIsHidden(append({ [peerId]: !isHidden[peerId] }))
+    );
+
     return () => {
       socket.off('host:muted-user');
       socket.off('user:left');
       socket.off('user:toggled-audio');
+      socket.off('user:toggled-video');
     };
-  }, [peers, myId]);
+  }, [peers, myId, isMuted, isHidden]);
 
   function removePeer(peerId: string) {
     socket.emit('user:leave', peerId);
@@ -76,14 +82,17 @@ const Room = ({ fullscreen, setAmIMuted, children }: RoomProps) => {
         <div
           className={`${
             fullscreen && sharedScreenTrack ? 'hidden' : ''
-          } flex flex-wrap gap-4 justify-around ${sharedScreenTrack ? 'basis-1/6' : ''}`}
+          } flex flex-wrap gap-4 justify-around ${
+            sharedScreenTrack ? 'basis-1/6' : ''
+          }`}
         >
           {children}
 
           {videosEntries.map(([id, element]) => (
             <VideoContainer
               id={id}
-              isMuted={isMuted[id]}
+              mediaSetup={{ isMuted: isMuted[id], isHidden: isHidden[id] }}
+              userPicture={userPictures[id]}
               stream={element.props.stream}
               onMutePeer={mutePeer}
               onRemovePeer={removePeer}
@@ -101,10 +110,10 @@ const Room = ({ fullscreen, setAmIMuted, children }: RoomProps) => {
   function mutedByHost(peerId: PeerId) {
     if (peerId === myId) {
       toggleAudio(stream);
-      setAmIMuted(true);
+      onMuteUser();
       toast('You are muted');
     } else {
-      setIsMuted((prev) => ({ ...prev, [peerId]: true }));
+      setIsMuted(append({ [peerId]: true }));
     }
   }
 
@@ -126,7 +135,7 @@ export default Room;
 
 type RoomProps = {
   fullscreen: boolean;
-  setAmIMuted: React.Dispatch<React.SetStateAction<boolean>>;
+  onMuteUser: () => void;
   children: React.ReactNode;
 };
 

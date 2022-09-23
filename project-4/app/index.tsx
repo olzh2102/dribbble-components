@@ -1,9 +1,11 @@
 import { useContext, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useUser } from '@auth0/nextjs-auth0';
 import { MediaConnection } from 'peerjs';
 import { ToastContainer } from 'react-toastify';
 
-import { InitSetup, KeyValue, Nullable, RoomId } from '@common/types';
-import { isHost, toggleAudio } from '@common/utils';
+import { MediaSetup, KeyValue, Nullable, RoomId } from '@common/types';
+import { append, isHost } from '@common/utils';
 import { MYSELF, TOAST_PROPS } from '@common/constants';
 
 import { usePeer } from '@hooks/index';
@@ -14,22 +16,22 @@ import Botqa from '@components/botqa';
 import Chat from '@components/chat';
 import ControlPanel from '@components/control-panel';
 import { PeerVideo, VideoContainer } from '@components/index';
-import { useRouter } from 'next/router';
 
 const Room = ({
   stream,
-  initSetup,
+  initMediaSetup,
 }: {
   stream: MediaStream;
-  initSetup: InitSetup;
+  initMediaSetup: MediaSetup;
 }) => {
   const room = useRouter().query.qoraId as RoomId;
+  const userPicture = useUser().user!.picture;
   const socket = useContext(SocketContext);
-  const { peer, myId, isPeerReady } = usePeer(initSetup.isMuted);
+  const { peer, myId, isPeerReady } = usePeer(initMediaSetup);
 
   const [peers, setPeers] = useState<KeyValue<MediaConnection>>({});
 
-  const [amIMuted, setAmIMuted] = useState(initSetup.isMuted);
+  const [mediaSetup, setMediaSetup] = useState(initMediaSetup);
   const [sharedScreenTrack, setSharedScreenTrack] =
     useState<Nullable<MediaStreamTrack>>(null);
 
@@ -54,12 +56,6 @@ const Room = ({
     };
   }, []);
 
-  function handleAudio() {
-    toggleAudio(stream);
-    setAmIMuted(!amIMuted);
-    socket.emit('user:toggle-audio', myId);
-  }
-
   if (!isPeerReady)
     return (
       <div className="grid place-items-center h-screen text-white">
@@ -81,7 +77,7 @@ const Room = ({
         peer,
         myId,
         isHost: isHost(room),
-        amIMuted,
+        mediaSetup,
         stream,
         peers,
         setCount,
@@ -97,8 +93,16 @@ const Room = ({
           } w-full h-screen flex-col p-4`}
         >
           <div className="flex h-full place-items-center place-content-center">
-            <Botqa setAmIMuted={setAmIMuted} fullscreen={fullscreen}>
-              <VideoContainer id={myId} isMuted={amIMuted} stream={stream}>
+            <Botqa
+              onMuteUser={() => setMediaSetup(append({ isMuted: true }))}
+              fullscreen={fullscreen}
+            >
+              <VideoContainer
+                id={myId}
+                mediaSetup={mediaSetup}
+                stream={stream}
+                userPicture={userPicture || ''}
+              >
                 <PeerVideo stream={stream} name={MYSELF} isMe={true} />
               </VideoContainer>
             </Botqa>
@@ -106,11 +110,13 @@ const Room = ({
 
           <div className="flex w-full items-center">
             <ControlPanel
-              onAudio={handleAudio}
               isChatOpen={isChatOpen}
-              onFullscreen={() => setFullscreen(!fullscreen)}
-              toggleChat={setIsChatOpen}
               usersCount={count + Number(Boolean(myId))}
+              onFullscreen={() => setFullscreen(!fullscreen)}
+              setMediaSetup={(key: keyof MediaSetup) =>
+                setMediaSetup(append({ [key]: !mediaSetup[key] }))
+              }
+              toggleChat={setIsChatOpen}
             />
           </div>
         </div>

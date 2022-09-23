@@ -5,16 +5,16 @@ import Peer from 'peerjs';
 
 import { SocketContext } from '@pages/_app';
 import { error } from '@common/utils';
-import { Nullable, PeerId, RoomId } from '@common/types';
+import { MediaSetup, Nullable, PeerId, RoomId } from '@common/types';
 
 /**
  * Creates a peer and joins them into the room
  * @returns peer object, its id and meta-state whether is peer fully created
  */
-function usePeer(isMuted: boolean) {
+const usePeer = (initMediaSetup: MediaSetup) => {
   const socket = useContext(SocketContext);
   const room = useRouter().query.qoraId as RoomId;
-  const name = useUser().user!.name;
+  const user = useUser().user!;
 
   const [isLoading, setIsLoading] = useState(true);
   const [peer, setPeer] = useState<Nullable<Peer>>(null);
@@ -25,15 +25,20 @@ function usePeer(isMuted: boolean) {
       try {
         const peer = new (await import('peerjs')).default();
         setPeer(peer);
-        setIsLoading(false)
+        setIsLoading(false);
 
         peer.on('open', (id) => {
           console.log('your device id: ', id);
           setMyId(id);
-          socket.emit(
-            'room:join',
-            {room, user: {id, name, muted: isMuted}}
-          )          
+          socket.emit('room:join', {
+            room,
+            user: {
+              id,
+              initMediaSetup,
+              name: user.name,
+              picture: user.picture,
+            },
+          });
         });
 
         peer.on('error', error('Failed to setup peer connection'));
@@ -43,10 +48,10 @@ function usePeer(isMuted: boolean) {
     })();
   }, []);
 
-  return { 
-    peer, 
-    myId, 
-    isPeerReady: !isLoading 
+  return {
+    peer,
+    myId,
+    isPeerReady: !isLoading,
   };
 };
 
