@@ -80,6 +80,6 @@ export default Lobby;
 type LobbyProps = {
   stream: MediaStream;
   initMediaSetup: MediaSetup;
-  setup: (key: 'isMuted' | 'isHidden') => void;
+  setup: (key: keyof MediaSetup) => void;
   redirectToRoom: () => void;
 };
