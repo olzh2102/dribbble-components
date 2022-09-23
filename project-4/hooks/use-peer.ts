@@ -5,13 +5,13 @@ import Peer from 'peerjs';
 
 import { SocketContext } from '@pages/_app';
 import { error } from '@common/utils';
-import { Nullable, PeerId, RoomId } from '@common/types';
+import { MediaSetup, Nullable, PeerId, RoomId } from '@common/types';
 
 /**
  * Creates a peer and joins them into the room
  * @returns peer object, its id and meta-state whether is peer fully created
  */
-const usePeer = (initMediaSetup: { isMuted: boolean; isHidden: boolean }) => {
+const usePeer = (initMediaSetup: MediaSetup) => {
   const socket = useContext(SocketContext);
   const room = useRouter().query.qoraId as RoomId;
   const user = useUser().user!;

@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useContext, useEffect } from 'react';
 import { toast } from 'react-toastify';
 
 import { QoraContext } from '@pages/qora/[qoraId]';
-import { AppendVideoStream, KeyValue } from '@common/types';
+import { AppendVideoStream, KeyValue, MediaSetup } from '@common/types';
 import { append } from '@common/utils';
 import { useUser } from '@auth0/nextjs-auth0';
 
@@ -79,7 +79,7 @@ export default usePeerOnJoinRoom;
 
 type UserConfig = {
   id: string;
-  initMediaSetup: { isMuted: boolean; isHidden: boolean };
+  initMediaSetup: MediaSetup;
   name: string;
   picture: string;
 };

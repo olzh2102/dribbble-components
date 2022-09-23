@@ -1,12 +1,13 @@
+import { useUser } from '@auth0/nextjs-auth0';
 import { VideoCameraIcon, MicrophoneIcon } from '@heroicons/react/solid';
 import Tooltip from 'react-tooltip';
 
 import { MYSELF } from '@common/constants';
 import { toggleAudio, toggleVideo } from '@common/utils';
 import CrossLineDiv from '@common/components/cross-line-div';
+import { MediaSetup } from '@common/types';
 
 import { PeerVideo, VideoContainer } from '..';
-import { useUser } from '@auth0/nextjs-auth0';
 
 const Lobby = ({
   stream,
@@ -78,7 +79,7 @@ export default Lobby;
 
 type LobbyProps = {
   stream: MediaStream;
-  initMediaSetup: { isMuted: boolean; isHidden: boolean };
+  initMediaSetup: MediaSetup;
   setup: (key: 'isMuted' | 'isHidden') => void;
   redirectToRoom: () => void;
 };
