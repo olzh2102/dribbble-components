@@ -20,7 +20,7 @@ const PeerVideo = ({ stream, name, isMe }: VideoProps) => (
   </>
 );
 
-export default memo(PeerVideo);
+export default PeerVideo;
 
 type VideoProps = {
   stream: MediaStream;

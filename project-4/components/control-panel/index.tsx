@@ -7,79 +7,37 @@ import {
   PhoneMissedCallIcon as HangUpIcon,
   UploadIcon as ShareScreenIcon,
 } from '@heroicons/react/solid';
-import {
-  ChatAltIcon as ChatIcon,
-  ArrowsExpandIcon,
-} from '@heroicons/react/outline';
 
 import { QoraContext } from '@pages/qora/[qoraId]';
-import { useScreenShare } from '@hooks/index';
 import CrossLineDiv from '@common/components/cross-line-div';
-import { toggleAudio, toggleVideo } from '@common/utils';
 import { MediaSetup } from '@common/types';
 
-const ControlPanel = ({
-  usersCount,
-  onFullscreen,
-  setMediaSetup,
-  toggleChat,
-  isChatOpen,
-}: ControlPanelProps) => {
+const ControlPanel = ({ onToggle, muted, visible }: any) => {
   const router = useRouter();
-
-  const {
-    myId,
-    isHost,
-    mediaSetup,
-    stream,
-    sharedScreenTrack: shared,
-    socket,
-  } = useContext(QoraContext);
-  const { isMyScreenSharing, toggleScreenShare } = useScreenShare();
-
-  function handleAudio() {
-    toggleAudio(stream);
-    setMediaSetup('isMuted');
-    socket.emit('user:toggle-audio', myId);
-  }
-
-  function handleVideo() {
-    toggleVideo(stream);
-    setMediaSetup('isHidden');
-    socket.emit('user:toggle-video', myId);
-  }
+  const { isHost } = useContext(QoraContext);
 
   return (
     <>
-      {shared && (
-        <button
-          onClick={onFullscreen}
-          className={`${common} bg-slate-800 hover:bg-emerald-700`}
-        >
-          <ArrowsExpandIcon className="w-6 h-6" />
-        </button>
-      )}
-
       <div className="flex flex-auto gap-6 place-content-center items-center">
         <button
-          onClick={handleVideo}
+          onClick={() => onToggle('video')}
           data-for="visibility"
-          data-tip={`${mediaSetup.isHidden ? 'switch on' : 'switch off'}`}
+          data-tip={`${visible ? 'switch off' : 'switch on'}`}
           className={`${common} bg-slate-800 hover:bg-emerald-700 relative`}
         >
           <VideoCameraIcon className="h-6 w-6" />
-          {mediaSetup.isHidden && <CrossLineDiv />}
+          {!visible && <CrossLineDiv />}
         </button>
         <Tooltip id="visibility" effect="solid" />
 
         <button
-          onClick={handleAudio}
+          onClick={() => onToggle('audio')}
           data-for="audio"
-          data-tip={`${mediaSetup.isMuted ? 'unmute' : 'mute'}`}
+          data-tip={`${muted ? 'unmute' : 'mute'}`}
           className={`${common} bg-slate-800 hover:bg-emerald-700 relative`}
         >
           <MicrophoneIcon className="h-6 w-6" />
-          {mediaSetup.isMuted && <CrossLineDiv />}
+          {muted && <CrossLineDiv />}
         </button>
         <Tooltip id="audio" effect="solid" />
 
@@ -92,42 +50,7 @@ const ControlPanel = ({
           <HangUpIcon className="h-7 w-7" />
         </button>
         <Tooltip id="hangUp" effect="solid" />
-
-        <button
-          onClick={() => {
-            isHost && !isMyScreenSharing && shared
-              ? socket.emit('host:remove-user-shared-screen')
-              : toggleScreenShare();
-          }}
-          disabled={!isHost && (shared as any) && !isMyScreenSharing}
-          className={`${common} ${
-            shared
-              ? 'bg-emerald-600 hover:bg-emerald-500'
-              : 'bg-slate-800 hover:bg-emerald-700'
-          }`}
-          data-for="shareScreen"
-          data-tip="share your screen"
-        >
-          <ShareScreenIcon className="h-6 w-6" />
-        </button>
-        <Tooltip id="shareScreen" effect="solid" />
-
-        <button
-          data-for="chat"
-          data-tip="chat with everyone"
-          onClick={() => toggleChat(!isChatOpen)}
-          className={`${common} ${
-            isChatOpen
-              ? 'bg-emerald-600 hover:bg-emerald-500'
-              : 'bg-slate-800 hover:bg-emerald-700'
-          }`}
-        >
-          <ChatIcon className="w-6 h-6" />
-        </button>
-        <Tooltip id="chat" effect="solid" />
       </div>
-
-      <ParticipantsCount count={usersCount} />
     </>
   );
 };

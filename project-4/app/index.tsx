@@ -8,7 +8,7 @@ import { MediaSetup, KeyValue, Nullable, RoomId } from '@common/types';
 import { append, isHost } from '@common/utils';
 import { MYSELF, TOAST_PROPS } from '@common/constants';
 
-import { usePeer } from '@hooks/index';
+import { useMediaStream, usePeer } from '@hooks/index';
 import { SocketContext } from '@pages/_app';
 import { QoraContext } from '@pages/qora/[qoraId]';
 
@@ -19,36 +19,21 @@ import { PeerVideo, VideoContainer } from '@components/index';
 
 const Room = ({
   stream,
-  initMediaSetup,
+  isMuted,
+  isHidden,
 }: {
   stream: MediaStream;
-  initMediaSetup: MediaSetup;
+  isMuted: boolean;
+  isHidden: boolean;
 }) => {
   const room = useRouter().query.qoraId as RoomId;
-  const userPicture = useUser().user!.picture;
   const socket = useContext(SocketContext);
-  const { peer, myId, isPeerReady } = usePeer(initMediaSetup);
+  const { peer, myId, isLoading } = usePeer({ isMuted, isHidden });
+  const { toggle } = useMediaStream({ stream, muted: isMuted, visible: !isHidden });
 
-  const [peers, setPeers] = useState<KeyValue<MediaConnection>>({});
+  const [peers, setPeers] = useState<KeyValue<MediaConnection>>({ myId: peer });
 
-  const [mediaSetup, setMediaSetup] = useState(initMediaSetup);
-  const [sharedScreenTrack, setSharedScreenTrack] =
-    useState<Nullable<MediaStreamTrack>>(null);
-
-  const [fullscreen, setFullscreen] = useState(false);
-  const [isChatOpen, setIsChatOpen] = useState(false);
-  const [chatClassName, setChatClassName] = useState<
-    'hidden' | 'animate-on-open-chat' | 'animate-on-close-chat' | null
-  >(null);
-  const [count, setCount] = useState(1);
-
-  useEffect(() => {
-    if (!chatClassName) setChatClassName('hidden');
-    else
-      setChatClassName(
-        isChatOpen ? 'animate-on-open-chat' : 'animate-on-close-chat'
-      );
-  }, [isChatOpen]);
+  const [sharedScreenTrack, setSharedScreenTrack] = useState<Nullable<MediaStreamTrack>>(null);
 
   useEffect(() => {
     return () => {
@@ -56,12 +41,8 @@ const Room = ({
     };
   }, []);
 
-  if (!isPeerReady)
-    return (
-      <div className="grid place-items-center h-screen text-white">
-        Setting you up... 🎮
-      </div>
-    );
+  if (isLoading)
+    return <div className="grid place-items-center h-screen text-white">Setting you up... 🎮</div>;
 
   if (!peer)
     return (
@@ -77,54 +58,50 @@ const Room = ({
         peer,
         myId,
         isHost: isHost(room),
-        mediaSetup,
+        mediaSetup: setup,
         stream,
         peers,
-        setCount,
         setPeers,
         sharedScreenTrack,
         setSharedScreenTrack,
       }}
     >
       <div className="flex">
-        <div
-          className={`${
-            isChatOpen ? 'sm:flex hidden' : 'flex'
-          } w-full h-screen flex-col p-4`}
-        >
+        <div className={`${false ? 'sm:flex hidden' : 'flex'} w-full h-screen flex-col p-4`}>
           <div className="flex h-full place-items-center place-content-center">
             <Botqa
+              onHostMute={() => {}}
               onMuteUser={() => setMediaSetup(append({ isMuted: true }))}
-              fullscreen={fullscreen}
+              fullscreen={false}
             >
               <VideoContainer
                 id={myId}
-                mediaSetup={mediaSetup}
+                mediaSetup={setup}
                 stream={stream}
-                userPicture={userPicture || ''}
+                userPicture={avatar || ''}
               >
                 <PeerVideo stream={stream} name={MYSELF} isMe={true} />
               </VideoContainer>
             </Botqa>
           </div>
 
-          <div className="flex w-full items-center">
+          {/* <div className="flex w-full items-center">
             <ControlPanel
-              isChatOpen={isChatOpen}
-              usersCount={count + Number(Boolean(myId))}
-              onFullscreen={() => setFullscreen(!fullscreen)}
-              setMediaSetup={(key: keyof MediaSetup) =>
-                setMediaSetup(append({ [key]: !mediaSetup[key] }))
-              }
-              toggleChat={setIsChatOpen}
+              mediaSetup={setup}
+              onToggle={(kind: 'audio' | 'video') => {
+                toggle(kind)(stream);
+                socket.emit('user:toggle-' + kind, myId);
+              }}
+              isChatOpen={false}
+              usersCount={1 + Number(Boolean(myId))}
+              onFullscreen={() => {}}
+              toggleChat={() => {}}
             />
-          </div>
+          </div> */}
         </div>
 
-        <div
-          className={`${chatClassName} h-screen w-screen max-w-full sm:max-w-md`}
-        >
-          <Chat onClose={() => setIsChatOpen(false)} title="Meeting Chat" />
+        <div className={`${null} h-screen w-screen max-w-full sm:max-w-md`}>
+          <Chat onClose={() => {}} title="Meeting Chat" />
         </div>
       </div>
 

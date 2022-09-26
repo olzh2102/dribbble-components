@@ -1,40 +1,34 @@
 import { useContext } from 'react';
 import { QoraContext } from '@pages/qora/[qoraId]';
-import { MediaSetup } from '@common/types';
 import { MutedIcon } from 'assets/icons';
 import { ActiveSpeaker, HostControlPanel, VideoPlug } from '..';
+import { useUser } from '@auth0/nextjs-auth0';
 
 const VideoContainer = ({
   id,
-  mediaSetup,
-  children,
   stream,
-  userPicture,
-  onMutePeer,
-  onRemovePeer,
-}: SingleVideoProps) => {
-  const { myId, isHost } = useContext(QoraContext);
+  muted,
+  visible,
+  onHostMute,
+  onHostRemove,
+  children,
+}: any) => {
+  const avatar = useUser().user?.picture || '';
+  const { me, isHost } = useContext(QoraContext);
+
+  console.log('muted from video container: ', muted);
+  console.log('visible from video container: ', visible);
 
   return (
-    <div
-      key={id}
-      className="relative group h-fit drop-shadow-2xl shadow-indigo-500/50"
-    >
-      {mediaSetup.isHidden ? <VideoPlug userPicture={userPicture} /> : children}
+    <div key={id} className="relative group h-fit drop-shadow-2xl shadow-indigo-500/50">
+      {visible ? children : <VideoPlug userPicture={avatar} />}
+      {muted ? <MutedPlug /> : <ActiveSpeaker stream={stream} />}
 
-      {mediaSetup.isMuted ? (
-        <div className="absolute top-3 right-3">
-          <MutedIcon />
-        </div>
-      ) : (
-        <ActiveSpeaker stream={stream} />
-      )}
-
-      {isHost && myId !== id && (
+      {isHost && me !== id && (
         <HostControlPanel
-          onMutePeer={() => onMutePeer && onMutePeer(id)}
-          onRemovePeer={() => onRemovePeer && onRemovePeer(id)}
-          isMuted={mediaSetup.isMuted}
+          onMutePeer={() => onHostMute && onHostMute(id)}
+          onRemovePeer={() => onHostRemove && onHostRemove(id)}
+          isMuted={muted}
         />
       )}
     </div>
@@ -43,12 +37,10 @@ const VideoContainer = ({
 
 export default VideoContainer;
 
-type SingleVideoProps = {
-  id: string;
-  mediaSetup: MediaSetup;
-  children: React.ReactNode;
-  stream: MediaStream;
-  userPicture: string;
-  onMutePeer?: (id: string) => void;
-  onRemovePeer?: (id: string) => void;
+const MutedPlug = () => {
+  return (
+    <div className="absolute top-3 right-3">
+      <MutedIcon />
+    </div>
+  );
 };

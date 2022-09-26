@@ -11,32 +11,33 @@ import { MediaSetup, Nullable, PeerId, RoomId } from '@common/types';
  * Creates a peer and joins them into the room
  * @returns peer object, its id and meta-state whether is peer fully created
  */
-const usePeer = (initMediaSetup: MediaSetup) => {
+const usePeer = ({ muted, visible }: any) => {
   const socket = useContext(SocketContext);
   const room = useRouter().query.qoraId as RoomId;
-  const user = useUser().user!;
+  const { name, picture: avatar } = useUser().user!;
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [status, setStatus] = useState('loading');
   const [peer, setPeer] = useState<Nullable<Peer>>(null);
-  const [myId, setMyId] = useState<PeerId>('');
+  const [me, setMe] = useState<PeerId>('');
 
   useEffect(() => {
     (async function createPeerAndJoinRoom() {
       try {
         const peer = new (await import('peerjs')).default();
         setPeer(peer);
-        setIsLoading(false);
+        setStatus('success');
 
         peer.on('open', (id) => {
           console.log('your device id: ', id);
-          setMyId(id);
+          setMe(id);
           socket.emit('room:join', {
             room,
             user: {
               id,
-              initMediaSetup,
-              name: user.name,
-              picture: user.picture,
+              muted,
+              visible,
+              name,
+              avatar,
             },
           });
         });
@@ -50,8 +51,9 @@ const usePeer = (initMediaSetup: MediaSetup) => {
 
   return {
     peer,
-    myId,
-    isPeerReady: !isLoading,
+    me,
+    isLoading: status === 'loading',
+    isSuccess: status === 'success',
   };
 };
 

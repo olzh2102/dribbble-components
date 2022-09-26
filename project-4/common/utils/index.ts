@@ -50,6 +50,35 @@ export function isHost(roomId: RoomId): boolean {
   return typeof window !== 'undefined' && !!window.localStorage.getItem(roomId);
 }
 
+export function syncSession({ serialize = JSON.stringify, deserialize = JSON.parse } = {}) {
+  function persist(k: string, v: unknown) {
+    sessionStorage.setItem(k, serialize(v));
+    return syncSession();
+  }
+
+  function getItem(k: string) {
+    return deserialize(sessionStorage.getItem(k)!);
+  }
+
+  function getProp(k1: string) {
+    return (k2: string) => {
+      const val = deserialize(sessionStorage.getItem(k2)!);
+      return val[k1];
+    };
+  }
+
+  function swapBool(k1: string) {
+    return (k2: string) => {
+      let val = deserialize(sessionStorage.getItem(k2)!);
+      val[k1] = !val[k1];
+      persist(k2, val);
+      return syncSession();
+    };
+  }
+
+  return { persist, swapBool, getItem, getProp };
+} 
+
 // export function withEvent(socket:any) {
 //   return (eventName: any) => (fn: any) => (...args: any) => {
 //     socket.emit(eventName, ...args)

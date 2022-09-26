@@ -2,50 +2,33 @@ import { NextPage } from 'next';
 import { createContext, useState } from 'react';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 
-import Room from '@app/index';
+import Room from '../../app/room';
 import { Lobby } from '@components/index';
-import { useStream } from '@hooks/index';
-import { append } from '@common/utils';
-import { MediaSetup } from '@common/types';
+import { useMediaStream } from '@hooks/index';
+import LoaderError from '@common/components/loader-error';
 
 export const QoraContext = createContext<any>({});
 
 const Qora: NextPage = () => {
   const [isLobby, setIsLobby] = useState(true);
+  const { stream, toggle, isLoading, isError, muted, visible } = useMediaStream();
 
-  const [initMediaSetup, setInitMediaSetup] = useState<MediaSetup>({
-    isMuted: false,
-    isHidden: false,
-  });
-  const { stream, isLoading } = useStream({ video: true, audio: true });
-
-  if (isLoading)
-    return (
-      <div className="grid place-items-center h-screen text-white">
-        Hold on. Getting your video stream ready... 🚀
-      </div>
-    );
-
-  if (!stream)
-    return (
-      <div className="grid place-items-center h-screen text-white">
-        Ooops!!! Couldn't create stream for you. Try again later 🫠
-      </div>
-    );
+  if (isLoading) return <LoaderError msg="Hold on. Getting your video stream ready... 🚀" />;
+  if (!stream || isError)
+    return <LoaderError msg="Ooops!!! Couldn't create stream for you. Try again later 🫠" />;
 
   return isLobby ? (
     <Lobby
       stream={stream}
-      initMediaSetup={initMediaSetup}
-      redirectToRoom={() => setIsLobby(false)}
-      setup={(key: keyof MediaSetup) =>
-        setInitMediaSetup(append({ [key]: !initMediaSetup[key] }))
-      }
+      muted={muted}
+      visible={visible}
+      onToggle={(kind: 'audio' | 'video') => toggle(kind)()}
+      onRedirectToRoom={() => setIsLobby(false)}
     />
   ) : (
-    <Room stream={stream} initMediaSetup={initMediaSetup} />
+    <Room stream={stream} />
   );
-};
+};;
 
 export default Qora;
 
