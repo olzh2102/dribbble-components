@@ -14,8 +14,8 @@ const Qora: NextPage = () => {
   const [isLobby, setIsLobby] = useState(true);
 
   const [initMediaSetup, setInitMediaSetup] = useState<MediaSetup>({
-    isMuted: false,
-    isHidden: false,
+    isMuted: true,
+    isHidden: true,
   });
   const { stream, isLoading } = useStream({ video: true, audio: true });
 

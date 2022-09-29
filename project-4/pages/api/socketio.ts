@@ -38,10 +38,6 @@ const socketHandler = (req: NextApiRequest, res: NextApiResponseServerIO) => {
           socket.to(room).emit('host:muted-user', userId);
         });
 
-        socket.on('host:remove-user-shared-screen', () => {
-          socket.to(room).emit('host:removed-user-shared-screen');
-        });
-
         socket.on('user:toggle-audio', (userId) => {
           socket.to(room).emit('user:toggled-audio', userId);
         });
@@ -50,8 +46,8 @@ const socketHandler = (req: NextApiRequest, res: NextApiResponseServerIO) => {
           socket.to(room).emit('user:toggled-video', userId);
         });
 
-        socket.on('user:share-screen', ({ username }) => {
-          socket.to(room).emit('user:shared-screen', username);
+        socket.on('user:share-screen', () => {
+          socket.to(room).emit('user:shared-screen', user.name);
         });
 
         socket.on('user:stop-share-screen', () => {

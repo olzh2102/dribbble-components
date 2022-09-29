@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import Tooltip from 'react-tooltip';
 import {
   VideoCameraIcon,
@@ -13,7 +13,6 @@ import {
 } from '@heroicons/react/outline';
 
 import { QoraContext } from '@pages/qora/[qoraId]';
-import { useScreenShare } from '@hooks/index';
 import CrossLineDiv from '@common/components/cross-line-div';
 import { toggleAudio, toggleVideo } from '@common/utils';
 import { MediaSetup } from '@common/types';
@@ -24,18 +23,16 @@ const ControlPanel = ({
   setMediaSetup,
   toggleChat,
   isChatOpen,
+  amISharing,
+  startShare,
+  stopShare,
 }: ControlPanelProps) => {
   const router = useRouter();
 
-  const {
-    myId,
-    isHost,
-    mediaSetup,
-    stream,
-    sharedScreenTrack: shared,
-    socket,
-  } = useContext(QoraContext);
-  const { isMyScreenSharing, toggleScreenShare } = useScreenShare();
+  const { myId, mediaSetup, stream, isSharing, screenTrack, socket } =
+    useContext(QoraContext);
+
+  if (screenTrack) screenTrack.onended = stopShare;
 
   function handleAudio() {
     toggleAudio(stream);
@@ -51,7 +48,7 @@ const ControlPanel = ({
 
   return (
     <>
-      {shared && (
+      {isSharing && (
         <button
           onClick={onFullscreen}
           className={`${common} bg-slate-800 hover:bg-emerald-700`}
@@ -94,14 +91,10 @@ const ControlPanel = ({
         <Tooltip id="hangUp" effect="solid" />
 
         <button
-          onClick={() => {
-            isHost && !isMyScreenSharing && shared
-              ? socket.emit('host:remove-user-shared-screen')
-              : toggleScreenShare();
-          }}
-          disabled={!isHost && (shared as any) && !isMyScreenSharing}
+          onClick={isSharing ? stopShare : startShare}
+          disabled={isSharing && !amISharing}
           className={`${common} ${
-            shared
+            isSharing
               ? 'bg-emerald-600 hover:bg-emerald-500'
               : 'bg-slate-800 hover:bg-emerald-700'
           }`}
@@ -140,6 +133,9 @@ type ControlPanelProps = {
   setMediaSetup: (key: keyof MediaSetup) => void;
   toggleChat: (arg: boolean) => void;
   onFullscreen: () => void;
+  amISharing: boolean;
+  startShare: () => Promise<void>;
+  stopShare: () => void;
 };
 
 const common = 'p-3 rounded-xl text-white';

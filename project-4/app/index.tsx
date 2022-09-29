@@ -2,13 +2,13 @@ import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useUser } from '@auth0/nextjs-auth0';
 import { MediaConnection } from 'peerjs';
-import { ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 
 import { MediaSetup, KeyValue, Nullable, RoomId } from '@common/types';
 import { append, isHost } from '@common/utils';
 import { MYSELF, TOAST_PROPS } from '@common/constants';
 
-import { usePeer } from '@hooks/index';
+import { usePeer, useScreen } from '@hooks/index';
 import { SocketContext } from '@pages/_app';
 import { QoraContext } from '@pages/qora/[qoraId]';
 
@@ -32,8 +32,6 @@ const Room = ({
   const [peers, setPeers] = useState<KeyValue<MediaConnection>>({});
 
   const [mediaSetup, setMediaSetup] = useState(initMediaSetup);
-  const [sharedScreenTrack, setSharedScreenTrack] =
-    useState<Nullable<MediaStreamTrack>>(null);
 
   const [fullscreen, setFullscreen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -41,6 +39,14 @@ const Room = ({
     'hidden' | 'animate-on-open-chat' | 'animate-on-close-chat' | null
   >(null);
   const [count, setCount] = useState(1);
+
+  const {
+    isSuccess: amISharing,
+    screenTrack,
+    startShare,
+    stopShare,
+  } = useScreen(stream);
+  const [isSharing, setIsSharing] = useState(false);
 
   useEffect(() => {
     if (!chatClassName) setChatClassName('hidden');
@@ -55,6 +61,27 @@ const Room = ({
       socket.disconnect();
     };
   }, []);
+
+  useEffect(() => {
+    setIsSharing(amISharing);
+  }, [amISharing]);
+
+  useEffect(() => {
+    if (!peer) return;
+
+    socket.on('user:shared-screen', (username: string) => {
+      peer.disconnect();
+      peer.reconnect();
+
+      toast(`${username} is sharing his screen`);
+    });
+    socket.on('user:stopped-screen-share', () => setIsSharing(false));
+
+    return () => {
+      socket.off('user:shared-screen');
+      socket.off('user:stopped-screen-share');
+    };
+  }, [peer]);
 
   if (!isPeerReady)
     return (
@@ -82,8 +109,9 @@ const Room = ({
         peers,
         setCount,
         setPeers,
-        sharedScreenTrack,
-        setSharedScreenTrack,
+        isSharing,
+        setIsSharing,
+        screenTrack,
       }}
     >
       <div className="flex">
@@ -117,6 +145,17 @@ const Room = ({
                 setMediaSetup(append({ [key]: !mediaSetup[key] }))
               }
               toggleChat={setIsChatOpen}
+              amISharing={amISharing}
+              startShare={async () => {
+                await startShare();
+                socket.emit('user:share-screen');
+              }}
+              stopShare={() => {
+                if (screenTrack) {
+                  stopShare(screenTrack);
+                  socket.emit('user:stop-share-screen');
+                }
+              }}
             />
           </div>
         </div>

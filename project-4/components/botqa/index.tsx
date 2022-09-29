@@ -5,7 +5,7 @@ import { QoraContext } from '@pages/qora/[qoraId]';
 import { PeerVideo, SharedScreen, VideoContainer } from '@components/index';
 import { usePeerOnJoinRoom, usePeerOnAnswer } from '@hooks/index';
 import { append, toggleAudio } from 'common/utils';
-import { KeyValue, PeerId } from 'common/types';
+import { KeyValue, Nullable, PeerId } from 'common/types';
 
 const Room = ({ fullscreen, onMuteUser, children }: RoomProps) => {
   console.log('render app');
@@ -16,9 +16,17 @@ const Room = ({ fullscreen, onMuteUser, children }: RoomProps) => {
     stream,
     socket,
     setCount,
-    sharedScreenTrack,
-    setSharedScreenTrack,
+    isSharing,
+    setIsSharing,
+    screenTrack: myScreenTrack,
   } = useContext(QoraContext);
+
+  const [screenTrack, setScreenTrack] =
+    useState<Nullable<MediaStreamTrack>>(null);
+
+  useEffect(() => {
+    setScreenTrack(myScreenTrack);
+  }, [myScreenTrack]);
 
   const [videos, setVideos] = useState<Record<PeerId, JSX.Element>>({});
   const [isMuted, setIsMuted] = useState<KeyValue<boolean>>({});
@@ -73,17 +81,17 @@ const Room = ({ fullscreen, onMuteUser, children }: RoomProps) => {
   return (
     <>
       <div className="flex gap-4">
-        {sharedScreenTrack && (
+        {isSharing && (
           <div className={sharedScreenClasses}>
-            <SharedScreen sharedScreenTrack={sharedScreenTrack} />
+            <SharedScreen sharedScreenTrack={screenTrack} />
           </div>
         )}
 
         <div
           className={`${
-            fullscreen && sharedScreenTrack ? 'hidden' : ''
+            fullscreen && isSharing ? 'hidden' : ''
           } flex flex-wrap gap-4 justify-around ${
-            sharedScreenTrack ? 'basis-1/6' : ''
+            isSharing ? 'basis-1/6' : ''
           }`}
         >
           {children}
@@ -126,7 +134,11 @@ const Room = ({ fullscreen, onMuteUser, children }: RoomProps) => {
       );
 
       const [_, screenTrack] = stream.getVideoTracks();
-      if (screenTrack) setSharedScreenTrack(screenTrack);
+      if (screenTrack) {
+        setScreenTrack(screenTrack);
+        setIsSharing(true);
+        // screenTrack.onended = () => setIsSharing(false);
+      }
     };
   }
 };
