@@ -9,18 +9,18 @@ const VideoContainer = ({
   stream,
   muted,
   visible,
+  avatar,
   onHostMute,
   onHostRemove,
   children,
 }: any) => {
-  const avatar = useUser().user?.picture || '';
   const { me, isHost } = useContext(QoraContext);
 
-  console.log('muted from video container: ', muted);
-  console.log('visible from video container: ', visible);
-
   return (
-    <div key={id} className="relative group h-fit drop-shadow-2xl shadow-indigo-500/50">
+    <div
+      key={id}
+      className="relative group h-fit drop-shadow-2xl shadow-indigo-500/50"
+    >
       {visible ? children : <VideoPlug userPicture={avatar} />}
       {muted ? <MutedPlug /> : <ActiveSpeaker stream={stream} />}
 

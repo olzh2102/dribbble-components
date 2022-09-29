@@ -12,7 +12,10 @@ import { append, syncSession } from '@common/utils';
  * @param appendStream - appends stream of user in the rrom
  */
 
-export default function useUserAnswer(appendStream: AppendVideoStream) {
+export default function useUserAnswer(
+  appendStream: AppendVideoStream,
+  sync: any
+) {
   const { peer, setPeers, stream } = useContext(QoraContext);
 
   useEffect(() => {
@@ -24,7 +27,7 @@ export default function useUserAnswer(appendStream: AppendVideoStream) {
       setPeers(append({ [peer]: call }));
 
       call.answer(stream); // * answers incoming call with his/her stream
-      syncSession().persist(peer, metadata.user);
+      sync(peer)(metadata.user);
 
       console.table({
         'answer-friend': 'answer friend',

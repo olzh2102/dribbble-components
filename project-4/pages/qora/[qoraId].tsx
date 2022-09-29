@@ -6,16 +6,17 @@ import Room from '../../app/room';
 import { Lobby } from '@components/index';
 import { useMediaStream } from '@hooks/index';
 import LoaderError from '@common/components/loader-error';
+import { FAILURE_MSG, STREAM_LOADING_MSG } from '@common/constants';
 
 export const QoraContext = createContext<any>({});
 
 const Qora: NextPage = () => {
   const [isLobby, setIsLobby] = useState(true);
-  const { stream, toggle, isLoading, isError, muted, visible } = useMediaStream();
+  const { stream, toggle, isLoading, isError, muted, visible } =
+    useMediaStream();
 
-  if (isLoading) return <LoaderError msg="Hold on. Getting your video stream ready... 🚀" />;
-  if (!stream || isError)
-    return <LoaderError msg="Ooops!!! Couldn't create stream for you. Try again later 🫠" />;
+  if (isLoading) return <LoaderError msg={STREAM_LOADING_MSG} />;
+  if (!stream || isError) return <LoaderError msg={FAILURE_MSG} />;
 
   return isLobby ? (
     <Lobby

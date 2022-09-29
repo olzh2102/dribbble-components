@@ -9,39 +9,39 @@ import { KeyValue, PeerId } from 'common/types';
 import { SocketContext } from '@pages/_app';
 import useSessionStorage from '@hooks/use-session-storage';
 
-const Botqa = ({ onHostMute, children }: any) => {
+const Botqa = ({ onHostMute, onHostRemove, fullscreen, children }: any) => {
   console.log('render app');
 
   const socket = useContext(SocketContext);
-  const { me, peers } = useContext(QoraContext);
+  const { me, peers, sharedScreenTrack, setSharedScreenTrack } =
+    useContext(QoraContext);
 
   const [videos, setVideos] = useState<Record<PeerId, JSX.Element>>({});
 
-  useUserJoin(appendStream);
-  useUserAnswer(appendStream);
+  const [session, setSession, removeFromSession, addToSession] =
+    useSessionStorage();
 
-  const [session, setSession] = useSessionStorage();
+  useUserJoin(appendStream, addToSession);
+  useUserAnswer(appendStream, addToSession);
 
   useEffect(() => {
     socket.on('host:muted-user', (id: PeerId) => {
-      if (id == me) {
-        onHostMute();
-        toast('You are muted by organiser');
-      } else setSession('muted')(id);
+      if (id == me) onHostMute();
+      else setSession('muted')(id);
     });
 
     socket.on('user:left', (peerId: PeerId) => {
-      console.log('am I emitted? ', peerId);
-      console.log('videos', videos);
-      if (peerId in peers) {
+      if (me == peerId) {
+        onHostRemove();
+      } else if (peers[peerId]) {
         peers[peerId].close();
-        setVideos((oldVideos) => {
-          console.log('did this shit work?');
-          delete oldVideos[peerId];
-          return oldVideos;
-        });
-        sessionStorage.removeItem(peerId);
+
+        const copy = Object.assign({}, videos);
+        delete copy[peerId];
+        setVideos(copy);
       }
+
+      removeFromSession(peerId);
     });
 
     socket.on('user:toggled-audio', setSession('muted'));
@@ -56,42 +56,69 @@ const Botqa = ({ onHostMute, children }: any) => {
   }, [peers, me]);
 
   function appendStream({ id, name, isMe }: any) {
-    return (stream: MediaStream) =>
+    return (stream: MediaStream) => {
       setVideos(
         append({
           [id]: <PeerVideo stream={stream} name={name} isMe={isMe} />,
         })
       );
+
+      const [_, screenTrack] = stream.getVideoTracks();
+      if (screenTrack) setSharedScreenTrack(screenTrack);
+    };
   }
 
+  function muteByHost(id: PeerId) {
+    setSession('muted')(id);
+    socket.emit('host:mute-user', id);
+  }
+
+  function removeByHost(id: PeerId) {
+    // * tell others to remove from their tab
+    socket.emit('user:leave', id);
+
+    // * remove from my tab
+    peers[id].close();
+    const copy = Object.assign({}, videos);
+    delete copy[id];
+    setVideos(copy);
+  }
+
+  let sharedScreenClasses = 'flex justify-center';
+  if (fullscreen) sharedScreenClasses += 'basis-6/6';
+  else sharedScreenClasses += 'basis-5/6';
+
   return (
-    <div className="flex flex-wrap gap-4 justify-around">
-      {children}
-      {Object.entries(videos).map(([id, video]) => (
-        <VideoContainer
-          id={id}
-          key={id}
-          muted={session[id].muted}
-          visible={session[id].visible}
-          avatar={session[id].avatar || ''}
-          stream={video.props.stream}
-          onHostMute={(id: PeerId) => {
-            setSession('muted')(id);
-            socket.emit('host:mute-user', id);
-          }}
-          onHostRemove={(id: PeerId) => {
-            socket.emit('user:leave', id);
-            peers[id].close();
-            setVideos((oldVideos) => {
-              console.log('did this shit work?');
-              delete oldVideos[id];
-              return oldVideos;
-            });
-          }}
-        >
-          {video}
-        </VideoContainer>
-      ))}
+    <div className="flex h-full place-items-center place-content-center">
+      {sharedScreenTrack && (
+        <div className={sharedScreenClasses}>
+          <SharedScreen sharedScreenTrack={sharedScreenTrack} />
+        </div>
+      )}
+
+      <div
+        className={`${
+          fullscreen && sharedScreenTrack ? 'hidden' : ''
+        } flex flex-wrap gap-4 justify-around ${
+          sharedScreenTrack ? 'basis-1/6' : ''
+        }`}
+      >
+        {children}
+        {Object.entries(videos).map(([id, video]) => (
+          <VideoContainer
+            id={id}
+            key={id}
+            muted={session[id]?.muted || false}
+            visible={session[id]?.visible || true}
+            avatar={session[id]?.avatar || ''}
+            stream={video.props.stream}
+            onHostMute={muteByHost}
+            onHostRemove={removeByHost}
+          >
+            {video}
+          </VideoContainer>
+        ))}
+      </div>
     </div>
   );
 };

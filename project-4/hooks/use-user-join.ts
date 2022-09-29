@@ -19,7 +19,7 @@ import useSessionStorage from './use-session-storage';
  * @param appendStream - appends upcoming stream
  */
 
-const useUserJoin = (appendStream: AppendVideoStream) => {
+const useUserJoin = (appendStream: AppendVideoStream, sync: any) => {
   const socket = useContext(SocketContext);
   const { name: n, picture: p } = useUser().user!;
   const { peer, setPeers, stream } = useContext(QoraContext);
@@ -49,7 +49,7 @@ const useUserJoin = (appendStream: AppendVideoStream) => {
       call.on('close', () => toast(`${name} has left the room`));
 
       setPeers(append({ [id]: call }));
-      syncSession().persist(id, { name, avatar, muted, visible });
+      sync(id)({ name, avatar, muted, visible });
     });
 
     return () => {

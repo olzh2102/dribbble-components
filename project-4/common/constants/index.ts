@@ -9,3 +9,7 @@ export const TOAST_PROPS: ToastContainerProps = {
   theme: 'dark',
   autoClose: 3000,
 };
+export const FAILURE_MSG = 'Oooops!!! Failed. Try again later 🫠';
+export const PEER_LOADING_MSG = 'Setting you up... 🎮';
+export const STREAM_LOADING_MSG =
+  'Hold on. Getting your video stream ready... 🚀';

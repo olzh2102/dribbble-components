@@ -6,6 +6,7 @@ import Peer from 'peerjs';
 import { SocketContext } from '@pages/_app';
 import { error } from '@common/utils';
 import { MediaSetup, Nullable, PeerId, RoomId } from '@common/types';
+import { FAILURE_MSG } from '@common/constants';
 
 /**
  * Creates a peer and joins them into the room
@@ -29,22 +30,16 @@ const usePeer = ({ muted, visible }: any) => {
 
         peer.on('open', (id) => {
           console.log('your device id: ', id);
+
+          const user = { id, name, avatar, muted, visible };
+
           setMe(id);
-          socket.emit('room:join', {
-            room,
-            user: {
-              id,
-              muted,
-              visible,
-              name,
-              avatar,
-            },
-          });
+          socket.emit('room:join', { room, user });
         });
 
-        peer.on('error', error('Failed to setup peer connection'));
+        peer.on('error', error(FAILURE_MSG));
       } catch (e) {
-        error('Unable to create peer')(e);
+        error(FAILURE_MSG)(e);
       }
     })();
   }, []);
