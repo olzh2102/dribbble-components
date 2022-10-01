@@ -7,6 +7,8 @@ import { Lobby } from '@components/index';
 import { useStream } from '@hooks/index';
 import { append } from '@common/utils';
 import { MediaSetup } from '@common/types';
+import LoaderError from '@common/components/loader-error';
+import { FAILURE_MSG, LOADER_STREAM_MSG } from '@common/constants';
 
 export const QoraContext = createContext<any>({});
 
@@ -19,20 +21,9 @@ const Qora: NextPage = () => {
   });
   const { stream, isLoading } = useStream({ video: true, audio: true });
 
-  if (isLoading)
-    return (
-      <div className="grid place-items-center h-screen text-white">
-        Hold on. Getting your video stream ready... 🚀
-      </div>
-    );
-
-  if (!stream)
-    return (
-      <div className="grid place-items-center h-screen text-white">
-        Ooops!!! Couldn't create stream for you. Try again later 🫠
-      </div>
-    );
-
+  if (isLoading) return <LoaderError msg={LOADER_STREAM_MSG} />;
+  if (!stream) return <LoaderError msg={FAILURE_MSG} />;
+  
   return isLobby ? (
     <Lobby
       stream={stream}

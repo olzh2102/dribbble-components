@@ -6,15 +6,16 @@ import { PeerVideo, SharedScreen, VideoContainer } from '@components/index';
 import { usePeerOnJoinRoom, usePeerOnAnswer } from '@hooks/index';
 import { append, toggleAudio } from 'common/utils';
 import { KeyValue, PeerId } from 'common/types';
+import { SocketContext } from '@pages/_app';
 
 const Room = ({ fullscreen, onMuteUser, children }: RoomProps) => {
   console.log('render app');
+  const socket = useContext(SocketContext);
 
   const {
     myId,
     peers,
     stream,
-    socket,
     setCount,
     sharedScreenTrack,
     setSharedScreenTrack,

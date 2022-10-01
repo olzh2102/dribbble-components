@@ -17,6 +17,7 @@ import { useScreenShare } from '@hooks/index';
 import CrossLineDiv from '@common/components/cross-line-div';
 import { toggleAudio, toggleVideo } from '@common/utils';
 import { MediaSetup } from '@common/types';
+import { SocketContext } from '@pages/_app';
 
 const ControlPanel = ({
   usersCount,
@@ -24,8 +25,10 @@ const ControlPanel = ({
   setMediaSetup,
   toggleChat,
   isChatOpen,
+  onLeave,
 }: ControlPanelProps) => {
   const router = useRouter();
+  const socket = useContext(SocketContext);
 
   const {
     myId,
@@ -33,7 +36,6 @@ const ControlPanel = ({
     mediaSetup,
     stream,
     sharedScreenTrack: shared,
-    socket,
   } = useContext(QoraContext);
   const { isMyScreenSharing, toggleScreenShare } = useScreenShare();
 
@@ -84,7 +86,7 @@ const ControlPanel = ({
         <Tooltip id="audio" effect="solid" />
 
         <button
-          onClick={() => router.push('/')}
+          onClick={onLeave}
           data-for="hangUp"
           data-tip="hang up"
           className={`${common} bg-red-600 hover:bg-red-500`}
@@ -140,6 +142,7 @@ type ControlPanelProps = {
   setMediaSetup: (key: keyof MediaSetup) => void;
   toggleChat: (arg: boolean) => void;
   onFullscreen: () => void;
+  onLeave: () => void;
 };
 
 const common = 'p-3 rounded-xl text-white';

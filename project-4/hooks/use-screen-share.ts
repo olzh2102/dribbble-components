@@ -3,11 +3,13 @@ import { toast } from 'react-toastify';
 import { QoraContext } from '@pages/qora/[qoraId]';
 import { error } from '@common/utils';
 import { useUser } from '@auth0/nextjs-auth0';
+import { SocketContext } from '@pages/_app';
 
 const useScreenShare = () => {
-  const username = useUser().user!.name
+  const username = useUser().user!.name;
+  const socket = useContext(SocketContext);
+
   const {
-    socket,
     peer,
     stream,
     sharedScreenTrack: sharedTrack,

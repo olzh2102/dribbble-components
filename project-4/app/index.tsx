@@ -1,12 +1,17 @@
 import { useContext, useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import { Router, useRouter } from 'next/router';
 import { useUser } from '@auth0/nextjs-auth0';
 import { MediaConnection } from 'peerjs';
 import { ToastContainer } from 'react-toastify';
 
 import { MediaSetup, KeyValue, Nullable, RoomId } from '@common/types';
 import { append, isHost } from '@common/utils';
-import { MYSELF, TOAST_PROPS } from '@common/constants';
+import {
+  FAILURE_MSG,
+  LOADER_PEER_MSG,
+  MYSELF,
+  TOAST_PROPS,
+} from '@common/constants';
 
 import { usePeer } from '@hooks/index';
 import { SocketContext } from '@pages/_app';
@@ -16,6 +21,7 @@ import Botqa from '@components/botqa';
 import Chat from '@components/chat';
 import ControlPanel from '@components/control-panel';
 import { PeerVideo, VideoContainer } from '@components/index';
+import LoaderError from '@common/components/loader-error';
 
 const Room = ({
   stream,
@@ -24,7 +30,7 @@ const Room = ({
   stream: MediaStream;
   initMediaSetup: MediaSetup;
 }) => {
-  const room = useRouter().query.qoraId as RoomId;
+  const router = useRouter();
   const userPicture = useUser().user!.picture;
   const socket = useContext(SocketContext);
   const { peer, myId, isPeerReady } = usePeer(initMediaSetup);
@@ -56,27 +62,15 @@ const Room = ({
     };
   }, []);
 
-  if (!isPeerReady)
-    return (
-      <div className="grid place-items-center h-screen text-white">
-        Setting you up... 🎮
-      </div>
-    );
-
-  if (!peer)
-    return (
-      <div className="grid place-items-center h-screen text-white">
-        Oooops!!! Couldn't create connection. Try again later 🫠
-      </div>
-    );
+  if (!isPeerReady) return <LoaderError msg={LOADER_PEER_MSG} />;
+  if (!peer) return <LoaderError msg={FAILURE_MSG} />;
 
   return (
     <QoraContext.Provider
       value={{
-        socket,
         peer,
         myId,
-        isHost: isHost(room),
+        isHost: isHost(router.query.qoraId as RoomId),
         mediaSetup,
         stream,
         peers,
@@ -110,6 +104,7 @@ const Room = ({
 
           <div className="flex w-full items-center">
             <ControlPanel
+              onLeave={() => router.push('/')}
               isChatOpen={isChatOpen}
               usersCount={count + Number(Boolean(myId))}
               onFullscreen={() => setFullscreen(!fullscreen)}
