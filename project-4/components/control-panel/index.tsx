@@ -25,6 +25,7 @@ const ControlPanel = ({
   setMediaSetup,
   toggleChat,
   isChatOpen,
+  onLeave,
 }: ControlPanelProps) => {
   const router = useRouter();
   const socket = useContext(SocketContext);
@@ -85,7 +86,7 @@ const ControlPanel = ({
         <Tooltip id="audio" effect="solid" />
 
         <button
-          onClick={() => router.push('/')}
+          onClick={onLeave}
           data-for="hangUp"
           data-tip="hang up"
           className={`${common} bg-red-600 hover:bg-red-500`}
@@ -141,6 +142,7 @@ type ControlPanelProps = {
   setMediaSetup: (key: keyof MediaSetup) => void;
   toggleChat: (arg: boolean) => void;
   onFullscreen: () => void;
+  onLeave: () => void;
 };
 
 const common = 'p-3 rounded-xl text-white';
