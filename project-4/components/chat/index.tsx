@@ -6,10 +6,11 @@ import { MYSELF } from '@common/constants';
 import { append, formatTimeHHMM } from '@common/utils';
 import { Message } from '..';
 import { useUser } from '@auth0/nextjs-auth0';
+import { SocketContext } from '@pages/_app';
 
 const Chat = ({ title, onClose }: { title: string; onClose: () => void }) => {
   const username = useUser().user!.name;
-  const socket = useContext(QoraContext).socket;
+  const socket = useContext(SocketContext);
 
   const [text, setText] = useState('');
   const [messages, setMessages] = useState<UserMessage[]>([]);

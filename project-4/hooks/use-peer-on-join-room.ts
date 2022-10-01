@@ -5,6 +5,7 @@ import { QoraContext } from '@pages/qora/[qoraId]';
 import { AppendVideoStream, KeyValue, MediaSetup } from '@common/types';
 import { append } from '@common/utils';
 import { useUser } from '@auth0/nextjs-auth0';
+import { SocketContext } from '@pages/_app';
 
 /**
  * Actor - user that is in the room already.
@@ -29,8 +30,9 @@ const usePeerOnJoinRoom = (
   setUserPictures: Dispatch<SetStateAction<KeyValue<string>>>
 ) => {
   const user = useUser().user!;
-  const { mediaSetup, socket, peer, setPeers, stream } =
-    useContext(QoraContext);
+  const socket = useContext(SocketContext);
+
+  const { mediaSetup, peer, setPeers, stream } = useContext(QoraContext);
 
   useEffect(() => {
     if (!peer) return;

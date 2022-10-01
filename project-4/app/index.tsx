@@ -6,7 +6,12 @@ import { ToastContainer } from 'react-toastify';
 
 import { MediaSetup, KeyValue, Nullable, RoomId } from '@common/types';
 import { append, isHost } from '@common/utils';
-import { MYSELF, TOAST_PROPS } from '@common/constants';
+import {
+  FAILURE_MSG,
+  LOADER_PEER_MSG,
+  MYSELF,
+  TOAST_PROPS,
+} from '@common/constants';
 
 import { usePeer } from '@hooks/index';
 import { SocketContext } from '@pages/_app';
@@ -16,6 +21,7 @@ import Botqa from '@components/botqa';
 import Chat from '@components/chat';
 import ControlPanel from '@components/control-panel';
 import { PeerVideo, VideoContainer } from '@components/index';
+import LoaderError from '@common/components/loader-error';
 
 const Room = ({
   stream,
@@ -56,24 +62,12 @@ const Room = ({
     };
   }, []);
 
-  if (!isPeerReady)
-    return (
-      <div className="grid place-items-center h-screen text-white">
-        Setting you up... 🎮
-      </div>
-    );
-
-  if (!peer)
-    return (
-      <div className="grid place-items-center h-screen text-white">
-        Oooops!!! Couldn't create connection. Try again later 🫠
-      </div>
-    );
+  if (!isPeerReady) return <LoaderError msg={LOADER_PEER_MSG} />;
+  if (!peer) return <LoaderError msg={FAILURE_MSG} />;
 
   return (
     <QoraContext.Provider
       value={{
-        socket,
         peer,
         myId,
         isHost: isHost(room),

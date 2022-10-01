@@ -17,6 +17,7 @@ import { useScreenShare } from '@hooks/index';
 import CrossLineDiv from '@common/components/cross-line-div';
 import { toggleAudio, toggleVideo } from '@common/utils';
 import { MediaSetup } from '@common/types';
+import { SocketContext } from '@pages/_app';
 
 const ControlPanel = ({
   usersCount,
@@ -26,6 +27,7 @@ const ControlPanel = ({
   isChatOpen,
 }: ControlPanelProps) => {
   const router = useRouter();
+  const socket = useContext(SocketContext);
 
   const {
     myId,
@@ -33,7 +35,6 @@ const ControlPanel = ({
     mediaSetup,
     stream,
     sharedScreenTrack: shared,
-    socket,
   } = useContext(QoraContext);
   const { isMyScreenSharing, toggleScreenShare } = useScreenShare();
 
