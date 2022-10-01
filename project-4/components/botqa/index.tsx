@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 
 import { QoraContext } from '@pages/qora/[qoraId]';
 import { PeerVideo, SharedScreen, VideoContainer } from '@components/index';
-import { usePeerOnJoinRoom, usePeerOnAnswer } from '@hooks/index';
+import { useUserJoin, useUserAnswer } from '@hooks/index';
 import { append, toggleAudio } from 'common/utils';
 import { KeyValue, PeerId } from 'common/types';
 import { SocketContext } from '@pages/_app';
@@ -29,8 +29,8 @@ const Room = ({ fullscreen, onMuteUser, children }: RoomProps) => {
   const videosEntries = Object.entries(videos);
   setCount(videosEntries.length);
 
-  usePeerOnJoinRoom(addVideoStream, setIsMuted, setIsHidden, setUserPictures);
-  usePeerOnAnswer(addVideoStream, setIsMuted, setIsHidden, setUserPictures);
+  useUserJoin(addVideoStream, setIsMuted, setIsHidden, setUserPictures);
+  useUserAnswer(addVideoStream, setIsMuted, setIsHidden, setUserPictures);
 
   useEffect(() => {
     socket.on('host:muted-user', mutedByHost);
