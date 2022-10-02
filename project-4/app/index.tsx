@@ -42,19 +42,10 @@ const Room = ({
     useState<Nullable<MediaStreamTrack>>(null);
 
   const [fullscreen, setFullscreen] = useState(false);
-  const [isChatOpen, setIsChatOpen] = useState(false);
-  const [chatClassName, setChatClassName] = useState<
-    'hidden' | 'animate-on-open-chat' | 'animate-on-close-chat' | null
-  >(null);
+  const [chatStatus, setChatStatus] = useState<'hidden' | 'open' | 'close'>(
+    'hidden'
+  );
   const [count, setCount] = useState(1);
-
-  useEffect(() => {
-    if (!chatClassName) setChatClassName('hidden');
-    else
-      setChatClassName(
-        isChatOpen ? 'animate-on-open-chat' : 'animate-on-close-chat'
-      );
-  }, [isChatOpen]);
 
   useEffect(() => {
     return () => {
@@ -83,7 +74,7 @@ const Room = ({
       <div className="flex">
         <div
           className={`${
-            isChatOpen ? 'sm:flex hidden' : 'flex'
+            chatStatus === 'open' ? 'sm:flex hidden' : 'flex'
           } w-full h-screen flex-col p-4`}
         >
           <div className="flex h-full place-items-center place-content-center">
@@ -105,21 +96,28 @@ const Room = ({
           <div className="flex w-full items-center">
             <ControlPanel
               onLeave={() => router.push('/')}
-              isChatOpen={isChatOpen}
+              isChatOpen={chatStatus === 'open'}
               usersCount={count + Number(Boolean(myId))}
               onFullscreen={() => setFullscreen(!fullscreen)}
               setMediaSetup={(key: keyof MediaSetup) =>
                 setMediaSetup(append({ [key]: !mediaSetup[key] }))
               }
-              toggleChat={setIsChatOpen}
+              toggleChat={() => {
+                setChatStatus(chatStatus === 'open' ? 'close' : 'open');
+              }}
             />
           </div>
         </div>
 
         <div
-          className={`${chatClassName} h-screen w-screen max-w-full sm:max-w-md`}
+          className={`${
+            chatStatus === 'hidden' ? 'hidden' : `animate-on-${chatStatus}-chat`
+          } h-screen w-screen max-w-full sm:max-w-md`}
+          onAnimationEnd={() =>
+            chatStatus === 'close' && setChatStatus('hidden')
+          }
         >
-          <Chat onClose={() => setIsChatOpen(false)} title="Meeting Chat" />
+          <Chat onClose={() => setChatStatus('close')} title="Meeting Chat" />
         </div>
       </div>
 
