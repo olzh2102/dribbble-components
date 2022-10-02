@@ -67,15 +67,15 @@ const Room = ({ fullscreen, onMuteUser, children }: RoomProps) => {
     socket.emit('host:mute-user', peerId);
   }
 
-  let sharedScreenClasses = 'flex justify-center';
-  if (fullscreen) sharedScreenClasses += 'basis-6/6';
-  else sharedScreenClasses += 'basis-5/6';
-
   return (
     <>
       <div className="flex gap-4">
         {sharedScreenTrack && (
-          <div className={sharedScreenClasses}>
+          <div
+            className={`flex justify-center ${
+              fullscreen ? 'basis-6/6' : 'basis-5/6'
+            }`}
+          >
             <SharedScreen sharedScreenTrack={sharedScreenTrack} />
           </div>
         )}
