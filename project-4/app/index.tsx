@@ -1,10 +1,10 @@
-import { useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { Router, useRouter } from 'next/router';
 import { useUser } from '@auth0/nextjs-auth0';
 import { MediaConnection } from 'peerjs';
 import { ToastContainer } from 'react-toastify';
 
-import { MediaSetup, KeyValue, Nullable, RoomId } from '@common/types';
+import { MediaSetup, KeyValue, Nullable, RoomId, PeerId } from '@common/types';
 import { append, isHost } from '@common/utils';
 import {
   FAILURE_MSG,
@@ -23,6 +23,9 @@ import ControlPanel from '@components/control-panel';
 import { PeerVideo, VideoContainer } from '@components/index';
 import LoaderError from '@common/components/loader-error';
 
+export const UserUpdaterContext = createContext<any>({});
+export const UserStateContext = createContext<any>({});
+
 const Room = ({
   stream,
   initMediaSetup,
@@ -40,6 +43,10 @@ const Room = ({
   const [mediaSetup, setMediaSetup] = useState(initMediaSetup);
   const [sharedScreenTrack, setSharedScreenTrack] =
     useState<Nullable<MediaStreamTrack>>(null);
+
+  const [isMuted, setIsMuted] = useState<KeyValue<boolean>>({});
+  const [isHidden, setIsHidden] = useState<KeyValue<boolean>>({});
+  const [userPictures, setUserPictures] = useState<KeyValue<string>>({});
 
   const [fullscreen, setFullscreen] = useState(false);
   const [chatStatus, setChatStatus] = useState<'hidden' | 'open' | 'close'>(
@@ -78,19 +85,27 @@ const Room = ({
           } w-full h-screen flex-col p-4`}
         >
           <div className="flex h-full place-items-center place-content-center">
-            <Botqa
-              onMuteUser={() => setMediaSetup(append({ isMuted: true }))}
-              fullscreen={fullscreen}
+            <UserStateContext.Provider
+              value={{ isMuted, isHidden, userPictures }}
             >
-              <VideoContainer
-                id={myId}
-                mediaSetup={mediaSetup}
-                stream={stream}
-                userPicture={userPicture || ''}
+              <UserUpdaterContext.Provider
+                value={{ setIsMuted, setIsHidden, setUserPictures }}
               >
-                <PeerVideo stream={stream} name={MYSELF} isMe={true} />
-              </VideoContainer>
-            </Botqa>
+                <Botqa
+                  onMuteUser={() => setMediaSetup(append({ isMuted: true }))}
+                  fullscreen={fullscreen}
+                >
+                  <VideoContainer
+                    id={myId}
+                    mediaSetup={mediaSetup}
+                    stream={stream}
+                    userPicture={userPicture || ''}
+                  >
+                    <PeerVideo stream={stream} name={MYSELF} isMe={true} />
+                  </VideoContainer>
+                </Botqa>
+              </UserUpdaterContext.Provider>
+            </UserStateContext.Provider>
           </div>
 
           <div className="flex w-full items-center">

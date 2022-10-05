@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import { QoraContext } from '@pages/qora/[qoraId]';
 import { AppendVideoStream, KeyValue } from '@common/types';
 import { append } from '@common/utils';
+import { UserUpdaterContext } from '@app/*';
 
 /**
  * Actor - user that just joined the room
@@ -15,13 +16,10 @@ import { append } from '@common/utils';
  * Note: id is also coming to the receiver aloing with his/her stream and name, id
  */
 
-const usePeerOnAnswer = (
-  cb: AppendVideoStream,
-  setIsMuted: Dispatch<SetStateAction<KeyValue<boolean>>>,
-  setIsHidden: Dispatch<SetStateAction<KeyValue<boolean>>>,
-  setUserPictures: Dispatch<SetStateAction<KeyValue<string>>>
-) => {
+const usePeerOnAnswer = (cb: AppendVideoStream) => {
   const { peer, setPeers, stream } = useContext(QoraContext);
+  const { setIsMuted, setIsHidden, setUserPictures } =
+    useContext(UserUpdaterContext);
 
   useEffect(() => {
     if (!peer) return;

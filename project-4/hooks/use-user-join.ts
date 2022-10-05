@@ -6,6 +6,7 @@ import { AppendVideoStream, KeyValue, MediaSetup } from '@common/types';
 import { append } from '@common/utils';
 import { useUser } from '@auth0/nextjs-auth0';
 import { SocketContext } from '@pages/_app';
+import { UserUpdaterContext } from '@app/*';
 
 /**
  * Actor - user that is in the room already.
@@ -16,21 +17,15 @@ import { SocketContext } from '@pages/_app';
  *
  * @param cb - appends upcoming stream
  *
- * @param isMuted - receiver tells to the joined user whether he/she is muted.
- * Note: that is for displaying mic icon on video
- *
  * @param setIsMuted - receiver receives "isMuted" param from joined user and records it into dictionary into his/her id.
  * Note: id is also coming to the receiver aloing with his/her stream and name
  */
 
-const usePeerOnJoinRoom = (
-  cb: AppendVideoStream,
-  setIsMuted: Dispatch<SetStateAction<KeyValue<boolean>>>,
-  setIsHidden: Dispatch<SetStateAction<KeyValue<boolean>>>,
-  setUserPictures: Dispatch<SetStateAction<KeyValue<string>>>
-) => {
+const usePeerOnJoinRoom = (cb: AppendVideoStream) => {
   const user = useUser().user!;
   const socket = useContext(SocketContext);
+  const { setIsMuted, setIsHidden, setUserPictures } =
+    useContext(UserUpdaterContext);
 
   const { mediaSetup, peer, setPeers, stream } = useContext(QoraContext);
 

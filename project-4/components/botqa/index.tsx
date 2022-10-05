@@ -7,10 +7,13 @@ import { useUserJoin, useUserAnswer } from '@hooks/index';
 import { append, toggleAudio } from 'common/utils';
 import { KeyValue, PeerId } from 'common/types';
 import { SocketContext } from '@pages/_app';
+import { useRouter } from 'next/router';
+import { UserStateContext, UserUpdaterContext } from '@app/*';
 
 const Room = ({ fullscreen, onMuteUser, children }: RoomProps) => {
   console.log('render app');
   const socket = useContext(SocketContext);
+  const router = useRouter();
 
   const {
     myId,
@@ -21,16 +24,16 @@ const Room = ({ fullscreen, onMuteUser, children }: RoomProps) => {
     setSharedScreenTrack,
   } = useContext(QoraContext);
 
+  const { setIsMuted, setIsHidden } = useContext(UserUpdaterContext);
+  const { isMuted, isHidden, userPictures } = useContext(UserStateContext);
+
   const [videos, setVideos] = useState<Record<PeerId, JSX.Element>>({});
-  const [isMuted, setIsMuted] = useState<KeyValue<boolean>>({});
-  const [isHidden, setIsHidden] = useState<KeyValue<boolean>>({});
-  const [userPictures, setUserPictures] = useState<KeyValue<string>>({});
 
   const videosEntries = Object.entries(videos);
   setCount(videosEntries.length);
 
-  useUserJoin(addVideoStream, setIsMuted, setIsHidden, setUserPictures);
-  useUserAnswer(addVideoStream, setIsMuted, setIsHidden, setUserPictures);
+  useUserJoin(addVideoStream);
+  useUserAnswer(addVideoStream);
 
   useEffect(() => {
     socket.on('host:muted-user', mutedByHost);
