@@ -22,25 +22,27 @@ import Chat from '@components/chat';
 import ControlPanel from '@components/control-panel';
 import { PeerVideo, VideoContainer } from '@components/index';
 import LoaderError from '@common/components/loader-error';
+import useMediaStream from '@hooks/use-media-stream';
 
 export const UserUpdaterContext = createContext<any>({});
 export const UserStateContext = createContext<any>({});
 
-const Room = ({
-  stream,
-  initMediaSetup,
-}: {
-  stream: MediaStream;
-  initMediaSetup: MediaSetup;
-}) => {
+const Room = ({ stream }: { stream: MediaStream }) => {
   const router = useRouter();
   const userPicture = useUser().user!.picture;
   const socket = useContext(SocketContext);
-  const { peer, myId, isPeerReady } = usePeer(initMediaSetup);
+  const { muted, visible } = useMediaStream(stream);
+  const { peer, myId, isPeerReady } = usePeer({
+    isHidden: !visible,
+    isMuted: muted,
+  });
 
   const [peers, setPeers] = useState<KeyValue<MediaConnection>>({});
 
-  const [mediaSetup, setMediaSetup] = useState(initMediaSetup);
+  const [mediaSetup, setMediaSetup] = useState({
+    isHidden: !visible,
+    isMuted: muted,
+  });
   const [sharedScreenTrack, setSharedScreenTrack] =
     useState<Nullable<MediaStreamTrack>>(null);
 

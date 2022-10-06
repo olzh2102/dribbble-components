@@ -62,3 +62,6 @@ export type MediaSetup = {
   isMuted: boolean;
   isHidden: boolean;
 };
+
+export type Status = 'loading' | 'idle' | 'rejected' | 'success';
+
