@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import Tooltip from 'react-tooltip';
 import {
@@ -15,47 +14,23 @@ import {
 import { QoraContext } from '@pages/qora/[qoraId]';
 import { useScreenShare } from '@hooks/index';
 import CrossLineDiv from '@common/components/cross-line-div';
-import { toggleAudio, toggleVideo } from '@common/utils';
-import { MediaSetup } from '@common/types';
 import { SocketContext } from '@pages/_app';
 
-const ControlPanel = ({
-  usersCount,
-  onFullscreen,
-  setMediaSetup,
-  toggleChat,
-  isChatOpen,
-  onLeave,
-}: ControlPanelProps) => {
-  const router = useRouter();
+const ControlPanel = ({ usersCount, isChatOpen, onToggle, onLeave }: any) => {
   const socket = useContext(SocketContext);
 
   const {
-    myId,
     isHost,
     mediaSetup,
-    stream,
     sharedScreenTrack: shared,
   } = useContext(QoraContext);
   const { isMyScreenSharing, toggleScreenShare } = useScreenShare();
-
-  function handleAudio() {
-    toggleAudio(stream);
-    setMediaSetup('isMuted');
-    socket.emit('user:toggle-audio', myId);
-  }
-
-  function handleVideo() {
-    toggleVideo(stream);
-    setMediaSetup('isHidden');
-    socket.emit('user:toggle-video', myId);
-  }
 
   return (
     <>
       {shared && (
         <button
-          onClick={onFullscreen}
+          onClick={() => onToggle('fullscreen')}
           className={`${common} bg-slate-800 hover:bg-emerald-700`}
         >
           <ArrowsExpandIcon className="w-6 h-6" />
@@ -64,7 +39,7 @@ const ControlPanel = ({
 
       <div className="flex flex-auto gap-6 place-content-center items-center">
         <button
-          onClick={handleVideo}
+          onClick={() => onToggle('video')}
           data-for="visibility"
           data-tip={`${mediaSetup.isHidden ? 'switch on' : 'switch off'}`}
           className={`${common} bg-slate-800 hover:bg-emerald-700 relative`}
@@ -75,7 +50,7 @@ const ControlPanel = ({
         <Tooltip id="visibility" effect="solid" />
 
         <button
-          onClick={handleAudio}
+          onClick={() => onToggle('audio')}
           data-for="audio"
           data-tip={`${mediaSetup.isMuted ? 'unmute' : 'mute'}`}
           className={`${common} bg-slate-800 hover:bg-emerald-700 relative`}
@@ -117,7 +92,7 @@ const ControlPanel = ({
         <button
           data-for="chat"
           data-tip="chat with everyone"
-          onClick={() => toggleChat(!isChatOpen)}
+          onClick={() => onToggle('chat')}
           className={`${common} ${
             isChatOpen
               ? 'bg-emerald-600 hover:bg-emerald-500'
@@ -135,15 +110,6 @@ const ControlPanel = ({
 };
 
 export default ControlPanel;
-
-type ControlPanelProps = {
-  usersCount: number;
-  isChatOpen: boolean;
-  setMediaSetup: (key: keyof MediaSetup) => void;
-  toggleChat: (arg: boolean) => void;
-  onFullscreen: () => void;
-  onLeave: () => void;
-};
 
 const common = 'p-3 rounded-xl text-white';
 

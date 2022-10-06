@@ -31,7 +31,7 @@ const Room = ({ stream }: { stream: MediaStream }) => {
   const router = useRouter();
   const userPicture = useUser().user!.picture;
   const socket = useContext(SocketContext);
-  const { muted, visible } = useMediaStream(stream);
+  const { muted, visible, toggle } = useMediaStream(stream);
   const { peer, myId, isPeerReady } = usePeer({
     isHidden: !visible,
     isMuted: muted,
@@ -39,7 +39,7 @@ const Room = ({ stream }: { stream: MediaStream }) => {
 
   const [peers, setPeers] = useState<KeyValue<MediaConnection>>({});
 
-  const [mediaSetup, setMediaSetup] = useState({
+  const [mediaSetup, setMediaSetup] = useState<any>({
     isHidden: !visible,
     isMuted: muted,
   });
@@ -113,15 +113,23 @@ const Room = ({ stream }: { stream: MediaStream }) => {
           <div className="flex w-full items-center">
             <ControlPanel
               onLeave={() => router.push('/')}
+              onToggle={(kind: Kind) => {
+                if (kind == 'audio') {
+                  toggle('audio')(stream);
+                  setMediaSetup(append({ isMuted: !mediaSetup.isMuted }));
+                  socket.emit('user:toggle-audio', myId);
+                } else if (kind == 'video') {
+                  toggle('audio')(stream);
+                  setMediaSetup(append({ isHidden: !mediaSetup.isHidden }));
+                  socket.emit('user:toggle-video', myId);
+                } else if (kind == 'fullscreen') {
+                  setFullscreen(!fullscreen);
+                } else if (kind == 'chat') {
+                  setChatStatus(chatStatus === 'open' ? 'close' : 'open');
+                }
+              }}
               isChatOpen={chatStatus === 'open'}
               usersCount={count + Number(Boolean(myId))}
-              onFullscreen={() => setFullscreen(!fullscreen)}
-              setMediaSetup={(key: keyof MediaSetup) =>
-                setMediaSetup(append({ [key]: !mediaSetup[key] }))
-              }
-              toggleChat={() => {
-                setChatStatus(chatStatus === 'open' ? 'close' : 'open');
-              }}
             />
           </div>
         </div>
@@ -144,3 +152,4 @@ const Room = ({ stream }: { stream: MediaStream }) => {
 };
 
 export default Room;
+type Kind = 'audio' | 'video' | 'chat' | 'fullscreen';
