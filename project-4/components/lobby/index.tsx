@@ -8,31 +8,24 @@ import CrossLineDiv from '@common/components/cross-line-div';
 import { MediaSetup } from '@common/types';
 
 import { PeerVideo, VideoContainer } from '..';
+import useMediaStream from '@hooks/use-media-stream';
 
 const Lobby = ({
   stream,
-  initMediaSetup,
-  setup,
-  redirectToRoom,
-}: LobbyProps) => {
+  onJoinRoom,
+}: {
+  stream: MediaStream;
+  onJoinRoom: () => void;
+}) => {
   const user = useUser().user;
-
-  function setVisibility() {
-    setup('isHidden');
-    toggleVideo(stream);
-  }
-
-  function setMuted() {
-    setup('isMuted');
-    toggleAudio(stream);
-  }
+  const { muted, visible, toggle } = useMediaStream(stream);
 
   return (
     <div className="h-screen w-auto grid grid-cols-2 gap-4 place-content-center place-items-center">
       <div className="flex flex-col gap-2">
         <VideoContainer
           id="me"
-          mediaSetup={initMediaSetup}
+          mediaSetup={{ isHidden: !visible, isMuted: muted }}
           stream={stream}
           userPicture={user?.picture || ''}
         >
@@ -41,31 +34,31 @@ const Lobby = ({
 
         <div className="flex justify-end gap-2">
           <button
-            onClick={setVisibility}
+            onClick={() => toggle('video')(stream)}
             data-for="visibility"
-            data-tip={`${initMediaSetup.isHidden ? 'switch on' : 'switch off'}`}
+            data-tip={`${!visible ? 'switch on' : 'switch off'}`}
             className="p-3 rounded-xl text-white bg-slate-800 hover:bg-indigo-700 relative"
           >
             <VideoCameraIcon className="h-6 w-6" />
-            {initMediaSetup.isHidden && <CrossLineDiv />}
+            {!visible && <CrossLineDiv />}
           </button>
           <Tooltip id="visibility" effect="solid" />
 
           <button
-            onClick={setMuted}
+            onClick={() => toggle('audio')(stream)}
             data-for="audio"
-            data-tip={`${initMediaSetup.isMuted ? 'unmute' : 'mute'}`}
+            data-tip={`${muted ? 'unmute' : 'mute'}`}
             className="p-3 rounded-xl text-white bg-slate-800 hover:bg-indigo-700 relative"
           >
             <MicrophoneIcon className="h-6 w-6" />
-            {initMediaSetup.isMuted && <CrossLineDiv />}
+            {muted && <CrossLineDiv />}
           </button>
           <Tooltip id="audio" effect="solid" />
         </div>
       </div>
 
       <button
-        onClick={redirectToRoom}
+        onClick={onJoinRoom}
         type="button"
         className="p-2 text-sm font-medium rounded-md text-emerald-800 bg-emerald-300 hover:bg-indigo-200"
       >
@@ -76,10 +69,3 @@ const Lobby = ({
 };
 
 export default Lobby;
-
-type LobbyProps = {
-  stream: MediaStream;
-  initMediaSetup: MediaSetup;
-  setup: (key: keyof MediaSetup) => void;
-  redirectToRoom: () => void;
-};
