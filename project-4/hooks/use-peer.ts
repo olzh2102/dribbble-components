@@ -6,15 +6,18 @@ import Peer from 'peerjs';
 import { SocketContext } from '@pages/_app';
 import { error } from '@common/utils';
 import { MediaSetup, Nullable, PeerId, RoomId } from '@common/types';
+import useMediaStream from './use-media-stream';
 
 /**
  * Creates a peer and joins them into the room
  * @returns peer object, its id and meta-state whether is peer fully created
  */
-const usePeer = (initMediaSetup: MediaSetup) => {
+const usePeer = (stream: MediaStream) => {
   const socket = useContext(SocketContext);
   const room = useRouter().query.qoraId as RoomId;
   const user = useUser().user!;
+
+  const { muted, visible } = useMediaStream(stream);
 
   const [isLoading, setIsLoading] = useState(true);
   const [peer, setPeer] = useState<Nullable<Peer>>(null);
@@ -34,7 +37,7 @@ const usePeer = (initMediaSetup: MediaSetup) => {
             room,
             user: {
               id,
-              initMediaSetup,
+              initMediaSetup: { isMuted: muted, isHidden: !visible },
               name: user.name,
               picture: user.picture,
             },

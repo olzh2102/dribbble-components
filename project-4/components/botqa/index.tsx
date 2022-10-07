@@ -118,7 +118,6 @@ const Room = ({ fullscreen, onMuteUser, children }: RoomProps) => {
 
   function mutedByHost(peerId: PeerId) {
     if (peerId === myId) {
-      toggleAudio(stream);
       onMuteUser();
       toast('You are muted');
     } else {
