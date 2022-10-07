@@ -18,8 +18,7 @@ import { UserUpdaterContext } from '@app/*';
 
 const usePeerOnAnswer = (cb: AppendVideoStream) => {
   const { peer, setPeers, stream } = useContext(QoraContext);
-  const { setIsMuted, setIsHidden, setUserPictures } =
-    useContext(UserUpdaterContext);
+  const { setIsMuted, setIsHidden, setAvatar } = useContext(UserUpdaterContext);
 
   useEffect(() => {
     if (!peer) return;
@@ -31,7 +30,7 @@ const usePeerOnAnswer = (cb: AppendVideoStream) => {
       setPeers(append({ [peer]: call }));
       setIsMuted(append({ [peer]: mediaSetup.isMuted }));
       setIsHidden(append({ [peer]: mediaSetup.isHidden }));
-      setUserPictures(append({ [peer]: user.picture }));
+      setAvatar(append({ [peer]: user.picture }));
 
       call.answer(stream); // * answers incoming call with his/her stream
 

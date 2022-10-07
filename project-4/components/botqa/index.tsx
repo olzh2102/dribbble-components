@@ -25,7 +25,7 @@ const Room = ({ fullscreen, onMuteUser, children }: RoomProps) => {
   } = useContext(QoraContext);
 
   const { setIsMuted, setIsHidden } = useContext(UserUpdaterContext);
-  const { isMuted, isHidden, userPictures } = useContext(UserStateContext);
+  const { isMuted, isHidden, avatar } = useContext(UserStateContext);
 
   const [videos, setVideos] = useState<Record<PeerId, JSX.Element>>({});
 
@@ -101,7 +101,7 @@ const Room = ({ fullscreen, onMuteUser, children }: RoomProps) => {
             <VideoContainer
               id={id}
               mediaSetup={{ isMuted: isMuted[id], isHidden: isHidden[id] }}
-              userPicture={userPictures[id]}
+              userPicture={avatar[id]}
               stream={element.props.stream}
               onMutePeer={mutePeer}
               onRemovePeer={removePeer}

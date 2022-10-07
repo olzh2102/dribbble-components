@@ -48,7 +48,7 @@ const Room = ({ stream }: { stream: MediaStream }) => {
 
   const [isMuted, setIsMuted] = useState<KeyValue<boolean>>({});
   const [isHidden, setIsHidden] = useState<KeyValue<boolean>>({});
-  const [userPictures, setUserPictures] = useState<KeyValue<string>>({});
+  const [avatar, setAvatar] = useState<KeyValue<string>>({});
 
   const [fullscreen, setFullscreen] = useState(false);
   const [chatStatus, setChatStatus] = useState<'hidden' | 'open' | 'close'>(
@@ -64,6 +64,33 @@ const Room = ({ stream }: { stream: MediaStream }) => {
 
   if (!isPeerReady) return <LoaderError msg={LOADER_PEER_MSG} />;
   if (!peer) return <LoaderError msg={FAILURE_MSG} />;
+
+  function toggleKind(kind: Kind) {
+    switch (kind) {
+      case 'audio': {
+        toggle('audio')(stream);
+        setMediaSetup(append({ isMuted: !mediaSetup.isMuted }));
+        socket.emit('user:toggle-audio', myId);
+        return;
+      }
+      case 'video': {
+        toggle('audio')(stream);
+        setMediaSetup(append({ isHidden: !mediaSetup.isHidden }));
+        socket.emit('user:toggle-video', myId);
+        return;
+      }
+      case 'chat': {
+        setChatStatus(chatStatus === 'open' ? 'close' : 'open');
+        return;
+      }
+      case 'fullscreen': {
+        setFullscreen(!fullscreen);
+        return;
+      }
+      default:
+        break;
+    }
+  }
 
   return (
     <QoraContext.Provider
@@ -87,11 +114,9 @@ const Room = ({ stream }: { stream: MediaStream }) => {
           } w-full h-screen flex-col p-4`}
         >
           <div className="flex h-full place-items-center place-content-center">
-            <UserStateContext.Provider
-              value={{ isMuted, isHidden, userPictures }}
-            >
+            <UserStateContext.Provider value={{ isMuted, isHidden, avatar }}>
               <UserUpdaterContext.Provider
-                value={{ setIsMuted, setIsHidden, setUserPictures }}
+                value={{ setIsMuted, setIsHidden, setAvatar }}
               >
                 <Botqa
                   onMuteUser={() => setMediaSetup(append({ isMuted: true }))}
@@ -113,21 +138,7 @@ const Room = ({ stream }: { stream: MediaStream }) => {
           <div className="flex w-full items-center">
             <ControlPanel
               onLeave={() => router.push('/')}
-              onToggle={(kind: Kind) => {
-                if (kind == 'audio') {
-                  toggle('audio')(stream);
-                  setMediaSetup(append({ isMuted: !mediaSetup.isMuted }));
-                  socket.emit('user:toggle-audio', myId);
-                } else if (kind == 'video') {
-                  toggle('audio')(stream);
-                  setMediaSetup(append({ isHidden: !mediaSetup.isHidden }));
-                  socket.emit('user:toggle-video', myId);
-                } else if (kind == 'fullscreen') {
-                  setFullscreen(!fullscreen);
-                } else if (kind == 'chat') {
-                  setChatStatus(chatStatus === 'open' ? 'close' : 'open');
-                }
-              }}
+              onToggle={toggleKind}
               isChatOpen={chatStatus === 'open'}
               usersCount={count + Number(Boolean(myId))}
             />

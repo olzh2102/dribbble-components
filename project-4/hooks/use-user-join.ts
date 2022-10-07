@@ -24,8 +24,7 @@ import { UserUpdaterContext } from '@app/*';
 const usePeerOnJoinRoom = (cb: AppendVideoStream) => {
   const user = useUser().user!;
   const socket = useContext(SocketContext);
-  const { setIsMuted, setIsHidden, setUserPictures } =
-    useContext(UserUpdaterContext);
+  const { setIsMuted, setIsHidden, setAvatar } = useContext(UserUpdaterContext);
 
   const { mediaSetup, peer, setPeers, stream } = useContext(QoraContext);
 
@@ -62,7 +61,7 @@ const usePeerOnJoinRoom = (cb: AppendVideoStream) => {
         setPeers(append({ [id]: call }));
         setIsMuted(append({ [id]: initMediaSetup.isMuted }));
         setIsHidden(append({ [id]: initMediaSetup.isHidden }));
-        setUserPictures(append({ [id]: picture }));
+        setAvatar(append({ [id]: picture }));
       }
     );
 
