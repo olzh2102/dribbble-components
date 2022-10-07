@@ -39,9 +39,12 @@ const Room = ({ fullscreen, onMuteUser, children }: RoomProps) => {
     socket.on('host:muted-user', mutedByHost);
 
     socket.on('user:left', (peerId: PeerId) => {
-      peers[peerId]?.close();
-      delete videos[peerId];
-      setVideos(videos);
+      if (myId === peerId) router.push('/');
+      else {
+        delete videos[peerId];
+        setVideos(videos);
+        peers[peerId]?.close();
+      }
     });
 
     socket.on('user:toggled-audio', (peerId: PeerId) =>
@@ -62,6 +65,8 @@ const Room = ({ fullscreen, onMuteUser, children }: RoomProps) => {
 
   function removePeer(peerId: string) {
     socket.emit('user:leave', peerId);
+    delete videos[peerId];
+    setVideos(videos);
     peers[peerId]?.close();
   }
 
