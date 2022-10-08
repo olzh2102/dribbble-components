@@ -150,7 +150,7 @@ const Room = ({ stream }: { stream: MediaStream }) => {
       <ToastContainer {...TOAST_PROPS} />
     </QoraContext.Provider>
   );
-};;
+};
 
 export default Room;
 type Kind = 'audio' | 'video' | 'chat' | 'fullscreen';
