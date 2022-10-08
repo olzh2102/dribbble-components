@@ -137,8 +137,12 @@ const Room = ({ stream }: { stream: MediaStream }) => {
 
         <div
           className={`${
-            chatStatus === 'hidden' ? 'hidden' : `animate-on-${chatStatus}-chat`
-          } h-screen w-screen max-w-full sm:max-w-md`}
+            chatStatus === 'hidden'
+              ? 'hidden'
+              : chatStatus === 'open'
+              ? 'animate-on-open-chat'
+              : 'animate-on-close-chat'
+          } h-screen w-screen max-w-full sm:max-w-md animate-red`}
           onAnimationEnd={() =>
             chatStatus === 'close' && setChatStatus('hidden')
           }
