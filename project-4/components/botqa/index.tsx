@@ -38,15 +38,6 @@ const Room = ({ fullscreen, onMuteUser, children }: RoomProps) => {
   useEffect(() => {
     socket.on('host:muted-user', mutedByHost);
 
-    socket.on('user:left', (peerId: PeerId) => {
-      if (myId === peerId) router.push('/');
-      else {
-        delete videos[peerId];
-        setVideos(videos);
-        peers[peerId]?.close();
-      }
-    });
-
     socket.on('user:toggled-audio', (peerId: PeerId) =>
       setIsMuted(append({ [peerId]: !isMuted[peerId] }))
     );
@@ -57,11 +48,25 @@ const Room = ({ fullscreen, onMuteUser, children }: RoomProps) => {
 
     return () => {
       socket.off('host:muted-user');
-      socket.off('user:left');
       socket.off('user:toggled-audio');
       socket.off('user:toggled-video');
     };
-  }, [peers, myId, isMuted, isHidden]);
+  }, [isMuted, isHidden]);
+
+  useEffect(() => {
+    socket.on('user:left', (peerId: PeerId) => {
+      if (myId === peerId) router.push('/');
+      else {
+        delete videos[peerId];
+        setVideos(videos);
+        peers[peerId]?.close();
+      }
+    });
+
+    return () => {
+      socket.off('user:left');
+    };
+  }, [myId, peers]);
 
   function removePeer(peerId: string) {
     socket.emit('user:leave', peerId);
