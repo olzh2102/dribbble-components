@@ -20,7 +20,8 @@ const VideoContainer = ({
       key={id}
       className="relative group h-fit drop-shadow-2xl shadow-indigo-500/50"
     >
-      {mediaSetup.isHidden ? <VideoPlug userPicture={userPicture} /> : children}
+      {mediaSetup.isHidden && <VideoPlug userPicture={userPicture} />}
+      <div className={`${mediaSetup.isHidden ? 'hidden' : ''}`}>{children}</div>
 
       {mediaSetup.isMuted ? (
         <div className="absolute top-3 right-3">
