@@ -16,7 +16,13 @@ import { useScreenShare } from '@hooks/index';
 import CrossLineDiv from '@common/components/cross-line-div';
 import { SocketContext } from '@pages/_app';
 
-const ControlPanel = ({ usersCount, isChatOpen, onToggle, onLeave }: any) => {
+const ControlPanel = ({
+  usersCount,
+  isChatOpen,
+  onChatToggle,
+  onToggle,
+  onLeave,
+}: any) => {
   const socket = useContext(SocketContext);
 
   const {
