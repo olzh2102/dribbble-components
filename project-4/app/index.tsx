@@ -78,7 +78,6 @@ const Room = ({ stream }: { stream: MediaStream }) => {
         break;
     }
   }
-  console.log('CHAT STATUS:', chatStatus);
 
   if (!isPeerReady) return <LoaderError msg={LOADER_PEER_MSG} />;
   if (!peer) return <LoaderError msg={FAILURE_MSG} />;
