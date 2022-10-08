@@ -25,7 +25,7 @@ const Room = ({ fullscreen, onMuteUser, children }: RoomProps) => {
   } = useContext(QoraContext);
 
   const { setIsMuted, setIsHidden } = useContext(UserUpdaterContext);
-  const { isMuted, isHidden, userPictures } = useContext(UserStateContext);
+  const { isMuted, isHidden, avatar } = useContext(UserStateContext);
 
   const [videos, setVideos] = useState<Record<PeerId, JSX.Element>>({});
 
@@ -39,9 +39,12 @@ const Room = ({ fullscreen, onMuteUser, children }: RoomProps) => {
     socket.on('host:muted-user', mutedByHost);
 
     socket.on('user:left', (peerId: PeerId) => {
-      peers[peerId]?.close();
-      delete videos[peerId];
-      setVideos(videos);
+      if (myId === peerId) router.push('/');
+      else {
+        delete videos[peerId];
+        setVideos(videos);
+        peers[peerId]?.close();
+      }
     });
 
     socket.on('user:toggled-audio', (peerId: PeerId) =>
@@ -62,6 +65,8 @@ const Room = ({ fullscreen, onMuteUser, children }: RoomProps) => {
 
   function removePeer(peerId: string) {
     socket.emit('user:leave', peerId);
+    delete videos[peerId];
+    setVideos(videos);
     peers[peerId]?.close();
   }
 
@@ -96,7 +101,7 @@ const Room = ({ fullscreen, onMuteUser, children }: RoomProps) => {
             <VideoContainer
               id={id}
               mediaSetup={{ isMuted: isMuted[id], isHidden: isHidden[id] }}
-              userPicture={userPictures[id]}
+              userPicture={avatar[id]}
               stream={element.props.stream}
               onMutePeer={mutePeer}
               onRemovePeer={removePeer}
@@ -113,7 +118,6 @@ const Room = ({ fullscreen, onMuteUser, children }: RoomProps) => {
 
   function mutedByHost(peerId: PeerId) {
     if (peerId === myId) {
-      toggleAudio(stream);
       onMuteUser();
       toast('You are muted');
     } else {

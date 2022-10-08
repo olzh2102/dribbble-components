@@ -1,18 +1,19 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { Router, useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import { useUser } from '@auth0/nextjs-auth0';
 import { MediaConnection } from 'peerjs';
 import { ToastContainer } from 'react-toastify';
 
-import { MediaSetup, KeyValue, Nullable, RoomId, PeerId } from '@common/types';
-import { append, isHost } from '@common/utils';
 import {
   FAILURE_MSG,
   LOADER_PEER_MSG,
   MYSELF,
   TOAST_PROPS,
 } from '@common/constants';
+import { isHost } from '@common/utils';
+import { KeyValue, Nullable, RoomId } from '@common/types';
 
+import useMediaStream from '@hooks/use-media-stream';
 import { usePeer } from '@hooks/index';
 import { SocketContext } from '@pages/_app';
 import { QoraContext } from '@pages/qora/[qoraId]';
@@ -20,9 +21,8 @@ import { QoraContext } from '@pages/qora/[qoraId]';
 import Botqa from '@components/botqa';
 import Chat from '@components/chat';
 import ControlPanel from '@components/control-panel';
-import { PeerVideo, VideoContainer } from '@components/index';
 import LoaderError from '@common/components/loader-error';
-import useMediaStream from '@hooks/use-media-stream';
+import { PeerVideo, VideoContainer } from '@components/index';
 
 export const UserUpdaterContext = createContext<any>({});
 export const UserStateContext = createContext<any>({});
@@ -31,29 +31,21 @@ const Room = ({ stream }: { stream: MediaStream }) => {
   const router = useRouter();
   const userPicture = useUser().user!.picture;
   const socket = useContext(SocketContext);
+
   const { muted, visible, toggle } = useMediaStream(stream);
-  const { peer, myId, isPeerReady } = usePeer({
-    isHidden: !visible,
-    isMuted: muted,
-  });
-
+  const { peer, myId, isPeerReady } = usePeer(stream);
   const [peers, setPeers] = useState<KeyValue<MediaConnection>>({});
-
-  const [mediaSetup, setMediaSetup] = useState<any>({
-    isHidden: !visible,
-    isMuted: muted,
-  });
   const [sharedScreenTrack, setSharedScreenTrack] =
     useState<Nullable<MediaStreamTrack>>(null);
 
+  // * users states
   const [isMuted, setIsMuted] = useState<KeyValue<boolean>>({});
   const [isHidden, setIsHidden] = useState<KeyValue<boolean>>({});
-  const [userPictures, setUserPictures] = useState<KeyValue<string>>({});
+  const [avatar, setAvatar] = useState<KeyValue<string>>({});
 
+  // * side features
   const [fullscreen, setFullscreen] = useState(false);
-  const [chatStatus, setChatStatus] = useState<'hidden' | 'open' | 'close'>(
-    'hidden'
-  );
+  const [chatStatus, setChatStatus] = useState<Chat>('hidden');
   const [count, setCount] = useState(1);
 
   useEffect(() => {
@@ -61,6 +53,31 @@ const Room = ({ stream }: { stream: MediaStream }) => {
       socket.disconnect();
     };
   }, []);
+
+  function toggleKind(kind: Kind) {
+    switch (kind) {
+      case 'audio': {
+        toggle('audio')(stream);
+        socket.emit('user:toggle-audio', myId);
+        return;
+      }
+      case 'video': {
+        toggle('video')(stream);
+        socket.emit('user:toggle-video', myId);
+        return;
+      }
+      case 'chat': {
+        setChatStatus(chatStatus === 'open' ? 'close' : 'open');
+        return;
+      }
+      case 'fullscreen': {
+        setFullscreen(!fullscreen);
+        return;
+      }
+      default:
+        break;
+    }
+  }
 
   if (!isPeerReady) return <LoaderError msg={LOADER_PEER_MSG} />;
   if (!peer) return <LoaderError msg={FAILURE_MSG} />;
@@ -71,7 +88,7 @@ const Room = ({ stream }: { stream: MediaStream }) => {
         peer,
         myId,
         isHost: isHost(router.query.qoraId as RoomId),
-        mediaSetup,
+        mediaSetup: { isMuted: muted, isHidden: !visible },
         stream,
         peers,
         setCount,
@@ -87,19 +104,17 @@ const Room = ({ stream }: { stream: MediaStream }) => {
           } w-full h-screen flex-col p-4`}
         >
           <div className="flex h-full place-items-center place-content-center">
-            <UserStateContext.Provider
-              value={{ isMuted, isHidden, userPictures }}
-            >
+            <UserStateContext.Provider value={{ isMuted, isHidden, avatar }}>
               <UserUpdaterContext.Provider
-                value={{ setIsMuted, setIsHidden, setUserPictures }}
+                value={{ setIsMuted, setIsHidden, setAvatar }}
               >
                 <Botqa
-                  onMuteUser={() => setMediaSetup(append({ isMuted: true }))}
+                  onMuteUser={() => toggle('audio')(stream)}
                   fullscreen={fullscreen}
                 >
                   <VideoContainer
                     id={myId}
-                    mediaSetup={mediaSetup}
+                    mediaSetup={{ isMuted: muted, isHidden: !visible }}
                     stream={stream}
                     userPicture={userPicture || ''}
                   >
@@ -113,21 +128,7 @@ const Room = ({ stream }: { stream: MediaStream }) => {
           <div className="flex w-full items-center">
             <ControlPanel
               onLeave={() => router.push('/')}
-              onToggle={(kind: Kind) => {
-                if (kind == 'audio') {
-                  toggle('audio')(stream);
-                  setMediaSetup(append({ isMuted: !mediaSetup.isMuted }));
-                  socket.emit('user:toggle-audio', myId);
-                } else if (kind == 'video') {
-                  toggle('audio')(stream);
-                  setMediaSetup(append({ isHidden: !mediaSetup.isHidden }));
-                  socket.emit('user:toggle-video', myId);
-                } else if (kind == 'fullscreen') {
-                  setFullscreen(!fullscreen);
-                } else if (kind == 'chat') {
-                  setChatStatus(chatStatus === 'open' ? 'close' : 'open');
-                }
-              }}
+              onToggle={toggleKind}
               isChatOpen={chatStatus === 'open'}
               usersCount={count + Number(Boolean(myId))}
             />
@@ -149,7 +150,8 @@ const Room = ({ stream }: { stream: MediaStream }) => {
       <ToastContainer {...TOAST_PROPS} />
     </QoraContext.Provider>
   );
-};
+};;
 
 export default Room;
 type Kind = 'audio' | 'video' | 'chat' | 'fullscreen';
+type Chat = 'hidden' | 'close' | 'open';
