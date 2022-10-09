@@ -54,7 +54,7 @@ const Room = ({ stream }: { stream: MediaStream }) => {
     };
   }, []);
 
-  function toggleKind(kind: Kind) {
+  async function toggleKind(kind: Kind) {
     switch (kind) {
       case 'audio': {
         toggle('audio')(stream);
@@ -63,6 +63,7 @@ const Room = ({ stream }: { stream: MediaStream }) => {
       }
       case 'video': {
         toggle('video')(stream);
+        await toggleVideo();
         socket.emit('user:toggle-video', myId);
         return;
       }
@@ -154,8 +155,35 @@ const Room = ({ stream }: { stream: MediaStream }) => {
       <ToastContainer {...TOAST_PROPS} />
     </QoraContext.Provider>
   );
+
+  function replaceTrack(track: MediaStreamTrack) {
+    return (peer: MediaConnection) => {
+      const sender = peer.peerConnection
+        ?.getSenders()
+        .find((s) => s.track?.kind === track.kind);
+
+      sender?.replaceTrack(track);
+    };
+  }
+
+  async function toggleVideo() {
+    const currentVideoTrack = stream.getVideoTracks()[0];
+    if (currentVideoTrack.readyState !== 'ended') {
+      currentVideoTrack.stop();
+    } else {
+      const newStream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: false,
+      });
+      const newVideoTrack = newStream.getVideoTracks()[0];
+
+      Object.values(peers).forEach(replaceTrack(newVideoTrack));
+      stream.removeTrack(currentVideoTrack);
+      stream.addTrack(newVideoTrack);
+    }
+  }
 };
 
 export default Room;
-type Kind = 'audio' | 'video' | 'chat' | 'fullscreen';
+export type Kind = 'audio' | 'video' | 'chat' | 'fullscreen';
 type Chat = 'hidden' | 'close' | 'open';

@@ -15,8 +15,14 @@ import { QoraContext } from '@pages/qora/[qoraId]';
 import { useScreenShare } from '@hooks/index';
 import CrossLineDiv from '@common/components/cross-line-div';
 import { SocketContext } from '@pages/_app';
+import { Kind } from '@app/index';
 
-const ControlPanel = ({ usersCount, isChatOpen, onToggle, onLeave }: any) => {
+const ControlPanel = ({
+  usersCount,
+  isChatOpen,
+  onToggle,
+  onLeave,
+}: ControlPanelProps) => {
   const socket = useContext(SocketContext);
 
   const {
@@ -39,7 +45,7 @@ const ControlPanel = ({ usersCount, isChatOpen, onToggle, onLeave }: any) => {
 
       <div className="flex flex-auto gap-6 place-content-center items-center">
         <button
-          onClick={() => onToggle('video')}
+          onClick={async () => await onToggle('video')}
           data-for="visibility"
           data-tip={`${mediaSetup.isHidden ? 'switch on' : 'switch off'}`}
           className={`${common} bg-slate-800 hover:bg-emerald-700 relative`}
@@ -130,4 +136,11 @@ const ParticipantsCount = ({ count }: { count: number }) => {
       </span>
     </div>
   );
+};
+
+type ControlPanelProps = {
+  usersCount: number;
+  isChatOpen: boolean;
+  onToggle: (kind: Kind) => Promise<void>;
+  onLeave: () => void;
 };
