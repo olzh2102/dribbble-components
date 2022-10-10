@@ -2,7 +2,8 @@ import { NextPage } from 'next';
 import { createContext, useState } from 'react';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 
-import Room from '@app/index';
+// import Room from '@app/index';
+import Room from '../../app/app';
 import { Lobby } from '@components/index';
 import { useStream } from '@hooks/index';
 import { append } from '@common/utils';
