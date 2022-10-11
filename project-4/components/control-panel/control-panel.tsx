@@ -16,7 +16,7 @@ import { useScreenShare } from '@hooks/index';
 import CrossLineDiv from '@common/components/cross-line-div';
 import { SocketContext } from '@pages/_app';
 import useMediaStream from '@hooks/use-media-stream';
-import { UsersStateContext } from 'app/app';
+import { UsersStateContext } from 'contexts/users-settings';
 
 const ControlPanel = ({ stream, onToggle, onLeave }: any) => {
   const socket = useContext(SocketContext);

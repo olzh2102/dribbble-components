@@ -3,7 +3,8 @@ import { QoraContext } from '@pages/qora/[qoraId]';
 import { MediaSetup } from '@common/types';
 import { MutedIcon } from 'assets/icons';
 import { ActiveSpeaker, HostControlPanel, VideoPlug } from '..';
-import { UsersConnectionContext, UsersStateContext } from 'app/app';
+import { UsersConnectionContext } from 'contexts/users-connection';
+import { UsersStateContext } from 'contexts/users-settings';
 
 const VideoContainer = ({
   id,
@@ -19,6 +20,7 @@ const VideoContainer = ({
 
   // * new way
   const { myId } = useContext(UsersConnectionContext);
+  const { isHost } = useContext(UsersStateContext);
 
   return (
     <div
@@ -32,13 +34,12 @@ const VideoContainer = ({
         <div className="absolute top-3 right-3">
           <MutedIcon />
         </div>
-      ) : (
-        <ActiveSpeaker stream={stream} />
-      )}
+      ) : null // <ActiveSpeaker stream={stream} />
+      }
 
       {/* old way */}
       {/* {isHost && myId !== id && ( */}
-      {false && myId !== id && (
+      {isHost && myId !== id && (
         <HostControlPanel
           onMutePeer={() => onMutePeer && onMutePeer(id)}
           onRemovePeer={() => onRemovePeer && onRemovePeer(id)}
