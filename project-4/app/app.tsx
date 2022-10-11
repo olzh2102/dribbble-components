@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
 import { UsersSettingsProvider, UsersConnectionProvider } from 'contexts';
@@ -14,6 +14,7 @@ import { SocketContext } from '@pages/_app';
 import ControlPanel from '@components/control-panel/control-panel';
 import SharedScreenStream from '@components/streams/shared-screen-stream';
 import { MyStream, OtherStreams } from '@components/streams';
+import Chat from '@components/chat';
 
 export default function App({ stream }: any) {
   const router = useRouter();
@@ -21,6 +22,8 @@ export default function App({ stream }: any) {
 
   const { muted, visible, toggle } = useMediaStream(stream);
   const { peer, myId, isPeerReady } = usePeer(stream);
+
+  const [chatModal, setChatModal] = useState('hidden');
 
   useEffect(() => {
     return () => {
@@ -46,31 +49,59 @@ export default function App({ stream }: any) {
       case 'screen': {
         return;
       }
+      case 'chat': {
+        setChatModal(chatModal === 'open' ? 'close' : 'open');
+        return;
+      }
       default:
         break;
     }
   }
 
   return (
-    <UsersSettingsProvider>
-      <UsersConnectionProvider stream={stream} myId={myId} peer={peer}>
-        <MyStream stream={stream} muted={muted} visible={visible} />
-        <OtherStreams />
-        <SharedScreenStream />
-      </UsersConnectionProvider>
+    <div className="flex">
+      <UsersSettingsProvider>
+        <div
+          className={`${
+            chatModal == 'open' ? 'sm:flex hidden' : 'flex'
+          } w-full h-screen flex-col p-4`}
+        >
+          <UsersConnectionProvider stream={stream} myId={myId} peer={peer}>
+            <div className="flex h-full place-items-center place-content-center">
+              <MyStream stream={stream} muted={muted} visible={visible} />
+              <OtherStreams />
+              <SharedScreenStream />
+            </div>
+          </UsersConnectionProvider>
 
-      <ControlPanel
-        onToggle={toggleKind}
-        onLeave={() => router.push('/')}
-        muted={muted}
-        visible={visible}
-        shared={false}
-        chat={false}
-        users={false}
-      />
+          <div className="flex w-full items-center">
+            <ControlPanel
+              onToggle={toggleKind}
+              onLeave={() => router.push('/')}
+              muted={muted}
+              visible={visible}
+              shared={false}
+              isChatOpen={chatModal === 'open'}
+              users={false}
+            />
+          </div>
+        </div>
 
-      {/* <ChatDialog />
-      <ParticipantsDialog /> */}
-    </UsersSettingsProvider>
+        <div
+          className={`${
+            chatModal === 'hidden'
+              ? 'hidden'
+              : chatModal === 'open'
+              ? 'animate-on-open-chat'
+              : 'animate-on-close-chat'
+          } h-screen w-screen max-w-full sm:max-w-md`}
+          onAnimationEnd={() => chatModal === 'close' && setChatModal('hidden')}
+        >
+          <Chat onClose={() => setChatModal('close')} title="Meeting Chat" />
+        </div>
+
+        {/* <ParticipantsDialog /> */}
+      </UsersSettingsProvider>
+    </div>
   );
 }

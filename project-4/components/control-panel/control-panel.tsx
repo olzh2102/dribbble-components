@@ -18,7 +18,7 @@ import { SocketContext } from '@pages/_app';
 import useMediaStream from '@hooks/use-media-stream';
 import { UsersStateContext } from 'contexts/users-settings';
 
-const ControlPanel = ({ stream, onToggle, onLeave }: any) => {
+const ControlPanel = ({ stream, onToggle, onLeave, isChatOpen }: any) => {
   const socket = useContext(SocketContext);
   const { muted, visible } = useMediaStream(stream);
   const { sharedScreenTrack: shared } = useContext(UsersStateContext);
@@ -86,6 +86,20 @@ const ControlPanel = ({ stream, onToggle, onLeave }: any) => {
           <ShareScreenIcon className="h-6 w-6" />
         </button>
         <Tooltip id="shareScreen" effect="solid" />
+
+        <button
+          data-for="chat"
+          data-tip="chat with everyone"
+          onClick={() => onToggle('chat')}
+          className={`${common} ${
+            isChatOpen
+              ? 'bg-emerald-600 hover:bg-emerald-500'
+              : 'bg-slate-800 hover:bg-emerald-700'
+          }`}
+        >
+          <ChatIcon className="w-6 h-6" />
+        </button>
+        <Tooltip id="chat" effect="solid" />
       </div>
     </>
   );
