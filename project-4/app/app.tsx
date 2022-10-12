@@ -15,6 +15,7 @@ import ControlPanel from '@components/control-panel/control-panel';
 import SharedScreenStream from '@components/streams/shared-screen-stream';
 import { MyStream, OtherStreams } from '@components/streams';
 import Chat from '@components/chat';
+import Statuses from '@components/chat/statuses';
 
 export default function App({ stream }: any) {
   const router = useRouter();
@@ -23,7 +24,8 @@ export default function App({ stream }: any) {
   const { muted, visible, toggle } = useMediaStream(stream);
   const { peer, myId, isPeerReady } = usePeer(stream);
 
-  const [chatModal, setChatModal] = useState('hidden');
+  const [chatModal, setChatModal] = useState<any>('hidden');
+  const [usersModal, setUsersModal] = useState<any>('hidden');
 
   useEffect(() => {
     return () => {
@@ -53,54 +55,80 @@ export default function App({ stream }: any) {
         setChatModal(chatModal === 'open' ? 'close' : 'open');
         return;
       }
+      case 'users': {
+        setUsersModal(usersModal === 'open' ? 'close' : 'open');
+        return;
+      }
       default:
         break;
     }
   }
 
+  const modalClasses: any = {
+    hidden: 'hidden',
+    open: 'animate-on-open-chat',
+    close: 'animate-on-close-chat',
+  };
+
   return (
     <div className="flex">
       <UsersSettingsProvider>
         <div
-          className={`${
-            chatModal == 'open' ? 'sm:flex hidden' : 'flex'
-          } w-full h-screen flex-col p-4`}
+          className={`
+            ${chatModal == 'open' ? 'sm:flex hidden' : 'flex'}
+            flex-col p-4
+            w-full h-screen
+          `}
         >
           <UsersConnectionProvider stream={stream} myId={myId} peer={peer}>
-            <div className="flex h-full place-items-center place-content-center">
+            <div className="flex gap-4 h-full place-items-center place-content-center">
               <MyStream stream={stream} muted={muted} visible={visible} />
               <OtherStreams />
               <SharedScreenStream />
             </div>
           </UsersConnectionProvider>
 
-          <div className="flex w-full items-center">
+          <div className="flex items-center">
             <ControlPanel
               onToggle={toggleKind}
               onLeave={() => router.push('/')}
               muted={muted}
               visible={visible}
               shared={false}
-              isChatOpen={chatModal === 'open'}
-              users={false}
+              isChatOpen={chatModal}
+              isStatusesOpen={usersModal}
             />
           </div>
         </div>
 
+        {/* chat modal */}
         <div
-          className={`${
-            chatModal === 'hidden'
-              ? 'hidden'
-              : chatModal === 'open'
-              ? 'animate-on-open-chat'
-              : 'animate-on-close-chat'
-          } h-screen w-screen max-w-full sm:max-w-md`}
-          onAnimationEnd={() => chatModal === 'close' && setChatModal('hidden')}
+          className={`
+            ${modalClasses[chatModal]}
+            h-screen w-screen 
+            max-w-full sm:max-w-md
+          `}
+          onAnimationEnd={() => chatModal == 'close' && setChatModal('hidden')}
         >
-          <Chat onClose={() => setChatModal('close')} title="Meeting Chat" />
+          <Chat onClose={() => setChatModal(false)} title="Meeting Chat" />
         </div>
 
-        {/* <ParticipantsDialog /> */}
+        {/* statuses modal */}
+        <div
+          className={`
+            ${modalClasses[usersModal]}
+            h-screen w-screen 
+            max-w-full sm:max-w-md
+          `}
+          onAnimationEnd={() =>
+            usersModal == 'close' && setUsersModal('hidden')
+          }
+        >
+          <Statuses
+            onClose={() => setUsersModal('close')}
+            title="Participants"
+          />
+        </div>
       </UsersSettingsProvider>
     </div>
   );

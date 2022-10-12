@@ -142,7 +142,7 @@ export default function UsersConnectionProvider({
     return () => {
       socket.off('user:left');
     };
-  }, []);
+  }, [myId, users]);
 
   return (
     <UsersConnectionContext.Provider value={{ peer, myId, users, leaveRoom }}>
