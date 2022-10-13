@@ -1,5 +1,4 @@
 import { memo } from 'react';
-import ActiveSpeakerIcon from '@components/active-speaker';
 
 const PeerVideo = ({ stream, name, isMe }: VideoProps) => (
   <>
@@ -15,8 +14,6 @@ const PeerVideo = ({ stream, name, isMe }: VideoProps) => (
     <p className="font-medium absolute bottom-3 left-4 text-xs">
       <span className="text-white">{name}</span>
     </p>
-
-    {/* <ActiveSpeakerIcon stream={stream} /> */}
   </>
 );
 

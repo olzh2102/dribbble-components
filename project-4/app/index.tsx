@@ -179,7 +179,20 @@ const Room = ({ stream }: { stream: MediaStream }) => {
 
       Object.values(peers).forEach(replaceTrack(newVideoTrack));
       stream.removeTrack(currentVideoTrack);
-      stream.addTrack(newVideoTrack);
+
+      const [screenTrack] = stream.getVideoTracks();
+
+      if (screenTrack) swapTracksOrder(newVideoTrack, screenTrack);
+      else stream.addTrack(newVideoTrack);
+    }
+
+    function swapTracksOrder(
+      track2: MediaStreamTrack,
+      track1: MediaStreamTrack
+    ) {
+      stream.removeTrack(track1);
+      stream.addTrack(track2);
+      stream.addTrack(track1);
     }
   }
 };
