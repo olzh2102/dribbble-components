@@ -1,13 +1,10 @@
 import { memo } from 'react';
-import { Nullable } from '@common/types';
 
 const SharedScreen = ({
   sharedScreenTrack,
 }: {
-  sharedScreenTrack: Nullable<MediaStreamTrack>;
+  sharedScreenTrack: MediaStreamTrack;
 }) => {
-  if (!sharedScreenTrack) return null;
-
   return (
     <video
       className="rounded-[12px] h-[calc(100vh-5rem)] object-contain"

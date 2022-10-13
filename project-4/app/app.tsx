@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
 import { UsersSettingsProvider, UsersConnectionProvider } from 'contexts';
-import { usePeer } from '@hooks/index';
+import { usePeer, useScreen } from '@hooks/index';
 
 import LoaderError from '@common/components/loader-error';
 import { FAILURE_MSG, LOADER_PEER_MSG } from '@common/constants';
@@ -23,6 +23,7 @@ export default function App({ stream }: any) {
 
   const { muted, visible, toggle } = useMediaStream(stream);
   const { peer, myId, isPeerReady } = usePeer(stream);
+  const { startShare, stopShare, screenTrack } = useScreen(stream);
 
   const [chatModal, setChatModal] = useState<any>('hidden');
   const [usersModal, setUsersModal] = useState<any>('hidden');
@@ -36,7 +37,7 @@ export default function App({ stream }: any) {
   if (!isPeerReady) return <LoaderError msg={LOADER_PEER_MSG} />;
   if (!peer) return <LoaderError msg={FAILURE_MSG} />;
 
-  function toggleKind(kind: Kind) {
+  async function toggleKind(kind: Kind) {
     switch (kind) {
       case 'audio': {
         toggle('audio')(stream);
@@ -49,6 +50,13 @@ export default function App({ stream }: any) {
         return;
       }
       case 'screen': {
+        if (screenTrack) {
+          stopShare(screenTrack);
+          socket.emit('user:stop-share-screen');
+        } else {
+          await startShare(() => socket.emit('user:stop-share-screen'));
+          socket.emit('user:share-screen');
+        }
         return;
       }
       case 'chat': {
@@ -84,7 +92,7 @@ export default function App({ stream }: any) {
             <div className="flex gap-4 h-full place-items-center place-content-center">
               <MyStream stream={stream} muted={muted} visible={visible} />
               <OtherStreams />
-              <SharedScreenStream />
+              <SharedScreenStream myScreenTrack={screenTrack} />
             </div>
           </UsersConnectionProvider>
 

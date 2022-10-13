@@ -144,6 +144,28 @@ export default function UsersConnectionProvider({
     };
   }, [myId, users]);
 
+  useEffect(() => {
+    socket.on('user:shared-screen', (username: string) => {
+      if (peer) {
+        peer.disconnect();
+        peer.reconnect();
+        toast(`${username} is sharing his screen`);
+      }
+    });
+
+    return () => {
+      socket.off('user:shared-screen');
+    };
+  }, [peer]);
+
+  useEffect(() => {
+    socket.on('user:stopped-screen-share', () => setSharedScreenTrack(null));
+
+    return () => {
+      socket.off('user:stopped-screen-share');
+    };
+  }, []);
+
   return (
     <UsersConnectionContext.Provider value={{ peer, myId, users, leaveRoom }}>
       {children}

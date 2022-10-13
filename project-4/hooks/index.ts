@@ -2,7 +2,7 @@ import usePeer from './use-peer';
 import useStream from './use-stream';
 import useUserJoin from './use-user-join';
 import useUserAnswer from './use-user-answer';
-import useScreenShare from './use-screen-share';
+import useScreen from './use-screen';
 import useIsAudioActive from './use-is-audio-active';
 
 export {
@@ -10,6 +10,6 @@ export {
   useStream,
   useUserJoin,
   useUserAnswer,
-  useScreenShare,
+  useScreen,
   useIsAudioActive,
 };
