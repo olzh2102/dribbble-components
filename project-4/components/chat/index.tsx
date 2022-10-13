@@ -7,13 +7,22 @@ import { append, formatTimeHHMM } from '@common/utils';
 import { Message } from '..';
 import { useUser } from '@auth0/nextjs-auth0';
 import { SocketContext } from '@pages/_app';
+import { Modal } from '@common/components';
 
-const Chat = ({ title, onClose }: { title: string; onClose: () => void }) => {
+const Chat = ({ modal, label }: { modal: any; label: string }) => {
   const username = useUser().user!.name;
   const socket = useContext(SocketContext);
 
+  const [isOpen, setIsOpen] = useState<any>(modal);
+
   const [text, setText] = useState('');
   const [messages, setMessages] = useState<UserMessage[]>([]);
+
+  useEffect(() => {
+    if (modal == 'hidden' || (isOpen == 'open' && modal != label))
+      setIsOpen('hidden');
+    else if (modal == label) setIsOpen('open');
+  }, [modal]);
 
   useEffect(() => {
     socket.on('chat:get', (message: UserMessage) =>
@@ -46,7 +55,11 @@ const Chat = ({ title, onClose }: { title: string; onClose: () => void }) => {
   }
 
   return (
-    <SidebarContainer onClose={onClose} title={title}>
+    <Modal
+      open={isOpen}
+      onClose={() => setIsOpen('hidden')}
+      title="Meeting Chat"
+    >
       <div className="overflow-y-auto h-[calc(100vh-8rem)]">
         {messages.map((message, index) => (
           <Message
@@ -69,27 +82,8 @@ const Chat = ({ title, onClose }: { title: string; onClose: () => void }) => {
           placeholder="Send a message to everyone"
         />
       </div>
-    </SidebarContainer>
+    </Modal>
   );
 };
 
 export default Chat;
-
-const SidebarContainer = ({ onClose, title, children }: any) => {
-  return (
-    <div className="h-full bg-[#1e262e] text-gray-300 shadow-xl rounded-l-3xl">
-      <div className="flex flex-col pl-6 py-6 h-full justify-between">
-        <div className="flex justify-between mr-6 mb-3">
-          <h2 className="text-lg font-medium text-gray-300">{title}</h2>
-          <button
-            className="text-gray-300 hover:text-white focus:outline-none"
-            onClick={onClose}
-          >
-            <XIcon className="h-6 w-6" aria-hidden="true" />
-          </button>
-        </div>
-        {children}
-      </div>
-    </div>
-  );
-};

@@ -13,17 +13,16 @@ import {
 
 import CrossLineDiv from '@common/components/cross-line-div';
 import { SocketContext } from '@pages/_app';
-import useMediaStream from '@hooks/use-media-stream';
 import { UsersStateContext } from 'contexts/users-settings';
 
 const ControlPanel = ({
-  stream,
+  muted,
+  visible,
   onToggle,
   onLeave,
   isChatOpen,
   isStatusesOpen,
 }: any) => {
-  const { muted, visible } = useMediaStream(stream);
   const { sharedScreenTrack: shared, streams } = useContext(UsersStateContext);
 
   return (

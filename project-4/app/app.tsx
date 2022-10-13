@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { UsersSettingsProvider, UsersConnectionProvider } from 'contexts';
 import { usePeer, useScreen } from '@hooks/index';
 
-import LoaderError from '@common/components/loader-error';
+import { LoaderError, Modal } from '@common/components';
 import { FAILURE_MSG, LOADER_PEER_MSG } from '@common/constants';
 import { Kind } from '@common/types';
 
@@ -15,7 +15,7 @@ import ControlPanel from '@components/control-panel/control-panel';
 import SharedScreenStream from '@components/streams/shared-screen-stream';
 import { MyStream, OtherStreams } from '@components/streams';
 import Chat from '@components/chat';
-import Statuses from '@components/chat/statuses';
+import Status from '@components/status';
 
 export default function App({ stream }: any) {
   const router = useRouter();
@@ -25,8 +25,7 @@ export default function App({ stream }: any) {
   const { peer, myId, isPeerReady } = usePeer(stream);
   const { startShare, stopShare, screenTrack } = useScreen(stream);
 
-  const [chatModal, setChatModal] = useState<any>('hidden');
-  const [usersModal, setUsersModal] = useState<any>('hidden');
+  const [modal, setModal] = useState<any>('hidden');
 
   useEffect(() => {
     return () => {
@@ -60,11 +59,11 @@ export default function App({ stream }: any) {
         return;
       }
       case 'chat': {
-        setChatModal(chatModal === 'open' ? 'close' : 'open');
+        modal == 'chat' ? setModal('hidden') : setModal('chat');
         return;
       }
       case 'users': {
-        setUsersModal(usersModal === 'open' ? 'close' : 'open');
+        modal == 'status' ? setModal('hidden') : setModal('status');
         return;
       }
       default:
@@ -72,18 +71,12 @@ export default function App({ stream }: any) {
     }
   }
 
-  const modalClasses: any = {
-    hidden: 'hidden',
-    open: 'animate-on-open-chat',
-    close: 'animate-on-close-chat',
-  };
-
   return (
     <div className="flex">
       <UsersSettingsProvider>
         <div
           className={`
-            ${chatModal == 'open' ? 'sm:flex hidden' : 'flex'}
+            ${modal ? 'sm:flex hidden' : 'flex'}
             flex-col p-4
             w-full h-screen
           `}
@@ -103,40 +96,14 @@ export default function App({ stream }: any) {
               muted={muted}
               visible={visible}
               shared={false}
-              isChatOpen={chatModal}
-              isStatusesOpen={usersModal}
+              isChatOpen={modal == 'chat'}
+              isStatusesOpen={modal == 'status'}
             />
           </div>
         </div>
 
-        {/* chat modal */}
-        <div
-          className={`
-            ${modalClasses[chatModal]}
-            h-screen w-screen 
-            max-w-full sm:max-w-md
-          `}
-          onAnimationEnd={() => chatModal == 'close' && setChatModal('hidden')}
-        >
-          <Chat onClose={() => setChatModal(false)} title="Meeting Chat" />
-        </div>
-
-        {/* statuses modal */}
-        <div
-          className={`
-            ${modalClasses[usersModal]}
-            h-screen w-screen 
-            max-w-full sm:max-w-md
-          `}
-          onAnimationEnd={() =>
-            usersModal == 'close' && setUsersModal('hidden')
-          }
-        >
-          <Statuses
-            onClose={() => setUsersModal('close')}
-            title="Participants"
-          />
-        </div>
+        <Chat modal={modal} label="chat" />
+        <Status modal={modal} label="status" />
       </UsersSettingsProvider>
     </div>
   );
