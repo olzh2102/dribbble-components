@@ -3,15 +3,10 @@ import { error } from '@common/utils';
 import { Nullable } from '@common/types';
 
 const useScreen = (stream: MediaStream) => {
-  const [status, setStatus] = useState<
-    'idle' | 'loading' | 'success' | 'rejected'
-  >('idle');
   const [screenTrack, setScreenTrack] =
     useState<Nullable<MediaStreamTrack>>(null);
 
   async function startShare(onended: () => void) {
-    setStatus('loading');
-
     try {
       const screenStream = await navigator.mediaDevices.getDisplayMedia({
         video: true,
@@ -21,7 +16,6 @@ const useScreen = (stream: MediaStream) => {
 
       setScreenTrack(screenTrack);
       stream.addTrack(screenTrack);
-      setStatus('success');
 
       screenTrack.onended = () => {
         stopShare(screenTrack);
@@ -29,7 +23,6 @@ const useScreen = (stream: MediaStream) => {
       };
     } catch (e) {
       error('Failed to share screen')(e);
-      setStatus('rejected');
     }
   }
 
@@ -37,18 +30,9 @@ const useScreen = (stream: MediaStream) => {
     screenTrack.stop();
     stream.removeTrack(screenTrack);
     setScreenTrack(null);
-    setStatus('idle');
   }
 
-  return {
-    screenTrack,
-    startShare,
-    stopShare,
-    isIdle: status === 'idle',
-    isLoading: status === 'loading',
-    isSuccess: status === 'success',
-    isError: status === 'rejected',
-  };
+  return { screenTrack, startShare, stopShare };
 };
 
 export default useScreen;
