@@ -12,19 +12,10 @@ import {
 } from '@heroicons/react/outline';
 
 import { QoraContext } from '@pages/qora/[qoraId]';
-import { useScreenShare } from '@hooks/index';
 import CrossLineDiv from '@common/components/cross-line-div';
-import { SocketContext } from '@pages/_app';
 
 const ControlPanel = ({ usersCount, isChatOpen, onToggle, onLeave }: any) => {
-  const socket = useContext(SocketContext);
-
-  const {
-    isHost,
-    mediaSetup,
-    sharedScreenTrack: shared,
-  } = useContext(QoraContext);
-  const { isMyScreenSharing, toggleScreenShare } = useScreenShare();
+  const { mediaSetup, sharedScreenTrack: shared } = useContext(QoraContext);
 
   return (
     <>
@@ -71,12 +62,8 @@ const ControlPanel = ({ usersCount, isChatOpen, onToggle, onLeave }: any) => {
         <Tooltip id="hangUp" effect="solid" />
 
         <button
-          onClick={() => {
-            isHost && !isMyScreenSharing && shared
-              ? socket.emit('host:remove-user-shared-screen')
-              : toggleScreenShare();
-          }}
-          disabled={!isHost && (shared as any) && !isMyScreenSharing}
+          onClick={() => onToggle('screen')}
+          disabled={shared}
           className={`${common} ${
             shared
               ? 'bg-emerald-600 hover:bg-emerald-500'
