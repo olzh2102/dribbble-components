@@ -11,11 +11,19 @@ import {
   ArrowsExpandIcon,
 } from '@heroicons/react/outline';
 
-import { QoraContext } from '@pages/qora/[qoraId]';
 import CrossLineDiv from '@common/components/cross-line-div';
+import { SocketContext } from '@pages/_app';
+import { UsersStateContext } from 'contexts/users-settings';
 
-const ControlPanel = ({ usersCount, isChatOpen, onToggle, onLeave }: any) => {
-  const { mediaSetup, sharedScreenTrack: shared } = useContext(QoraContext);
+const ControlPanel = ({
+  muted,
+  visible,
+  onToggle,
+  onLeave,
+  isChatOpen,
+  isStatusesOpen,
+}: any) => {
+  const { sharedScreenTrack: shared, streams } = useContext(UsersStateContext);
 
   return (
     <>
@@ -32,22 +40,22 @@ const ControlPanel = ({ usersCount, isChatOpen, onToggle, onLeave }: any) => {
         <button
           onClick={() => onToggle('video')}
           data-for="visibility"
-          data-tip={`${mediaSetup.isHidden ? 'switch on' : 'switch off'}`}
+          data-tip={`${!visible ? 'switch on' : 'switch off'}`}
           className={`${common} bg-slate-800 hover:bg-emerald-700 relative`}
         >
           <VideoCameraIcon className="h-6 w-6" />
-          {mediaSetup.isHidden && <CrossLineDiv />}
+          {!visible && <CrossLineDiv />}
         </button>
         <Tooltip id="visibility" effect="solid" />
 
         <button
           onClick={() => onToggle('audio')}
           data-for="audio"
-          data-tip={`${mediaSetup.isMuted ? 'unmute' : 'mute'}`}
+          data-tip={`${muted ? 'unmute' : 'mute'}`}
           className={`${common} bg-slate-800 hover:bg-emerald-700 relative`}
         >
           <MicrophoneIcon className="h-6 w-6" />
-          {mediaSetup.isMuted && <CrossLineDiv />}
+          {muted && <CrossLineDiv />}
         </button>
         <Tooltip id="audio" effect="solid" />
 
@@ -62,7 +70,7 @@ const ControlPanel = ({ usersCount, isChatOpen, onToggle, onLeave }: any) => {
         <Tooltip id="hangUp" effect="solid" />
 
         <button
-          onClick={() => onToggle('screen')}
+          onClick={async () => await onToggle('screen')}
           disabled={shared}
           className={`${common} ${
             shared
@@ -90,8 +98,10 @@ const ControlPanel = ({ usersCount, isChatOpen, onToggle, onLeave }: any) => {
         </button>
         <Tooltip id="chat" effect="solid" />
       </div>
-
-      <ParticipantsCount count={usersCount} />
+      <ParticipantsCount
+        onClick={() => onToggle('users')}
+        count={Object.keys(streams).length + 1}
+      />
     </>
   );
 };
@@ -100,10 +110,13 @@ export default ControlPanel;
 
 const common = 'p-3 rounded-xl text-white';
 
-const ParticipantsCount = ({ count }: { count: number }) => {
+const ParticipantsCount = ({ count, onClick }: any) => {
   return (
     <div className="inline-block relative">
-      <button className="inline-block h-10 w-10 rounded-xl overflow-hidden bg-gray-100">
+      <button
+        onClick={onClick}
+        className="inline-block h-10 w-10 rounded-xl overflow-hidden bg-gray-100"
+      >
         <svg
           className="h-full w-full text-gray-300"
           fill="currentColor"

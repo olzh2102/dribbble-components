@@ -1,0 +1,110 @@
+import { useContext, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+
+import { UsersSettingsProvider, UsersConnectionProvider } from 'contexts';
+import { usePeer, useScreen } from '@hooks/index';
+
+import { LoaderError, Modal } from '@common/components';
+import { FAILURE_MSG, LOADER_PEER_MSG } from '@common/constants';
+import { Kind } from '@common/types';
+
+import useMediaStream from '@hooks/use-media-stream';
+import { SocketContext } from '@pages/_app';
+
+import ControlPanel from '@components/control-panel/control-panel';
+import SharedScreenStream from '@components/streams/shared-screen-stream';
+import { MyStream, OtherStreams } from '@components/streams';
+import Chat from '@components/chat';
+import Status from '@components/status';
+
+export default function App({ stream }: any) {
+  const router = useRouter();
+  const socket = useContext(SocketContext);
+
+  const { muted, visible, toggle } = useMediaStream(stream);
+  const { peer, myId, isPeerReady } = usePeer(stream);
+  const { startShare, stopShare, screenTrack } = useScreen(stream);
+
+  const [modal, setModal] = useState<any>('hidden');
+
+  useEffect(() => {
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
+  if (!isPeerReady) return <LoaderError msg={LOADER_PEER_MSG} />;
+  if (!peer) return <LoaderError msg={FAILURE_MSG} />;
+
+  async function toggleKind(kind: Kind) {
+    switch (kind) {
+      case 'audio': {
+        toggle('audio')(stream);
+        socket.emit('user:toggle-audio', myId);
+        return;
+      }
+      case 'video': {
+        toggle('video')(stream);
+        socket.emit('user:toggle-video', myId);
+        return;
+      }
+      case 'screen': {
+        if (screenTrack) {
+          stopShare(screenTrack);
+          socket.emit('user:stop-share-screen');
+        } else {
+          await startShare(() => socket.emit('user:stop-share-screen'));
+          socket.emit('user:share-screen');
+        }
+        return;
+      }
+      case 'chat': {
+        modal == 'chat' ? setModal('hidden') : setModal('chat');
+        return;
+      }
+      case 'users': {
+        modal == 'status' ? setModal('hidden') : setModal('status');
+        return;
+      }
+      default:
+        break;
+    }
+  }
+
+  return (
+    <div className="flex">
+      <UsersSettingsProvider>
+        <div
+          className={`
+            ${modal ? 'sm:flex hidden' : 'flex'}
+            flex-col p-4
+            w-full h-screen
+          `}
+        >
+          <UsersConnectionProvider stream={stream} myId={myId} peer={peer}>
+            <div className="flex gap-4 h-full place-items-center place-content-center">
+              <MyStream stream={stream} muted={muted} visible={visible} />
+              <OtherStreams />
+              <SharedScreenStream myScreenTrack={screenTrack} />
+            </div>
+          </UsersConnectionProvider>
+
+          <div className="flex items-center">
+            <ControlPanel
+              onToggle={toggleKind}
+              onLeave={() => router.push('/')}
+              muted={muted}
+              visible={visible}
+              shared={false}
+              isChatOpen={modal == 'chat'}
+              isStatusesOpen={modal == 'status'}
+            />
+          </div>
+        </div>
+
+        <Chat modal={modal} label="chat" />
+        <Status modal={modal} label="status" />
+      </UsersSettingsProvider>
+    </div>
+  );
+}
