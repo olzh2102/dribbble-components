@@ -6,12 +6,22 @@ import SharedScreen from '@components/shared-screen';
 import { Nullable } from '@common/types';
 
 export default function SharedScreenStream({
-  myScreenTrack,
+  sharedScreen,
+  fullscreen,
 }: {
-  myScreenTrack: Nullable<MediaStreamTrack>;
+  sharedScreen: Nullable<MediaStreamTrack>;
+  fullscreen: boolean;
 }) {
   const { sharedScreenTrack } = useContext(UsersStateContext);
-  const screenTrack = myScreenTrack ?? sharedScreenTrack;
+  const screenTrack = sharedScreen ?? sharedScreenTrack;
 
-  return screenTrack ? <SharedScreen sharedScreenTrack={screenTrack} /> : null;
+  return screenTrack ? (
+    <div
+      className={`flex justify-center ${
+        fullscreen ? 'basis-6/6' : 'basis-5/6'
+      }`}
+    >
+      <SharedScreen sharedScreenTrack={screenTrack} />
+    </div>
+  ) : null;
 }
