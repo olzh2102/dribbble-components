@@ -15,7 +15,7 @@ import ControlPanel from '@components/control-panel/control-panel';
 import SharedScreenStream from '@components/streams/shared-screen-stream';
 import Chat from '@components/chat';
 import Status from '@components/status';
-import { MyStream, OtherStreams } from '@components/streams';
+import { Streams } from '@components/streams';
 
 export default function App({ stream }: any) {
   const router = useRouter();
@@ -26,7 +26,6 @@ export default function App({ stream }: any) {
   const { startShare, stopShare, screenTrack } = useScreen(stream);
 
   const [modal, setModal] = useState<any>('hidden');
-  const [screen, setScreen] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
 
   useEffect(() => {
@@ -52,11 +51,10 @@ export default function App({ stream }: any) {
       }
       case 'screen': {
         if (screenTrack) {
-          setScreen(false);
           stopShare(screenTrack);
           socket.emit('user:stop-share-screen');
+          setFullscreen(false);
         } else {
-          setScreen(true);
           await startShare(() => socket.emit('user:stop-share-screen'));
           socket.emit('user:share-screen');
         }
@@ -90,16 +88,13 @@ export default function App({ stream }: any) {
                 fullscreen={fullscreen}
               />
 
-              <div
-                className={`${
-                  fullscreen && screenTrack ? 'hidden' : ''
-                } flex flex-wrap gap-4 justify-around ${
-                  screenTrack ? 'basis-1/6' : ''
-                }`}
-              >
-                <MyStream stream={stream} muted={muted} visible={visible} />
-                <OtherStreams />
-              </div>
+              <Streams
+                stream={stream}
+                muted={muted}
+                visible={visible}
+                sharedScreen={screenTrack}
+                fullscreen={fullscreen}
+              />
             </div>
           </UsersConnectionProvider>
 
@@ -107,8 +102,7 @@ export default function App({ stream }: any) {
             <ControlPanel
               visible={visible}
               muted={muted}
-              shared={Boolean(screenTrack)}
-              screen={screen}
+              screenTrack={Boolean(screenTrack)}
               chat={modal == 'chat'}
               status={modal == 'status'}
               onToggle={toggleKind}

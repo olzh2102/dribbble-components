@@ -19,6 +19,7 @@ const ControlPanel = ({
   visible,
   chat,
   status,
+  screenTrack,
   screen,
   onToggle,
   onLeave,
@@ -27,7 +28,7 @@ const ControlPanel = ({
 
   return (
     <>
-      {(screen || shared) && (
+      {(screenTrack || shared) && (
         <button
           onClick={() => onToggle('fullscreen')}
           className={`${common} bg-slate-800 hover:bg-emerald-700`}
@@ -71,7 +72,7 @@ const ControlPanel = ({
 
         <button
           onClick={() => onToggle('screen')}
-          disabled={false}
+          disabled={shared}
           className={`${common} ${
             screen
               ? 'bg-emerald-600 hover:bg-emerald-500'
