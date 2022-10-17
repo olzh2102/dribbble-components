@@ -6,7 +6,7 @@ import { usePeer, useScreen } from '@hooks/index';
 
 import { LoaderError } from '@common/components';
 import { FAILURE_MSG, LOADER_PEER_MSG } from '@common/constants';
-import { Kind } from '@common/types';
+import { Kind, PeerId } from '@common/types';
 
 import useMediaStream from '@hooks/use-media-stream';
 import { SocketContext } from '@pages/_app';
@@ -33,6 +33,16 @@ export default function App({ stream }: any) {
       socket.disconnect();
     };
   }, []);
+
+  useEffect(() => {
+    socket.on('host:muted-user', (peerId: PeerId) => {
+      if (myId === peerId) toggleKind('audio');
+    });
+
+    return () => {
+      socket.off('host:muted-user');
+    };
+  }, [myId]);
 
   if (!isPeerReady) return <LoaderError msg={LOADER_PEER_MSG} />;
   if (!peer) return <LoaderError msg={FAILURE_MSG} />;

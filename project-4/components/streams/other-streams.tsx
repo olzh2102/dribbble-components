@@ -4,9 +4,11 @@ import { UsersStateContext } from 'contexts/users-settings';
 
 import VideoContainer from '@components/video-container';
 import { UsersConnectionContext } from 'contexts/users-connection';
+import { UsersUpdaterContext } from 'contexts/users-settings';
 
 export default function OtherStreams() {
   const { streams, isMuted, isHidden, avatars } = useContext(UsersStateContext);
+  const { muteUser } = useContext(UsersUpdaterContext);
   const { leaveRoom } = useContext(UsersConnectionContext);
 
   return (
@@ -18,7 +20,7 @@ export default function OtherStreams() {
           mediaSetup={{ isMuted: isMuted[id], isHidden: isHidden[id] }}
           userPicture={avatars[id]}
           stream={element.props.stream}
-          onMutePeer={() => {}}
+          onMutePeer={muteUser}
           onRemovePeer={leaveRoom}
         >
           {element}
