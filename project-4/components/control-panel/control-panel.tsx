@@ -12,22 +12,23 @@ import {
 } from '@heroicons/react/outline';
 
 import CrossLineDiv from '@common/components/cross-line-div';
-import { SocketContext } from '@pages/_app';
 import { UsersStateContext } from 'contexts/users-settings';
 
 const ControlPanel = ({
   muted,
   visible,
+  chat,
+  status,
+  screenTrack,
+  screen,
   onToggle,
   onLeave,
-  isChatOpen,
-  isStatusesOpen,
 }: any) => {
   const { sharedScreenTrack: shared, streams } = useContext(UsersStateContext);
 
   return (
     <>
-      {shared && (
+      {(screenTrack || shared) && (
         <button
           onClick={() => onToggle('fullscreen')}
           className={`${common} bg-slate-800 hover:bg-emerald-700`}
@@ -70,10 +71,10 @@ const ControlPanel = ({
         <Tooltip id="hangUp" effect="solid" />
 
         <button
-          onClick={async () => await onToggle('screen')}
+          onClick={() => onToggle('screen')}
           disabled={shared}
           className={`${common} ${
-            shared
+            screen
               ? 'bg-emerald-600 hover:bg-emerald-500'
               : 'bg-slate-800 hover:bg-emerald-700'
           }`}
@@ -89,7 +90,7 @@ const ControlPanel = ({
           data-tip="chat with everyone"
           onClick={() => onToggle('chat')}
           className={`${common} ${
-            isChatOpen
+            chat
               ? 'bg-emerald-600 hover:bg-emerald-500'
               : 'bg-slate-800 hover:bg-emerald-700'
           }`}
