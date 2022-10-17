@@ -23,14 +23,16 @@ export default function UsersSettingsProvider({ children }: any) {
     useState<Nullable<MediaStreamTrack>>(null);
 
   useEffect(() => {
-    socket.on('user:toggled-audio', (peerId: PeerId) =>
-      setIsMuted(append({ [peerId]: !isMuted[peerId] }))
-    );
-
     socket.on('user:toggled-video', (peerId: PeerId) =>
       setIsHidden(append({ [peerId]: !isHidden[peerId] }))
     );
-  }, [isMuted, isHidden]);
+  }, [isHidden]);
+
+  useEffect(() => {
+    socket.on('user:toggled-audio', (peerId: PeerId) =>
+      setIsMuted(append({ [peerId]: !isMuted[peerId] }))
+    );
+  }, [isMuted]);
 
   return (
     <UsersStateContext.Provider
@@ -50,6 +52,7 @@ export default function UsersSettingsProvider({ children }: any) {
           setAvatars,
           setStreams,
           setSharedScreenTrack,
+          muteUser: (id: PeerId) => socket.emit('host:mute-user', id),
         }}
       >
         {children}
