@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { UsersSettingsProvider, UsersConnectionProvider } from 'contexts';
 import { usePeer, useScreen } from '@hooks/index';
 
-import { LoaderError } from '@common/components';
+import { LoaderError, Modal } from '@common/components';
 import { FAILURE_MSG, LOADER_PEER_MSG } from '@common/constants';
 import { Kind, PeerId } from '@common/types';
 
@@ -25,7 +25,9 @@ export default function App({ stream }: any) {
   const { peer, myId, isPeerReady } = usePeer(stream);
   const { startShare, stopShare, screenTrack } = useScreen(stream);
 
-  const [modal, setModal] = useState<any>('hidden');
+  const [modal, setModal] = useState<'hidden' | 'chat' | 'status' | 'close'>(
+    'hidden'
+  );
   const [fullscreen, setFullscreen] = useState(false);
 
   useEffect(() => {
@@ -75,11 +77,11 @@ export default function App({ stream }: any) {
         return;
       }
       case 'chat': {
-        modal == 'chat' ? setModal('hidden') : setModal('chat');
+        modal == 'chat' ? setModal('close') : setModal('chat');
         return;
       }
       case 'users': {
-        modal == 'status' ? setModal('hidden') : setModal('status');
+        modal == 'status' ? setModal('close') : setModal('status');
         return;
       }
       default:
@@ -121,8 +123,18 @@ export default function App({ stream }: any) {
           </div>
         </div>
 
-        <Chat modal={modal} label="chat" />
-        <Status modal={modal} label="status" />
+        <Modal
+          title={{ chat: 'Meeting Chat', status: 'People' }}
+          modal={modal}
+          onClose={() => setModal('close')}
+        >
+          <div className={modal !== 'chat' ? 'hidden' : ''}>
+            <Chat />
+          </div>
+          <div className={modal !== 'status' ? 'hidden' : ''}>
+            <Status />
+          </div>
+        </Modal>
       </UsersSettingsProvider>
     </div>
   );

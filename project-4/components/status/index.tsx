@@ -1,48 +1,37 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import { UsersStateContext } from 'contexts/users-settings';
-import { Modal } from '@common/components';
 
-const Status = ({ modal, label }: any) => {
+const Status = () => {
   const { streams, avatars, isMuted, isHidden } = useContext(UsersStateContext);
   const usersEntries = Object.entries(streams);
 
-  const [isOpen, setIsOpen] = useState<any>('hidden');
-
-  useEffect(() => {
-    if (modal == 'hidden' || (isOpen == 'open' && modal != label))
-      setIsOpen('hidden');
-    else if (modal == label) setIsOpen('open');
-  }, [modal]);
-
   return (
-    <Modal open={isOpen} onClose={() => setIsOpen('hidden')} title="People">
-      <div className="overflow-y-auto h-[calc(100vh-8rem)]">
-        {usersEntries.map(([id]) => (
-          <div className="flex gap-2 items-center pr-4">
-            <img
-              className="rounded-full w-8 h-8"
-              src={avatars[id]}
-              alt="User image"
-            />
-            <span className="grow">Username Usernamov</span>
-            <div>
-              {isMuted[id] ? (
-                <Icon children={icon['muted']} />
-              ) : (
-                <Icon children={icon['not-muted']} />
-              )}
-            </div>
-            <div>
-              {isHidden[id] ? (
-                <Icon children={icon['not-visible']} />
-              ) : (
-                <Icon children={icon['visible']} />
-              )}
-            </div>
+    <div className="overflow-y-auto h-[calc(100vh-8rem)]">
+      {usersEntries.map(([id]) => (
+        <div className="flex gap-2 items-center pr-4">
+          <img
+            className="rounded-full w-8 h-8"
+            src={avatars[id]}
+            alt="User image"
+          />
+          <span className="grow">Username Usernamov</span>
+          <div>
+            {isMuted[id] ? (
+              <Icon children={icon['muted']} />
+            ) : (
+              <Icon children={icon['not-muted']} />
+            )}
           </div>
-        ))}
-      </div>
-    </Modal>
+          <div>
+            {isHidden[id] ? (
+              <Icon children={icon['not-visible']} />
+            ) : (
+              <Icon children={icon['visible']} />
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
   );
 };
 

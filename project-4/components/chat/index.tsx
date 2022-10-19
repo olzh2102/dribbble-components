@@ -1,28 +1,17 @@
 import { useContext, useEffect, useState } from 'react';
-import { XIcon } from '@heroicons/react/outline';
-import { QoraContext } from '@pages/qora/[qoraId]';
 import { UserMessage } from '@common/types';
 import { MYSELF } from '@common/constants';
 import { append, formatTimeHHMM } from '@common/utils';
 import { Message } from '..';
 import { useUser } from '@auth0/nextjs-auth0';
 import { SocketContext } from '@pages/_app';
-import { Modal } from '@common/components';
 
-const Chat = ({ modal, label }: { modal: any; label: string }) => {
+const Chat = () => {
   const username = useUser().user!.name;
   const socket = useContext(SocketContext);
 
-  const [isOpen, setIsOpen] = useState<any>(modal);
-
   const [text, setText] = useState('');
   const [messages, setMessages] = useState<UserMessage[]>([]);
-
-  useEffect(() => {
-    if (modal == 'hidden' || (isOpen == 'open' && modal != label))
-      setIsOpen('hidden');
-    else if (modal == label) setIsOpen('open');
-  }, [modal]);
 
   useEffect(() => {
     socket.on('chat:get', (message: UserMessage) =>
@@ -55,12 +44,8 @@ const Chat = ({ modal, label }: { modal: any; label: string }) => {
   }
 
   return (
-    <Modal
-      open={isOpen}
-      onClose={() => setIsOpen('hidden')}
-      title="Meeting Chat"
-    >
-      <div className="overflow-y-auto h-[calc(100vh-8rem)]">
+    <>
+      <div className="overflow-y-auto h-[calc(100vh-10rem)]">
         {messages.map((message, index) => (
           <Message
             key={`${message.time}-${index}`}
@@ -69,7 +54,7 @@ const Chat = ({ modal, label }: { modal: any; label: string }) => {
           />
         ))}
       </div>
-      <div className="flex items-center justify-center pr-6 pt-6 gap-4">
+      <div className="flex items-center justify-center pr-6 pt-6">
         <input
           autoComplete="off"
           type="text"
@@ -82,7 +67,7 @@ const Chat = ({ modal, label }: { modal: any; label: string }) => {
           placeholder="Send a message to everyone"
         />
       </div>
-    </Modal>
+    </>
   );
 };
 
