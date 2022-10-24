@@ -16,7 +16,7 @@ const PeerVideo = ({ stream, name, isMe }: VideoProps) => (
       <span className="text-white">{name}</span>
     </p>
 
-    {/* <ActiveSpeakerIcon stream={stream} /> */}
+    <ActiveSpeakerIcon stream={stream} />
   </>
 );
 

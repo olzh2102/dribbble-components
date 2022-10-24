@@ -13,6 +13,7 @@ import {
 
 import CrossLineDiv from '@common/components/cross-line-div';
 import { UsersStateContext } from 'contexts/users-settings';
+import { UsersConnectionContext } from 'contexts/users-connection';
 
 const ControlPanel = ({
   muted,
@@ -25,6 +26,7 @@ const ControlPanel = ({
   onLeave,
 }: any) => {
   const { sharedScreenTrack: shared, streams } = useContext(UsersStateContext);
+  const { users } = useContext(UsersConnectionContext);
 
   return (
     <>
@@ -39,7 +41,7 @@ const ControlPanel = ({
 
       <div className="flex flex-auto gap-6 place-content-center items-center">
         <button
-          onClick={() => onToggle('video')}
+          onClick={() => onToggle('video', Object.values(users))}
           data-for="visibility"
           data-tip={`${!visible ? 'switch on' : 'switch off'}`}
           className={`${common} bg-slate-800 hover:bg-emerald-700 relative`}

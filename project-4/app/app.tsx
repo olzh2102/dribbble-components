@@ -16,12 +16,13 @@ import SharedScreenStream from '@components/streams/shared-screen-stream';
 import Chat from '@components/chat';
 import Status from '@components/status';
 import { Streams } from '@components/streams';
+import { MediaConnection } from 'peerjs';
 
 export default function App({ stream }: any) {
   const router = useRouter();
   const socket = useContext(SocketContext);
 
-  const { muted, visible, toggle } = useMediaStream(stream);
+  const { muted, visible, toggle, toggleVideo } = useMediaStream(stream);
   const { peer, myId, isPeerReady } = usePeer(stream);
   const { startShare, stopShare, screenTrack } = useScreen(stream);
 
@@ -29,6 +30,16 @@ export default function App({ stream }: any) {
     'hidden'
   );
   const [fullscreen, setFullscreen] = useState(false);
+
+  function replaceTrack(track: MediaStreamTrack) {
+    return (peer: MediaConnection) => {
+      const sender = peer.peerConnection
+        ?.getSenders()
+        .find((s) => s.track?.kind === track.kind);
+
+      sender?.replaceTrack(track);
+    };
+  }
 
   useEffect(() => {
     return () => {
@@ -49,7 +60,7 @@ export default function App({ stream }: any) {
   if (!isPeerReady) return <LoaderError msg={LOADER_PEER_MSG} />;
   if (!peer) return <LoaderError msg={FAILURE_MSG} />;
 
-  async function toggleKind(kind: Kind) {
+  async function toggleKind(kind: Kind, users?: MediaConnection[]) {
     switch (kind) {
       case 'audio': {
         toggle('audio')(stream);
@@ -57,7 +68,9 @@ export default function App({ stream }: any) {
         return;
       }
       case 'video': {
-        toggle('video')(stream);
+        toggleVideo((newVideoTrack: MediaStreamTrack) =>
+          users!.forEach(replaceTrack(newVideoTrack))
+        );
         socket.emit('user:toggle-video', myId);
         return;
       }
@@ -108,19 +121,19 @@ export default function App({ stream }: any) {
                 fullscreen={fullscreen}
               />
             </div>
-          </UsersConnectionProvider>
 
-          <div className="flex items-center">
-            <ControlPanel
-              visible={visible}
-              muted={muted}
-              screenTrack={Boolean(screenTrack)}
-              chat={modal == 'chat'}
-              status={modal == 'status'}
-              onToggle={toggleKind}
-              onLeave={() => router.push('/')}
-            />
-          </div>
+            <div className="flex items-center">
+              <ControlPanel
+                visible={visible}
+                muted={muted}
+                screenTrack={Boolean(screenTrack)}
+                chat={modal == 'chat'}
+                status={modal == 'status'}
+                onToggle={toggleKind}
+                onLeave={() => router.push('/')}
+              />
+            </div>
+          </UsersConnectionProvider>
         </div>
 
         <Modal
