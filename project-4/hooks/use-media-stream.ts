@@ -60,13 +60,47 @@ export default function useStream(
     };
   }
 
+  async function toggleVideo(cb?: unknown) {
+    if (!state) throw new Error('There is no a video stream to toggle');
+
+    const videoTrack = state.getVideoTracks()[0];
+
+    if (videoTrack.readyState === 'live') {
+      videoTrack.stop(); // * turns off web cam light indicator
+      setV(false);
+    } else {
+      const newStream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: true,
+      });
+      const newVideoTrack = newStream.getVideoTracks()[0];
+
+      if (typeof cb === 'function') {
+        cb(newVideoTrack);
+      }
+
+      state.removeTrack(videoTrack);
+
+      const [screenTrack] = state.getVideoTracks();
+
+      if (screenTrack) {
+        state.removeTrack(screenTrack);
+        state.addTrack(newVideoTrack);
+        state.addTrack(screenTrack);
+      } else state.addTrack(newVideoTrack);
+
+      setV(true);
+      return newVideoTrack;
+    }
+  }
+
   return {
     stream: state,
     muted: m,
     visible: v,
     toggle,
     toggleAudio: toggle('audio'),
-    toggleVideo: toggle('video'),
+    toggleVideo,
     isLoading: status == 'loading',
     isError: status == 'rejected',
     isSuccess: status == 'success' || status == 'idle',

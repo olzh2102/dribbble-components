@@ -4,7 +4,7 @@ import { SpeakerIcon } from 'assets/icons';
 import useIsAudioActive from '@hooks/use-is-audio-active';
 
 const ActiveSpeaker = ({ stream }: { stream: MediaStream }) => {
-  const isSpeaking = useIsAudioActive({ stream });
+  const isSpeaking = useIsAudioActive({ source: stream });
 
   return isSpeaking ? (
     <div
