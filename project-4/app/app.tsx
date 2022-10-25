@@ -1,11 +1,12 @@
 import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { toast, ToastContainer } from 'react-toastify';
 
 import { UsersSettingsProvider, UsersConnectionProvider } from 'contexts';
 import { usePeer, useScreen } from '@hooks/index';
 
 import { LoaderError, Modal } from '@common/components';
-import { FAILURE_MSG, LOADER_PEER_MSG } from '@common/constants';
+import { FAILURE_MSG, LOADER_PEER_MSG, TOAST_PROPS } from '@common/constants';
 import { Kind, PeerId } from '@common/types';
 
 import useMediaStream from '@hooks/use-media-stream';
@@ -49,7 +50,12 @@ export default function App({ stream }: any) {
 
   useEffect(() => {
     socket.on('host:muted-user', (peerId: PeerId) => {
-      if (myId === peerId) toggleKind('audio');
+      if (myId === peerId) {
+        toggleKind('audio');
+        toast('you are muted by host');
+      } else {
+        toast('user muted by host');
+      }
     });
 
     return () => {
@@ -79,9 +85,11 @@ export default function App({ stream }: any) {
           stopShare(screenTrack);
           socket.emit('user:stop-share-screen');
           setFullscreen(false);
+          toast('Stopped presenting screen');
         } else {
           await startShare(() => socket.emit('user:stop-share-screen'));
           socket.emit('user:share-screen');
+          toast('Starting presenting screen');
         }
         return;
       }
@@ -149,6 +157,7 @@ export default function App({ stream }: any) {
           </div>
         </Modal>
       </UsersSettingsProvider>
+      <ToastContainer {...TOAST_PROPS} />
     </div>
   );
 }
