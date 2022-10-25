@@ -145,7 +145,7 @@ export default function App({ stream }: any) {
             <Chat />
           </div>
           <div className={modal !== 'status' ? 'hidden' : ''}>
-            <Status />
+            <Status muted={muted} visible={visible} />
           </div>
         </Modal>
       </UsersSettingsProvider>

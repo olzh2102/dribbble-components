@@ -18,6 +18,7 @@ export default function UsersSettingsProvider({ children }: any) {
   const [isMuted, setIsMuted] = useState<KeyValue<boolean>>({});
   const [isHidden, setIsHidden] = useState<KeyValue<boolean>>({});
   const [avatars, setAvatars] = useState<KeyValue<string>>({});
+  const [names, setNames] = useState<KeyValue<string>>({});
 
   const [sharedScreenTrack, setSharedScreenTrack] =
     useState<Nullable<MediaStreamTrack>>(null);
@@ -42,6 +43,7 @@ export default function UsersSettingsProvider({ children }: any) {
         isHidden,
         isHost: isHost(router.query.qoraId as RoomId),
         avatars,
+        names,
         sharedScreenTrack,
       }}
     >
@@ -51,6 +53,7 @@ export default function UsersSettingsProvider({ children }: any) {
           setIsHidden,
           setAvatars,
           setStreams,
+          setNames,
           setSharedScreenTrack,
           muteUser: (id: PeerId) => socket.emit('host:mute-user', id),
         }}
