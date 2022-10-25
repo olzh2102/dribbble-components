@@ -1,16 +1,12 @@
 import React from 'react';
-import { Status } from '@common/types';
+import { Status, Nullable } from '@common/types';
 
-export default function useStream(
-  stream: MediaStream | null = null,
-  muted: boolean = false,
-  visible: boolean = true
-) {
-  const [state, setState] = React.useState<MediaStream | null>(stream);
+export default function useStream(stream: Nullable<MediaStream> = null) {
+  const [state, setState] = React.useState<Nullable<MediaStream>>(stream);
   const [status, setStatus] = React.useState<Status>('loading');
 
-  const [m, setM] = React.useState(muted);
-  const [v, setV] = React.useState(visible);
+  const [m, setM] = React.useState(false);
+  const [v, setV] = React.useState(true);
 
   React.useEffect(() => {
     if (stream) {
@@ -23,8 +19,8 @@ export default function useStream(
       (async function createStream() {
         try {
           const stream = await navigator.mediaDevices.getUserMedia({
-            audio: !muted,
-            video: visible,
+            audio: true,
+            video: true,
           });
 
           setState(stream);
