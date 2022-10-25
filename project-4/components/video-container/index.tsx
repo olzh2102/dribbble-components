@@ -15,10 +15,6 @@ const VideoContainer = ({
   onMutePeer,
   onRemovePeer,
 }: SingleVideoProps) => {
-  // * ola way
-  // const { myId, isHost } = useContext(QoraContext);
-
-  // * new way
   const { myId } = useContext(UsersConnectionContext);
   const { isHost } = useContext(UsersStateContext);
 
@@ -38,8 +34,6 @@ const VideoContainer = ({
         <ActiveSpeaker stream={stream} />
       )}
 
-      {/* old way */}
-      {/* {isHost && myId !== id && ( */}
       {isHost && myId !== id && (
         <HostControlPanel
           onMutePeer={() => onMutePeer && onMutePeer(id)}
