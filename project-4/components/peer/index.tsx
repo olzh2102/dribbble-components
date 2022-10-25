@@ -2,14 +2,14 @@ import { memo } from 'react';
 import ActiveSpeakerIcon from '@components/active-speaker';
 
 const PeerVideo = ({ stream, name, isMe }: VideoProps) => (
-  <>
+  <div className="w-96">
     <video
       ref={(node) => {
         if (node) node.srcObject = stream;
       }}
       autoPlay
       muted={isMe}
-      className="rounded-[12px] w-96 aspect-video object-cover -scale-x-100"
+      className="rounded-[12px] aspect-video object-cover -scale-x-100"
     />
 
     <p className="font-medium absolute bottom-3 left-4 text-xs">
@@ -17,7 +17,7 @@ const PeerVideo = ({ stream, name, isMe }: VideoProps) => (
     </p>
 
     <ActiveSpeakerIcon stream={stream} />
-  </>
+  </div>
 );
 
 export default memo(PeerVideo);
