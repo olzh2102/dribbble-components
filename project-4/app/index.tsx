@@ -10,7 +10,7 @@ import { LoaderError, Modal } from '@common/components';
 import { FAILURE_MSG, LOADER_PEER_MSG, TOAST_PROPS } from '@common/constants';
 import { Kind, PeerId } from '@common/types';
 
-import useMediaStream from '@hooks/use-media-stream';
+import { useMediaStream } from '@hooks/index';
 import { SocketContext } from '@pages/_app';
 
 import { ControlPanel, Chat, Status } from '@components/index';

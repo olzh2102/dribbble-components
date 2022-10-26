@@ -3,11 +3,11 @@ import { useRouter } from 'next/router';
 import { useUser } from '@auth0/nextjs-auth0';
 import Peer from 'peerjs';
 
-import { SocketContext } from '@pages/_app';
 import { error } from '@common/utils';
 import { Nullable, PeerId, RoomId } from '@common/types';
-import useMediaStream from './use-media-stream';
 
+import { useMediaStream } from '@hooks/index';
+import { SocketContext } from '@pages/_app';
 /**
  * Creates a peer and joins them into the room
  * @returns peer object, its id and meta-state whether is peer fully created

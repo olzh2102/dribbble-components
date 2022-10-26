@@ -3,7 +3,7 @@ import { useUser } from '@auth0/nextjs-auth0';
 import { toast } from 'react-toastify';
 
 import { append } from '@common/utils';
-import useMediaStream from '@hooks/use-media-stream';
+import { useMediaStream } from '@hooks/index';
 
 import { SocketContext } from '@pages/_app';
 import { PeerVideo } from '@components/index';
