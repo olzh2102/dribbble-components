@@ -12,7 +12,7 @@ import { Kind, PeerId } from '@common/types';
 import useMediaStream from '@hooks/use-media-stream';
 import { SocketContext } from '@pages/_app';
 
-import ControlPanel from '@components/control-panel/control-panel';
+import ControlPanel from '@components/control-panel';
 import SharedScreenStream from '@components/streams/shared-screen-stream';
 import Chat from '@components/chat';
 import Status from '@components/status';
