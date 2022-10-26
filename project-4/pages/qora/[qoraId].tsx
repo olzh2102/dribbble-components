@@ -1,14 +1,13 @@
-import ParsedUrlQuery from 'next';
 import { NextPage, GetServerSidePropsContext, PreviewData } from 'next';
 import { createContext, useState } from 'react';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 
-import { Lobby } from '@components/index';
-import LoaderError from '@common/components/loader-error';
 import { FAILURE_MSG, LOADER_STREAM_MSG } from '@common/constants';
-import useMediaStream from '@hooks/use-media-stream';
+import { LoaderError } from '@common/components';
+import { useMediaStream } from '@hooks/index';
 
-import Room from '../../app/app';
+import { Lobby } from '@components/index';
+import Room from '@app/index';
 
 export const QoraContext = createContext<any>({});
 
