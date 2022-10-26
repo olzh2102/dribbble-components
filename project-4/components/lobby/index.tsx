@@ -2,19 +2,19 @@ import { useUser } from '@auth0/nextjs-auth0';
 import { VideoCameraIcon, MicrophoneIcon } from '@heroicons/react/solid';
 import Tooltip from 'react-tooltip';
 
+import { useMediaStream } from '@hooks/index';
 import { MYSELF } from '@common/constants';
-import CrossLineDiv from '@common/components/cross-line-div';
+import { CrossLineDiv } from '@common/components';
 
 import { PeerVideo, VideoContainer } from '..';
-import useMediaStream from '@hooks/use-media-stream';
 
-const Lobby = ({
+export default function Lobby({
   stream,
   onJoinRoom,
 }: {
   stream: MediaStream;
   onJoinRoom: () => void;
-}) => {
+}) {
   const user = useUser().user;
   const { muted, visible, toggle, toggleVideo } = useMediaStream(stream);
 
@@ -65,6 +65,4 @@ const Lobby = ({
       </button>
     </div>
   );
-};
-
-export default Lobby;
+}

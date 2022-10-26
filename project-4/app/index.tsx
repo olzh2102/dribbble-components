@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { MediaConnection } from 'peerjs';
 import { toast, ToastContainer } from 'react-toastify';
 
 import { UsersSettingsProvider, UsersConnectionProvider } from 'contexts';
@@ -12,12 +13,8 @@ import { Kind, PeerId } from '@common/types';
 import useMediaStream from '@hooks/use-media-stream';
 import { SocketContext } from '@pages/_app';
 
-import ControlPanel from '@components/control-panel';
-import SharedScreenStream from '@components/streams/shared-screen-stream';
-import Chat from '@components/chat';
-import Status from '@components/status';
-import { Streams } from '@components/streams';
-import { MediaConnection } from 'peerjs';
+import { ControlPanel, Chat, Status } from '@components/index';
+import { Streams, SharedScreenStream } from '@components/streams';
 
 export default function App({ stream }: any) {
   const router = useRouter();

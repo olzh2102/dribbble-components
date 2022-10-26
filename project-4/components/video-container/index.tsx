@@ -1,9 +1,10 @@
 import { useContext } from 'react';
-import { QoraContext } from '@pages/qora/[qoraId]';
 import { MutedIcon } from 'assets/icons';
-import { ActiveSpeaker, HostControlPanel, VideoPlug } from '..';
+
 import { UsersConnectionContext } from 'contexts/users-connection';
 import { UsersStateContext } from 'contexts/users-settings';
+
+import { ActiveSpeaker, HostControlPanel, VideoPlug } from '..';
 
 const VideoContainer = ({
   id,

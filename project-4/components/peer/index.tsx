@@ -1,7 +1,15 @@
 import { memo } from 'react';
 import ActiveSpeakerIcon from '@components/active-speaker';
 
-const PeerVideo = ({ stream, name, isMe }: VideoProps) => (
+const PeerVideo = ({
+  stream,
+  name,
+  isMe,
+}: {
+  stream: MediaStream;
+  name: string;
+  isMe?: boolean;
+}) => (
   <div className="w-96">
     <video
       ref={(node) => {
@@ -21,9 +29,3 @@ const PeerVideo = ({ stream, name, isMe }: VideoProps) => (
 );
 
 export default memo(PeerVideo);
-
-type VideoProps = {
-  stream: MediaStream;
-  name: string;
-  isMe?: boolean;
-};

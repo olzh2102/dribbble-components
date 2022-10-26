@@ -1,4 +1,8 @@
-const WelcomeContainer = ({ children }: { children: React.ReactNode }) => {
+export default function WelcomeContainer({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <div className="relative overflow-hidden">
       <div className="max-w-7xl mx-auto">
@@ -24,6 +28,4 @@ const WelcomeContainer = ({ children }: { children: React.ReactNode }) => {
       </div>
     </div>
   );
-};
-
-export default WelcomeContainer;
+}
