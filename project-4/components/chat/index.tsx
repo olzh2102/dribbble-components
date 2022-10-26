@@ -1,10 +1,12 @@
 import { useContext, useEffect, useState } from 'react';
+import { useUser } from '@auth0/nextjs-auth0';
+
 import { UserMessage } from '@common/types';
 import { MYSELF } from '@common/constants';
 import { append, formatTimeHHMM } from '@common/utils';
-import { Message } from '..';
-import { useUser } from '@auth0/nextjs-auth0';
+
 import { SocketContext } from '@pages/_app';
+import { Message } from '..';
 
 const Chat = () => {
   const username = useUser().user!.name;

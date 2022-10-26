@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+
 import { UsersStateContext } from 'contexts/users-settings';
 
 import MyStream from './my-stream';
