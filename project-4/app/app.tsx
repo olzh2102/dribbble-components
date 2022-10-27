@@ -107,7 +107,7 @@ export default function App({ stream }: any) {
       <UsersSettingsProvider>
         <div className="sm:flex hidden flex-col p-4 w-full h-screen">
           <UsersConnectionProvider stream={stream} myId={myId} peer={peer}>
-            <div className="flex h-full place-items-center place-content-center">
+            <div className="flex h-full place-items-center place-content-center gap-4">
               <SharedScreenStream
                 sharedScreen={screenTrack}
                 fullscreen={fullscreen}
