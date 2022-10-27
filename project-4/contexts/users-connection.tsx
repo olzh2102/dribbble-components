@@ -162,7 +162,10 @@ export default function UsersConnectionProvider({
   }, [peer]);
 
   useEffect(() => {
-    socket.on('user:stopped-screen-share', () => setSharedScreenTrack(null));
+    socket.on('user:stopped-screen-share', () => {
+      setSharedScreenTrack(null);
+      toast('Stopped sharing screen');
+    });
 
     return () => {
       socket.off('user:stopped-screen-share');
