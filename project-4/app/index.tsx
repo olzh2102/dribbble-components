@@ -10,13 +10,13 @@ import { LoaderError, Modal } from '@common/components';
 import { FAILURE_MSG, LOADER_PEER_MSG, TOAST_PROPS } from '@common/constants';
 import { Kind, PeerId } from '@common/types';
 
-import { useMediaStream } from '@hooks/index';
+import useMediaStream from '@hooks/use-media-stream';
 import { SocketContext } from '@pages/_app';
 
 import { ControlPanel, Chat, Status } from '@components/index';
 import { Streams, SharedScreenStream } from '@components/streams';
 
-export default function App({ stream }: any) {
+export default function App({ stream }: { stream: MediaStream }) {
   const router = useRouter();
   const socket = useContext(SocketContext);
 
@@ -112,7 +112,7 @@ export default function App({ stream }: any) {
       <UsersSettingsProvider>
         <div className="sm:flex hidden flex-col p-4 w-full h-screen">
           <UsersConnectionProvider stream={stream} myId={myId} peer={peer}>
-            <div className="flex h-full place-items-center place-content-center">
+            <div className="flex h-full place-items-center place-content-center gap-4">
               <SharedScreenStream
                 sharedScreen={screenTrack}
                 fullscreen={fullscreen}
@@ -133,7 +133,6 @@ export default function App({ stream }: any) {
                 muted={muted}
                 screenTrack={Boolean(screenTrack)}
                 chat={modal == 'chat'}
-                status={modal == 'status'}
                 onToggle={toggleKind}
                 onLeave={() => router.push('/')}
               />
@@ -142,7 +141,13 @@ export default function App({ stream }: any) {
         </div>
 
         <Modal
-          title={{ chat: 'Meeting Chat', status: 'People' }}
+          title={
+            modal === 'chat'
+              ? 'Meeting Chat'
+              : modal === 'status'
+              ? 'People'
+              : ''
+          }
           modal={modal}
           onClose={() => setModal('close')}
         >
@@ -150,7 +155,7 @@ export default function App({ stream }: any) {
             <Chat />
           </div>
           <div className={modal !== 'status' ? 'hidden' : ''}>
-            <Status />
+            <Status muted={muted} visible={visible} />
           </div>
         </Modal>
       </UsersSettingsProvider>

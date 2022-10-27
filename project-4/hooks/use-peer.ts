@@ -6,8 +6,9 @@ import Peer from 'peerjs';
 import { error } from '@common/utils';
 import { Nullable, PeerId, RoomId } from '@common/types';
 
-import { useMediaStream } from '@hooks/index';
 import { SocketContext } from '@pages/_app';
+import { useMediaStream } from '@hooks/index';
+
 /**
  * Creates a peer and joins them into the room
  * @returns peer object, its id and meta-state whether is peer fully created
