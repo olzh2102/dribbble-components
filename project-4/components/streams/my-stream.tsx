@@ -7,7 +7,15 @@ import { UsersConnectionContext } from 'contexts/users-connection';
 import VideoContainer from '@components/video-container';
 import { PeerVideo } from '..';
 
-export default function MyStream({ stream, muted, visible }: any) {
+export default function MyStream({
+  stream,
+  muted,
+  visible,
+}: {
+  stream: MediaStream;
+  muted: boolean;
+  visible: boolean;
+}) {
   const avatar = useUser().user!.picture || '';
   const { myId } = useContext(UsersConnectionContext);
 

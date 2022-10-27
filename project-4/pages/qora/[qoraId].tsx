@@ -1,4 +1,5 @@
-import { NextPage } from 'next';
+import ParsedUrlQuery from 'next';
+import { NextPage, GetServerSidePropsContext, PreviewData } from 'next';
 import { createContext, useState } from 'react';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 
@@ -26,8 +27,9 @@ const Qora: NextPage = () => {
 
 export default Qora;
 
-export const getServerSideProps = async (ctx: any) =>
+export const getServerSideProps = async (
+  ctx: GetServerSidePropsContext<any, PreviewData>
+) =>
   await withPageAuthRequired({
     returnTo: '/qora/' + ctx.query.qoraId,
   })(ctx);
-

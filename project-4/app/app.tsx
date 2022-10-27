@@ -19,7 +19,7 @@ import Status from '@components/status';
 import { Streams } from '@components/streams';
 import { MediaConnection } from 'peerjs';
 
-export default function App({ stream }: any) {
+export default function App({ stream }: { stream: MediaStream }) {
   const router = useRouter();
   const socket = useContext(SocketContext);
 
@@ -136,7 +136,6 @@ export default function App({ stream }: any) {
                 muted={muted}
                 screenTrack={Boolean(screenTrack)}
                 chat={modal == 'chat'}
-                status={modal == 'status'}
                 onToggle={toggleKind}
                 onLeave={() => router.push('/')}
               />
@@ -145,7 +144,13 @@ export default function App({ stream }: any) {
         </div>
 
         <Modal
-          title={{ chat: 'Meeting Chat', status: 'People' }}
+          title={
+            modal === 'chat'
+              ? 'Meeting Chat'
+              : modal === 'status'
+              ? 'People'
+              : ''
+          }
           modal={modal}
           onClose={() => setModal('close')}
         >

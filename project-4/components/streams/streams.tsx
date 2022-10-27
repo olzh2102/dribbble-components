@@ -3,6 +3,7 @@ import { UsersStateContext } from 'contexts/users-settings';
 
 import MyStream from './my-stream';
 import OtherStreams from './other-streams';
+import { Nullable } from '@common/types';
 
 export default function Streams({
   fullscreen,
@@ -10,7 +11,7 @@ export default function Streams({
   stream,
   muted,
   visible,
-}: any) {
+}: StreamsProps) {
   const shared =
     sharedScreen ?? useContext(UsersStateContext).sharedScreenTrack;
 
@@ -25,3 +26,11 @@ export default function Streams({
     </div>
   );
 }
+
+type StreamsProps = {
+  fullscreen: boolean;
+  sharedScreen: Nullable<MediaStreamTrack>;
+  stream: MediaStream;
+  muted: boolean;
+  visible: boolean;
+};
