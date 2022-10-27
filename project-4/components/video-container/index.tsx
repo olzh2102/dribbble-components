@@ -1,6 +1,5 @@
 import { useContext } from 'react';
 import { QoraContext } from '@pages/qora/[qoraId]';
-import { MediaSetup } from '@common/types';
 import { MutedIcon } from 'assets/icons';
 import { ActiveSpeaker, HostControlPanel, VideoPlug } from '..';
 import { UsersConnectionContext } from 'contexts/users-connection';
@@ -8,7 +7,8 @@ import { UsersStateContext } from 'contexts/users-settings';
 
 const VideoContainer = ({
   id,
-  mediaSetup,
+  muted,
+  visible,
   children,
   stream,
   userPicture,
@@ -23,10 +23,10 @@ const VideoContainer = ({
       key={id}
       className="relative group h-fit drop-shadow-2xl shadow-indigo-500/50"
     >
-      {mediaSetup.isHidden && <VideoPlug userPicture={userPicture} />}
-      <div className={`${mediaSetup.isHidden ? 'hidden' : ''}`}>{children}</div>
+      {!visible && <VideoPlug userPicture={userPicture} />}
+      <div className={`${!visible ? 'hidden' : ''}`}>{children}</div>
 
-      {mediaSetup.isMuted ? (
+      {muted ? (
         <div className="absolute top-3 right-3">
           <MutedIcon />
         </div>
@@ -38,7 +38,7 @@ const VideoContainer = ({
         <HostControlPanel
           onMutePeer={() => onMutePeer && onMutePeer(id)}
           onRemovePeer={() => onRemovePeer && onRemovePeer(id)}
-          isMuted={mediaSetup.isMuted}
+          isMuted={muted}
         />
       )}
     </div>
@@ -49,7 +49,8 @@ export default VideoContainer;
 
 type SingleVideoProps = {
   id: string;
-  mediaSetup: MediaSetup;
+  muted: boolean;
+  visible: boolean;
   children: React.ReactNode;
   stream: MediaStream;
   userPicture: string;

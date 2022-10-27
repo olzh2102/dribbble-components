@@ -52,45 +52,50 @@ export default function UsersConnectionProvider({
   useEffect(() => {
     if (!peer) return;
 
-    socket.on('user:joined', ({ id, name, picture, initMediaSetup }: any) => {
-      console.table({
-        'call-friend': 'call friend',
-        'user-id': id,
-        'user-name': name,
-        initMediaSetup,
-      });
+    socket.on(
+      'user:joined',
+      ({ id, name, picture, muted: initMuted, visible: initVisible }: any) => {
+        console.table({
+          'call-friend': 'call friend',
+          'user-id': id,
+          'user-name': name,
+          visible: initMuted,
+          muted: initVisible,
+        });
 
-      const call = peer.call(
-        id,
-        stream, // my stream
-        {
-          metadata: {
-            user: {
-              name: user.name,
-              picture: user.picture,
+        const call = peer.call(
+          id,
+          stream, // my stream
+          {
+            metadata: {
+              user: {
+                name: user.name,
+                picture: user.picture,
+              },
+              muted,
+              visible,
             },
-            mediaSetup: { isMuted: muted, isHidden: !visible },
-          },
-        }
-      );
-
-      call.on('stream', (stream: MediaStream) => {
-        setStreams(
-          append({
-            [id]: <PeerVideo stream={stream} isMe={false} name={name} />,
-          })
+          }
         );
-        const screenTrack = stream.getVideoTracks()[1];
-        if (screenTrack) setSharedScreenTrack(screenTrack);
-      }); // * friend's stream
-      call.on('close', () => toast(`${name} has left the room`));
 
-      setUsers(append({ [id]: call }));
-      setIsMuted(append({ [id]: initMediaSetup.isMuted }));
-      setIsHidden(append({ [id]: initMediaSetup.isHidden }));
-      setAvatars(append({ [id]: picture }));
-      setNames(append({ [id]: name }));
-    });
+        call.on('stream', (stream: MediaStream) => {
+          setStreams(
+            append({
+              [id]: <PeerVideo stream={stream} isMe={false} name={name} />,
+            })
+          );
+          const screenTrack = stream.getVideoTracks()[1];
+          if (screenTrack) setSharedScreenTrack(screenTrack);
+        }); // * friend's stream
+        call.on('close', () => toast(`${name} has left the room`));
+
+        setUsers(append({ [id]: call }));
+        setIsMuted(append({ [id]: initMuted }));
+        setIsHidden(append({ [id]: !initVisible }));
+        setAvatars(append({ [id]: picture }));
+        setNames(append({ [id]: name }));
+      }
+    );
 
     return () => {
       socket.off('user:joined');
@@ -103,11 +108,11 @@ export default function UsersConnectionProvider({
 
     peer.on('call', (call: any) => {
       const { peer, metadata } = call;
-      const { user, mediaSetup } = metadata;
+      const { user, muted, visible } = metadata;
 
       setUsers(append({ [peer]: call }));
-      setIsMuted(append({ [peer]: mediaSetup.isMuted }));
-      setIsHidden(append({ [peer]: mediaSetup.isHidden }));
+      setIsMuted(append({ [peer]: muted }));
+      setIsHidden(append({ [peer]: !visible }));
       setAvatars(append({ [peer]: user.picture }));
       setNames(append({ [peer]: user.name }));
 
