@@ -29,6 +29,7 @@ export default function UsersConnectionProvider({
     setIsHidden,
     setAvatars,
     setStreams,
+    setNames,
     setSharedScreenTrack,
   } = useContext(UsersUpdaterContext);
 
@@ -88,6 +89,7 @@ export default function UsersConnectionProvider({
       setIsMuted(append({ [id]: initMediaSetup.isMuted }));
       setIsHidden(append({ [id]: initMediaSetup.isHidden }));
       setAvatars(append({ [id]: picture }));
+      setNames(append({ [id]: name }));
     });
 
     return () => {
@@ -107,6 +109,7 @@ export default function UsersConnectionProvider({
       setIsMuted(append({ [peer]: mediaSetup.isMuted }));
       setIsHidden(append({ [peer]: mediaSetup.isHidden }));
       setAvatars(append({ [peer]: user.picture }));
+      setNames(append({ [peer]: user.name }));
 
       call.answer(stream); // * answers incoming call with his/her stream
 
