@@ -17,7 +17,8 @@ export default function OtherStreams() {
         <VideoContainer
           key={id}
           id={id}
-          mediaSetup={{ isMuted: isMuted[id], isHidden: isHidden[id] }}
+          muted={isMuted[id]}
+          visible={!isHidden[id]}
           userPicture={avatars[id]}
           stream={element.props.stream}
           onMutePeer={muteUser}

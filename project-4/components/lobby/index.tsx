@@ -4,7 +4,6 @@ import Tooltip from 'react-tooltip';
 
 import { MYSELF } from '@common/constants';
 import CrossLineDiv from '@common/components/cross-line-div';
-import { MediaSetup } from '@common/types';
 
 import { PeerVideo, VideoContainer } from '..';
 import useMediaStream from '@hooks/use-media-stream';
@@ -24,7 +23,8 @@ const Lobby = ({
       <div className="flex flex-col gap-2">
         <VideoContainer
           id="me"
-          mediaSetup={{ isHidden: !visible, isMuted: muted }}
+          muted={muted}
+          visible={visible}
           stream={stream}
           userPicture={user?.picture || ''}
         >

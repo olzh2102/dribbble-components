@@ -14,7 +14,8 @@ export default function MyStream({ stream, muted, visible }: any) {
   return (
     <VideoContainer
       id={myId}
-      mediaSetup={{ isMuted: muted, isHidden: !visible }}
+      muted={muted}
+      visible={visible}
       stream={stream}
       userPicture={avatar}
     >

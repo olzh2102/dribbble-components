@@ -5,7 +5,7 @@ import Peer from 'peerjs';
 
 import { SocketContext } from '@pages/_app';
 import { error } from '@common/utils';
-import { MediaSetup, Nullable, PeerId, RoomId } from '@common/types';
+import { Nullable, PeerId, RoomId } from '@common/types';
 import useMediaStream from './use-media-stream';
 
 /**
@@ -37,7 +37,8 @@ const usePeer = (stream: MediaStream) => {
             room,
             user: {
               id,
-              initMediaSetup: { isMuted: muted, isHidden: !visible },
+              muted,
+              visible,
               name: user.name,
               picture: user.picture,
             },
