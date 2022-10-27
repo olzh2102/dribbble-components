@@ -3,7 +3,6 @@ import { VideoCameraIcon, MicrophoneIcon } from '@heroicons/react/solid';
 import Tooltip from 'react-tooltip';
 
 import { MYSELF } from '@common/constants';
-import { toggleAudio, toggleVideo } from '@common/utils';
 import CrossLineDiv from '@common/components/cross-line-div';
 import { MediaSetup } from '@common/types';
 
@@ -18,7 +17,7 @@ const Lobby = ({
   onJoinRoom: () => void;
 }) => {
   const user = useUser().user;
-  const { muted, visible, toggle } = useMediaStream(stream);
+  const { muted, visible, toggle, toggleVideo } = useMediaStream(stream);
 
   return (
     <div className="h-screen w-auto grid grid-cols-2 gap-4 place-content-center place-items-center">
@@ -34,7 +33,7 @@ const Lobby = ({
 
         <div className="flex justify-end gap-2">
           <button
-            onClick={() => toggle('video')(stream)}
+            onClick={toggleVideo}
             data-for="visibility"
             data-tip={`${!visible ? 'switch on' : 'switch off'}`}
             className="p-3 rounded-xl text-white bg-slate-800 hover:bg-indigo-700 relative"

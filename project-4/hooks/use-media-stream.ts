@@ -35,11 +35,7 @@ export default function useStream(stream: Nullable<MediaStream> = null) {
 
   function toggle(kind: 'audio' | 'video') {
     return (s = state) => {
-      const newLocal = 'Failed. Could not find stream';
-      if (!s) throw new Error(newLocal);
-
-      console.log('stream: ', s);
-      console.log('stream tracks: ', s.getTracks());
+      if (!s) throw new Error('Failed. Could not find stream');
 
       const track = s.getTracks().find((track) => track.kind == kind);
 
@@ -62,6 +58,7 @@ export default function useStream(stream: Nullable<MediaStream> = null) {
     const videoTrack = state.getVideoTracks()[0];
 
     if (videoTrack.readyState === 'live') {
+      videoTrack.enabled = false;
       videoTrack.stop(); // * turns off web cam light indicator
       setV(false);
     } else {
@@ -85,8 +82,8 @@ export default function useStream(stream: Nullable<MediaStream> = null) {
         state.addTrack(screenTrack);
       } else state.addTrack(newVideoTrack);
 
+      setState(state);
       setV(true);
-      return newVideoTrack;
     }
   }
 
