@@ -1,4 +1,4 @@
-const VideoPlug = ({ userPicture }: { userPicture: string }) => {
+export default function VideoPlug({ userPicture }: { userPicture: string }) {
   return (
     <div className="w-96 aspect-video relative">
       <img
@@ -14,6 +14,4 @@ const VideoPlug = ({ userPicture }: { userPicture: string }) => {
       />
     </div>
   );
-};
-
-export default VideoPlug;
+}

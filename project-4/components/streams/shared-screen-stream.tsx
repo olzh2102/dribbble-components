@@ -1,9 +1,9 @@
 import { useContext } from 'react';
 
+import { Nullable } from '@common/types';
 import { UsersStateContext } from 'contexts/users-settings';
 
 import SharedScreen from '@components/shared-screen';
-import { Nullable } from '@common/types';
 
 export default function SharedScreenStream({
   sharedScreen,
