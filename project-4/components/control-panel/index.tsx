@@ -74,7 +74,7 @@ const ControlPanel = ({
         <Tooltip id="hangUp" effect="solid" />
 
         <button
-          onClick={async () => await onToggle('screen')}
+          onClick={() => onToggle('screen')}
           disabled={shared}
           className={`${common} ${
             screen
