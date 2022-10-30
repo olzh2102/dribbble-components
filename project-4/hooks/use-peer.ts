@@ -1,13 +1,13 @@
 import { useContext, useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+
 import { useUser } from '@auth0/nextjs-auth0';
+import { useMediaStream } from '@hooks/index';
+import { SocketContext } from '@pages/_app';
+import { useRouter } from 'next/router';
 import Peer from 'peerjs';
 
-import { error } from '@common/utils';
 import { Nullable, PeerId, RoomId } from '@common/types';
-
-import { SocketContext } from '@pages/_app';
-import { useMediaStream } from '@hooks/index';
+import { error } from '@common/utils';
 
 /**
  * Creates a peer and joins them into the room

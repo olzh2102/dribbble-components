@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { error } from '@common/utils';
+
 import { Nullable } from '@common/types';
+import { error } from '@common/utils';
 
 const useScreen = (stream: MediaStream) => {
   const [status, setStatus] = useState<
@@ -9,7 +10,7 @@ const useScreen = (stream: MediaStream) => {
   const [screenTrack, setScreenTrack] =
     useState<Nullable<MediaStreamTrack>>(null);
 
-  async function startShare(onended: () => void) {
+  async function startShare(onstarted: () => void, onended: () => void) {
     setStatus('loading');
 
     try {
@@ -22,6 +23,8 @@ const useScreen = (stream: MediaStream) => {
       setScreenTrack(screenTrack);
       stream.addTrack(screenTrack);
       setStatus('success');
+
+      onstarted();
 
       screenTrack.onended = () => {
         stopShare(screenTrack);

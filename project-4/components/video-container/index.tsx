@@ -1,6 +1,6 @@
 import { useContext } from 'react';
-import { MutedIcon } from 'assets/icons';
 
+import { MutedIcon } from 'assets/icons';
 import { UsersConnectionContext } from 'contexts/users-connection';
 import { UsersStateContext } from 'contexts/users-settings';
 

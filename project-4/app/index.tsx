@@ -1,20 +1,18 @@
 import { useContext, useEffect, useState } from 'react';
+
+import { ControlPanel, Chat, Status } from '@components/index';
+import { Streams, SharedScreenStream } from '@components/streams';
+import { usePeer, useScreen } from '@hooks/index';
+import useMediaStream from '@hooks/use-media-stream';
+import { SocketContext } from '@pages/_app';
+import { UsersSettingsProvider, UsersConnectionProvider } from 'contexts';
 import { useRouter } from 'next/router';
 import { MediaConnection } from 'peerjs';
 import { toast, ToastContainer } from 'react-toastify';
 
-import { UsersSettingsProvider, UsersConnectionProvider } from 'contexts';
-import { usePeer, useScreen } from '@hooks/index';
-
 import { LoaderError, Modal } from '@common/components';
 import { FAILURE_MSG, LOADER_PEER_MSG, TOAST_PROPS } from '@common/constants';
 import { Kind, PeerId } from '@common/types';
-
-import useMediaStream from '@hooks/use-media-stream';
-import { SocketContext } from '@pages/_app';
-
-import { ControlPanel, Chat, Status } from '@components/index';
-import { Streams, SharedScreenStream } from '@components/streams';
 
 export default function App({ stream }: { stream: MediaStream }) {
   const router = useRouter();
@@ -84,9 +82,13 @@ export default function App({ stream }: { stream: MediaStream }) {
           setFullscreen(false);
           toast('Stopped presenting screen');
         } else {
-          await startShare(() => socket.emit('user:stop-share-screen'));
-          socket.emit('user:share-screen');
-          toast('Starting presenting screen');
+          await startShare(
+            () => {
+              socket.emit('user:share-screen');
+              toast('Starting presenting screen');
+            },
+            () => socket.emit('user:stop-share-screen')
+          );
         }
         return;
       }
