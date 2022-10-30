@@ -1,19 +1,20 @@
 import { useContext } from 'react';
-import Tooltip from 'react-tooltip';
+
+import {
+  ChatAltIcon as ChatIcon,
+  ArrowsExpandIcon,
+} from '@heroicons/react/outline';
 import {
   VideoCameraIcon,
   MicrophoneIcon,
   PhoneMissedCallIcon as HangUpIcon,
   UploadIcon as ShareScreenIcon,
 } from '@heroicons/react/solid';
-import {
-  ChatAltIcon as ChatIcon,
-  ArrowsExpandIcon,
-} from '@heroicons/react/outline';
+import { UsersConnectionContext } from 'contexts/users-connection';
+import { UsersStateContext } from 'contexts/users-settings';
+import Tooltip from 'react-tooltip';
 
 import CrossLineDiv from '@common/components/cross-line-div';
-import { UsersStateContext } from 'contexts/users-settings';
-import { UsersConnectionContext } from 'contexts/users-connection';
 
 const ControlPanel = ({
   muted,
@@ -73,7 +74,7 @@ const ControlPanel = ({
         <Tooltip id="hangUp" effect="solid" />
 
         <button
-          onClick={() => onToggle('screen')}
+          onClick={async () => await onToggle('screen')}
           disabled={shared}
           className={`${common} ${
             screen

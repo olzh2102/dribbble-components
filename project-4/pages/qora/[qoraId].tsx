@@ -1,13 +1,13 @@
-import { NextPage, GetServerSidePropsContext, PreviewData } from 'next';
 import { createContext, useState } from 'react';
-import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 
-import { FAILURE_MSG, LOADER_STREAM_MSG } from '@common/constants';
-import { LoaderError } from '@common/components';
-import { useMediaStream } from '@hooks/index';
-
-import { Lobby } from '@components/index';
 import Room from '@app/index';
+import { withPageAuthRequired } from '@auth0/nextjs-auth0';
+import { Lobby } from '@components/index';
+import { useMediaStream } from '@hooks/index';
+import { NextPage, GetServerSidePropsContext, PreviewData } from 'next';
+
+import { LoaderError } from '@common/components';
+import { FAILURE_MSG, LOADER_STREAM_MSG } from '@common/constants';
 
 export const QoraContext = createContext<any>({});
 
