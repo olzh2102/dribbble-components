@@ -1,5 +1,5 @@
-import LangSwitcher from "~components/lang-switcher";
-import RoundedCorner from "~components/rounded-corner";
+import LangSwitcher from '~components/lang-switcher'
+import RoundedCorner from '~components/rounded-corner'
 
 export default function Page() {
   return (
@@ -7,5 +7,5 @@ export default function Page() {
       <div>Hi there</div>
       <LangSwitcher />
     </RoundedCorner>
-  );
+  )
 }
