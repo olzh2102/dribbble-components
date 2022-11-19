@@ -1,4 +1,4 @@
-import RoundedCorner from "../components/rounded-corner";
+import RoundedCorner from "~components/rounded-corner";
 
 export default function Page() {
   return (
