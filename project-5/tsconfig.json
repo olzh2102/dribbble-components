@@ -25,7 +25,9 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "~components/*": ["components/*"]
+      "~components/*": ["components/*"],
+      "~contexts/*": ["contexts/*"],
+      "~hooks/*": ["hooks/*"]
     }
   },
   "include": [
