@@ -1,7 +1,4 @@
-'use client'
-
 import { createContext, ReactNode } from 'react'
-import Loading from '../app/loading'
 import useTheme, { Theme } from '../hooks/use-theme'
 
 const DEFAULT_VALUES: { theme: Theme; setTheme: (_: Theme) => void } = {
@@ -12,9 +9,11 @@ const DEFAULT_VALUES: { theme: Theme; setTheme: (_: Theme) => void } = {
 export const ThemeContext = createContext(DEFAULT_VALUES)
 
 export default function ThemeProvider({ children }: { children: ReactNode }) {
-  const { theme, setTheme, isLoading } = useTheme(DEFAULT_VALUES.theme)
+  const { theme, setTheme } = useTheme()
 
-  if (isLoading) return <Loading />
-
-  return <ThemeContext.Provider value={{ theme, setTheme }}>{children}</ThemeContext.Provider>
+  return (
+    <ThemeContext.Provider value={{ theme: theme || DEFAULT_VALUES.theme, setTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  )
 }

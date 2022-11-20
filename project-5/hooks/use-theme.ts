@@ -2,29 +2,22 @@ import { useEffect, useState } from 'react'
 
 export type Theme = 'light' | 'dark'
 
-const useTheme = (defaultTheme: 'light' | 'dark') => {
-  const [status, setStatus] = useState<'loading' | 'success'>('loading')
-  const [theme, setTheme] = useState(defaultTheme)
+const useTheme = () => {
+  const [theme, setTheme] = useState<Theme | null>(null)
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme')
+    if (savedTheme) setTheme(savedTheme as 'light' | 'dark')
+  }, [])
 
-    if (savedTheme && status === 'loading') {
-      setTheme(savedTheme as 'light' | 'dark')
-    } else {
+  useEffect(() => {
+    if (theme) {
       document.documentElement.className = theme
       localStorage.setItem('theme', theme)
     }
+  }, [theme])
 
-    setStatus('success')
-  }, [status, theme])
-
-  return {
-    theme,
-    setTheme,
-    isLoading: status === 'loading',
-    isSuccess: status === 'success',
-  }
+  return { theme, setTheme }
 }
 
 export default useTheme
