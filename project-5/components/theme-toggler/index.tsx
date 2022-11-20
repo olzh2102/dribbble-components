@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
-
 import { MoonIcon, SunIcon } from '@heroicons/react/24/solid'
-import { ThemeContext } from '../../contexts/theme-provider'
+
+import { ThemeContext } from '~contexts/theme-provider'
 
 export default function ThemeToggler() {
   const { setTheme } = useContext(ThemeContext)
