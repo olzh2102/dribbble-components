@@ -1,5 +1,3 @@
-import React from "react";
-
 import LangSwitcher from "~components/lang-switcher";
 import RoundedCorner from "~components/rounded-corner";
 
