@@ -1,11 +1,18 @@
 import { NextPage } from 'next'
-import Head from 'next/head'
+import { useRouter } from "next/router";
+import Head from "next/head";
 
-import ThemeToggler from '~components/theme-toggler'
-import RoundedCorner from '~components/rounded-corner'
-import LangToggler from '~components/lang-toggler'
+import lang from "common/lang.json";
+import { Lang } from "common/types";
+
+import ThemeToggler from "~components/theme-toggler";
+import LangToggler from "~components/lang-toggler";
+import RoundedCorner from "~components/rounded-corner";
 
 const Home: NextPage = () => {
+  const locale = useRouter().locale;
+  const t = lang[locale as Lang];
+
   return (
     <div>
       <Head>
@@ -15,9 +22,10 @@ const Home: NextPage = () => {
       <RoundedCorner>
         <ThemeToggler />
         <LangToggler />
+        <div className="place-content-center">{t.welcome}</div>
       </RoundedCorner>
     </div>
-  )
-}
+  );
+};
 
 export default Home
