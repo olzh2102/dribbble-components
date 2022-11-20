@@ -1,13 +1,9 @@
-import React, { useContext, useState } from "react";
-
 import { LANG } from "common/constants";
 import { Lang } from "common/types";
-import { LangContext } from "~contexts/lang-provider";
-import { useRouter } from "next/router";
+import useLang from "~hooks/use-lang";
 
 export default function LangToggler() {
-  const lang = useRouter().locale;
-  const { setLang } = useContext(LangContext);
+  const [lang, setLang] = useLang();
 
   return (
     <>
