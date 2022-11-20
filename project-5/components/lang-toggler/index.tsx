@@ -13,6 +13,7 @@ export default function LangToggler() {
         type="radio"
         name="lang"
         id="english"
+        role="radio-en"
         value={LANG.EN}
         checked={lang == LANG.EN}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -32,6 +33,7 @@ export default function LangToggler() {
         type="radio"
         name="lang"
         id="german"
+        role="radio-de"
         value={LANG.DE}
         checked={lang == LANG.DE}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -52,6 +54,7 @@ export default function LangToggler() {
         type="radio"
         name="lang"
         id="russian"
+        role="radio-ru"
         value={LANG.RU}
         checked={lang == LANG.RU}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
