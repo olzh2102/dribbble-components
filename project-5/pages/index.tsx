@@ -3,6 +3,7 @@ import Head from 'next/head'
 
 import ThemeToggler from '~components/theme-toggler'
 import RoundedCorner from '~components/rounded-corner'
+import LangToggler from '~components/lang-toggler'
 
 const Home: NextPage = () => {
   return (
@@ -13,6 +14,7 @@ const Home: NextPage = () => {
       </Head>
       <RoundedCorner>
         <ThemeToggler />
+        <LangToggler />
       </RoundedCorner>
     </div>
   )
