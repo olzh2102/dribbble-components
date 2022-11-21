@@ -4,6 +4,7 @@ import Head from 'next/head'
 import ThemeToggler from '~components/theme-toggler'
 import RoundedCorner from '~components/rounded-corner'
 import LangToggler from '~components/lang-toggler'
+import CurrentTime from '~components/current-time'
 
 const Home: NextPage = () => {
   return (
@@ -13,8 +14,13 @@ const Home: NextPage = () => {
         <meta name="description" content="NR" />
       </Head>
       <RoundedCorner>
-        <ThemeToggler />
-        <LangToggler />
+        <div className="flex gap-x-5">
+          <CurrentTime />
+          <div>
+            <LangToggler />
+          </div>
+          <ThemeToggler />
+        </div>
       </RoundedCorner>
     </div>
   )
