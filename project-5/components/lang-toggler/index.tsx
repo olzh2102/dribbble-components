@@ -1,8 +1,8 @@
+import { useContext } from "react";
+
 import { LANG } from "common/constants";
 import { Lang } from "common/types";
-import { useContext } from "react";
 import { LangContext } from "~contexts/lang-provider";
-import useLang from "~hooks/use-lang";
 
 export default function LangToggler({ lang }: { lang: Lang }) {
   const setLang = useContext(LangContext);
