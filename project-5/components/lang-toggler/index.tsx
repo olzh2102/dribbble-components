@@ -3,7 +3,7 @@ import { Lang } from "common/types";
 import useLang from "~hooks/use-lang";
 
 export default function LangToggler() {
-  const [lang, setLang] = useLang();
+  const { lang, setLang } = useLang();
   
   return (
     <>

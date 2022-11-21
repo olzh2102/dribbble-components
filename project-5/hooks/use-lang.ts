@@ -7,5 +7,5 @@ export default function useLang() {
   const lang = useRouter().locale;
   const { setLang } = useContext(LangContext);
 
-  return [lang, setLang];
+  return { lang, setLang };
 }
