@@ -1,5 +1,7 @@
 import { createContext, ReactNode } from 'react'
-import useTheme, { Theme } from '~hooks/use-theme'
+
+import useTheme from '~hooks/use-theme'
+import { Theme } from 'common/types'
 
 const DEFAULT_VALUES: { theme: Theme; setTheme: (_: Theme) => void } = {
   theme: 'light',

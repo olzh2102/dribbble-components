@@ -8,6 +8,7 @@ import { Lang } from "common/types";
 import ThemeToggler from "~components/theme-toggler";
 import LangToggler from "~components/lang-toggler";
 import RoundedCorner from "~components/rounded-corner";
+import CurrentTime from '~components/current-time';
 
 const Home: NextPage = () => {
   const locale = useRouter().locale;
@@ -20,12 +21,17 @@ const Home: NextPage = () => {
         <meta name="description" content="NR" />
       </Head>
       <RoundedCorner>
-        <ThemeToggler />
-        <LangToggler />
-        <div className="place-content-center">{t.welcome}</div>
+        <div className="flex gap-x-5">
+          <CurrentTime />
+          <div>
+            <LangToggler />
+            <div className="place-content-center">{t.welcome}</div>
+          </div>
+          <ThemeToggler />
+        </div>
       </RoundedCorner>
     </div>
-  );
-};
+  )
+}
 
 export default Home

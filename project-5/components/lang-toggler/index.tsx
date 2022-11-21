@@ -4,7 +4,7 @@ import useLang from "~hooks/use-lang";
 
 export default function LangToggler() {
   const [lang, setLang] = useLang();
-
+  
   return (
     <>
       {/* english */}

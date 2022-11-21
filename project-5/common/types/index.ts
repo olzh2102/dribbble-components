@@ -5,3 +5,4 @@ export type LangContextType = {
   setLang: (lang: Lang) => void;
 };
 
+export type Theme = 'light' | 'dark'
