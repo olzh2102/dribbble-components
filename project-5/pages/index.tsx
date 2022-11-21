@@ -1,12 +1,23 @@
 import { NextPage } from 'next'
-import Head from 'next/head'
+import { useRouter } from "next/router";
+import Head from "next/head";
+import dynamic from "next/dynamic";
 
-import ThemeToggler from '~components/theme-toggler'
-import RoundedCorner from '~components/rounded-corner'
-import LangToggler from '~components/lang-toggler'
-import CurrentTime from '~components/current-time'
+import lang from "common/lang.json";
+import { Lang } from "common/types";
+
+import ThemeToggler from "~components/theme-toggler";
+import LangToggler from "~components/lang-toggler";
+import RoundedCorner from "~components/rounded-corner";
+
+const CurrentTime = dynamic(() => import("~components/current-time"), {
+  ssr: false,
+});
 
 const Home: NextPage = () => {
+  const locale = useRouter().locale;
+  const t = lang[locale as Lang];
+
   return (
     <div>
       <Head>
@@ -18,12 +29,13 @@ const Home: NextPage = () => {
           <CurrentTime />
           <div>
             <LangToggler />
+            <span className="place-content-center">{t.welcome}</span>
           </div>
           <ThemeToggler />
         </div>
       </RoundedCorner>
     </div>
-  )
-}
+  );
+};
 
 export default Home

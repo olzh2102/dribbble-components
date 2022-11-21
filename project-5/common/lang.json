@@ -1,0 +1,11 @@
+{
+    "en": {
+        "welcome": "Hi there!"
+    },
+    "de": {
+        "welcome": "Hallo da!"
+    },
+    "ru": {
+        "welcome": "Привет!"
+    }
+}

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+
 import { Theme } from 'common/types'
 
 const useTheme = () => {
