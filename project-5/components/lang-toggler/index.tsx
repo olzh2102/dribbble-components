@@ -1,15 +1,17 @@
 import { LANG } from "common/constants";
 import { Lang } from "common/types";
+import { useContext } from "react";
+import { LangContext } from "~contexts/lang-provider";
 import useLang from "~hooks/use-lang";
 
-export default function LangToggler() {
-  const { lang, setLang } = useLang();
-  
+export default function LangToggler({ lang }: { lang: Lang }) {
+  const setLang = useContext(LangContext);
+
   return (
     <>
       {/* english */}
       <input
-        className="hidden peer/en"
+        className={`hidden peer/en ${lang == LANG.EN ? "checked" : ""}`}
         type="radio"
         name="lang"
         id="english"
@@ -29,16 +31,17 @@ export default function LangToggler() {
       <span className="text-slate-400">/</span>
       {/* german */}
       <input
-        className="hidden peer/de"
+        className={`hidden peer/de ${lang == LANG.DE ? "checked" : ""}`}
         type="radio"
         name="lang"
         id="german"
         role="radio-de"
         value={LANG.DE}
         checked={lang == LANG.DE}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setLang(e.target.value as Lang)
-        }
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          console.log("am i clicked?");
+          setLang(e.target.value as Lang);
+        }}
       />
       <label
         htmlFor="german"
@@ -50,7 +53,7 @@ export default function LangToggler() {
       <span className="text-slate-400">/</span>
       {/* russian */}
       <input
-        className="hidden peer/ru"
+        className={`hidden peer/ru ${lang == LANG.RU ? "checked" : ""}`}
         type="radio"
         name="lang"
         id="russian"
