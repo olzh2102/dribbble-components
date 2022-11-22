@@ -1,18 +1,21 @@
+import { useContext } from "react";
+
 import { LANG } from "common/constants";
 import { Lang } from "common/types";
-import useLang from "~hooks/use-lang";
+import { LangContext } from "~contexts/lang-provider";
 
-export default function LangToggler() {
-  const { lang, setLang } = useLang();
-  
+export default function LangToggler({ lang }: { lang: Lang }) {
+  const setLang = useContext(LangContext);
+
   return (
     <>
       {/* english */}
       <input
-        className="hidden peer/en"
+        className={`hidden peer/en ${lang == LANG.EN ? "checked" : ""}`}
         type="radio"
         name="lang"
         id="english"
+        role="radio-en"
         value={LANG.EN}
         checked={lang == LANG.EN}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -28,15 +31,17 @@ export default function LangToggler() {
       <span className="text-slate-400">/</span>
       {/* german */}
       <input
-        className="hidden peer/de"
+        className={`hidden peer/de ${lang == LANG.DE ? "checked" : ""}`}
         type="radio"
         name="lang"
         id="german"
+        role="radio-de"
         value={LANG.DE}
         checked={lang == LANG.DE}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setLang(e.target.value as Lang)
-        }
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          console.log("am i clicked?");
+          setLang(e.target.value as Lang);
+        }}
       />
       <label
         htmlFor="german"
@@ -48,10 +53,11 @@ export default function LangToggler() {
       <span className="text-slate-400">/</span>
       {/* russian */}
       <input
-        className="hidden peer/ru"
+        className={`hidden peer/ru ${lang == LANG.RU ? "checked" : ""}`}
         type="radio"
         name="lang"
         id="russian"
+        role="radio-ru"
         value={LANG.RU}
         checked={lang == LANG.RU}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>

@@ -28,7 +28,7 @@ const Home: NextPage = () => {
         <div className="flex gap-x-5">
           <CurrentTime />
           <div>
-            <LangToggler />
+            <LangToggler lang={locale as Lang} />
             <span className="place-content-center">{t.welcome}</span>
           </div>
           <ThemeToggler />
