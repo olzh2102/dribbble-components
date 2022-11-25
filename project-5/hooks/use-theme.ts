@@ -7,7 +7,7 @@ const useTheme = () => {
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme')
-    if (savedTheme) setTheme(savedTheme as 'light' | 'dark')
+    if (savedTheme) setTheme(savedTheme as Theme)
   }, [])
 
   useEffect(() => {
