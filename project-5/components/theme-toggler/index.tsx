@@ -24,6 +24,7 @@ export default function ThemeToggler() {
         transition={transition}
         className="absolute top-0 left-0"
         onClick={() => setTheme('light')}
+        role="sun-btn"
       >
         <SunIcon className="h-6 w-6 text-white" />
       </motion.button>
@@ -33,6 +34,7 @@ export default function ThemeToggler() {
         transition={transition}
         className="absolute top-0 left-0"
         onClick={() => setTheme('dark')}
+        role="moon-btn"
       >
         <MoonIcon className="h-5 w-5 text-slate-900" />
       </motion.button>
