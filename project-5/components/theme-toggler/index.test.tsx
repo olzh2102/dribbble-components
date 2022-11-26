@@ -1,6 +1,13 @@
 import { fireEvent, render, screen } from 'common/utils/test-utils'
 import ThemeToggler from '.'
 
+// * Audio mock
+const audioPlay = jest.fn()
+global.Audio = jest.fn().mockImplementation(() => ({
+  play: audioPlay
+}))
+
+
 jest.mock('next/router', () => ({
   useRouter: jest.fn(() => ({
     push: () => {},
@@ -18,6 +25,8 @@ describe('Theme Toggler Component', () => {
 
     const btn = screen.getByRole('moon-btn')
     fireEvent.click(btn)
+
+    expect(audioPlay).toHaveBeenCalled();
 
     const isDark = document.documentElement.classList.contains('dark')
     expect(isDark).toBe(true)
