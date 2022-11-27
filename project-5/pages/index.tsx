@@ -25,13 +25,13 @@ const Home: NextPage = () => {
         <meta name="description" content="NR" />
       </Head>
       <RoundedCorner>
-        <div className="flex gap-x-5">
+        <div className="flex gap-x-5 justify-end px-6">
           <CurrentTime />
-          <div>
-            <LangToggler lang={locale as Lang} />
-            <span className="place-content-center">{t.welcome}</span>
-          </div>
+          <LangToggler lang={locale as Lang} />
           <ThemeToggler />
+        </div>
+        <div className="grid h-full place-content-center text-5xl dark:text-white">
+          {t.welcome}
         </div>
       </RoundedCorner>
     </div>
