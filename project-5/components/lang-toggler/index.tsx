@@ -39,7 +39,6 @@ export default function LangToggler({ lang }: { lang: Lang }) {
         value={LANG.DE}
         checked={lang == LANG.DE}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-          console.log("am i clicked?");
           setLang(e.target.value as Lang);
         }}
       />
