@@ -8,7 +8,7 @@ export default function LangToggler({ lang }: { lang: Lang }) {
   const setLang = useContext(LangContext);
 
   return (
-    <>
+    <div>
       {/* english */}
       <input
         className={`hidden peer/en ${lang == LANG.EN ? "checked" : ""}`}
@@ -70,6 +70,6 @@ export default function LangToggler({ lang }: { lang: Lang }) {
         {" "}
         ru
       </label>
-    </>
+    </div>
   );
 }

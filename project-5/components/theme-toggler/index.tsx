@@ -32,7 +32,7 @@ export default function ThemeToggler() {
   }
 
   return (
-    <div className="relative">
+    <div className="relative mt-0.5">
       <motion.button
         animate={theme === "light" ? "hidden" : "show"}
         variants={variants}
