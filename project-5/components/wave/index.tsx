@@ -1,35 +1,29 @@
+import { useContext, useRef } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
-import { useRef, useState } from 'react'
-import * as THREE from 'three'
 
-import { WaveMaterial } from '../../common/WaveMaterial'
+import { ThemeContext } from '~contexts/theme-provider'
+import WaveMaterial from './WaveMaterial'
 
 const Wave = () => {
-  const ref = useRef<any>()
+  const { theme } = useContext(ThemeContext)
+
+  const ref = useRef<{ time: number; colorStart: string; colorEnd: string }>()
   const { width, height } = useThree((state) => state.viewport)
 
-  const [hovered, setHover] = useState(false)
-
   useFrame((state, delta) => {
-    // ref.current.colorStart = hovered ? new THREE.Color('#3f5153') : new THREE.Color('#505050')
-    // ref.current.noiseAmplitude = state.mouse.x / state.mouse.y / 10
-    ref.current.time += delta * 2
+    if (ref.current) ref.current.time += delta
   })
 
   return (
-    <mesh
-      scale={[width, height, 1]}
-      onPointerOver={() => setHover(true)}
-      onPointerOut={() => setHover(false)}
-    >
+    <mesh scale={[width, height, 1]}>
       <planeGeometry />
+      {/* @ts-ignore */}
       <waveMaterial
         ref={ref}
         key={WaveMaterial.key}
         toneMapped={true}
-        noiseAmplitude={3.0}
-        colorStart="#505050"
-        colorEnd="#f1f1f1"
+        colorStart={theme === 'dark' ? '#505050' : '#94d1be'}
+        colorEnd={theme === 'dark' ? '#f1f1f1' : '#fff'}
       />
     </mesh>
   )

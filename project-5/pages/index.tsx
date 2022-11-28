@@ -1,4 +1,3 @@
-import { useContext } from 'react'
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
@@ -11,8 +10,6 @@ import { Lang } from 'common/types'
 import ThemeToggler from '~components/theme-toggler'
 import LangToggler from '~components/lang-toggler'
 import RoundedCorner from '~components/rounded-corner'
-
-import { ThemeContext } from '~contexts/theme-provider'
 import Wave from '~components/wave'
 
 const CurrentTime = dynamic(() => import('~components/current-time'), {
@@ -23,8 +20,6 @@ const Home: NextPage = () => {
   const locale = useRouter().locale
   const t = lang[locale as Lang]
 
-  const { theme } = useContext(ThemeContext)
-
   return (
     <div>
       <Head>
@@ -33,7 +28,7 @@ const Home: NextPage = () => {
       </Head>
       <RoundedCorner>
         <div className="absolute top-0 left-0 w-full h-full">
-          <Canvas className="rounded-xl" orthographic camera={{ position: [0, 0, 100], zoom: 100 }}>
+          <Canvas className="rounded-xl" orthographic camera={{ position: [0, 0, 1] }}>
             <Wave />
           </Canvas>
         </div>
