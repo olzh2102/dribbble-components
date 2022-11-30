@@ -22,11 +22,11 @@ const Wave = () => {
         ref={ref}
         key={WaveMaterial.key}
         toneMapped={true}
-        colorStart={theme === 'dark' ? '#505050' : '#94d1be'}
-        colorEnd={theme === 'dark' ? '#f1f1f1' : '#fff'}
+        colorStart={theme === "dark" ? "#505050" : "#a9bcd0"}
+        colorEnd={theme === "dark" ? "#f1f1f1" : "#ffffff"}
       />
     </mesh>
-  )
+  );
 }
 
 export default Wave
