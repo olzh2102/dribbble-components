@@ -26,13 +26,13 @@ const Home: NextPage = () => {
         <title>NR</title>
         <meta name="description" content="NR" />
       </Head>
+      <div className="absolute top-0 left-0 w-full h-full p-3">
+        <Canvas className="rounded-xl" orthographic camera={{ position: [0, 0, 1] }}>
+          <Wave />
+        </Canvas>
+      </div>
       <RoundedCorner>
-        <div className="absolute top-0 left-0 w-full h-full">
-          <Canvas className="rounded-xl" orthographic camera={{ position: [0, 0, 1] }}>
-            <Wave />
-          </Canvas>
-        </div>
-        <div className="absolute flex gap-x-5 justify-end px-6">
+        <div className="flex gap-x-5 justify-end px-6">
           <CurrentTime />
           <LangToggler lang={locale as Lang} />
           <ThemeToggler />

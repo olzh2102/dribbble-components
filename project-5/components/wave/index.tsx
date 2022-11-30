@@ -2,7 +2,7 @@ import { useContext, useRef } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 
 import { ThemeContext } from '~contexts/theme-provider'
-import WaveMaterial from './WaveMaterial'
+import WaveMaterial from './wave-material'
 
 const Wave = () => {
   const { theme } = useContext(ThemeContext)
