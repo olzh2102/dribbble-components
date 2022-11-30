@@ -23,7 +23,6 @@
     "framer-motion": "^7.6.9",
     "glsl-noise": "^0.0.0",
     "glslify": "^7.1.1",
-    "maath": "^0.4.2",
     "next": "13.0.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",

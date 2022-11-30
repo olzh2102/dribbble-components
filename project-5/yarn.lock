@@ -5114,11 +5114,6 @@ lz-string@^1.4.4:
   resolved "https://registry.yarnpkg.com/lz-string/-/lz-string-1.4.4.tgz#c0d8eaf36059f705796e1e344811cf4c498d3a26"
   integrity sha512-0ckx7ZHRPqb0oUm8zNr+90mtf9DQB60H1wMCjBtfi62Kl3a7JbHob6gA2bC+xRvZoOL+1hzUK8jeuEIQE8svEQ==
 
-maath@^0.4.2:
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/maath/-/maath-0.4.2.tgz#379efb3d2fd46bb557333eabb41e4a1d2cbd2766"
-  integrity sha512-9vd9AzZY7XLM159LNyWF6v2Lu1lsnjPMlzdGy3pMKxTUg0mWePdyHjfhNi439RpLZCR33hDkdbxbbsmjWyqhIA==
-
 magic-string@^0.25.0, magic-string@^0.25.7:
   version "0.25.9"
   resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.25.9.tgz#de7f9faf91ef8a1c91d02c2e5314c8277dbcdd1c"
