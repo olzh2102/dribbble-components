@@ -1,8 +1,4 @@
-const plugins = require("next-compose-plugins");
-const withBundleAnalyzer = require("@next/bundle-analyzer")({
-  enabled: process.env.ANALYZE === "true",
-});
-const withOffline = require("next-offline");
+/** @type {import('next').NextConfig} */
 
 const nextConfig = {
   webpack(config) {
@@ -19,22 +15,17 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   i18n: {
-    locales: ['en', 'de', 'ru'],
-    defaultLocale: 'en'
+    locales: ["en", "de", "ru"],
+    defaultLocale: "en",
   },
-}
-
-module.exports = plugins(
-  [
-    // Setup Offline Support
-    // This requires the `public` folder with a `manifest.json`
-    [
-      withOffline,
+  experimental: {
+    fontLoaders: [
       {
-        // Optional offline config
+        loader: "@next/font/google",
+        options: { subsets: ["latin", "cyrillic"] },
       },
     ],
-    withBundleAnalyzer,
-  ],
-  nextConfig
-);
+  },
+};
+
+module.exports = nextConfig;

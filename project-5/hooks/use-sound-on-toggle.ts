@@ -11,8 +11,12 @@ export default function useSoundOnToggle({
   const [playOff, setPlayOff] = useState<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    setPlayOff(new Audio(pathOff));
-    setPlayOn(new Audio(pathOn));
+    const pathOffAudio = new Audio(pathOff);
+    pathOffAudio.volume = 0.2;
+    setPlayOff(pathOffAudio);
+    const pathOnAudio = new Audio(pathOn);
+    pathOnAudio.volume = 0.2;
+    setPlayOn(pathOnAudio);
   }, []);
 
   return {
