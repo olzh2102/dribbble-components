@@ -1,20 +1,18 @@
-import { useEffect, useState } from "react";
-import { formatTimeHHMM } from "common/utils";
+import { useEffect, useState } from 'react'
+import { formatTimeHHMM } from 'common/utils'
 
 export default function CurrentTime() {
-  const [time, setTime] = useState(Date.now());
+  const [time, setTime] = useState(Date.now())
 
   useEffect(() => {
     const handlerId = setInterval(() => {
-      setTime(Date.now());
-    }, 1000);
+      setTime(Date.now())
+    }, 1000)
 
     return () => {
-      clearInterval(handlerId);
-    };
-  }, []);
+      clearInterval(handlerId)
+    }
+  }, [])
 
-  return (
-    <span className="text-black dark:text-white">{formatTimeHHMM(time)}</span>
-  );
+  return <span>{formatTimeHHMM(time)}</span>
 }
