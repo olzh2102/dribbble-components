@@ -10,6 +10,7 @@ const WaveMaterial = shaderMaterial(
     time: 0,
     colorStart: new THREE.Color('#505050'),
     colorEnd: new THREE.Color('black'),
+    noiseAmplitude: 1,
   },
   vertex,
   fragment

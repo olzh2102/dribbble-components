@@ -27,7 +27,7 @@ const Home: NextPage = () => {
         <meta name="description" content="NR" />
       </Head>
       <div className="absolute top-0 left-0 w-full h-full p-3">
-        <Canvas className="rounded-xl" orthographic camera={{ position: [0, 0, 1] }}>
+        <Canvas className="rounded-xl" camera={{ position: [0, 0, 1] }}>
           <Wave />
         </Canvas>
       </div>
