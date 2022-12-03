@@ -7,7 +7,7 @@ export default function RoundedCorner({ children }: { children: React.ReactNode 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
-        className="relative w-full h-full p-3 rounded-xl bg-transparent"
+        className="relative w-full h-full p-3 rounded-xl"
       >
         {children}
       </motion.div>

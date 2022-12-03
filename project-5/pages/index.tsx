@@ -32,12 +32,14 @@ const Home: NextPage = () => {
         </Canvas>
       </div>
       <RoundedCorner>
-        <div className="flex gap-x-5 justify-end px-6  pointer-events-auto">
+        <div className="flex gap-x-5 justify-end px-6 pointer-events-auto text-black dark:text-white dark:mix-blend-exclusion">
           <CurrentTime />
           <LangToggler lang={locale as Lang} />
           <ThemeToggler />
         </div>
-        <div className="grid h-full place-content-center text-5xl dark:text-white">{t.welcome}</div>
+        <div className="grid h-full place-content-center text-5xl dark:text-white dark:mix-blend-exclusion">
+          {t.welcome}
+        </div>
       </RoundedCorner>
     </div>
   )
