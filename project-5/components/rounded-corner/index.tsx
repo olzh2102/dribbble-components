@@ -1,12 +1,8 @@
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion'
 
-export default function RoundedCorner({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RoundedCorner({ children }: { children: React.ReactNode }) {
   return (
-    <div className="w-full h-full p-3 bg-[#1b1b1e] dark:bg-white">
+    <div className="w-full h-full p-3 bg-[#1b1b1e] dark:bg-white pointer-events-none">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -16,5 +12,5 @@ export default function RoundedCorner({
         {children}
       </motion.div>
     </div>
-  );
+  )
 }
