@@ -5,18 +5,18 @@ import dynamic from 'next/dynamic'
 import { Canvas } from '@react-three/fiber'
 
 import lang from 'common/lang.json'
-import { Lang } from 'common/types'
+import { Lang, PageWithWaveCanvas } from "common/types";
 
-import ThemeToggler from '~components/theme-toggler'
-import LangToggler from '~components/lang-toggler'
-import RoundedCorner from '~components/rounded-corner'
-import Wave from '~components/wave'
+import ThemeToggler from "~components/theme-toggler";
+import LangToggler from "~components/lang-toggler";
+import RoundedCorner from "~components/rounded-corner";
+import Wave from "~components/wave";
 
 const CurrentTime = dynamic(() => import("~components/current-time"), {
   ssr: false,
 });
 
-const Home: NextPage & { waveBackground: boolean } = () => {
+const Home: PageWithWaveCanvas = () => {
   const locale = useRouter().locale;
   const t = lang[locale as Lang];
 
@@ -47,4 +47,4 @@ const Home: NextPage & { waveBackground: boolean } = () => {
 
 export default Home;
 
-Home.waveBackground = false;
+Home.waveBackground = true;
