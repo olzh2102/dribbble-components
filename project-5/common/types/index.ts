@@ -8,5 +8,4 @@ export type LangContextType = {
 };
 
 export type Theme = "light" | "dark";
-export type Page<T = {}> = NextPage & T;
-export type PageWithWaveCanvas = Page<{ waveBackground: boolean }>;
+export type Page = NextPage & { waveBackground?: boolean };

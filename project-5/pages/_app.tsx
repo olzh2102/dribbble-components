@@ -4,7 +4,7 @@ import { Rubik } from "@next/font/google";
 
 import ThemeProvider from "~contexts/theme-provider";
 import LangProvider from "~contexts/lang-provider";
-import { PageWithWaveCanvas } from "common/types";
+import { Page } from "common/types";
 
 import "../styles/globals.css";
 
@@ -13,7 +13,7 @@ const font = Rubik();
 export default function App({
   Component,
   pageProps,
-}: AppProps & { Component: NextComponentType & PageWithWaveCanvas }) {
+}: AppProps & { Component: NextComponentType & Page }) {
   // TODO: remove console once header and canvas components are rendered inside this file
   console.log(
     "With Canvas Wave Background: ",

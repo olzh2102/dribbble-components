@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic'
 import { Canvas } from '@react-three/fiber'
 
 import lang from 'common/lang.json'
-import { Lang, PageWithWaveCanvas } from "common/types";
+import { Lang, Page } from "common/types";
 
 import ThemeToggler from "~components/theme-toggler";
 import LangToggler from "~components/lang-toggler";
@@ -16,7 +16,7 @@ const CurrentTime = dynamic(() => import("~components/current-time"), {
   ssr: false,
 });
 
-const Home: PageWithWaveCanvas = () => {
+const Home: Page = () => {
   const locale = useRouter().locale;
   const t = lang[locale as Lang];
 
