@@ -32,7 +32,7 @@ export default function ThemeToggler() {
   }
 
   return (
-    <div className="relative mt-0.5">
+    <div className="relative">
       <motion.button
         animate={theme === 'light' ? 'hidden' : 'show'}
         variants={variants}
@@ -47,7 +47,7 @@ export default function ThemeToggler() {
         animate={theme === 'dark' ? 'hidden' : 'show'}
         variants={variants}
         transition={transition}
-        className="absolute top-0 left-0"
+        className="absolute top-0.5 left-0"
         onClick={toDark}
         role="moon-btn"
       >
