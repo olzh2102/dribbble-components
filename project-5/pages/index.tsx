@@ -12,13 +12,13 @@ import LangToggler from '~components/lang-toggler'
 import RoundedCorner from '~components/rounded-corner'
 import Wave from '~components/wave'
 
-const CurrentTime = dynamic(() => import('~components/current-time'), {
+const CurrentTime = dynamic(() => import("~components/current-time"), {
   ssr: false,
-})
+});
 
-const Home: NextPage = () => {
-  const locale = useRouter().locale
-  const t = lang[locale as Lang]
+const Home: NextPage & { waveBackground: boolean } = () => {
+  const locale = useRouter().locale;
+  const t = lang[locale as Lang];
 
   return (
     <div>
@@ -42,7 +42,9 @@ const Home: NextPage = () => {
         </div>
       </RoundedCorner>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
+
+Home.waveBackground = false;

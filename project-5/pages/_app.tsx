@@ -5,10 +5,20 @@ import ThemeProvider from "~contexts/theme-provider";
 import LangProvider from "~contexts/lang-provider";
 
 import "../styles/globals.css";
+import { NextComponentType } from "next";
 
 const font = Rubik();
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({
+  Component,
+  pageProps,
+}: AppProps & { Component: NextComponentType & { waveBackground: boolean } }) {
+  console.log(
+    "With Canvas Wave Background: ",
+    Component.waveBackground
+      ? "Yes, render the page with canvas wave background"
+      : "No, I am good without"
+  );
   return (
     <>
       <style jsx global>{`
