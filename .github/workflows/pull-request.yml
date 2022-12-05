@@ -1,0 +1,31 @@
+name: Pull Request Check
+
+concurrency:
+  group: ${{github.workflow}}-${{github.head_ref}}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    types: [review_requested]
+  push:
+    branches:
+      - 'config/gha-unit-tests'
+
+jobs:
+  unit-test:
+    name: 🧪 Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout the branch
+        uses: actions/checkout@v3
+
+      - name: 🗃 Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: npm-deps-${{ hashFiles('./project-5/package-lock.json') }}
+
+      - name: 🛠 Install dependencies
+        run: npm ci
+
+
