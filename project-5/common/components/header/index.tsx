@@ -13,8 +13,6 @@ export default function Header({ children }: { children: ReactNode }) {
   const t = lang[locale as Lang]
   const { route } = useRouter()
 
-  console.log(route)
-
   return (
     <header className="flex justify-between pointer-events-auto mt-4 items-center">
       <nav>
