@@ -14,6 +14,9 @@ module.exports = {
           100: 'red',
           200: 'green'
         },
+      },
+      boxShadow: {
+        'active-menu-item': '0 0 3px 2px #7770ff'
       }
     },
   },
