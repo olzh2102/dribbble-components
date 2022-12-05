@@ -15,6 +15,11 @@ jobs:
   unit-test:
     name: 🧪 Unit Tests
     runs-on: ubuntu-latest
+    env:
+      working-directory: project-5
+    defaults:
+      run:
+        working-directory: ${{ env.working-directory }}
     steps:
       - name: ⬇️ Checkout the branch
         uses: actions/checkout@v3
@@ -22,11 +27,10 @@ jobs:
       - name: 🗃 Cache dependencies
         uses: actions/cache@v3
         with:
-          path: '**/project-5/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/project-5/yarn.lock') }}
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: 🛠 Install dependencies
-        working-directory: project-5
         run: yarn
 
       - name: 🚦 Run Tests
