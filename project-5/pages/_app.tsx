@@ -1,9 +1,11 @@
 import type { AppProps } from 'next/app'
+import { NextComponentType } from 'next'
 import { Canvas } from '@react-three/fiber'
 import { Rubik } from '@next/font/google'
 
 import ThemeProvider from '~contexts/theme-provider'
 import LangProvider from '~contexts/lang-provider'
+import { Page } from 'common/types'
 
 import '../styles/globals.css'
 import RoundedCorner from '~components/rounded-corner'
@@ -22,7 +24,10 @@ const CurrentTime = dynamic(() => import('~components/current-time'), {
 
 const font = Rubik()
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({
+  Component,
+  pageProps,
+}: AppProps & { Component: NextComponentType & Page }) {
   const locale = useRouter().locale
 
   return (
@@ -40,12 +45,14 @@ export default function App({ Component, pageProps }: AppProps) {
 
       <LangProvider>
         <ThemeProvider>
-          <div className="absolute top-0 left-0 w-full h-full p-3">
-            <Canvas className="rounded-xl" camera={{ position: [0, 0, 1] }}>
-              <Wave />
-            </Canvas>
-          </div>
-          <RoundedCorner>
+          {Component.waveBackground && (
+            <div className="absolute top-0 left-0 w-full h-full p-3">
+              <Canvas className="rounded-xl" camera={{ position: [0, 0, 1] }}>
+                <Wave />
+              </Canvas>
+            </div>
+          )}
+          <RoundedCorner waveBackground={!!Component.waveBackground}>
             <Header>
               <CurrentTime />
               <LangToggler lang={locale as Lang} />
