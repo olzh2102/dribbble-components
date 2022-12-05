@@ -22,10 +22,12 @@ jobs:
       - name: 🗃 Cache dependencies
         uses: actions/cache@v3
         with:
-          path: ~/.npm
-          key: npm-deps-${{ hashFiles('./project-5/yarn.lock') }}
+          path: '**/project-5/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/project-5/yarn.lock') }}
 
       - name: 🛠 Install dependencies
-        run: cd project-5 && npm ci
+        working-directory: project-5
+        run: yarn
 
-
+      - name: 🚦 Run Tests
+        run: yarn test:ci
