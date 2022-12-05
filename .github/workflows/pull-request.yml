@@ -24,6 +24,8 @@ jobs:
       - name: ⬇️ Checkout the branch
         uses: actions/checkout@v3
 
+      - run: pwd
+
       - name: 🗃 Cache dependencies
         uses: actions/cache@v3
         with:
@@ -31,6 +33,7 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: 🛠 Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
         run: yarn
 
       - name: 🚦 Run Tests
