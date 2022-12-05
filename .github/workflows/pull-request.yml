@@ -23,7 +23,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.npm
-          key: npm-deps-${{ hashFiles('./project-5/package-lock.json') }}
+          key: npm-deps-${{ hashFiles('./project-5/yarn.lock') }}
 
       - name: 🛠 Install dependencies
         run: cd project-5 && npm ci
