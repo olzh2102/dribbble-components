@@ -7,10 +7,7 @@ concurrency:
 on:
   pull_request:
     types: [review_requested]
-  push:
-    branches:
-      - 'config/gha-unit-tests'
-
+    
 jobs:
   unit-test:
     name: 🧪 Unit Tests
@@ -24,6 +21,7 @@ jobs:
       - name: ⬇️ Checkout the branch
         uses: actions/checkout@v3
 
+      # make visible what directory job runs in
       - run: pwd
 
       - name: 🗃 Cache dependencies
