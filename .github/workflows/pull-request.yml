@@ -1,0 +1,38 @@
+name: Pull Request Check
+
+concurrency:
+  group: ${{github.workflow}}-${{github.head_ref}}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    types: [review_requested]
+    
+jobs:
+  unit-test:
+    name: 🧪 Unit Tests
+    runs-on: ubuntu-latest
+    env:
+      working-directory: project-5
+    defaults:
+      run:
+        working-directory: ${{ env.working-directory }}
+    steps:
+      - name: ⬇️ Checkout the branch
+        uses: actions/checkout@v3
+
+      # make visible what directory job runs in
+      - run: pwd
+
+      - name: 🗃 Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: 🛠 Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: yarn
+
+      - name: 🚦 Run Tests
+        run: yarn test
