@@ -1,6 +1,10 @@
 {
     "en": {
-        "welcome": "Hi there!",
+        "greeting": {
+            "morning": "Good morning",
+            "afternoon": "Good afternoon",
+            "evening": "Good evening"
+        },
         "header_home": "Home",
         "header_projects": "Projects",
         "header_about": "About",
@@ -8,7 +12,11 @@
         "header_contact": "Contact"
     },
     "de": {
-        "welcome": "Hallo da!",
+        "greeting": {
+            "morning": "Guten Morgen",
+            "afternoon": "Guten Tag",
+            "evening": "Guten Abend"
+        },
         "header_home": "Zu Haus",
         "header_projects": "Projects",
         "header_about": "About",
@@ -16,7 +24,11 @@
         "header_contact": "Contact"
     },
     "ru": {
-        "welcome": "Привет!",
+        "greeting": {
+            "morning": "Доброе утро",
+            "afternoon": "Добрый день",
+            "evening": "Добрый вечер"
+        },
         "header_home": "Главная",
         "header_projects": "Проекты",
         "header_about": "Обо мне",
