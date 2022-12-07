@@ -1,38 +1,44 @@
 {
-    "en": {
-        "greeting": {
-            "morning": "Good morning",
-            "afternoon": "Good afternoon",
-            "evening": "Good evening"
-        },
-        "header_home": "Home",
-        "header_projects": "Projects",
-        "header_about": "About",
-        "header_services": "Services",
-        "header_contact": "Contact"
+"en": {
+    "greeting": {
+        "morning": "Good morning",
+        "afternoon": "Good afternoon",
+        "evening": "Good evening"
     },
-    "de": {
-        "greeting": {
-            "morning": "Guten Morgen",
-            "afternoon": "Guten Tag",
-            "evening": "Guten Abend"
-        },
-        "header_home": "Zu Haus",
-        "header_projects": "Projects",
-        "header_about": "About",
-        "header_services": "Services",
-        "header_contact": "Contact"
-    },
-    "ru": {
-        "greeting": {
-            "morning": "Доброе утро",
-            "afternoon": "Добрый день",
-            "evening": "Добрый вечер"
-        },
-        "header_home": "Главная",
-        "header_projects": "Проекты",
-        "header_about": "Обо мне",
-        "header_services": "Услуги",
-        "header_contact": "Контакты"
+    "header": {
+        "home": "Home",
+        "projects": "Projects",
+        "about": "About",
+        "services": "Services",
+        "contact": "Contact"
     }
+},
+"de": {
+    "greeting": {
+        "morning": "Guten Morgen",
+        "afternoon": "Guten Tag",
+        "evening": "Guten Abend"
+    },
+    "header": {
+        "home": "Zu Haus",
+        "projects": "Projects",
+        "about": "About",
+        "services": "Services",
+        "contact": "Contact"
+    }
+},
+"ru": {
+    "greeting": {
+        "morning": "Доброе утро",
+        "afternoon": "Добрый день",
+        "evening": "Добрый вечер"
+    },
+    "header": {
+        "home": "Главная",
+        "projects": "Проекты",
+        "about": "Обо мне",
+        "services": "Услуги",
+        "contact": "Контакты"
+    }
+}
 }
