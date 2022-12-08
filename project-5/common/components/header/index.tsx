@@ -4,42 +4,38 @@ import { ReactNode } from 'react'
 
 import lang from 'common/lang.json'
 import { Lang } from 'common/types'
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion'
 
-export const activeClassName =
-  "relative content-[' '] absolute -top-0.5 -right-2 after:w-1.5 after:h-1.5 after:bg-[#0d00fc] after:rounded-full after:shadow-active-menu-item";
-
-type RoutePath = "/" | "/projects" | "/about" | "/services" | "/contact";
+type RoutePath = '/' | '/projects' | '/about' | '/services' | '/contact'
 
 function MenuItem({ route }: { route: RoutePath }) {
-  const { locale, route: currentRoute } = useRouter();
-  const t = lang[locale as Lang];
+  const { locale, route: currentRoute } = useRouter()
+  const t = lang[locale as Lang]
 
   const variants = {
     show: { opacity: 1 },
     hidden: { opacity: 0 },
-  };
+  }
 
   const transition = {
     opacity: {
       duration: 0.7,
-      type: "spring",
+      type: 'spring',
     },
-  };
+  }
 
   return (
     <li className="relative">
-      <Link href={route}>
-        {(t.header as any)[route === "/" ? "home" : route.replace("/", "")]}
-      </Link>
+      <Link href={route}>{(t.header as any)[route === '/' ? 'home' : route.replace('/', '')]}</Link>
       <motion.span
-        animate={route === currentRoute ? "show" : "hidden"}
+        animate={route === currentRoute ? 'show' : 'hidden'}
         transition={transition}
         variants={variants}
         className="absolute -top-0.5 -right-2 w-1.5 h-1.5 bg-[#0d00fc] rounded-full shadow-active-menu-item"
+        role={route === currentRoute ? 'active-mark' : ''}
       />
     </li>
-  );
+  )
 }
 
 export default function Header({ children }: { children: ReactNode }) {
@@ -58,5 +54,5 @@ export default function Header({ children }: { children: ReactNode }) {
         {children}
       </div>
     </header>
-  );
+  )
 }

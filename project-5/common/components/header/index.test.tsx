@@ -1,6 +1,6 @@
 import { render, screen, within } from 'common/utils/test-utils'
 import { useRouter as mockedUseRouter } from 'next/router'
-import Header, { activeClassName } from '.'
+import Header from '.'
 
 jest.mock('next/router', () => ({
   useRouter: jest.fn(() => ({
@@ -12,28 +12,27 @@ jest.mock('next/router', () => ({
 describe('Navigation Menu', () => {
   it('"Home" item should be active by default', () => {
     render(<Header>yo</Header>)
-    const menuItems = screen.getAllByRole('listitem')
-
-    const homeItem = menuItems.find((item) => {
-      const { getByText } = within(item)
-      return getByText(/home/i)
-    })
-
+    const homeItem = screen.getByText(/home/i).parentElement
     expect(homeItem).toBeInTheDocument()
-    expect(homeItem).toHaveClass(activeClassName)
+
+    if (homeItem) {
+      const { queryByRole } = within(homeItem)
+      const activeMark = queryByRole('active-mark')
+      expect(activeMark).toBeInTheDocument()
+    }
   })
 
   it('should switch active menu item', async () => {
     ;(mockedUseRouter as any).mockImplementation(() => ({ route: '/projects', locale: 'en' }))
+
     render(<Header>yo</Header>)
-    const menuItems = screen.getAllByRole('listitem')
-
-    const projectsItem = menuItems.find((item) => {
-      const { queryByText } = within(item)
-      return queryByText(/projects/i)
-    })
-
+    const projectsItem = screen.getByText(/projects/i).parentElement
     expect(projectsItem).toBeInTheDocument()
-    expect(projectsItem).toHaveClass(activeClassName)
+
+    if (projectsItem) {
+      const { queryByRole } = within(projectsItem)
+      const activeMark = queryByRole('active-mark')
+      expect(activeMark).toBeInTheDocument()
+    }
   })
 })
