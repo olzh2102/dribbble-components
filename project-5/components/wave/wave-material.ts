@@ -1,9 +1,9 @@
-import * as THREE from 'three'
 import { shaderMaterial } from '@react-three/drei'
 import { extend } from '@react-three/fiber'
+import * as THREE from 'three'
 
-import vertex from './shader.vert'
 import fragment from './shader.frag'
+import vertex from './shader.vert'
 
 const WaveMaterial = shaderMaterial(
   {
