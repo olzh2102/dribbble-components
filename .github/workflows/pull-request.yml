@@ -95,4 +95,13 @@ jobs:
         run: yarn
 
       - name: 💀 Deadcode checking
-        run: yarn check:find-deadcode
+        run: |
+          yarn check:find-deadcode
+          count=`yarn check:find-deadcode | wc -l`
+
+          if [ $count -gt 3 ]
+          then
+            echo "Some code is unused"
+            exit 1
+          else
+            echo "No deadcode :)"
