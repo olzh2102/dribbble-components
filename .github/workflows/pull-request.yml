@@ -105,3 +105,4 @@ jobs:
             exit 1
           else
             echo "No deadcode :)"
+          fi
