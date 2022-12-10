@@ -67,4 +67,4 @@ jobs:
         run: yarn
 
       - name: 🔬 Type checking
-        run: yarn typescheck
+        run: yarn typecheck
