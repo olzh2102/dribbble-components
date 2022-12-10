@@ -1,22 +1,20 @@
-import type { AppProps } from 'next/app'
-import { NextComponentType } from 'next'
-import { Canvas } from '@react-three/fiber'
 import { Rubik } from '@next/font/google'
-
-import ThemeProvider from '~contexts/theme-provider'
-import LangProvider from '~contexts/lang-provider'
-import { Page } from 'common/types'
-
-import '../styles/globals.css'
-import RoundedCorner from '~components/rounded-corner'
-import Head from 'next/head'
-import ThemeToggler from '~components/theme-toggler'
-import LangToggler from '~components/lang-toggler'
-import Header from 'common/components/header'
+import { Canvas } from '@react-three/fiber'
+import { NextComponentType } from 'next'
+import type { AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { Lang } from 'common/types'
+
+import Header from 'common/components/header'
+import { Page, Lang } from 'common/types'
+import '../styles/globals.css'
+import LangToggler from '~components/lang-toggler'
+import RoundedCorner from '~components/rounded-corner'
+import ThemeToggler from '~components/theme-toggler'
 import Wave from '~components/wave'
+import LangProvider from '~contexts/lang-provider'
+import ThemeProvider from '~contexts/theme-provider'
 
 const CurrentTime = dynamic(() => import('~components/current-time'), {
   ssr: false,

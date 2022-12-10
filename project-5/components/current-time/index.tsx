@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+
 import { formatTimeHHMM } from 'common/utils'
 
 export default function CurrentTime() {

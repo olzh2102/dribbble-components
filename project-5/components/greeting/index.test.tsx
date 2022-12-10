@@ -1,4 +1,5 @@
 import { render, screen } from 'common/utils/test-utils'
+
 import Greeting from '.'
 
 jest.mock('next/router', () => ({
