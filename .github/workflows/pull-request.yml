@@ -7,9 +7,6 @@ concurrency:
 on:
   pull_request:
     types: [review_requested]
-  push:
-    branches:
-      - 'chore/typecheck-github-actions'
     
 jobs:
   unit-test:
