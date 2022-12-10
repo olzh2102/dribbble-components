@@ -7,6 +7,9 @@ concurrency:
 on:
   pull_request:
     types: [review_requested]
+  push:
+    branches:
+      - 'chore/typecheck-github-actions'
     
 jobs:
   unit-test:
@@ -36,3 +39,32 @@ jobs:
 
       - name: 🚦 Run Tests
         run: yarn test
+
+  type-checking:
+    name: 🔬 Type checking
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      working-directory: project-5
+    defaults:
+      run:
+        working-directory: ${{ env.working-directory }}
+    steps:
+      - name: ⬇️ Checkout the branch
+        uses: actions/checkout@v3
+
+      # make visible what directory job runs in
+      - run: pwd
+
+      - name: 🗃 Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: 🛠 Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: yarn
+
+      - name: 🔬 Type checking
+        run: yarn typescheck
