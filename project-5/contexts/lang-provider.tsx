@@ -1,6 +1,8 @@
-import { Lang } from 'common/types'
-import { useRouter } from 'next/router'
 import { createContext, ReactNode } from 'react'
+
+import { useRouter } from 'next/router'
+
+import { Lang } from 'common/types'
 
 export const LangContext = createContext<any>({
   setLang: () => {},
