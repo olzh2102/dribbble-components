@@ -1,10 +1,9 @@
+import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { motion } from 'framer-motion'
-
-import { Lang, RoutePath, TranslationKey } from 'common/types'
 
 import lang from 'common/lang.json'
+import { Lang, RoutePath, TranslationKey } from 'common/types'
 
 export default function MenuItem({ route }: { route: RoutePath }) {
   const { locale, route: currentRoute } = useRouter()
