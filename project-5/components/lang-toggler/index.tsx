@@ -8,7 +8,7 @@ export default function LangToggler({ lang }: { lang: Lang }) {
   const setLang = useContext(LangContext)
 
   return (
-    <div className="text-teal-600 dark:text-zinc-400">
+    <div className="text-secondary-800 dark:text-primary-300">
       {/* english */}
       <input
         className={`hidden peer/en ${lang == LANG.EN ? 'checked' : ''}`}
@@ -22,7 +22,7 @@ export default function LangToggler({ lang }: { lang: Lang }) {
       />
       <label
         htmlFor="english"
-        className="peer-checked/en:text-slate-900 dark:peer-checked/en:text-white"
+        className="peer-checked/en:text-primary-200 dark:peer-checked/en:text-secondary-300"
       >
         en
       </label>{' '}
@@ -42,7 +42,7 @@ export default function LangToggler({ lang }: { lang: Lang }) {
       />
       <label
         htmlFor="german"
-        className="peer-checked/de:text-slate-900 dark:peer-checked/de:text-white"
+        className="peer-checked/de:text-primary-200 dark:peer-checked/de:text-secondary-300"
       >
         {' '}
         de
@@ -61,7 +61,7 @@ export default function LangToggler({ lang }: { lang: Lang }) {
       />
       <label
         htmlFor="russian"
-        className="peer-checked/ru:text-slate-900 dark:peer-checked/ru:text-white"
+        className="peer-checked/ru:text-primary-200 dark:peer-checked/ru:text-secondary-300"
       >
         {' '}
         ru

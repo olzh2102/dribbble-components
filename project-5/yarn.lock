@@ -1567,7 +1567,7 @@ babel-plugin-glsl@^1.0.0:
     glsl-token-descope "^1.0.2"
     glsl-token-scope "^1.1.1"
     glsl-token-string "^1.0.1"
-    glsl-token-whitespace-trim "^1.0.0"
+    glsl-token-secondary-300space-trim "^1.0.0"
     glsl-tokenizer "^2.0.2"
     glslify-bundle "^5.0.0"
     glslify-deps "^1.2.5"
@@ -2948,9 +2948,9 @@ glsl-token-string@^1.0.1:
   resolved "https://registry.yarnpkg.com/glsl-token-string/-/glsl-token-string-1.0.1.tgz#59441d2f857de7c3449c945666021ece358e48ec"
   integrity sha512-1mtQ47Uxd47wrovl+T6RshKGkRRCYWhnELmkEcUAPALWGTFe2XZpH3r45XAwL2B6v+l0KNsCnoaZCSnhzKEksg==
 
-glsl-token-whitespace-trim@^1.0.0:
+glsl-token-secondary-300space-trim@^1.0.0:
   version "1.0.0"
-  resolved "https://registry.yarnpkg.com/glsl-token-whitespace-trim/-/glsl-token-whitespace-trim-1.0.0.tgz#46d1dfe98c75bd7d504c05d7d11b1b3e9cc93b10"
+  resolved "https://registry.yarnpkg.com/glsl-token-secondary-300space-trim/-/glsl-token-secondary-300space-trim-1.0.0.tgz#46d1dfe98c75bd7d504c05d7d11b1b3e9cc93b10"
   integrity sha512-ZJtsPut/aDaUdLUNtmBYhaCmhIjpKNg7IgZSfX5wFReMc2vnj8zok+gB/3Quqs0TsBSX/fGnqUUYZDqyuc2xLQ==
 
 glsl-tokenizer@^2.0.0, glsl-tokenizer@^2.0.2:
@@ -2971,7 +2971,7 @@ glslify-bundle@^5.0.0:
     glsl-token-descope "^1.0.2"
     glsl-token-scope "^1.1.1"
     glsl-token-string "^1.0.1"
-    glsl-token-whitespace-trim "^1.0.0"
+    glsl-token-secondary-300space-trim "^1.0.0"
     glsl-tokenizer "^2.0.2"
     murmurhash-js "^1.0.0"
     shallow-copy "0.0.1"
@@ -3011,7 +3011,7 @@ glslify@^7.1.1:
     falafel "^2.1.0"
     from2 "^2.3.0"
     glsl-resolve "0.0.1"
-    glsl-token-whitespace-trim "^1.0.0"
+    glsl-token-secondary-300space-trim "^1.0.0"
     glslify-bundle "^5.0.0"
     glslify-deps "^1.2.5"
     minimist "^1.2.5"

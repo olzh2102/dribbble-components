@@ -8,8 +8,8 @@ import vertex from './shader.vert'
 const WaveMaterial = shaderMaterial(
   {
     time: 0,
-    colorStart: new THREE.Color('#505050'),
-    colorEnd: new THREE.Color('black'),
+    colorStart: new THREE.Color('#505050'), // secondary[200]
+    colorEnd: new THREE.Color('black'), // primary[200]
     noiseAmplitude: 1,
   },
   vertex,
