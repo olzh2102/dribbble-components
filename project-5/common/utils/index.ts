@@ -7,7 +7,7 @@ export function formatTimeHHMM(milliseconds: number) {
 }
 
 export const getTimeOfDay = () => {
-  const hours = 5 // new Date().getHours()
+  const hours = new Date().getHours()
 
   if (hours >= 4 && hours < 12) return 'morning'
   if (hours >= 12 && hours < 17) return 'afternoon'
