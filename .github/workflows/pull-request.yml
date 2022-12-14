@@ -4,10 +4,8 @@ concurrency:
   group: ${{github.workflow}}-${{github.head_ref}}
   cancel-in-progress: true
 
-on:
-  pull_request:
-    types: [review_requested]
-    
+on: [push, pull_request]
+
 jobs:
   unit-test:
     name: 🧪 Unit Tests
@@ -94,7 +92,7 @@ jobs:
       - name: 💀 Deadcode checking
         run: |
           count=`yarn check:find-deadcode | wc -l`
-          
+
           if [ $count -gt 3 ]
           then
             echo "Some code is unused"
