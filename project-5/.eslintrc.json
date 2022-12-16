@@ -17,7 +17,7 @@
   },
   "rules": {
     "prefer-const": "error",
-    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/no-explicit-any": "warn",
     "no-console": "warn",
     "max-len": ["warn", { "code": 100 }],
     "import/no-unresolved": 0,

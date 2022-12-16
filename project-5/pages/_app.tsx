@@ -1,5 +1,8 @@
+import React from 'react'
+
 import { Rubik } from '@next/font/google'
 import { Canvas } from '@react-three/fiber'
+import { AnimatePresence } from 'framer-motion'
 import { NextComponentType } from 'next'
 import type { AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
@@ -8,13 +11,14 @@ import { useRouter } from 'next/router'
 
 import Header from 'common/components/header'
 import { Page, Lang } from 'common/types'
-import '../styles/globals.css'
 import LangToggler from '~components/lang-toggler'
 import RoundedCorner from '~components/rounded-corner'
 import ThemeToggler from '~components/theme-toggler'
 import Wave from '~components/wave'
 import LangProvider from '~contexts/lang-provider'
 import ThemeProvider from '~contexts/theme-provider'
+
+import '../styles/globals.css'
 
 const CurrentTime = dynamic(() => import('~components/current-time'), {
   ssr: false,
@@ -25,6 +29,7 @@ const font = Rubik()
 export default function App({
   Component,
   pageProps,
+  router,
 }: AppProps & { Component: NextComponentType & Page }) {
   const locale = useRouter().locale
 
@@ -56,7 +61,9 @@ export default function App({
               <LangToggler lang={locale as Lang} />
               <ThemeToggler />
             </Header>
-            <Component {...pageProps} />
+            <AnimatePresence mode="wait" initial={false}>
+              <Component {...pageProps} key={router.asPath} />
+            </AnimatePresence>
           </RoundedCorner>
         </ThemeProvider>
       </LangProvider>
