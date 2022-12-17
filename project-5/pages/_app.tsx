@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { Rubik } from '@next/font/google'
 import { Canvas } from '@react-three/fiber'
@@ -32,6 +32,8 @@ export default function App({
   router,
 }: AppProps & { Component: NextComponentType & Page }) {
   const locale = useRouter().locale
+  const [mousePosition, setMousePosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 })
+  const [mouseHidden, setMouseHidden] = useState(true)
 
   return (
     <>
@@ -48,23 +50,38 @@ export default function App({
 
       <LangProvider>
         <ThemeProvider>
-          {Component.waveBackground && (
-            <div className="absolute top-0 left-0 w-full h-full p-3">
-              <Canvas className="rounded-xl" camera={{ position: [0, 0, 1] }}>
-                <Wave />
-              </Canvas>
-            </div>
-          )}
-          <RoundedCorner waveBackground={!!Component.waveBackground}>
-            <Header>
-              <CurrentTime />
-              <LangToggler lang={locale as Lang} />
-              <ThemeToggler />
-            </Header>
-            <AnimatePresence mode="wait" initial={false}>
-              <Component {...pageProps} key={router.asPath} />
-            </AnimatePresence>
-          </RoundedCorner>
+          <div
+            className="w-full h-full"
+            onMouseMove={(e) => {
+              setMouseHidden(false)
+              setMousePosition({ x: e.pageX, y: e.pageY })
+            }}
+            onMouseOut={() => setMouseHidden(true)}
+          >
+            {Component.waveBackground && (
+              <div className="absolute top-0 left-0 w-full h-full p-3">
+                <Canvas className="rounded-xl" camera={{ position: [0, 0, 1] }}>
+                  <Wave />
+                </Canvas>
+              </div>
+            )}
+            {!mouseHidden && (
+              <div
+                className="absolute w-4 h-4 bg-secondary-200 dark:bg-secondary-400 rounded-full z-50 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+                style={{ left: mousePosition.x, top: mousePosition.y }}
+              />
+            )}
+            <RoundedCorner waveBackground={!!Component.waveBackground}>
+              <Header>
+                <CurrentTime />
+                <LangToggler lang={locale as Lang} />
+                <ThemeToggler />
+              </Header>
+              <AnimatePresence mode="wait" initial={false}>
+                <Component {...pageProps} key={router.asPath} />
+              </AnimatePresence>
+            </RoundedCorner>
+          </div>
         </ThemeProvider>
       </LangProvider>
     </>
