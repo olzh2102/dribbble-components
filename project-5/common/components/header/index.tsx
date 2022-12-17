@@ -1,12 +1,26 @@
-import { ReactNode } from 'react'
+import { ReactNode, useContext } from 'react'
+
+import { CursorContext } from '~contexts/cursor-provider'
 
 import MenuItem from './menu-item'
 
 export default function Header({ children }: { children: ReactNode }) {
+  const setActionHover = useContext(CursorContext)
+
   return (
     <header className="flex justify-between pointer-events-auto mt-4 items-center">
       <nav>
-        <ul className="flex gap-6 ml-20 text-primary-200 dark:text-secondary-300">
+        <ul
+          className="flex gap-6 ml-20 text-primary-200 dark:text-secondary-300"
+          onMouseOver={(e) => {
+            const menuItem = (e.target as HTMLElement).closest('li')
+            if (menuItem) setActionHover(true)
+          }}
+          onMouseOut={(e) => {
+            const menuItem = (e.target as HTMLElement).closest('li')
+            if (menuItem) setActionHover(false)
+          }}
+        >
           <MenuItem route="/" />
           <MenuItem route="/projects" />
           <MenuItem route="/about" />
