@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { Rubik } from '@next/font/google'
 import { Canvas } from '@react-three/fiber'
+import Header from 'common/components/header'
+import { Page, Lang } from 'common/types'
 import { AnimatePresence } from 'framer-motion'
 import { NextComponentType } from 'next'
 import type { AppProps } from 'next/app'
@@ -9,8 +11,6 @@ import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
-import Header from 'common/components/header'
-import { Page, Lang } from 'common/types'
 import LangToggler from '~components/lang-toggler'
 import RoundedCorner from '~components/rounded-corner'
 import ThemeToggler from '~components/theme-toggler'
@@ -34,6 +34,14 @@ export default function App({
 }: AppProps & { Component: NextComponentType & Page }) {
   const locale = useRouter().locale
 
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false)
+    }, 1500)
+  }, [])
+
   return (
     <>
       <Head>
@@ -46,6 +54,16 @@ export default function App({
           font-family: ${font.style.fontFamily};
         }
       `}</style>
+
+      <div className="w-full h-full z-10 absolute relative bg-neutral-900">
+        <div className="flex relative">
+          <div className="text-secondary-500 text-6xl p-4 absolute">NR</div>
+        </div>
+
+        <div className="text-secondary-500 absolute bottom-0 right-0 text-6xl p-4">
+          58
+        </div>
+      </div>
 
       <LangProvider>
         <ThemeProvider>
