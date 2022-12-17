@@ -8,3 +8,7 @@ body > div:first-child {
     height: 100%;
     cursor: none;
 }
+
+a, label, button {
+    cursor: none;
+}

@@ -67,7 +67,7 @@ export default function App({
             )}
             {!mouseHidden && (
               <div
-                className="absolute w-6 h-6 bg-primary-100 rounded-full z-50 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+                className="absolute w-4 h-4 bg-secondary-200 dark:bg-secondary-400 rounded-full z-50 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
                 style={{ left: mousePosition.x, top: mousePosition.y }}
               />
             )}
