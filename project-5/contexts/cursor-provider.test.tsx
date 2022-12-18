@@ -44,14 +44,14 @@ describe('Custom Cursor', () => {
 
     await waitFor(
       () => expect(customCursor).toHaveStyle({ transform: TRANSFORM_FROM }),
-      { timeout: 1200 }
+      { timeout: 2000 }
     )
 
     userEvent.hover(projectsMenuItem)
 
     await waitFor(
       () => expect(customCursor).toHaveStyle({ transform: TRANSFORM_TO }),
-      { timeout: 1200 }
+      { timeout: 2000 }
     )
   })
 })
