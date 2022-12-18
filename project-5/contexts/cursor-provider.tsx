@@ -40,7 +40,7 @@ export default function CursorProvider({ children }: { children: ReactNode }) {
         {!cursorHidden && (
           <motion.div
             animate={{ scale: actionHover ? 0.5 : 1, translateX: '-50%', translateY: '-50%' }}
-            transition={{ type: 'spring', damping: 5, stiffness: 150 }}
+            transition={{ type: 'spring', damping: 10, stiffness: 100 }}
             className="absolute w-4 h-4 bg-secondary-200 dark:bg-secondary-400 rounded-full z-50 pointer-events-none"
             style={{ left: cursorPosition.x, top: cursorPosition.y }}
           />
