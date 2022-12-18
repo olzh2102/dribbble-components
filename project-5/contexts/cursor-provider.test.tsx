@@ -1,5 +1,6 @@
 import userEvent from '@testing-library/user-event'
-import { render, screen } from 'common/utils/test-utils'
+import Header from 'common/components/header'
+import { render, screen, waitFor } from 'common/utils/test-utils'
 
 jest.mock('next/router', () => ({
   useRouter: jest.fn(() => ({
@@ -10,17 +11,15 @@ jest.mock('next/router', () => ({
 
 describe('Custom Cursor', () => {
   function setup() {
-    const user = userEvent.setup()
     return render(
-      <span>test component with custom cursor context wrapper</span>
+      <Header>test component with custom cursor context wrapper</Header>
     )
   }
 
   it('should render custom circle cursor', async () => {
-    const { debug } = setup()
+    setup()
 
     const customCursor = screen.getByRole('custom-cursor')
-    debug(customCursor)
 
     expect(customCursor).toBeInTheDocument()
     expect(customCursor).toHaveClass(
@@ -32,7 +31,27 @@ describe('Custom Cursor', () => {
     )
   })
 
-  it.todo('should render custom cursor size a bit smaller when text is hovered')
+  it('should render custom cursor size a bit smaller when text is hovered', async () => {
+    setup()
 
-  it.todo('should not render default cursor')
+    const TRANSFORM_FROM =
+      'translateX(-50%) translateY(-50%) scale(1) translateZ(0)'
+    const TRANSFORM_TO =
+      'translateX(-50%) translateY(-50%) scale(0.5) translateZ(0)'
+
+    const projectsMenuItem = screen.getByText(/projects/i)
+    const customCursor = screen.getByRole('custom-cursor')
+
+    await waitFor(
+      () => expect(customCursor).toHaveStyle({ transform: TRANSFORM_FROM }),
+      { timeout: 1200 }
+    )
+
+    userEvent.hover(projectsMenuItem)
+
+    await waitFor(
+      () => expect(customCursor).toHaveStyle({ transform: TRANSFORM_TO }),
+      { timeout: 1200 }
+    )
+  })
 })
