@@ -3,11 +3,14 @@ import React, { useContext } from 'react'
 import { MoonIcon, SunIcon } from '@heroicons/react/24/solid'
 import { motion } from 'framer-motion'
 
+import { CursorContext } from '~contexts/cursor-provider'
 import { ThemeContext } from '~contexts/theme-provider'
 import useSoundOnToggle from '~hooks/use-sound-on-toggle'
 
 export default function ThemeToggler() {
   const { theme, setTheme } = useContext(ThemeContext)
+  const { onMouseOver, onMouseOut } = useContext(CursorContext)
+
   const { playOn, playOff } = useSoundOnToggle({
     pathOn: '/sounds/light-on.mp3',
     pathOff: '/sounds/light-off.mp3',
@@ -33,7 +36,11 @@ export default function ThemeToggler() {
   }
 
   return (
-    <div className="relative">
+    <div
+      className="relative"
+      onMouseOver={(e) => onMouseOver(e, 'button')}
+      onMouseOut={(e) => onMouseOut(e, 'button')}
+    >
       <motion.button
         animate={theme === 'light' ? 'hidden' : 'show'}
         variants={variants}

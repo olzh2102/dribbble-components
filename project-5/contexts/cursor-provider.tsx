@@ -1,7 +1,15 @@
 import { createContext, ReactNode, useState } from 'react'
 
-export const CursorContext = createContext<any>({
-  setActionHover: () => undefined,
+import { motion } from 'framer-motion'
+
+type Selector = keyof HTMLElementTagNameMap
+
+export const CursorContext = createContext<{
+  onMouseOver: <T>(e: React.MouseEvent<T, MouseEvent>, selector: Selector) => void
+  onMouseOut: <T>(e: React.MouseEvent<T, MouseEvent>, selector: Selector) => void
+}>({
+  onMouseOver: () => undefined,
+  onMouseOut: () => undefined,
 })
 
 export default function CursorProvider({ children }: { children: ReactNode }) {
@@ -9,8 +17,18 @@ export default function CursorProvider({ children }: { children: ReactNode }) {
   const [cursorHidden, setCursorHidden] = useState(true)
   const [actionHover, setActionHover] = useState(false)
 
+  const onMouseOver = <T,>(e: React.MouseEvent<T, MouseEvent>, selector: Selector) => {
+    const target = (e.target as HTMLElement).closest(selector)
+    if (target) setActionHover(true)
+  }
+
+  const onMouseOut = <T,>(e: React.MouseEvent<T, MouseEvent>, selector: Selector) => {
+    const target = (e.target as HTMLElement).closest(selector)
+    if (target) setActionHover(false)
+  }
+
   return (
-    <CursorContext.Provider value={setActionHover}>
+    <CursorContext.Provider value={{ onMouseOver, onMouseOut }}>
       <div
         className="w-full h-full"
         onMouseMove={(e) => {
@@ -20,10 +38,10 @@ export default function CursorProvider({ children }: { children: ReactNode }) {
         onMouseOut={() => setCursorHidden(true)}
       >
         {!cursorHidden && (
-          <div
-            className={`absolute ${
-              actionHover ? 'w-2 h-2' : 'w-4 h-4'
-            } bg-secondary-200 dark:bg-secondary-400 rounded-full z-50 -translate-x-1/2 -translate-y-1/2 pointer-events-none`}
+          <motion.div
+            animate={{ scale: actionHover ? 0.5 : 1, translateX: '-50%', translateY: '-50%' }}
+            transition={{ type: 'spring', damping: 5, stiffness: 150 }}
+            className="absolute w-4 h-4 bg-secondary-200 dark:bg-secondary-400 rounded-full z-50 pointer-events-none"
             style={{ left: cursorPosition.x, top: cursorPosition.y }}
           />
         )}

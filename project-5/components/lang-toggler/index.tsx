@@ -2,13 +2,19 @@ import { useContext } from 'react'
 
 import { LANG } from 'common/constants'
 import { Lang } from 'common/types'
+import { CursorContext } from '~contexts/cursor-provider'
 import { LangContext } from '~contexts/lang-provider'
 
 export default function LangToggler({ lang }: { lang: Lang }) {
   const setLang = useContext(LangContext)
+  const { onMouseOver, onMouseOut } = useContext(CursorContext)
 
   return (
-    <div className="text-secondary-800 dark:text-primary-300">
+    <div
+      className="text-secondary-800 dark:text-primary-300"
+      onMouseOver={(e) => onMouseOver(e, 'label')}
+      onMouseOut={(e) => onMouseOut(e, 'label')}
+    >
       {/* english */}
       <input
         className={`hidden peer/en ${lang == LANG.EN ? 'checked' : ''}`}
