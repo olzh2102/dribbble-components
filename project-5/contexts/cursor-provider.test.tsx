@@ -33,4 +33,6 @@ describe('Custom Cursor', () => {
   })
 
   it.todo('should render custom cursor size a bit smaller when text is hovered')
+
+  it.todo('should not render default cursor')
 })
