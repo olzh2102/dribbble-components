@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Rubik } from '@next/font/google'
 import { Canvas } from '@react-three/fiber'
 import Header from 'common/components/header'
+import Preloader from 'common/components/preloader'
 import { Page, Lang } from 'common/types'
 import { AnimatePresence } from 'framer-motion'
 import { NextComponentType } from 'next'
@@ -55,37 +56,31 @@ export default function App({
         }
       `}</style>
 
-      <div className="w-full h-full z-10 absolute relative bg-neutral-900">
-        <div className="flex relative">
-          <div className="text-secondary-500 text-6xl p-4 absolute">NR</div>
-        </div>
-
-        <div className="text-secondary-500 absolute bottom-0 right-0 text-6xl p-4">
-          58
-        </div>
-      </div>
-
-      <LangProvider>
-        <ThemeProvider>
-          <CursorProvider>
-            <div className="absolute top-0 left-0 w-full h-full p-3">
-              <Canvas className="rounded-xl" camera={{ position: [0, 0, 1] }}>
-                <Wave />
-              </Canvas>
-            </div>
-            <RoundedCorner waveBackground={!!Component.waveBackground}>
-              <Header>
-                <CurrentTime />
-                <LangToggler lang={locale as Lang} />
-                <ThemeToggler />
-              </Header>
-              <AnimatePresence mode="wait" initial={false}>
-                <Component {...pageProps} key={router.asPath} />
-              </AnimatePresence>
-            </RoundedCorner>
-          </CursorProvider>
-        </ThemeProvider>
-      </LangProvider>
+      {true ? (
+        <Preloader />
+      ) : (
+        <LangProvider>
+          <ThemeProvider>
+            <CursorProvider>
+              <div className="absolute top-0 left-0 w-full h-full p-3">
+                <Canvas className="rounded-xl" camera={{ position: [0, 0, 1] }}>
+                  <Wave />
+                </Canvas>
+              </div>
+              <RoundedCorner waveBackground={!!Component.waveBackground}>
+                <Header>
+                  <CurrentTime />
+                  <LangToggler lang={locale as Lang} />
+                  <ThemeToggler />
+                </Header>
+                <AnimatePresence mode="wait" initial={false}>
+                  <Component {...pageProps} key={router.asPath} />
+                </AnimatePresence>
+              </RoundedCorner>
+            </CursorProvider>
+          </ThemeProvider>
+        </LangProvider>
+      )}
     </>
   )
 }
