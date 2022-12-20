@@ -22,15 +22,8 @@ jobs:
       # make visible what directory job runs in
       - run: pwd
 
-      - name: 🗃 Cache dependencies
-        uses: actions/cache@v3
-        with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-
       - name: 🛠 Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: yarn
+        uses: actions/install-dependencies@v1
 
       - name: 🚦 Run Tests
         run: yarn test
@@ -51,15 +44,8 @@ jobs:
       # make visible what directory job runs in
       - run: pwd
 
-      - name: 🗃 Cache dependencies
-        uses: actions/cache@v3
-        with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-
       - name: 🛠 Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: yarn
+        uses: actions/install-dependencies@v1
 
       - name: 🔬 Type checking
         run: yarn typecheck
@@ -79,15 +65,8 @@ jobs:
       # make visible what directory job runs in
       - run: pwd
 
-      - name: 🗃 Cache dependencies
-        uses: actions/cache@v3
-        with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-
       - name: 🛠 Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: yarn
+        uses: actions/install-dependencies@v1
 
       - name: 💀 Deadcode checking
         run: |
