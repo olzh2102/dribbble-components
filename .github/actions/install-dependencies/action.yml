@@ -1,14 +1,11 @@
 name: 🛠 Install dependencies
 steps:
-  # make visible what directory job runs in
-  - run: pwd
-
   - name: 🗃 Cache dependencies
   - uses: actions/cache@v3
     with:
       path: '**/node_modules'
-      key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+      key: ${{ inputs.key }}
 
   - name: 🛠 Install dependencies
-    if: steps.cache.outputs.cache-hit != 'true'
+   if: steps.cache.outputs.cache-hit != 'true'
     run: yarn

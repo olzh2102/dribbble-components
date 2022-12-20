@@ -19,8 +19,13 @@ jobs:
       - name: ⬇️ Checkout the branch
         uses: actions/checkout@v3
 
+      # make visible what directory job runs in
+      - run: pwd
+
       - name: 🛠 Install dependencies
         uses: ./.github/actions/install-dependencies
+        with:
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: 🚦 Run Tests
         run: yarn test
@@ -38,8 +43,13 @@ jobs:
       - name: ⬇️ Checkout the branch
         uses: actions/checkout@v3
 
+      # make visible what directory job runs in
+      - run: pwd
+
       - name: 🛠 Install dependencies
         uses: ./.github/actions/install-dependencies
+        with:
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: 🔬 Type checking
         run: yarn typecheck
@@ -56,8 +66,13 @@ jobs:
       - name: ⬇️ Checkout the branch
         uses: actions/checkout@v3
 
+      # make visible what directory job runs in
+      - run: pwd
+
       - name: 🛠 Install dependencies
         uses: ./.github/actions/install-dependencies
+        with:
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: 💀 Deadcode checking
         run: |
