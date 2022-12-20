@@ -8,10 +8,6 @@ global.Audio = jest.fn().mockImplementation(() => ({
   play: audioPlay,
 }))
 
-jest.mock('next/router', () => ({
-  useRouter: jest.fn(),
-}))
-
 describe('Theme Toggler Component', () => {
   it('should not contain the "dark" class initially attached to the html', () => {
     const isDark = document.documentElement.classList.contains('dark')

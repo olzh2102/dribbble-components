@@ -1,12 +1,7 @@
+import { render, screen, fireEvent } from 'common/utils/test-utils'
 import { useRouter as mockedUseRouter } from 'next/router'
 
-import { render, screen, fireEvent } from 'common/utils/test-utils'
-
 import LangToggler from '.'
-
-jest.mock('next/router', () => ({
-  useRouter: jest.fn(),
-}))
 
 describe('Language Toggler Component', () => {
   it('"english" language should be checked by default', () => {
@@ -18,7 +13,10 @@ describe('Language Toggler Component', () => {
 
   it('"german" should be checked once selected', async () => {
     const push = jest.fn()
-    ;(mockedUseRouter as jest.Mock).mockImplementation(() => ({ push, route: '/de' }))
+    ;(mockedUseRouter as jest.Mock).mockImplementation(() => ({
+      push,
+      route: '/de',
+    }))
     const { rerender } = render(<LangToggler lang="en" />)
 
     screen.getByRole('radio-de')

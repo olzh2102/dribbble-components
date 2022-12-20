@@ -1,15 +1,7 @@
+import { render, screen, within } from 'common/utils/test-utils'
 import { useRouter as mockedUseRouter } from 'next/router'
 
-import { render, screen, within } from 'common/utils/test-utils'
-
 import Header from '.'
-
-jest.mock('next/router', () => ({
-  useRouter: jest.fn(() => ({
-    route: '/',
-    locale: 'en',
-  })),
-}))
 
 describe('Navigation Menu', () => {
   it('"Home" item should be active by default', () => {
@@ -25,7 +17,10 @@ describe('Navigation Menu', () => {
   })
 
   it('should switch active menu item', () => {
-    ;(mockedUseRouter as any).mockImplementation(() => ({ route: '/projects', locale: 'en' }))
+    ;(mockedUseRouter as any).mockImplementation(() => ({
+      route: '/projects',
+      locale: 'en',
+    }))
 
     render(<Header>yo</Header>)
     const projectsItem = screen.getByText(/projects/i).parentElement

@@ -2,13 +2,6 @@ import userEvent from '@testing-library/user-event'
 import Header from 'common/components/header'
 import { render, screen, waitFor } from 'common/utils/test-utils'
 
-jest.mock('next/router', () => ({
-  useRouter: jest.fn(() => ({
-    route: '/',
-    locale: 'en',
-  })),
-}))
-
 describe('Custom Cursor', () => {
   function setup() {
     return render(
