@@ -18,9 +18,8 @@ runs:
     - name: 🗃 Cache dependencies
       id: cache
       uses: actions/cache@v3
-      working-directory: ${{ inputs.workdir }}
       with:
-        path: node_modules
+        path: ${{inputs.workdir}}/node_modules
         key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
     - name: 🛠 Install dependencies
