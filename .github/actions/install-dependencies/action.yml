@@ -3,10 +3,11 @@ runs:
   using: 'composite'
   steps:
     - name: 🗃 Cache dependencies
+      id: cache
       uses: actions/cache@v3
       with:
         path: '**/node_modules'
-        key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+        key: ${{ runner.os }}-node_modules-${{ hashFiles('**/yarn.lock') }}
 
     - name: 🛠 Install dependencies
       if: steps.cache.outputs.cache-hit != 'true'
