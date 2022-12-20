@@ -37,12 +37,6 @@ export default function App({
 
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false)
-    }, 1500)
-  }, [])
-
   return (
     <>
       <Head>
@@ -56,8 +50,8 @@ export default function App({
         }
       `}</style>
 
-      {true ? (
-        <Preloader />
+      {loading ? (
+        <Preloader setLoading={setLoading} />
       ) : (
         <LangProvider>
           <ThemeProvider>
