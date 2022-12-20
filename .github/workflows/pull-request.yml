@@ -19,9 +19,6 @@ jobs:
       - name: ⬇️ Checkout the branch
         uses: actions/checkout@v3
 
-      # make visible what directory job runs in
-      - run: pwd
-
       - name: 🛠 Install dependencies
         uses: ./.github/actions/install-dependencies
 
@@ -41,9 +38,6 @@ jobs:
       - name: ⬇️ Checkout the branch
         uses: actions/checkout@v3
 
-      # make visible what directory job runs in
-      - run: pwd
-
       - name: 🛠 Install dependencies
         uses: ./.github/actions/install-dependencies
 
@@ -61,9 +55,6 @@ jobs:
     steps:
       - name: ⬇️ Checkout the branch
         uses: actions/checkout@v3
-
-      # make visible what directory job runs in
-      - run: pwd
 
       - name: 🛠 Install dependencies
         uses: ./.github/actions/install-dependencies
