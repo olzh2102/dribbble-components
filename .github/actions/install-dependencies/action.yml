@@ -1,4 +1,7 @@
 name: 🛠 Install dependencies
+inputs:
+  key:
+    required: true
 steps:
   - name: 🗃 Cache dependencies
   - uses: actions/cache@v3
