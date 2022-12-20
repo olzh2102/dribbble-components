@@ -1,13 +1,13 @@
 name: 🛠 Install dependencies
 runs:
   using: 'composite'
-steps:
-  - name: 🗃 Cache dependencies
-  - uses: actions/cache@v3
-    with:
-      path: '**/node_modules'
-      key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+  steps:
+    - name: 🗃 Cache dependencies
+    - uses: actions/cache@v3
+      with:
+        path: '**/node_modules'
+        key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
-  - name: 🛠 Install dependencies
-   if: steps.cache.outputs.cache-hit != 'true'
-    run: yarn
+    - name: 🛠 Install dependencies
+    if: steps.cache.outputs.cache-hit != 'true'
+      run: yarn
