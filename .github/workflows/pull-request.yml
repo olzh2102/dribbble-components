@@ -1,5 +1,9 @@
 name: Pull Request Check
 
+concurrency:
+  group: ${{github.workflow}}-${{github.head_ref}}
+  cancel-in-progress: true
+
 on: [pull_request]
 
 jobs:
@@ -17,6 +21,8 @@ jobs:
 
       - name: 🛠 Install dependencies
         uses: ./.github/actions/install-dependencies
+        with:
+          workdir: project-5
 
       - name: 🚦 Run Tests
         run: yarn test
