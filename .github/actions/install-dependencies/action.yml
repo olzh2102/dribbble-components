@@ -1,13 +1,12 @@
 name: 🛠 Install dependencies
-inputs:
-  key:
-    required: true
+runs:
+  using: 'composite'
 steps:
   - name: 🗃 Cache dependencies
   - uses: actions/cache@v3
     with:
       path: '**/node_modules'
-      key: ${{ inputs.key }}
+      key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
   - name: 🛠 Install dependencies
    if: steps.cache.outputs.cache-hit != 'true'

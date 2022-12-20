@@ -24,8 +24,6 @@ jobs:
 
       - name: 🛠 Install dependencies
         uses: ./.github/actions/install-dependencies
-        with:
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: 🚦 Run Tests
         run: yarn test
@@ -48,8 +46,6 @@ jobs:
 
       - name: 🛠 Install dependencies
         uses: ./.github/actions/install-dependencies
-        with:
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: 🔬 Type checking
         run: yarn typecheck
@@ -71,8 +67,6 @@ jobs:
 
       - name: 🛠 Install dependencies
         uses: ./.github/actions/install-dependencies
-        with:
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: 💀 Deadcode checking
         run: |
