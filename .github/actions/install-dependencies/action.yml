@@ -10,4 +10,4 @@ runs:
 
     - name: 🛠 Install dependencies
       if: steps.cache.outputs.cache-hit != 'true'
-        run: yarn
+      run: yarn
