@@ -1,3 +1,5 @@
+#!/bin/bash
+
 count=`yarn check:find-deadcode | wc -l`
 
 if [ $count -gt 3 ]
