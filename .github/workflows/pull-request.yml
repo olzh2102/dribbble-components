@@ -67,4 +67,4 @@ jobs:
 
       - name: 💀 Deadcode checking
         run: |
-          ./.github/scripts/deadcode-check.sh
+          ${GITHUB_WORKSPACE}/.github/scripts/deadcode-check.sh
