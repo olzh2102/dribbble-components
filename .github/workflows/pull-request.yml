@@ -67,4 +67,4 @@ jobs:
 
       - name: 💀 Deadcode checking
         run: |
-          chmod +x ./.github/scripts/deadcode-check.sh
+          ./.github/scripts/deadcode-check.sh
