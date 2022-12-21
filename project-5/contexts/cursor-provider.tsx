@@ -49,7 +49,7 @@ export default function CursorProvider({ children }: { children: ReactNode }) {
               translateY: '-50%',
             }}
             transition={{ type: 'spring', damping: 10, stiffness: 100 }}
-            className="absolute w-4 h-4 bg-secondary-400 dark:bg-white rounded-full z-50 pointer-events-none mix-blend-difference"
+            className="absolute w-4 h-4 bg-secondary-400 dark:bg-secondary-300 rounded-full z-50 pointer-events-none mix-blend-difference"
             style={{ left: cursorPosition.x, top: cursorPosition.y }}
           />
         )}
