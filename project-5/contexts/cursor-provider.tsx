@@ -5,14 +5,8 @@ import { motion } from 'framer-motion'
 type Selector = keyof HTMLElementTagNameMap
 
 export const CursorContext = createContext<{
-  onMouseOver: <T>(
-    e: React.MouseEvent<T, MouseEvent>,
-    selector: Selector
-  ) => void
-  onMouseOut: <T>(
-    e: React.MouseEvent<T, MouseEvent>,
-    selector: Selector
-  ) => void
+  onMouseOver: <T>(e: React.MouseEvent<T, MouseEvent>, selector: Selector) => void
+  onMouseOut: <T>(e: React.MouseEvent<T, MouseEvent>, selector: Selector) => void
 }>({
   onMouseOver: () => undefined,
   onMouseOut: () => undefined,
@@ -26,18 +20,12 @@ export default function CursorProvider({ children }: { children: ReactNode }) {
   const [cursorHidden, setCursorHidden] = useState(false)
   const [actionHover, setActionHover] = useState(false)
 
-  const onMouseOver = <T,>(
-    e: React.MouseEvent<T, MouseEvent>,
-    selector: Selector
-  ) => {
+  const onMouseOver = <T,>(e: React.MouseEvent<T, MouseEvent>, selector: Selector) => {
     const target = (e.target as HTMLElement).closest(selector)
     if (target) setActionHover(true)
   }
 
-  const onMouseOut = <T,>(
-    e: React.MouseEvent<T, MouseEvent>,
-    selector: Selector
-  ) => {
+  const onMouseOut = <T,>(e: React.MouseEvent<T, MouseEvent>, selector: Selector) => {
     const target = (e.target as HTMLElement).closest(selector)
     if (target) setActionHover(false)
   }
@@ -61,7 +49,7 @@ export default function CursorProvider({ children }: { children: ReactNode }) {
               translateY: '-50%',
             }}
             transition={{ type: 'spring', damping: 10, stiffness: 100 }}
-            className="absolute w-4 h-4 bg-secondary-200 dark:bg-secondary-400 rounded-full z-50 pointer-events-none"
+            className="absolute w-4 h-4 bg-secondary-400 dark:bg-secondary-300 rounded-full z-50 pointer-events-none mix-blend-difference"
             style={{ left: cursorPosition.x, top: cursorPosition.y }}
           />
         )}
