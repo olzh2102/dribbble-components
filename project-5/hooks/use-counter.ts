@@ -14,7 +14,7 @@ export default function useCounter({
   const [counter, setCounter] = useState<number>(from)
 
   useEffect(() => {
-    const controls = animate(from, to + 1, {
+    const controls = animate(from, to, {
       duration,
       onUpdate(value) {
         setCounter(Math.floor(value))

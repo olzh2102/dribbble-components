@@ -54,7 +54,7 @@ export default function App({
         <ThemeProvider>
           <CursorProvider>
             {loading ? (
-              <Preloader setLoading={setLoading} />
+              <Preloader duration={4} setLoading={setLoading} />
             ) : (
               <motion.div
                 initial={{ opacity: 0 }}

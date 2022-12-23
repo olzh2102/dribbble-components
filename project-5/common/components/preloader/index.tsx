@@ -2,12 +2,18 @@ import { useEffect } from 'react'
 
 import useCounter from '~hooks/use-counter'
 
-export default function Preloader({ setLoading }) {
-  const count = useCounter({ from: 0, to: 100, duration: 4 })
+export default function Preloader({
+  duration,
+  setLoading,
+}: {
+  duration: number
+  setLoading: (val: boolean) => void
+}) {
+  const count = useCounter({ from: 0, to: 100, duration })
 
   useEffect(() => {
-    if (count > 100) setLoading(false)
-  }, [count, setLoading])
+    setTimeout(() => setLoading(false), duration * 1000)
+  }, [duration, setLoading])
 
   return (
     <div className="w-full h-full z-10 relative bg-secondary-300 dark:bg-neutral-900">
