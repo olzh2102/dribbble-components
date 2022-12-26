@@ -9,7 +9,7 @@ describe('Preloader', () => {
 
   it('should call setLoading after duration time passed', async () => {
     const setLoading = jest.fn()
-    render(<Preloader duration={2} setLoading={setLoading} />)
+    render(<Preloader duration={2000} setLoading={setLoading} />)
 
     expect(setLoading).not.toHaveBeenCalled()
 
