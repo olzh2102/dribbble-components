@@ -66,11 +66,13 @@ export default function App({
                 }}
                 className="w-full h-full"
               >
-                <div className="absolute top-0 left-0 w-full h-full p-3">
-                  <Canvas className="rounded-xl" camera={{ position: [0, 0, 1] }}>
-                    <Wave />
-                  </Canvas>
-                </div>
+                {Component.waveBackground && (
+                  <div className="absolute top-0 left-0 w-full h-full p-3">
+                    <Canvas className="rounded-xl" camera={{ position: [0, 0, 1] }}>
+                      <Wave />
+                    </Canvas>
+                  </div>
+                )}
                 <RoundedCorner waveBackground={!!Component.waveBackground}>
                   <Header>
                     <CurrentTime />
