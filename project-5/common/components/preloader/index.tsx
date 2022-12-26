@@ -12,7 +12,7 @@ export default function Preloader({
   const count = useCounter({ from: 0, to: 100, duration })
 
   useEffect(() => {
-    setTimeout(() => setLoading(false), duration * 1000)
+    setTimeout(() => setLoading(false), duration)
   }, [duration, setLoading])
 
   return (
