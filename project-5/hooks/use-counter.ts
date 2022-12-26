@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react'
 
-import { animate } from 'framer-motion'
-
 export default function useCounter({
   from = 0,
   to = 100,
@@ -12,16 +10,15 @@ export default function useCounter({
   duration: number
 }) {
   const [counter, setCounter] = useState<number>(from)
+  const step = duration / (to - from)
 
   useEffect(() => {
-    const controls = animate(from, to, {
-      duration,
-      onUpdate(value) {
-        setCounter(Math.floor(value))
-      },
-    })
-    return () => controls.stop()
-  }, [from, to, duration])
+    const handlerId = setInterval(() => {
+      setCounter((x) => x + 1)
+    }, step)
+
+    return () => clearInterval(handlerId)
+  }, [duration, step])
 
   return counter
 }

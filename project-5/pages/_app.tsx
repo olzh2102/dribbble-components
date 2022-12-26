@@ -2,9 +2,6 @@ import React, { useState } from 'react'
 
 import { Rubik } from '@next/font/google'
 import { Canvas } from '@react-three/fiber'
-import Header from 'common/components/header'
-import Preloader from 'common/components/preloader'
-import { Page, Lang } from 'common/types'
 import { AnimatePresence, motion } from 'framer-motion'
 import { NextComponentType } from 'next'
 import type { AppProps } from 'next/app'
@@ -12,6 +9,9 @@ import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
+import Header from 'common/components/header'
+import Preloader from 'common/components/preloader'
+import { Page, Lang } from 'common/types'
 import LangToggler from '~components/lang-toggler'
 import RoundedCorner from '~components/rounded-corner'
 import ThemeToggler from '~components/theme-toggler'
@@ -54,7 +54,7 @@ export default function App({
         <ThemeProvider>
           <CursorProvider>
             {loading ? (
-              <Preloader duration={4} setLoading={setLoading} />
+              <Preloader duration={2000} setLoading={setLoading} />
             ) : (
               <motion.div
                 initial={{ opacity: 0 }}
@@ -66,14 +66,13 @@ export default function App({
                 }}
                 className="w-full h-full"
               >
-                <div className="absolute top-0 left-0 w-full h-full p-3">
-                  <Canvas
-                    className="rounded-xl"
-                    camera={{ position: [0, 0, 1] }}
-                  >
-                    <Wave />
-                  </Canvas>
-                </div>
+                {Component.waveBackground && (
+                  <div className="absolute top-0 left-0 w-full h-full p-3">
+                    <Canvas className="rounded-xl" camera={{ position: [0, 0, 1] }}>
+                      <Wave />
+                    </Canvas>
+                  </div>
+                )}
                 <RoundedCorner waveBackground={!!Component.waveBackground}>
                   <Header>
                     <CurrentTime />
