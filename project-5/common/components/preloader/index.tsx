@@ -16,7 +16,7 @@ export default function Preloader({
   }, [duration, setLoading])
 
   return (
-    <div className="w-full h-full z-10 relative bg-secondary-300 dark:bg-neutral-900">
+    <div className="w-full h-full z-10 relative bg-secondary-300 dark:bg-secondary-100">
       <div className="text-neutral-900 dark:text-secondary-500 place-content-center text-xl h-full grid">
         <div>Natallia Raksha</div>
       </div>
