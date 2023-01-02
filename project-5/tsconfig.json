@@ -40,6 +40,8 @@
   "exclude": [
     "node_modules",
     "next.config.js",
-    ".next"
+    ".next",
+    "cypress",
+    "cypress.config.ts"
   ]
 }
