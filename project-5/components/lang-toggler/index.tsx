@@ -26,10 +26,7 @@ export default function LangToggler({ lang }: { lang: Lang }) {
         checked={lang == LANG.EN}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLang(e.target.value as Lang)}
       />
-      <label
-        htmlFor="english"
-        className="peer-checked/en:text-primary-200 dark:peer-checked/en:text-secondary-300"
-      >
+      <label htmlFor="english" className="peer-checked/en:text-secondary-300">
         en
       </label>{' '}
       <span>/</span>
@@ -46,10 +43,7 @@ export default function LangToggler({ lang }: { lang: Lang }) {
           setLang(e.target.value as Lang)
         }}
       />
-      <label
-        htmlFor="german"
-        className="peer-checked/de:text-primary-200 dark:peer-checked/de:text-secondary-300"
-      >
+      <label htmlFor="german" className="peer-checked/de:text-secondary-300">
         {' '}
         de
       </label>{' '}
@@ -65,10 +59,7 @@ export default function LangToggler({ lang }: { lang: Lang }) {
         checked={lang == LANG.RU}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLang(e.target.value as Lang)}
       />
-      <label
-        htmlFor="russian"
-        className="peer-checked/ru:text-primary-200 dark:peer-checked/ru:text-secondary-300"
-      >
+      <label htmlFor="russian" className="peer-checked/ru:text-secondary-300">
         {' '}
         ru
       </label>

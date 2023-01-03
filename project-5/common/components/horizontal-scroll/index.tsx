@@ -20,7 +20,7 @@ export default function HorizontalScroll({ children }: { children: React.ReactNo
   }, [])
 
   return (
-    <div ref={ref} className="h-full flex gap-10 overflow-x-scroll">
+    <div ref={ref} className="flex gap-10 overflow-x-scroll">
       {children}
     </div>
   )

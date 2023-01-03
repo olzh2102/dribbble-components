@@ -56,34 +56,23 @@ export default function App({
             {loading ? (
               <Preloader duration={2000} setLoading={setLoading} />
             ) : (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{
-                  type: 'spring',
-                  stiffness: 30,
-                  damping: 30,
-                }}
-                className="w-full h-full"
-              >
+              <RoundedCorner waveBackground={!!Component.waveBackground}>
                 {Component.waveBackground && (
-                  <div className="absolute top-0 left-0 w-full h-full p-3">
+                  <div className="absolute top-0 left-0 w-full h-full">
                     <Canvas className="rounded-xl" camera={{ position: [0, 0, 1] }}>
                       <Wave />
                     </Canvas>
                   </div>
                 )}
-                <RoundedCorner waveBackground={!!Component.waveBackground}>
-                  <Header>
-                    <CurrentTime />
-                    <LangToggler lang={locale as Lang} />
-                    <ThemeToggler />
-                  </Header>
-                  <AnimatePresence mode="wait" initial={false}>
-                    <Component {...pageProps} key={router.asPath} />
-                  </AnimatePresence>
-                </RoundedCorner>
-              </motion.div>
+                <Header>
+                  <CurrentTime />
+                  <LangToggler lang={locale as Lang} />
+                  <ThemeToggler />
+                </Header>
+                <AnimatePresence mode="wait" initial={false}>
+                  <Component {...pageProps} key={router.asPath} />
+                </AnimatePresence>
+              </RoundedCorner>
             )}
           </CursorProvider>
         </ThemeProvider>

@@ -59,7 +59,7 @@ export default function ThemeToggler() {
         onClick={toDark}
         role="moon-btn"
       >
-        <MoonIcon className="h-5 w-5 text-primary-200" />
+        <MoonIcon className="h-5 w-5 text-secondary-300" />
       </motion.button>
     </div>
   )

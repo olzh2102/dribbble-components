@@ -8,7 +8,7 @@ export default function Header({ children }: { children: ReactNode }) {
   const { onMouseOver, onMouseOut } = useContext(CursorContext)
 
   return (
-    <header className="flex justify-between pointer-events-auto mt-4 items-center">
+    <header className="flex pt-5 pr-3 justify-between items-center">
       <nav>
         <ul
           className="flex gap-6 ml-20 text-primary-200 dark:text-secondary-300"
@@ -22,7 +22,7 @@ export default function Header({ children }: { children: ReactNode }) {
           <MenuItem route="/contact" />
         </ul>
       </nav>
-      <div className="flex gap-x-5 justify-end pr-6 pointer-events-auto text-primary-200 dark:text-secondary-300 dark:mix-blend-exclusion">
+      <div className="flex gap-x-5 justify-end pr-6 text-secondary-400 dark:text-secondary-300 mix-blend-exclusion">
         {children}
       </div>
     </header>
