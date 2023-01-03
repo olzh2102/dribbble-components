@@ -10,7 +10,7 @@ export default function Greeting() {
   const timeOfDay = getTimeOfDay()
 
   return (
-    <div className="grid h-full place-content-center text-5xl dark:text-secondary-300 dark:mix-blend-exclusion">
+    <div className="grid h-full place-content-center text-5xl text-secondary-300 mix-blend-exclusion">
       {t.greeting[timeOfDay]}
     </div>
   )

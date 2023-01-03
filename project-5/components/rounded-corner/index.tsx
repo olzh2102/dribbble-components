@@ -1,5 +1,3 @@
-import { motion } from 'framer-motion'
-
 export default function RoundedCorner({
   waveBackground,
   children,
@@ -9,16 +7,13 @@ export default function RoundedCorner({
 }) {
   return (
     <div className="w-full h-full p-3 bg-primary-200 dark:bg-secondary-300">
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1 }}
-        className={`relative w-full h-full p-3 rounded-xl ${
+      <div
+        className={`relative w-full h-full rounded-xl ${
           !waveBackground && 'bg-secondary-300 dark:bg-secondary-100'
         }`}
       >
         {children}
-      </motion.div>
+      </div>
     </div>
   )
 }
