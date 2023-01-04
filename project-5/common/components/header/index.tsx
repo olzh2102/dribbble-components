@@ -1,19 +1,22 @@
-import { ReactNode, useContext } from 'react'
+import { ReactNode, useContext } from "react";
 
-import { CursorContext } from '~contexts/cursor-provider'
+import { CursorContext } from "~contexts/cursor-provider";
 
-import MenuItem from './menu-item'
+import MenuItem from "./menu-item";
 
 export default function Header({ children }: { children: ReactNode }) {
-  const { onMouseOver, onMouseOut } = useContext(CursorContext)
+  const { onMouseOver, onMouseOut } = useContext(CursorContext);
 
   return (
-    <header className="flex pt-5 pr-3 justify-between items-center">
+    <header className="absolute w-full h-full px-5 flex justify-between items-center">
+      <div className="text-center text-secondary-400 dark:text-secondary-300 mix-blend-exclusion">
+        {children}
+      </div>
       <nav>
         <ul
-          className="flex gap-6 ml-20 text-primary-200 dark:text-secondary-300"
-          onMouseOver={(e) => onMouseOver(e, 'a')}
-          onMouseOut={(e) => onMouseOut(e, 'a')}
+          className="text-primary-200 dark:text-secondary-300 text-end text-3xl font-medium"
+          onMouseOver={(e) => onMouseOver(e, "a")}
+          onMouseOut={(e) => onMouseOut(e, "a")}
         >
           <MenuItem route="/" />
           <MenuItem route="/projects" />
@@ -22,9 +25,6 @@ export default function Header({ children }: { children: ReactNode }) {
           <MenuItem route="/contact" />
         </ul>
       </nav>
-      <div className="flex gap-x-5 justify-end pr-6 text-secondary-400 dark:text-secondary-300 mix-blend-exclusion">
-        {children}
-      </div>
     </header>
-  )
+  );
 }
