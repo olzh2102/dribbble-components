@@ -50,6 +50,7 @@ jobs:
         uses: cypress-io/github-action@v4
         with:
           working-directory: project-5/
+          install: false
           browser: chrome
           build: yarn build
           start: yarn start
