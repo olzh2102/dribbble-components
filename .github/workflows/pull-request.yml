@@ -47,7 +47,7 @@ jobs:
       - name: 🇨🇾 Cypress run
         uses: cypress-io/github-action@v4
         with:
-          working-directory: project-5
+          working-directory: project-5/
           install: false
           browser: chrome
           build: yarn build
