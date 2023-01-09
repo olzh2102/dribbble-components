@@ -48,8 +48,6 @@ jobs:
 
       - name: 🇨🇾 Cypress run
         uses: cypress-io/github-action@v4
-        env:
-          CYPRESS_CACHE_FOLDER: '~/.cache/Cypress'
         with:
           working-directory: project-5/
           install: false

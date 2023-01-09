@@ -17,7 +17,7 @@ runs:
       with:
         path: |
           ${{inputs.workdir}}/node_modules
-          ~/.cache/cypress
+          ~/.cache/Cypress
         key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
     - name: 🛠 Install dependencies
