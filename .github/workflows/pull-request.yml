@@ -44,9 +44,10 @@ jobs:
         with:
           workdir: project-5
 
+      - run: pwd
+
       - name: 🇨🇾 Cypress run
         uses: cypress-io/github-action@v3
-        run: pwd
         with:
           project: project-5/
           browser: chrome
