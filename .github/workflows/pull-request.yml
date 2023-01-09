@@ -30,11 +30,6 @@ jobs:
   integration-test:
     name: 🧩 Integration Tests
     runs-on: ubuntu-latest
-    env:
-      working-directory: project-5
-    defaults:
-      run:
-        working-directory: ${{ env.working-directory }}
     steps:
       - name: ⬇️ Checkout the branch
         uses: actions/checkout@v3
@@ -44,12 +39,10 @@ jobs:
         with:
           workdir: project-5
 
-      - run: pwd
-
       - name: 🇨🇾 Cypress run
         uses: cypress-io/github-action@v5
         with:
-          working-directory: project-5/
+          working-directory: project-5
           install: false
           browser: chrome
           build: yarn build
