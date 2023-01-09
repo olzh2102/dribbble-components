@@ -46,9 +46,9 @@ jobs:
 
       - name: 🇨🇾 Cypress run
         uses: cypress-io/github-action@v3
+        run: pwd
         with:
-          project: project-5
-          install: false
+          project: project-5/
           browser: chrome
           build: yarn build
           start: yarn start
