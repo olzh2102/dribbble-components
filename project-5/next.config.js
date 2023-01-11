@@ -27,6 +27,9 @@ const nextConfig = {
       },
     ],
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  }
 };
 
 module.exports = withTM(nextConfig);

@@ -27,6 +27,23 @@ jobs:
       - name: 🚦 Run Tests
         run: yarn test
 
+  integration-test:
+    name: 🧩 Integration Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout the branch
+        uses: actions/checkout@v3
+
+      - name: 🛠 Install dependencies
+        uses: ./.github/actions/install-dependencies
+        with:
+          workdir: project-5
+
+      - name: 🇨🇾 Cypress run
+        uses: ./.github/actions/cypress-run
+        with:
+          workdir: project-5
+
   type-checking:
     name: 🔬 Type checking
     runs-on: ubuntu-latest
