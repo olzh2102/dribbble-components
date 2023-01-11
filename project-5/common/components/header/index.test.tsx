@@ -1,5 +1,6 @@
-import { render, screen, within } from 'common/utils/test-utils'
 import { useRouter as mockedUseRouter } from 'next/router'
+
+import { render, screen, within } from 'common/utils/test-utils'
 
 import Header from '.'
 

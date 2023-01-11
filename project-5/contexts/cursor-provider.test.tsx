@@ -5,7 +5,7 @@ import { render, screen, waitFor } from 'common/utils/test-utils'
 
 describe('Custom Cursor', () => {
   function setup() {
-    return render(<Header>test component with custom cursor context wrapper</Header>)
+    return render(<Header />)
   }
 
   it('should render custom circle cursor', async () => {
