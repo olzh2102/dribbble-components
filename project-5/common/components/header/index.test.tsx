@@ -1,11 +1,12 @@
-import { render, screen, within } from 'common/utils/test-utils'
 import { useRouter as mockedUseRouter } from 'next/router'
+
+import { render, screen, within } from 'common/utils/test-utils'
 
 import Header from '.'
 
 describe('Navigation Menu', () => {
   it('"Home" item should be active by default', () => {
-    render(<Header>yo</Header>)
+    render(<Header />)
     const homeItem = screen.getByText(/home/i).parentElement
     expect(homeItem).toBeInTheDocument()
 
@@ -22,7 +23,7 @@ describe('Navigation Menu', () => {
       locale: 'en',
     }))
 
-    render(<Header>yo</Header>)
+    render(<Header />)
     const projectsItem = screen.getByText(/projects/i).parentElement
     expect(projectsItem).toBeInTheDocument()
 
