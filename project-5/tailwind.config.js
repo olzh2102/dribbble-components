@@ -15,6 +15,7 @@ module.exports = {
       colors: {
         primary: {
           100: '#0d00fc', // blue
+          150: '#0b0ead',
           200: '#000000', // black
           300: '#8c8f8f', // spanish gray
           400: '#bfc0c0', // silver
@@ -32,6 +33,7 @@ module.exports = {
           600: '#bdbbb0', // bone (temnee)
           700: '#8a897c', // bone (ewe temnee)
           800: colors.gray[400],
+          900: '#c9b2a6'
         },
       },
       boxShadow: {

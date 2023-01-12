@@ -1,11 +1,27 @@
+import { useContext } from 'react'
+
+import lang from 'common/lang.json'
+import { Lang, RoutePath, Theme, TranslationKey } from 'common/types'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-import lang from 'common/lang.json'
-import { Lang, RoutePath, TranslationKey } from 'common/types'
+import { ThemeContext } from '~contexts/theme-provider'
+
+function mapActiveClassname(isActive: boolean, theme: Theme) {
+  let res = ''
+
+  if (isActive) {
+    res = 'bg-gradient-to-l bg-clip-text text-transparent '
+    if (theme == 'dark') res += 'from-secondary-900 to-secondary-300'
+    else res += 'from-primary-150 to-primary-200'
+  }
+
+  return res
+}
 
 export default function MenuItem({ route }: { route: RoutePath }) {
+  const theme = useContext(ThemeContext).theme
   const { locale, route: currentRoute } = useRouter()
   const t = lang[locale as Lang]
 
@@ -21,17 +37,29 @@ export default function MenuItem({ route }: { route: RoutePath }) {
     },
   }
 
-  const translationKey = route === '/' ? 'home' : (route.replace('/', '') as TranslationKey)
+  const translationKey =
+    route === '/' ? 'home' : (route.replace('/', '') as TranslationKey)
 
   return (
     <li className="relative uppercase">
-      <Link href={route}>{t.header[translationKey]}</Link>
+      <Link
+        href={route}
+        className={mapActiveClassname(route === currentRoute, theme)}
+      >
+        {t.header[translationKey]}
+      </Link>
       <motion.span
+        role={route === currentRoute ? 'active-mark' : ''}
         animate={route === currentRoute ? 'show' : 'hidden'}
         transition={transition}
         variants={variants}
-        className="absolute top-1 -right-2 w-1 h-1 bg-primary-100 dark:bg-primary-900 rounded-full shadow-active-menu-item dark:shadow-dark-active-menu-item"
-        role={route === currentRoute ? 'active-mark' : ''}
+        className={`
+          absolute top-2 -right-3 
+          w-1 h-1 
+          rounded-full 
+          bg-primary-100 dark:bg-primary-900 
+          shadow-active-menu-item dark:shadow-dark-active-menu-item
+        `}
       />
     </li>
   )
