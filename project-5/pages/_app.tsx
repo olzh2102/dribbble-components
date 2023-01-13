@@ -1,21 +1,23 @@
 import React, { useState } from 'react'
 
-import { Commissioner } from '@next/font/google'
+import { Inter } from '@next/font/google'
 import { Canvas } from '@react-three/fiber'
+import Header from 'common/components/header'
+import Preloader from 'common/components/preloader'
+import { Page } from 'common/types'
 import { AnimatePresence } from 'framer-motion'
 import { NextComponentType } from 'next'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 
-import Header from 'common/components/header'
-import Preloader from 'common/components/preloader'
-import { Page } from 'common/types'
 import RoundedCorner from '~components/rounded-corner'
 import Wave from '~components/wave'
 import ThemeLangCursorProvider from '~contexts/index'
 import '../styles/globals.css'
 
-const font = Commissioner()
+const font = Inter()
+// TODO: select carefully what font to use
+// * const font = Commissioner()
 
 export default function App({
   Component,
