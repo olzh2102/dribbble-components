@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import useCounter from '~hooks/use-counter'
+import { motion } from 'framer-motion'
 
 export default function Preloader({
   duration,
@@ -9,21 +9,26 @@ export default function Preloader({
   duration: number
   setLoading: (val: boolean) => void
 }) {
-  const count = useCounter({ from: 0, to: 100, duration })
-
   useEffect(() => {
     setTimeout(() => setLoading(false), duration)
   }, [duration, setLoading])
 
   return (
-    <div className="w-full h-full z-10 relative bg-secondary-300 dark:bg-secondary-100">
-      <div className="text-neutral-900 dark:text-secondary-500 place-content-center text-xl h-full grid">
-        <div>Natallia Raksha</div>
-      </div>
-
-      <div className="text-neutral-900 dark:text-secondary-500 absolute bottom-0 right-0 text-base p-4">
-        {count}
-      </div>
+    <div className="h-full z-10 relative bg-primary-400 dark:bg-primary-200">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: duration / 1000 }}
+        className="absolute text-neutral-900 dark:text-secondary-500 place-content-center text-2xl h-full w-full grid"
+      >
+        Natallia Raksha
+      </motion.div>
+      <motion.div
+        className="h-full bg-secondary-300 dark:bg-secondary-100"
+        initial={{ width: 0 }}
+        animate={{ width: '110%' }}
+        transition={{ duration: duration / 1000 }}
+      />
     </div>
   )
 }

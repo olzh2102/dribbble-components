@@ -41,7 +41,7 @@ export default function App({
 
       <ThemeLangCursorProvider>
         {loading ? (
-          <Preloader duration={2000} setLoading={setLoading} />
+          <Preloader duration={3000} setLoading={setLoading} />
         ) : (
           <RoundedCorner waveBackground={!!Component.waveBackground}>
             {Component.waveBackground && (
