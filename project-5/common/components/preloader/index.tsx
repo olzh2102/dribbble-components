@@ -14,7 +14,7 @@ export default function Preloader({
   }, [duration, setLoading])
 
   return (
-    <div className="h-full z-10 relative bg-primary-400 dark:bg-primary-200">
+    <div className="h-full z-10 relative bg-primary-400 dark:bg-secondary-100">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -24,7 +24,7 @@ export default function Preloader({
         Natallia Raksha
       </motion.div>
       <motion.div
-        className="h-full bg-secondary-300 dark:bg-secondary-100"
+        className="h-full bg-secondary-300 dark:bg-primary-200"
         initial={{ width: 0 }}
         animate={{ width: '110%' }}
         transition={{ duration: duration / 1000 }}
