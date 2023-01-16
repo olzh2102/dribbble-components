@@ -1,6 +1,10 @@
 import React, { useEffect, useRef } from 'react'
 
-export default function HorizontalScroll({ children }: { children: React.ReactNode }) {
+export default function HorizontalScroll({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -20,7 +24,7 @@ export default function HorizontalScroll({ children }: { children: React.ReactNo
   }, [])
 
   return (
-    <div ref={ref} className="flex gap-10 overflow-x-scroll">
+    <div ref={ref} className="flex gap-10 overflow-x-scroll h-full">
       {children}
     </div>
   )
