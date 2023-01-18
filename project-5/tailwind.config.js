@@ -25,6 +25,7 @@ module.exports = {
           900: '#ab6f00', // golden brown
         },
         secondary: {
+          50: '#2c2c2c',  // (kōmir qara)
           100: '#353535', // jet (pochti qara)
           200: '#505050', // spanish gray (temnee)
           300: '#ffffff', // white

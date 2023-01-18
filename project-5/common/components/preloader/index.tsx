@@ -14,7 +14,7 @@ export default function Preloader({
   }, [duration, setLoading])
 
   return (
-    <div className="h-full z-10 relative bg-primary-400 dark:bg-secondary-100">
+    <div className="h-full z-50 relative bg-primary-400 dark:bg-secondary-100">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
