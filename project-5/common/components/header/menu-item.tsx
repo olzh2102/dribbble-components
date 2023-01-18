@@ -24,7 +24,7 @@ export default function MenuItem({ route }: { route: RoutePath }) {
   const translationKey = route === '/' ? 'home' : (route.replace('/', '') as TranslationKey)
 
   return (
-    <li className="relative uppercase">
+    <li className="relative uppercase w-min">
       <Link
         href={route}
         className={
