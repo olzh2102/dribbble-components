@@ -35,7 +35,12 @@ export default function Header() {
       </div>
       <nav>
         <ul
-          className="text-primary-200 dark:text-secondary-300 text-end text-2xl font-bold space-y-1 pointer-events-auto"
+          className={`
+            text-primary-200 dark:text-secondary-300 
+            text-end text-2xl font-bold 
+            space-y-1 
+            pointer-events-auto
+          `}
           onMouseOver={(e) => onMouseOver(e, 'a')}
           onMouseOut={(e) => onMouseOut(e, 'a')}
         >

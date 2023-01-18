@@ -6,16 +6,72 @@ import withLayout from 'common/components/layout/with-layout'
 const About = () => {
   return (
     <HorizontalScroll>
-      <div className="h-40 bg-red-200 rounded-xl flex-[0_0_10rem]" />
-      <div className="h-40 bg-red-200 rounded-xl flex-[0_0_10rem]" />
-      <div className="h-40 bg-red-200 rounded-xl flex-[0_0_10rem]" />
-      <div className="h-40 bg-red-200 rounded-xl flex-[0_0_10rem]" />
-      <div className="h-40 bg-red-200 rounded-xl flex-[0_0_10rem]" />
-      <div className="h-40 bg-red-200 rounded-xl flex-[0_0_10rem]" />
-      <div className="h-40 bg-red-200 rounded-xl flex-[0_0_10rem]" />
-      <div className="h-40 bg-red-200 rounded-xl flex-[0_0_10rem]" />
-      <div className="h-40 bg-red-200 rounded-xl flex-[0_0_10rem]" />
-      <div className="h-40 bg-red-200 rounded-xl flex-[0_0_10rem]" />
+      <div
+        data-test-id="hs-item"
+        className="h-40 bg-red-200 rounded-xl flex-[0_0_10rem]"
+      >
+        1
+      </div>
+      <div
+        data-test-id="hs-item"
+        className="h-40 bg-red-200 rounded-xl flex-[0_0_10rem]"
+      >
+        2
+      </div>
+      <div
+        data-test-id="hs-item"
+        className="h-40 bg-red-200 rounded-xl flex-[0_0_10rem]"
+      >
+        3
+      </div>
+      <div
+        data-test-id="hs-item"
+        className="h-40 bg-red-200 rounded-xl flex-[0_0_10rem]"
+      >
+        4
+      </div>
+      <div
+        data-test-id="hs-item"
+        className="h-40 bg-red-200 rounded-xl flex-[0_0_10rem]"
+      >
+        5
+      </div>
+      <div
+        data-test-id="hs-item"
+        className="h-40 bg-red-200 rounded-xl flex-[0_0_10rem]"
+      >
+        6
+      </div>
+      <div
+        data-test-id="hs-item"
+        className="h-40 bg-red-200 rounded-xl flex-[0_0_10rem]"
+      >
+        7
+      </div>
+      <div
+        data-test-id="hs-item"
+        className="h-40 bg-red-200 rounded-xl flex-[0_0_10rem]"
+      >
+        8
+      </div>
+      <div
+        data-test-id="hs-item"
+        className="h-40 bg-red-200 rounded-xl flex-[0_0_10rem]"
+      >
+        9
+      </div>
+      <div
+        data-test-id="hs-item"
+        className="h-40 bg-red-200 rounded-xl flex-[0_0_10rem]"
+      >
+        10
+      </div>
+      <div
+        data-test-id="hs-item"
+        className="h-40 bg-red-200 rounded-xl flex-[0_0_10rem]"
+      >
+        11
+      </div>
     </HorizontalScroll>
   )
 }
