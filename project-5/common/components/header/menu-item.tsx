@@ -5,14 +5,6 @@ import { useRouter } from 'next/router'
 import lang from 'common/lang.json'
 import { Lang, RoutePath, TranslationKey } from 'common/types'
 
-function mapActiveClassname(isActive: boolean) {
-  return isActive
-    ? `bg-gradient-to-l bg-clip-text text-transparent
-       from-primary-150 to-primary-200
-       dark:from-secondary-900 dark:to-secondary-300`
-    : ''
-}
-
 export default function MenuItem({ route }: { route: RoutePath }) {
   const { locale, route: currentRoute } = useRouter()
   const t = lang[locale as Lang]
