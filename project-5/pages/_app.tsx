@@ -7,7 +7,7 @@ import { NextComponentType } from 'next'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 
-import Header from 'common/components/header'
+import Header from 'common/components/header/header-v2'
 import Preloader from 'common/components/preloader'
 import { Page } from 'common/types'
 import RoundedCorner from '~components/rounded-corner'

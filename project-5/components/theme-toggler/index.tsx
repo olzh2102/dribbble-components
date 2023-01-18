@@ -37,7 +37,7 @@ export default function ThemeToggler() {
 
   return (
     <div
-      className="relative w-6 h-6"
+      className="relative w-6 h-6 pointer-events-auto"
       onMouseOver={(e) => onMouseOver(e, 'button')}
       onMouseOut={(e) => onMouseOut(e, 'button')}
     >
