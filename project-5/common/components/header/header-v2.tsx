@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef } from 'react'
+import { useContext, useEffect } from 'react'
 
 import { motion, useCycle } from 'framer-motion'
 import { useRouter } from 'next/router'
@@ -17,13 +17,27 @@ export default function Header() {
 
   const [isOpen, toggleOpen] = useCycle(false, true)
 
-  useEffect(() => {
-    router.events.on('routeChangeComplete', toggleOpen)
+  const variants = {
+    open: {
+      clipPath: 'circle(2200px at 100vw 0)',
+      transition: {
+        type: 'spring',
+        stiffness: 20,
+      },
+    },
+    closed: {
+      clipPath: 'circle(1px at 100vw 0)',
+      transition: {
+        type: 'spring',
+        stiffness: 300,
+        damping: 40,
+      },
+    },
+  }
 
-    return () => {
-      router.events.off('routeChangeComplete', toggleOpen)
-    }
-  }, [router.events, toggleOpen])
+  useEffect(() => {
+    toggleOpen()
+  }, [router.asPath, toggleOpen])
 
   return (
     <motion.header
@@ -32,29 +46,12 @@ export default function Header() {
       animate={isOpen ? 'open' : 'closed'}
     >
       <motion.div
-        className="relative h-full bg-secondary-600 dark:bg-secondary-200 rounded-xl grid place-content-center"
-        variants={{
-          open: {
-            clipPath: 'circle(2200px at 100vw 0)',
-            transition: {
-              type: 'spring',
-              stiffness: 20,
-              restDelta: 2,
-            },
-          },
-          closed: {
-            clipPath: 'circle(1px at 100vw 0)',
-            transition: {
-              type: 'spring',
-              stiffness: 300,
-              damping: 40,
-            },
-          },
-        }}
+        className="relative h-full bg-[#a9bcd0] dark:bg-secondary-50 rounded-xl grid place-content-center"
+        variants={variants}
       >
         <nav className="w-min pointer-events-auto">
           <ul
-            className="text-primary-200 dark:text-secondary-300 text-2xl font-bold space-y-1"
+            className="text-primary-200 dark:text-secondary-300 text-5xl font-bold space-y-2"
             onMouseOver={(e) => onMouseOver(e, 'a')}
             onMouseOut={(e) => onMouseOut(e, 'a')}
           >
