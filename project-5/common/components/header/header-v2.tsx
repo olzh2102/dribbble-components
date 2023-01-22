@@ -19,10 +19,11 @@ export default function Header() {
 
   const variants = {
     open: {
-      clipPath: 'circle(2200px at 100vw 0)',
+      clipPath: 'circle(5000px at 100vw 0)',
       transition: {
         type: 'spring',
         stiffness: 20,
+        damping: 20,
       },
     },
     closed: {
@@ -30,7 +31,7 @@ export default function Header() {
       transition: {
         type: 'spring',
         stiffness: 300,
-        damping: 40,
+        damping: 60,
       },
     },
   }
@@ -58,7 +59,7 @@ export default function Header() {
       >
         <nav className="w-min pointer-events-auto">
           <ul
-            className="text-primary-200 dark:text-secondary-300 text-5xl font-bold space-y-2"
+            className="text-primary-200 dark:text-secondary-300 text-5xl font-semibold space-y-2"
             onMouseOver={(e) => onMouseOver(e, 'a')}
             onMouseOut={(e) => onMouseOut(e, 'a')}
           >
