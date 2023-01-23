@@ -25,7 +25,7 @@ module.exports = {
           900: '#ab6f00', // golden brown
         },
         secondary: {
-          50: '#2c2c2c',  // (kōmir qara)
+          50: '#2c2c2c', // (kōmir qara)
           100: '#353535', // jet (pochti qara)
           200: '#505050', // spanish gray (temnee)
           300: '#ffffff', // white
@@ -34,13 +34,27 @@ module.exports = {
           600: '#bdbbb0', // bone (temnee)
           700: '#8a897c', // bone (ewe temnee)
           800: colors.gray[400],
-          900: '#c9b2a6'
+          900: '#c9b2a6',
         },
       },
       boxShadow: {
         'active-menu-item': '0 0 3px 2px #7770ff',
         'dark-active-menu-item': '0 0 3px 2px #c49f5d',
-      }
+      },
+      animation: {
+        'marquee-first': 'marquee 50s linear infinite',
+        'marquee-second': 'marquee2 50s linear infinite',
+      },
+      keyframes: {
+        marquee: {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-100%)' },
+        },
+        marquee2: {
+          '0%': { transform: 'translateX(100%)' },
+          '100%': { transform: 'translateX(0%)' },
+        },
+      },
     },
   },
   plugins: [],
