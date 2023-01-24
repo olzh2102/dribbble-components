@@ -1,6 +1,6 @@
 describe('burger menu', () => {
   beforeEach(() => {
-    cy.visit('/')
+    cy.visit('/services')
     cy.wait(3200)
   })
 
