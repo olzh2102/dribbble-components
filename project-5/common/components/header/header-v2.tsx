@@ -57,6 +57,7 @@ export default function Header() {
           rounded-md 
           grid place-content-center
         `}
+        data-test-id="header"
       >
         <nav className="w-min pointer-events-auto">
           <ul

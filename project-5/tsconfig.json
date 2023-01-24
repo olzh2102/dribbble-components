@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "types": ["cypress"],
     "target": "es5",
     "lib": [
       "dom",
@@ -42,6 +43,6 @@
     "next.config.js",
     ".next",
     "cypress",
-    "cypress.config.ts"
+    "./cypress.config.ts"
   ]
 }
