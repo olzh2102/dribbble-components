@@ -11,7 +11,7 @@ describe('burger menu', () => {
   it('should open Header on burger-menu click', () => {
     cy.get('[data-test-id="burger-menu"]').click()
 
-    cy.get('[data-test-id="header"]').should('have.css', 'clip-path', 'circle(2200px at 1440px 0%)')
+    cy.get('[data-test-id="header"]').should('have.css', 'clip-path', 'circle(5000px at 1440px 0%)')
   })
 
   it('should close burger-menu when route changes', () => {
@@ -27,6 +27,6 @@ describe('burger menu', () => {
     cy.get('[data-test-id="burger-menu"]').click()
     cy.get('[role="moon-btn"]').click()
 
-    cy.get('[data-test-id="header"]').should('have.css', 'clip-path', 'circle(2200px at 1440px 0%)')
+    cy.get('[data-test-id="header"]').should('have.css', 'clip-path', 'circle(5000px at 1440px 0%)')
   })
 })
