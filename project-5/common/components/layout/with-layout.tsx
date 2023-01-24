@@ -1,5 +1,6 @@
-import { motion } from 'framer-motion'
 import { AppProps } from 'next/app'
+
+import { motion } from 'framer-motion'
 
 import { Page } from 'common/types'
 

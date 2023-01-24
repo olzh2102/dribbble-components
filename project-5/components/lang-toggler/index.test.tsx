@@ -1,5 +1,6 @@
-import { render, screen, fireEvent } from 'common/utils/test-utils'
 import { useRouter as mockedUseRouter } from 'next/router'
+
+import { render, screen, fireEvent } from 'common/utils/test-utils'
 
 import LangToggler from '.'
 

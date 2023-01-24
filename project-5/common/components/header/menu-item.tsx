@@ -1,6 +1,7 @@
-import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+
+import { motion } from 'framer-motion'
 
 import lang from 'common/lang.json'
 import { Lang, RoutePath, TranslationKey } from 'common/types'
@@ -21,7 +22,8 @@ export default function MenuItem({ route }: { route: RoutePath }) {
     },
   }
 
-  const translationKey = route === '/' ? 'home' : (route.replace('/', '') as TranslationKey)
+  const translationKey =
+    route === '/' ? 'home' : (route.replace('/', '') as TranslationKey)
 
   return (
     <li className="relative uppercase w-min">

@@ -1,8 +1,10 @@
+import Image from 'next/image'
+
+import { motion } from 'framer-motion'
+
 import withLayout from 'common/components/layout/with-layout'
 import Marquee from 'common/components/marquee'
 import { Page } from 'common/types'
-import { motion } from 'framer-motion'
-import Image from 'next/image'
 
 const Home: Page = withLayout(() => {
   return (

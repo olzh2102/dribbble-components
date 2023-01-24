@@ -25,28 +25,48 @@
       "error",
       {
           "newlines-between": "always",
-          "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
+          "groups": [
+            "builtin",
+            "external",
+            "internal",
+            "parent",
+            "sibling",
+            "index",
+            "object",
+            "type"
+          ],
           "pathGroups": [
-              {
-                  "pattern": "react",
-                  "group": "external",
-                  "position": "before"
-              },
-              {
-                  "pattern": "~/**",
-                  "group": "external",
-                  "position": "after"
-              },
-              {
-                  "pattern": "@common/**",
-                  "group": "internal",
-                  "position": "after"
-              },
-              {
-                  "pattern": "@apps/**",
-                  "group": "internal",
-                  "position": "after"
-              }
+            {
+              "pattern": "react",
+              "group": "external",
+              "position": "before"
+            },
+            {
+              "pattern": "next",
+              "group": "external",
+              "position": "before"
+            },
+            {
+              "pattern": "next/**",
+              "group": "external",
+              "position": "before"
+            },
+            {
+              "pattern": "common/**",
+              "group": "internal"
+            },
+            {
+              "pattern": "~components/**",
+              "group": "internal"
+            },
+            {
+              "pattern": "~contexts/**",
+              "group": "internal"
+            },
+            {
+              "pattern": "~hooks/**",
+              "group": "internal"
+            }
           ],
           "pathGroupsExcludedImportTypes": ["builtin"],
           "alphabetize": {

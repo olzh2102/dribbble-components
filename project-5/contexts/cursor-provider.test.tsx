@@ -1,4 +1,5 @@
 import userEvent from '@testing-library/user-event'
+
 import Header from 'common/components/header'
 import { render, screen, waitFor } from 'common/utils/test-utils'
 
