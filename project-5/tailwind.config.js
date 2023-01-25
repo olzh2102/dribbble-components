@@ -42,8 +42,8 @@ module.exports = {
         'dark-active-menu-item': '0 0 3px 2px #c49f5d',
       },
       animation: {
-        'marquee-first': 'marquee 50s linear infinite',
-        'marquee-second': 'marquee2 50s linear infinite',
+        'marquee-first': 'marquee 200s linear infinite',
+        'marquee-second': 'marquee2 200s linear infinite',
       },
       keyframes: {
         marquee: {

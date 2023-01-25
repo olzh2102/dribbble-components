@@ -3,7 +3,7 @@ const withTM = require('next-transpile-modules')(['three'])
 
 const nextConfig = {
   images: {
-    domains: ['via.placeholder.com'],
+    domains: ['via.placeholder.com', 'picsum.photos'],
   },
   webpack(config) {
     // Allow importing of shader files (e.g. `.glsl` -- filenames below)

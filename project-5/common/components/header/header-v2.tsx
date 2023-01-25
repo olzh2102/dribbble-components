@@ -54,7 +54,7 @@ export default function Header() {
           h-full 
           bg-[#a9bcd0] 
           dark:bg-secondary-50 
-          rounded-xl 
+          rounded-md 
           grid place-content-center
         `}
       >
