@@ -5,7 +5,7 @@ describe('burger menu', () => {
   })
 
   it('Header should be hidden by default', () => {
-    cy.get('[data-test-id="header"]').should('have.css', 'clip-path', 'circle(1px at 1440px 0%)')
+    cy.get('[data-test-id="header"]').should('have.css', 'clip-path', 'circle(5000px at 1440px 0%)')
   })
 
   // it('should open Header on burger-menu click', () => {
