@@ -15,23 +15,27 @@ const Home: Page = withLayout(() => {
           flex flex-col
           text-8xl font-medium 
           text-secondary-400 dark:text-secondary-300 
-          mix-blend-difference
       `}
     >
-      <div className="flex-auto grid place-content-center">
+      <div className="flex-auto grid place-content-center mix-blend-difference">
         <div className="text-center">NR</div>
         <div className="text-base text-center tracking-[.33rem]">interiors</div>
       </div>
 
       <Marquee>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((_, i) => (
+        {[1, 2, 3, 4, 5, 6, 7, 8].map((_, i) => (
           <Image
             key={i}
-            className="text-xs border-solid border-2 border-neutral-900 rounded mx-4"
-            src="https://via.placeholder.com/200x150"
+            src="https://picsum.photos/250/150"
             alt="Picture of project"
             width={250}
             height={150}
+            className={`
+              grayscale hover:grayscale-0 
+              text-xs 
+              border-solid border-neutral-900 rounded 
+              mx-0.5
+            `}
           />
         ))}
       </Marquee>

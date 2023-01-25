@@ -11,12 +11,12 @@ export default function Marquee({
 
   return (
     <div
-      className="relative flex overflow-x-hidden"
+      className="relative overflow-x-hidden"
       onMouseOver={() => setHovered(true)}
       onMouseOut={() => setHovered(false)}
     >
       <div
-        className="flex pb-2 animate-marquee-first"
+        className="flex w-max pb-2.5 animate-marquee-first"
         style={
           pauseOnHover && isHovered ? { animationPlayState: 'paused' } : {}
         }
@@ -24,7 +24,7 @@ export default function Marquee({
         {children}
       </div>
       <div
-        className="flex pb-2 animate-marquee-second absolute top-0"
+        className="flex w-max pb-2.5 animate-marquee-second absolute top-0"
         style={
           pauseOnHover && isHovered ? { animationPlayState: 'paused' } : {}
         }
