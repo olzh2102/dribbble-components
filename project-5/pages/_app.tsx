@@ -7,11 +7,11 @@ import Head from 'next/head'
 
 import { Inter } from '@next/font/google'
 import { Canvas } from '@react-three/fiber'
+import { AnimatePresence } from 'framer-motion'
+
 import Header from 'common/components/header/header-v2'
 import Preloader from 'common/components/preloader'
 import { Page } from 'common/types'
-import { AnimatePresence } from 'framer-motion'
-
 import RoundedCorner from '~components/rounded-corner'
 import Wave from '~components/wave'
 import ThemeLangCursorProvider from '~contexts/index'
@@ -51,7 +51,7 @@ export default function App({
               </Canvas>
             </div>
           )}
-          <Header />
+          {router.pathname !== '/404' && <Header />}
           <AnimatePresence mode="wait">
             <Component {...pageProps} key={router.asPath} />
           </AnimatePresence>

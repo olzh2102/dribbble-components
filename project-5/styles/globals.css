@@ -8,6 +8,7 @@ body > div:first-child {
     height: 100%;
     cursor: none;
     overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 a, label, button {

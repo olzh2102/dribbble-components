@@ -1,44 +1,47 @@
 {
-"en": {
-    "greeting": {
-        "morning": "Good morning",
-        "afternoon": "Good afternoon",
-        "evening": "Good evening"
+    "en": {
+        "header": {
+            "home": "Home",
+            "projects": "Projects",
+            "about": "About",
+            "services": "Services",
+            "contact": "Contact"
+        },
+        "404": {
+            "pageNotFound": "page not found",
+            "search": "the page you searched for",
+            "notHere": "is certainly not here",
+            "goBack": "LET'S GO HOME"
+        }
     },
-    "header": {
-        "home": "Home",
-        "projects": "Projects",
-        "about": "About",
-        "services": "Services",
-        "contact": "Contact"
-    }
-},
-"de": {
-    "greeting": {
-        "morning": "Guten Morgen",
-        "afternoon": "Guten Tag",
-        "evening": "Guten Abend"
+    "de": {
+        "header": {
+            "home": "Zu Haus",
+            "projects": "Projects",
+            "about": "About",
+            "services": "Services",
+            "contact": "Contact"
+        },
+        "404": {
+            "pageNotFound": "page nicht gefunden",
+            "search": "the page you searched for",
+            "notHere": "is certainly not here",
+            "goBack": "LET'S GO HOME"
+        }
     },
-    "header": {
-        "home": "Zu Haus",
-        "projects": "Projects",
-        "about": "About",
-        "services": "Services",
-        "contact": "Contact"
+    "ru": {
+        "header": {
+            "home": "Главная",
+            "projects": "Проекты",
+            "about": "Обо мне",
+            "services": "Услуги",
+            "contact": "Контакты"
+        },
+        "404": {
+            "pageNotFound": "page not found",
+            "search": "the page you searched for",
+            "notHere": "is certainly not here",
+            "goBack": "LET'S GO HOME"
+        }
     }
-},
-"ru": {
-    "greeting": {
-        "morning": "Доброе утро",
-        "afternoon": "Добрый день",
-        "evening": "Добрый вечер"
-    },
-    "header": {
-        "home": "Главная",
-        "projects": "Проекты",
-        "about": "Обо мне",
-        "services": "Услуги",
-        "contact": "Контакты"
-    }
-}
 }
