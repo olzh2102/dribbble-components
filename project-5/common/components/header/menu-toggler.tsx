@@ -14,7 +14,12 @@ export default function MenuToggler({ toggle }: { toggle: Cycle }) {
       onMouseOver={(e) => onMouseOver(e, 'button')}
       onMouseOut={(e) => onMouseOut(e, 'button')}
     >
-      <svg className="stroke-black dark:stroke-white" width="33" height="33" viewBox="0 0 33 33">
+      <svg
+        className="stroke-black dark:stroke-white"
+        width="33"
+        height="33"
+        viewBox="0 0 33 33"
+      >
         <motion.path
           strokeWidth="2"
           strokeLinecap="round"

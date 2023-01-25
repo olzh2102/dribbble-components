@@ -1,15 +1,16 @@
 import { useContext, useEffect } from 'react'
 
-import { Lang } from 'common/types'
-import { motion, useCycle } from 'framer-motion'
 import { useRouter } from 'next/router'
 
-import MenuItem from './menu-item'
-import MenuToggler from './menu-toggler'
+import { motion, useCycle } from 'framer-motion'
 
+import { Lang } from 'common/types'
 import LangToggler from '~components/lang-toggler'
 import ThemeToggler from '~components/theme-toggler'
 import { CursorContext } from '~contexts/cursor-provider'
+
+import MenuItem from './menu-item'
+import MenuToggler from './menu-toggler'
 
 export default function Header() {
   const router = useRouter()

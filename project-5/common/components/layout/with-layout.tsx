@@ -1,6 +1,8 @@
-import { Page } from 'common/types'
-import { motion } from 'framer-motion'
 import { AppProps } from 'next/app'
+
+import { motion } from 'framer-motion'
+
+import { Page } from 'common/types'
 
 export default function withLayout(Component: any): Page {
   const displayName = Component.displayName || 'Component'

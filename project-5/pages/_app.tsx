@@ -1,14 +1,16 @@
 import React, { useState } from 'react'
 
+import { NextComponentType } from 'next'
+
+import type { AppProps } from 'next/app'
+import Head from 'next/head'
+
 import { Inter } from '@next/font/google'
 import { Canvas } from '@react-three/fiber'
 import Header from 'common/components/header/header-v2'
 import Preloader from 'common/components/preloader'
 import { Page } from 'common/types'
 import { AnimatePresence } from 'framer-motion'
-import { NextComponentType } from 'next'
-import type { AppProps } from 'next/app'
-import Head from 'next/head'
 
 import RoundedCorner from '~components/rounded-corner'
 import Wave from '~components/wave'

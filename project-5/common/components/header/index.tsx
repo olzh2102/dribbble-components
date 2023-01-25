@@ -1,13 +1,13 @@
 import { useContext } from 'react'
 
-import { Lang } from 'common/types'
 import { useRouter } from 'next/router'
 
-import MenuItem from './menu-item'
-
+import { Lang } from 'common/types'
 import LangToggler from '~components/lang-toggler'
 import ThemeToggler from '~components/theme-toggler'
 import { CursorContext } from '~contexts/cursor-provider'
+
+import MenuItem from './menu-item'
 
 export default function Header() {
   const locale = useRouter().locale
