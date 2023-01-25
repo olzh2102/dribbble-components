@@ -39,7 +39,7 @@
     "@types/three": "^0.146.0",
     "@typescript-eslint/eslint-plugin": "^5.46.0",
     "autoprefixer": "^10.4.13",
-    "cypress": "^12.3.0",
+    "cypress": "^12.2.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
     "glslify-loader": "^2.0.0",
