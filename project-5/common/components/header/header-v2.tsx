@@ -52,7 +52,7 @@ export default function Header() {
         className={`
           relative 
           h-full 
-          bg-[#a9bcd0] 
+          bg-secondary-400 
           dark:bg-secondary-50 
           rounded-md 
           grid place-content-center
