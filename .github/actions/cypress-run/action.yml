@@ -17,4 +17,3 @@ runs:
         build: yarn build
         start: yarn start --port 3000
         parallel: true
-        record: true
