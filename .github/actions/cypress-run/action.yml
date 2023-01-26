@@ -13,6 +13,5 @@ runs:
       with:
         working-directory: ${{ inputs.workdir }}
         install: false
-        browser: chrome
         build: yarn build
         start: yarn start --port 3000
