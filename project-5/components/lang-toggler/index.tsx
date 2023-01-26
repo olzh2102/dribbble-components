@@ -11,7 +11,7 @@ export default function LangToggler({ lang }: { lang: Lang }) {
 
   return (
     <div
-      className="flex gap-1 pointer-events-auto"
+      className="flex flex-col gap-1 pointer-events-auto"
       onMouseOver={(e) => onMouseOver(e, 'label')}
       onMouseOut={(e) => onMouseOut(e, 'label')}
     >
@@ -32,7 +32,7 @@ export default function LangToggler({ lang }: { lang: Lang }) {
       >
         en
       </label>{' '}
-      <span>/</span>
+      {/* <span>/</span> */}
       {/* german */}
       <input
         className={`hidden peer/de ${lang == LANG.DE ? 'checked' : ''}`}
@@ -53,7 +53,7 @@ export default function LangToggler({ lang }: { lang: Lang }) {
         {' '}
         de
       </label>{' '}
-      <span>/</span>
+      {/* <span>/</span> */}
       {/* russian */}
       <input
         className={`hidden peer/ru ${lang == LANG.RU ? 'checked' : ''}`}
