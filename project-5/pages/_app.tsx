@@ -52,7 +52,7 @@ export default function App({
               </Canvas>
             </div>
           )}
-          {router.pathname !== '/404' && <Header />}
+          {router.pathname !== '/404' && <HeaderV2 />}
           <AnimatePresence mode="wait">
             <Component {...pageProps} key={router.asPath} />
           </AnimatePresence>
