@@ -23,7 +23,7 @@ export default function Header() {
   return (
     <header
       className={`
-        absolute 
+        absolute z-10 
         top-1/2 -translate-y-1/2 
         flex justify-between items-center 
         w-full

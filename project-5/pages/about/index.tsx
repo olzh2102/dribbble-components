@@ -1,76 +1,39 @@
 import React from 'react'
 
+import Image from 'next/image'
+
 import HorizontalScroll from 'common/components/horizontal-scroll'
 import withLayout from 'common/components/layout/with-layout'
 
 const About = () => {
   return (
     <HorizontalScroll>
-      <div
-        data-test-id="hs-item"
-        className="h-40 bg-red-200 rounded-xl flex-[0_0_10rem]"
-      >
-        1
+      <div className="flex h-full flex-[0_0_100%]">
+        <div className="w-1/3">
+          <Image
+            src="https://picsum.photos/1000/2000"
+            alt="Picture of project"
+            width={1000}
+            height={2000}
+            className={`
+              w-full
+              h-full
+              grayscale 
+              text-xs 
+              border-solid border-neutral-900 rounded-l
+            `}
+          />
+        </div>
+        <div className="w-2/3 grid place-content-center text-white p-20">
+          <h1 className="text-4xl">Interior and Concept Designer</h1>
+          <h2 className="text-4xl italic">Natallia Raksha</h2>
+        </div>
       </div>
-      <div
-        data-test-id="hs-item"
-        className="h-40 bg-red-200 rounded-xl flex-[0_0_10rem]"
-      >
-        2
-      </div>
-      <div
-        data-test-id="hs-item"
-        className="h-40 bg-red-200 rounded-xl flex-[0_0_10rem]"
-      >
-        3
-      </div>
-      <div
-        data-test-id="hs-item"
-        className="h-40 bg-red-200 rounded-xl flex-[0_0_10rem]"
-      >
-        4
-      </div>
-      <div
-        data-test-id="hs-item"
-        className="h-40 bg-red-200 rounded-xl flex-[0_0_10rem]"
-      >
-        5
-      </div>
-      <div
-        data-test-id="hs-item"
-        className="h-40 bg-red-200 rounded-xl flex-[0_0_10rem]"
-      >
-        6
-      </div>
-      <div
-        data-test-id="hs-item"
-        className="h-40 bg-red-200 rounded-xl flex-[0_0_10rem]"
-      >
-        7
-      </div>
-      <div
-        data-test-id="hs-item"
-        className="h-40 bg-red-200 rounded-xl flex-[0_0_10rem]"
-      >
-        8
-      </div>
-      <div
-        data-test-id="hs-item"
-        className="h-40 bg-red-200 rounded-xl flex-[0_0_10rem]"
-      >
-        9
-      </div>
-      <div
-        data-test-id="hs-item"
-        className="h-40 bg-red-200 rounded-xl flex-[0_0_10rem]"
-      >
-        10
-      </div>
-      <div
-        data-test-id="hs-item"
-        className="h-40 bg-red-200 rounded-xl flex-[0_0_10rem]"
-      >
-        11
+
+      <div className="flex h-full flex-[0_0_100%]">
+        <div className="w-full grid place-content-center text-white p-20">
+          Experience history goes here...
+        </div>
       </div>
     </HorizontalScroll>
   )
