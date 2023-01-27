@@ -8,7 +8,7 @@ import withLayout from 'common/components/layout/with-layout'
 const About = () => {
   return (
     <HorizontalScroll>
-      <div className="flex h-full flex-[0_0_100%]">
+      <div className="flex h-full flex-[0_0_100%]" data-test-id="hs-item">
         <div className="w-1/3">
           <Image
             src="https://picsum.photos/1000/2000"
