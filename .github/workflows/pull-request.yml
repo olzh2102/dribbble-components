@@ -114,7 +114,7 @@ jobs:
       - name: 👷 Build Project Artifacts
         working-directory: project-5
         run: |
-          vercel pull --yes && vercel build --token=${{ secrets.VERCEL_TOKEN }}
+          vercel pull --yes --token=${{ secrets.VERCEL_TOKEN }} && vercel build --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: 🏗 Build Project Artifacts to Vercel
         working-directory: project-5
