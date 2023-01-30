@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useEffect, useRef, useState } from 'react'
+import { createContext, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { motion } from 'framer-motion'
 
@@ -30,18 +30,26 @@ export default function CursorProvider({ children }: { children: ReactNode }) {
       })
   }, [])
 
-  const onMouseOver = <T,>(e: React.MouseEvent<T, MouseEvent>, selector: Selector) => {
-    const target = (e.target as HTMLElement).closest(selector)
-    if (target) setActionHover(true)
-  }
+  const onMouseOver = useCallback(
+    <TElement,>(e: React.MouseEvent<TElement, MouseEvent>, selector: Selector) => {
+      const target = (e.target as HTMLElement).closest(selector)
+      if (target) setActionHover(true)
+    },
+    []
+  )
 
-  const onMouseOut = <T,>(e: React.MouseEvent<T, MouseEvent>, selector: Selector) => {
-    const target = (e.target as HTMLElement).closest(selector)
-    if (target) setActionHover(false)
-  }
+  const onMouseOut = useCallback(
+    <TElement,>(e: React.MouseEvent<TElement, MouseEvent>, selector: Selector) => {
+      const target = (e.target as HTMLElement).closest(selector)
+      if (target) setActionHover(false)
+    },
+    []
+  )
 
   return (
-    <CursorContext.Provider value={{ onMouseOver, onMouseOut }}>
+    <CursorContext.Provider
+      value={useMemo(() => ({ onMouseOver, onMouseOut }), [onMouseOver, onMouseOut])}
+    >
       <div
         ref={ref}
         className="w-full h-full"
