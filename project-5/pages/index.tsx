@@ -15,7 +15,7 @@ const Home: Page = withLayout(() => {
       className={`
           h-full
           flex flex-col
-          text-xl font-medium 
+          text-8xl font-medium 
           text-secondary-400 dark:text-secondary-300 
       `}
     >
