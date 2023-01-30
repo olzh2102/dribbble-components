@@ -4,11 +4,7 @@ concurrency:
   group: ${{github.workflow}}-${{github.head_ref}}
   cancel-in-progress: true
 
-on:
-  push:
-    branches:
-      - master
-      - 'feat/preview'
+on: [pull_request]
 
 jobs:
   unit-test:
