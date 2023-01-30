@@ -1,0 +1,37 @@
+name: Merge - Preview and Prod
+
+concurrency:
+  group: ${{github.workflow}}-${{github.head_ref}}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - 'project-5/portfolio-main'
+      - 'main'
+
+jobs:
+  deploy-preview:
+    name: 🏎 Deploy preview
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    steps:
+      - name: ⬇ Checkout the branch
+        uses: actions/checkout@v3
+
+      - name: 💿 Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: ⬇ Pull Vercel Environment Information
+        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: 👷 Build Project Artifacts
+        working-directory: project-5
+        run: |
+          vercel pull --yes --token=${{ secrets.VERCEL_TOKEN }} && vercel build --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: 🏗 Build Project Artifacts to Vercel
+        working-directory: project-5
+        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
