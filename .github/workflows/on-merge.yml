@@ -7,7 +7,8 @@ concurrency:
 on:
   push:
     branches:
-      - 'feat/preview'
+      - 'project-5/portfolio-main'
+      - 'main'
 
 jobs:
   deploy-preview:
