@@ -11,7 +11,7 @@ export default function LangToggler({ lang }: { lang: Lang }) {
 
   return (
     <div
-      className="flex flex-col gap-1 pointer-events-auto text-xl font-semibold"
+      className="flex flex-col gap-1 pointer-events-auto text-xl font-semibold uppercase"
       onMouseOver={(e) => onMouseOver(e, 'label')}
       onMouseOut={(e) => onMouseOut(e, 'label')}
     >
@@ -32,7 +32,7 @@ export default function LangToggler({ lang }: { lang: Lang }) {
         htmlFor="english"
         className="peer-checked/en:text-primary-200 dark:peer-checked/en:text-secondary-300"
       >
-        EN
+        en
       </label>{' '}
       {/* <span>/</span> */}
       {/* german */}
@@ -53,7 +53,7 @@ export default function LangToggler({ lang }: { lang: Lang }) {
         className="peer-checked/de:text-primary-200 dark:peer-checked/de:text-secondary-300"
       >
         {' '}
-        DE
+        de
       </label>{' '}
       {/* <span>/</span> */}
       {/* russian */}
@@ -74,7 +74,7 @@ export default function LangToggler({ lang }: { lang: Lang }) {
         className="peer-checked/ru:text-primary-200 dark:peer-checked/ru:text-secondary-300"
       >
         {' '}
-        RU
+        ru
       </label>
     </div>
   )
