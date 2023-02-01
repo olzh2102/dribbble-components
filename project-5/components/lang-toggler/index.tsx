@@ -11,7 +11,7 @@ export default function LangToggler({ lang }: { lang: Lang }) {
 
   return (
     <div
-      className="flex flex-col gap-1 pointer-events-auto"
+      className="flex flex-col gap-1 pointer-events-auto text-xl font-semibold"
       onMouseOver={(e) => onMouseOver(e, 'label')}
       onMouseOut={(e) => onMouseOut(e, 'label')}
     >
@@ -24,13 +24,15 @@ export default function LangToggler({ lang }: { lang: Lang }) {
         role="radio-en"
         value={LANG.EN}
         checked={lang == LANG.EN}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLang(e.target.value as Lang)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setLang(e.target.value as Lang)
+        }
       />
       <label
         htmlFor="english"
         className="peer-checked/en:text-primary-200 dark:peer-checked/en:text-secondary-300"
       >
-        en
+        EN
       </label>{' '}
       {/* <span>/</span> */}
       {/* german */}
@@ -51,7 +53,7 @@ export default function LangToggler({ lang }: { lang: Lang }) {
         className="peer-checked/de:text-primary-200 dark:peer-checked/de:text-secondary-300"
       >
         {' '}
-        de
+        DE
       </label>{' '}
       {/* <span>/</span> */}
       {/* russian */}
@@ -63,14 +65,16 @@ export default function LangToggler({ lang }: { lang: Lang }) {
         role="radio-ru"
         value={LANG.RU}
         checked={lang == LANG.RU}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLang(e.target.value as Lang)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setLang(e.target.value as Lang)
+        }
       />
       <label
         htmlFor="russian"
         className="peer-checked/ru:text-primary-200 dark:peer-checked/ru:text-secondary-300"
       >
         {' '}
-        ru
+        RU
       </label>
     </div>
   )
