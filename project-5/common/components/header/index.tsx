@@ -35,8 +35,10 @@ export default function Header() {
         transition={{ type: 'just' }}
         className={`
           flex flex-col gap-3 
-          text-center text-secondary-800 dark:text-primary-300
+          justify-around
+          text-secondary-800 dark:text-primary-300
           pointer-events-auto
+          h-56
           ${isHidden ? 'bg-secondary-500' : ''}
           p-5
           rounded-r-md
@@ -49,13 +51,15 @@ export default function Header() {
         animate={isHidden ? { translateX: '100%' } : { translateX: 0 }}
         whileHover={isHidden ? { translateX: '8%' } : {}}
         transition={{ type: 'just' }}
-        className={`pointer-events-auto ${isHidden ? 'bg-secondary-500' : ''}  p-5 rounded-l-md`}
+        className={`pointer-events-auto h-56 ${
+          isHidden ? 'bg-secondary-500' : ''
+        } p-5 rounded-l-md`}
       >
         <ul
           className={`
+            flex flex-col h-full justify-around
             text-primary-200 dark:text-secondary-300 
-            text-end text-2xl font-bold 
-            space-y-1 
+            text-2xl font-bold 
             whitespace-nowrap
           `}
           onMouseOver={(e) => onMouseOver(e, 'a')}

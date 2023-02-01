@@ -11,7 +11,7 @@ export default function LangToggler({ lang }: { lang: Lang }) {
 
   return (
     <div
-      className="flex flex-col gap-1 pointer-events-auto"
+      className="flex flex-col gap-1 pointer-events-auto text-xl font-semibold uppercase"
       onMouseOver={(e) => onMouseOver(e, 'label')}
       onMouseOut={(e) => onMouseOut(e, 'label')}
     >
@@ -24,7 +24,9 @@ export default function LangToggler({ lang }: { lang: Lang }) {
         role="radio-en"
         value={LANG.EN}
         checked={lang == LANG.EN}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLang(e.target.value as Lang)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setLang(e.target.value as Lang)
+        }
       />
       <label
         htmlFor="english"
@@ -63,7 +65,9 @@ export default function LangToggler({ lang }: { lang: Lang }) {
         role="radio-ru"
         value={LANG.RU}
         checked={lang == LANG.RU}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLang(e.target.value as Lang)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setLang(e.target.value as Lang)
+        }
       />
       <label
         htmlFor="russian"

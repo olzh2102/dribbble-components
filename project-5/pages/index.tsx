@@ -12,16 +12,18 @@ const Home: Page = withLayout(() => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1.5, delay: 0.5 }}
-      className={`
-          h-full
-          flex flex-col
-          text-8xl font-medium 
-          text-secondary-400 dark:text-secondary-300 
-      `}
+      className="h-full flex flex-col"
     >
-      <div className="flex-auto grid place-content-center mix-blend-difference pointer-events-none">
-        <div className="text-center">NR</div>
-        <div className="text-base text-center tracking-[.33rem]">interiors</div>
+      <div
+        className={`
+          flex-auto
+          grid place-content-center 
+          mix-blend-difference pointer-events-none 
+          font-medium text-secondary-400 dark:text-secondary-300
+        `}
+      >
+        <div className="text-center text-9xl">NR</div>
+        <div className="text-center tracking-[.33rem]">interiors</div>
       </div>
 
       {/* <Marquee>

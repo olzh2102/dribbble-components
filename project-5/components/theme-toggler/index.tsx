@@ -45,11 +45,11 @@ export default function ThemeToggler() {
         animate={theme === 'light' ? 'hidden' : 'show'}
         variants={variants}
         transition={transition}
-        className="absolute top-0 left-0"
+        className="absolute top-0 -left-0.5"
         onClick={toLight}
         role="sun-btn"
       >
-        <SunIcon className="h-6 w-6 text-primary-200 dark:text-secondary-300" />
+        <SunIcon className="h-8 w-8 text-primary-200 dark:text-secondary-300" />
       </motion.button>
       <motion.button
         animate={theme === 'dark' ? 'hidden' : 'show'}
@@ -59,7 +59,7 @@ export default function ThemeToggler() {
         onClick={toDark}
         role="moon-btn"
       >
-        <MoonIcon className="h-5 w-5 text-primary-200 dark:text-secondary-300" />
+        <MoonIcon className="h-7 w-7 text-primary-200 dark:text-secondary-300" />
       </motion.button>
     </div>
   )
