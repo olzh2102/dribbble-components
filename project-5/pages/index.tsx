@@ -18,7 +18,7 @@ const Home: Page = withLayout(() => {
     >
       <div className="flex-auto grid place-content-center mix-blend-difference pointer-events-none">
         <Image src={LogoIcon} width={200} alt="logo" />
-        <div className="flex justify-between">
+        <div className="flex justify-between text-secondary-300">
           {'interiors'.split('').map((l, i) => (
             <span key={`${i}-${l}`} className="text-base text-center font-semibold uppercase">
               {l}
