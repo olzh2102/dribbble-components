@@ -48,6 +48,7 @@ export default function Header() {
       animate={isOpen ? 'open' : 'closed'}
     >
       <motion.div
+        data-test-id="header"
         variants={variants}
         className={`
           relative 
