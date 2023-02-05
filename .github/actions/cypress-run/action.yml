@@ -9,10 +9,10 @@ runs:
   using: 'composite'
   steps:
     - name: Setup Node
-      uses: actions/setup-node@v6
+      uses: actions/setup-node@v3
       with:
        node-version: 16
-       
+
     - name: 🇨🇾 Cypress run
       uses: cypress-io/github-action@v5
       with:
