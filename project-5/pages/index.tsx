@@ -6,6 +6,8 @@ import withLayout from 'common/components/layout/with-layout'
 import Marquee from 'common/components/marquee'
 import { Page } from 'common/types'
 
+import LogoIcon from '../public/NR.svg'
+
 const Home: Page = withLayout(() => {
   return (
     <motion.div
@@ -14,16 +16,15 @@ const Home: Page = withLayout(() => {
       transition={{ duration: 1.5, delay: 0.5 }}
       className="h-full flex flex-col"
     >
-      <div
-        className={`
-          flex-auto
-          grid place-content-center 
-          mix-blend-difference pointer-events-none 
-          font-medium text-secondary-400 dark:text-secondary-300
-        `}
-      >
-        <div className="text-center text-9xl">NR</div>
-        <div className="text-center tracking-[.33rem]">interiors</div>
+      <div className="flex-auto grid place-content-center mix-blend-difference pointer-events-none">
+        <Image src={LogoIcon} width={200} alt="logo" />
+        <div className="flex justify-between">
+          {'interiors'.split('').map((l, i) => (
+            <span key={`${i}-${l}`} className="text-base text-center font-semibold uppercase">
+              {l}
+            </span>
+          ))}
+        </div>
       </div>
 
       {/* <Marquee>
