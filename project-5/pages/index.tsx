@@ -6,7 +6,7 @@ import withLayout from 'common/components/layout/with-layout'
 import Marquee from 'common/components/marquee'
 import { Page } from 'common/types'
 
-import LogoIcon from '../public/NR.svg'
+import LogoIcon from '../public/nr-logo.svg'
 
 const Home: Page = withLayout(() => {
   return (
