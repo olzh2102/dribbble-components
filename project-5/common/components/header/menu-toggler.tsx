@@ -13,6 +13,7 @@ export default function MenuToggler({ toggle }: { toggle: Cycle }) {
       onClick={() => toggle()}
       onMouseOver={(e) => onMouseOver(e, 'button')}
       onMouseOut={(e) => onMouseOut(e, 'button')}
+      data-test-id="burger-menu"
     >
       <svg
         className="stroke-black dark:stroke-white"

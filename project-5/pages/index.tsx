@@ -26,7 +26,7 @@ const Home: Page = withLayout(() => {
         <div className="text-center tracking-[.33rem]">interiors</div>
       </div>
 
-      {/* <Marquee>
+      <Marquee>
         {[1, 2, 3, 4, 5, 6, 7, 8].map((_, i) => (
           <Image
             key={i}
@@ -42,7 +42,7 @@ const Home: Page = withLayout(() => {
             `}
           />
         ))}
-      </Marquee> */}
+      </Marquee>
     </motion.div>
   )
 })
