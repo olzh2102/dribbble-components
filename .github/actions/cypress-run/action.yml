@@ -8,11 +8,6 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: Setup Node
-      uses: actions/setup-node@v3
-      with:
-       node-version: 16
-
     - name: 🇨🇾 Cypress run
       uses: cypress-io/github-action@v5
       with:
@@ -20,4 +15,4 @@ runs:
         install: false
         browser: chrome
         build: yarn build
-        start: yarn start --port 3000
+        start: yarn start

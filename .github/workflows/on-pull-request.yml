@@ -4,12 +4,7 @@ concurrency:
   group: ${{github.workflow}}-${{github.head_ref}}
   cancel-in-progress: true
 
-# on: [pull_request]
-on:
-  push:
-    branches:
-      - 'project-5/portfolio-main'
-      - 'test/cypress-fix'
+on: [pull_request]
 
 jobs:
   unit-test:
