@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react'
 
 import { useRouter } from 'next/router'
 
-import { motion, useCycle } from 'framer-motion'
+import { motion } from 'framer-motion'
 
 import { Lang } from 'common/types'
 import LangToggler from '~components/lang-toggler'
@@ -16,7 +16,6 @@ export default function Header() {
   const router = useRouter()
   const { onMouseOver, onMouseOut } = useContext(CursorContext)
 
-  // const [isOpen, toggleOpen] = useCycle(false, true)
   const [isOpen, toggleOpen] = useState(true)
 
   const variants = {
