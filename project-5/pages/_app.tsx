@@ -10,7 +10,7 @@ import { Canvas } from '@react-three/fiber'
 import { AnimatePresence } from 'framer-motion'
 
 import Header from 'common/components/header'
-// import Header from 'common/components/header/header-v2'
+import HeaderV2 from 'common/components/header/header-v2'
 import Preloader from 'common/components/preloader'
 import { Page } from 'common/types'
 import RoundedCorner from '~components/rounded-corner'
