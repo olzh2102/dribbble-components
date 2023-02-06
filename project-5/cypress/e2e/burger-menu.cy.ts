@@ -8,7 +8,7 @@ describe('burger menu', () => {
     cy.get('[data-test-id="header"]').should(
       'have.css',
       'clip-path',
-      'circle(1px at 1440px 0px)'
+      'circle(1px at 1440px 0%)'
     )
   })
 
@@ -18,7 +18,7 @@ describe('burger menu', () => {
     cy.get('[data-test-id="header"]').should(
       'have.css',
       'clip-path',
-      'circle(5000px at 1440px 0px)'
+      'circle(5000px at 1440px 0%)'
     )
   })
 
@@ -31,7 +31,7 @@ describe('burger menu', () => {
     cy.get('[data-test-id="header"]').should(
       'have.css',
       'clip-path',
-      'circle(1px at 1440px 0px)'
+      'circle(1px at 1440px 0%)'
     )
   })
 
@@ -42,7 +42,7 @@ describe('burger menu', () => {
     cy.get('[data-test-id="header"]').should(
       'have.css',
       'clip-path',
-      'circle(5000px at 1440px 0px)'
+      'circle(5000px at 1440px 0%)'
     )
   })
 })

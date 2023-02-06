@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 
 import { useRouter } from 'next/router'
 
@@ -16,7 +16,8 @@ export default function Header() {
   const router = useRouter()
   const { onMouseOver, onMouseOut } = useContext(CursorContext)
 
-  const [isOpen, toggleOpen] = useCycle(false, true)
+  // const [isOpen, toggleOpen] = useCycle(false, true)
+  const [isOpen, toggleOpen] = useState(true)
 
   const variants = {
     open: {
@@ -38,8 +39,8 @@ export default function Header() {
   }
 
   useEffect(() => {
-    toggleOpen()
-  }, [router.asPath, toggleOpen])
+    toggleOpen(!isOpen)
+  }, [router.asPath])
 
   return (
     <motion.header
@@ -77,7 +78,7 @@ export default function Header() {
           <ThemeToggler />
         </div>
       </motion.div>
-      <MenuToggler toggle={toggleOpen} />
+      <MenuToggler toggle={() => toggleOpen(!isOpen)} />
     </motion.header>
   )
 }
