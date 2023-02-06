@@ -16,7 +16,13 @@ const Home: Page = withLayout(() => {
       transition={{ duration: 1.5, delay: 0.5 }}
       className="h-full flex flex-col"
     >
-      <div className="flex-auto grid place-content-center mix-blend-difference pointer-events-none">
+      <div
+        className={`
+        flex-auto
+        grid place-content-center
+        gap-5
+        mix-blend-difference pointer-events-none`}
+      >
         <Image src={LogoIcon} width={200} alt="logo" />
         <div className="flex justify-between text-secondary-300">
           {'interiors'.split('').map((l, i) => (
@@ -27,7 +33,7 @@ const Home: Page = withLayout(() => {
         </div>
       </div>
 
-      <Marquee>
+      {/* <Marquee>
         {[1, 2, 3, 4, 5, 6, 7, 8].map((_, i) => (
           <Image
             key={i}
@@ -43,7 +49,7 @@ const Home: Page = withLayout(() => {
             `}
           />
         ))}
-      </Marquee>
+      </Marquee> */}
     </motion.div>
   )
 })

@@ -17,6 +17,7 @@ module.exports = {
           100: '#0d00fc', // blue
           150: '#0b0ead',
           200: '#000000', // black
+          250: '#b5b8bA', // svetlyi spanish gray
           300: '#8c8f8f', // spanish gray
           400: '#bfc0c0', // silver
           500: '#f1f1f1', // cultured (pochti belyi)

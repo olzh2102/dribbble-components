@@ -45,7 +45,7 @@ export default function ThemeToggler() {
         animate={theme === 'light' ? 'hidden' : 'show'}
         variants={variants}
         transition={transition}
-        className="absolute top-0 -left-0.5"
+        className="absolute bottom-1/2 -left-0.5"
         onClick={toLight}
         role="sun-btn"
       >
@@ -55,7 +55,7 @@ export default function ThemeToggler() {
         animate={theme === 'dark' ? 'hidden' : 'show'}
         variants={variants}
         transition={transition}
-        className="absolute top-0.5 left-0"
+        className="absolute bottom-1/2 left-0"
         onClick={toDark}
         role="moon-btn"
       >
