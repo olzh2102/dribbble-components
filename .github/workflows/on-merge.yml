@@ -25,6 +25,7 @@ jobs:
 
       - name: 👷 Build Project Artifacts
         working-directory: project-5
+        id: build_project
         run: |
           vercel pull --yes --token=${{ secrets.VERCEL_TOKEN }} && vercel build --token=${{ secrets.VERCEL_TOKEN }}
 
@@ -33,4 +34,6 @@ jobs:
         run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Example Summary
-        run: echo "### Hello world! :rocket:" >> $GITHUB_STEP_SUMMARY
+        run: |
+          echo "### Hello world! :rocket:" >> $GITHUB_STEP_SUMMARY
+          echo ${{ steps.run_tests.outputs }} >> $GITHUB_STEP_SUMMARY
