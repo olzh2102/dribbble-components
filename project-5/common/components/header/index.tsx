@@ -13,7 +13,9 @@ import MenuItem from './menu-item'
 
 export default function Header() {
   const router = useRouter()
+
   const { onMouseOver, onMouseOut } = useContext(CursorContext)
+
   const [isHidden, setIsHidden] = useState(false)
 
   useEffect(() => {
@@ -23,11 +25,14 @@ export default function Header() {
   return (
     <header
       className={`
-        absolute z-10 
-        top-1/2 -translate-y-1/2 
-        flex justify-between
-        w-full
-        pointer-events-none`}
+      absolute 
+      z-10 
+      w-full 
+      pointer-events-none
+      top-1/2 -translate-y-1/2 
+      uppercase text-xl font-semibold
+      flex justify-between
+    `}
     >
       <motion.div
         animate={isHidden ? { translateX: '-100%' } : { translateX: 0 }}
@@ -37,30 +42,40 @@ export default function Header() {
           flex flex-col justify-between
           text-secondary-800 dark:text-primary-300
           pointer-events-auto
-          h-52
-          ${isHidden ? 'bg-primary-800 dark:bg-primary-250' : ''}
-          p-5
+          h-48
+          ${
+            isHidden
+              ? 'bg-secondary-100 dark:bg-primary-850 text-secondary-600 dark:text-secondary-100'
+              : 'text-primary-200 dark:text-secondary-300'
+          }
+          p-5 pl-7
           rounded-r-md
         `}
       >
-        <LangToggler lang={router.locale as Lang} />
-        <ThemeToggler />
+        <LangToggler
+          lang={router.locale as Lang}
+          isHomePath={router.asPath === '/'}
+        />
+        <ThemeToggler
+          textColor={
+            isHidden
+              ? 'text-primary-850 dark:text-secondary-100'
+              : 'text-primary-200 dark:text-secondary-300'
+          }
+        />
       </motion.div>
       <motion.nav
         animate={isHidden ? { translateX: '100%' } : { translateX: 0 }}
         whileHover={isHidden ? { translateX: '8%' } : {}}
         transition={{ type: 'just' }}
-        className={`pointer-events-auto h-52 ${
-          isHidden ? 'bg-primary-800 dark:bg-primary-250' : ''
-        } p-5 rounded-l-md`}
+        className={`pointer-events-auto h-48 ${
+          isHidden
+            ? 'bg-secondary-100 dark:bg-primary-850 text-primary-850 dark:text-secondary-100'
+            : 'text-primary-200 dark:text-secondary-300'
+        } p-5 pr-7 rounded-l-md`}
       >
         <ul
-          className={`
-            flex flex-col h-full justify-between
-            text-primary-200 dark:text-secondary-300 
-            text-2xl font-bold 
-            whitespace-nowrap
-          `}
+          className="flex flex-col h-full justify-between whitespace-nowrap"
           onMouseOver={(e) => onMouseOver(e, 'a')}
           onMouseOut={(e) => onMouseOut(e, 'a')}
         >

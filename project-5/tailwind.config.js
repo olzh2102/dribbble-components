@@ -23,6 +23,7 @@ module.exports = {
           500: '#f1f1f1', // cultured (pochti belyi)
           700: '#ddcfb9', // bone
           800: '#c49f5d', // camel
+          850: '#f7f5f2', // light camel
           900: '#ab6f00', // golden brown
         },
         secondary: {
@@ -39,8 +40,7 @@ module.exports = {
         },
       },
       boxShadow: {
-        'active-menu-item': '0 0 3px 2px #7770ff',
-        'dark-active-menu-item': '0 0 3px 2px #c49f5d',
+        'active-menu-item': '0 0 3px 2px #c49f5d',
       },
       animation: {
         'marquee-first': 'marquee 200s linear infinite',

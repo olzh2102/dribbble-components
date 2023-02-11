@@ -7,7 +7,7 @@ import { CursorContext } from '~contexts/cursor-provider'
 import { ThemeContext } from '~contexts/theme-provider'
 import useSoundOnToggle from '~hooks/use-sound-on-toggle'
 
-export default function ThemeToggler() {
+export default function ThemeToggler({ textColor }: { textColor: string }) {
   const { theme, setTheme } = useContext(ThemeContext)
   const { onMouseOver, onMouseOut } = useContext(CursorContext)
 
@@ -45,21 +45,21 @@ export default function ThemeToggler() {
         animate={theme === 'light' ? 'hidden' : 'show'}
         variants={variants}
         transition={transition}
-        className="absolute bottom-1/2 -left-0.5"
+        className="absolute bottom-1/3 -left-0.5"
         onClick={toLight}
         role="sun-btn"
       >
-        <SunIcon className="h-8 w-8 text-primary-200 dark:text-secondary-300" />
+        <SunIcon className={`h-6 w-6 ${textColor}`} />
       </motion.button>
       <motion.button
         animate={theme === 'dark' ? 'hidden' : 'show'}
         variants={variants}
         transition={transition}
-        className="absolute bottom-1/2 left-0"
+        className="absolute bottom-1/3 left-0"
         onClick={toDark}
         role="moon-btn"
       >
-        <MoonIcon className="h-7 w-7 text-primary-200 dark:text-secondary-300" />
+        <MoonIcon className={`h-5 w-5 ${textColor}`} />
       </motion.button>
     </div>
   )

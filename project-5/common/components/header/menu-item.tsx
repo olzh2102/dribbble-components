@@ -26,15 +26,24 @@ export default function MenuItem({ route }: { route: RoutePath }) {
     route === '/' ? 'home' : (route.replace('/', '') as TranslationKey)
 
   return (
-    <li className="relative uppercase w-min">
+    <li className="relative w-min">
       <Link
         href={route}
         className={
           route === currentRoute
             ? `
                 bg-gradient-to-l bg-clip-text text-transparent
-                from-primary-150 via-primary-200 to-primary-200
-                dark:from-secondary-900 dark:via-secondary-300 dark:to-secondary-300
+                ${
+                  route === '/'
+                    ? 'from-secondary-900 via-primary-200 to-primary-200'
+                    : 'from-secondary-900 via-primary-850 to-primary-850'
+                }
+                
+                ${
+                  route === '/'
+                    ? 'dark:from-secondary-900 dark:via-secondary-300 dark:to-secondary-300'
+                    : 'dark:from-secondary-900 dark:via-secondary-100 dark:to-secondary-100'
+                }
               `
             : ''
         }
@@ -50,8 +59,8 @@ export default function MenuItem({ route }: { route: RoutePath }) {
           absolute top-2 -right-3 
           w-1 h-1 
           rounded-full 
-          bg-primary-100 dark:bg-primary-900 
-          shadow-active-menu-item dark:shadow-dark-active-menu-item
+          bg-primary-900
+          shadow-active-menu-item
         `}
       />
     </li>
