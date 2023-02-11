@@ -5,13 +5,19 @@ import { Lang } from 'common/types'
 import { CursorContext } from '~contexts/cursor-provider'
 import { LangContext } from '~contexts/lang-provider'
 
-export default function LangToggler({ lang }: { lang: Lang }) {
+export default function LangToggler({
+  lang,
+  isHomePath,
+}: {
+  lang: Lang
+  isHomePath?: boolean
+}) {
   const setLang = useContext(LangContext)
   const { onMouseOver, onMouseOut } = useContext(CursorContext)
 
   return (
     <div
-      className="flex flex-col gap-1 pointer-events-auto text-xl font-semibold uppercase"
+      className="flex flex-col gap-1 pointer-events-auto text-base"
       onMouseOver={(e) => onMouseOver(e, 'label')}
       onMouseOut={(e) => onMouseOut(e, 'label')}
     >
@@ -30,7 +36,11 @@ export default function LangToggler({ lang }: { lang: Lang }) {
       />
       <label
         htmlFor="english"
-        className="peer-checked/en:text-primary-200 dark:peer-checked/en:text-secondary-300"
+        className={
+          isHomePath
+            ? 'peer-checked/en:text-primary-200 dark:peer-checked/en:text-secondary-300'
+            : 'peer-checked/en:text-primary-850 dark:peer-checked/en:text-primary-200'
+        }
       >
         en
       </label>{' '}
@@ -50,7 +60,7 @@ export default function LangToggler({ lang }: { lang: Lang }) {
       />
       <label
         htmlFor="german"
-        className="peer-checked/de:text-primary-200 dark:peer-checked/de:text-secondary-300"
+        className="peer-checked/de:text-primary-850 dark:peer-checked/de:text-secondary-300"
       >
         {' '}
         de
@@ -71,7 +81,7 @@ export default function LangToggler({ lang }: { lang: Lang }) {
       />
       <label
         htmlFor="russian"
-        className="peer-checked/ru:text-primary-200 dark:peer-checked/ru:text-secondary-300"
+        className="peer-checked/ru:text-primary-850 dark:peer-checked/ru:text-secondary-300"
       >
         {' '}
         ru

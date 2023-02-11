@@ -1,11 +1,11 @@
 {
     "en": {
         "header": {
-            "home": "Home",
-            "projects": "Projects",
-            "about": "About",
-            "services": "Services",
-            "contact": "Contact"
+            "home": "home",
+            "projects": "projects",
+            "about": "about",
+            "services": "services",
+            "contact": "contact"
         },
         "404": {
             "pageNotFound": "page not found",
@@ -16,11 +16,11 @@
     },
     "de": {
         "header": {
-            "home": "Zu Haus",
-            "projects": "Projects",
-            "about": "About",
-            "services": "Services",
-            "contact": "Contact"
+            "home": "zu haus",
+            "projects": "projects",
+            "about": "about",
+            "services": "services",
+            "contact": "contact"
         },
         "404": {
             "pageNotFound": "page nicht gefunden",
@@ -31,11 +31,11 @@
     },
     "ru": {
         "header": {
-            "home": "Главная",
-            "projects": "Проекты",
-            "about": "Обо мне",
-            "services": "Услуги",
-            "contact": "Контакты"
+            "home": "главная",
+            "projects": "проекты",
+            "about": "обо мне",
+            "services": "услуги",
+            "contact": "контакты"
         },
         "404": {
             "pageNotFound": "page not found",

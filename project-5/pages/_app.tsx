@@ -5,7 +5,7 @@ import { NextComponentType } from 'next'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 
-import { Inter } from '@next/font/google'
+import { Inter, Noto_Sans, Work_Sans } from '@next/font/google'
 import { Canvas } from '@react-three/fiber'
 import { AnimatePresence } from 'framer-motion'
 
@@ -18,7 +18,8 @@ import Wave from '~components/wave'
 import ThemeLangCursorProvider from '~contexts/index'
 import '../styles/globals.css'
 
-const font = Inter()
+// const font = Inter()
+const font = Work_Sans()
 // TODO: select carefully what font to use
 // * const font = Commissioner()
 

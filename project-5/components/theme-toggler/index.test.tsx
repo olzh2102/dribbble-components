@@ -15,7 +15,7 @@ describe('Theme Toggler Component', () => {
   })
 
   it('should toggle the "dark" class from the html', () => {
-    render(<ThemeToggler />)
+    render(<ThemeToggler textColor="" />)
 
     const btn = screen.getByRole('moon-btn')
     fireEvent.click(btn)
