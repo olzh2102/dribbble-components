@@ -35,14 +35,8 @@ export default function MenuItem({ route }: { route: RoutePath }) {
                 bg-gradient-to-l bg-clip-text text-transparent
                 ${
                   route === '/'
-                    ? 'from-secondary-900 via-primary-200 to-primary-200'
-                    : 'from-secondary-900 via-primary-850 to-primary-850'
-                }
-                
-                ${
-                  route === '/'
-                    ? 'dark:from-secondary-900 dark:via-secondary-300 dark:to-secondary-300'
-                    : 'dark:from-secondary-900 dark:via-secondary-100 dark:to-secondary-100'
+                    ? 'from-secondary-900 via-primary-200 to-primary-200 dark:from-secondary-900 dark:via-secondary-300 dark:to-secondary-300'
+                    : 'from-secondary-900 via-primary-850 to-primary-850 dark:from-secondary-900 dark:via-secondary-100 dark:to-secondary-100'
                 }
               `
             : ''
@@ -50,6 +44,7 @@ export default function MenuItem({ route }: { route: RoutePath }) {
       >
         {t.header[translationKey]}
       </Link>
+
       <motion.span
         role={route === currentRoute ? 'active-mark' : ''}
         animate={route === currentRoute ? 'show' : 'hidden'}
@@ -57,9 +52,7 @@ export default function MenuItem({ route }: { route: RoutePath }) {
         variants={variants}
         className={`
           absolute top-2 -right-3 
-          w-1 h-1 
-          rounded-full 
-          bg-primary-900
+          w-1 h-1 rounded-full bg-primary-900
           shadow-active-menu-item
         `}
       />
