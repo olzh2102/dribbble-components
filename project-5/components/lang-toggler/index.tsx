@@ -10,7 +10,7 @@ export default function LangToggler({
   isHomePath,
 }: {
   lang: Lang
-  isHomePath: boolean
+  isHomePath?: boolean
 }) {
   const setLang = useContext(LangContext)
   const { onMouseOver, onMouseOut } = useContext(CursorContext)

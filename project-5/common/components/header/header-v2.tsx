@@ -74,7 +74,7 @@ export default function Header() {
         </nav>
         <div className="flex justify-between w-full dark:text-primary-300 absolute bottom-0 p-4">
           <LangToggler lang={router.locale as Lang} />
-          <ThemeToggler />
+          <ThemeToggler textColor="text-primary-200 dark:text-secondary-300" />
         </div>
       </motion.div>
       <MenuToggler toggle={() => toggleOpen(!isOpen)} />
