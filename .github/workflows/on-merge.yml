@@ -33,7 +33,7 @@ jobs:
         run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Vercel Preview URL
-        uses: zentered/vercel-preview-url@v1.1.4
+        uses: zentered/vercel-preview-url@v1.1.9
         id: vercel_preview_url
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
