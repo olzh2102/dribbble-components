@@ -30,15 +30,8 @@ jobs:
 
       - name: 🏗 Build Project Artifacts to Vercel
         working-directory: project-5
+        id: vercel
         run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
 
-      - name: Vercel Preview URL
-        uses: zentered/vercel-preview-url@v1.1.8
-        id: vercel_preview_url
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-        with:
-          vercel_project_id: prj_ClM8b1ETkI0aOFZU32vNvw1dntYD
-
       - name: Get Preview URL
-        run: echo "https://${{ steps.vercel_preview_url.outputs.preview_url }}"
+        run: echo ${{ steps.vercel.outputs }}
