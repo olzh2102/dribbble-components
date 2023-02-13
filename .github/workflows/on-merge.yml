@@ -34,4 +34,4 @@ jobs:
         run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Get Preview URL
-        run: echo ${{ steps.vercel.outputs }}
+        run: echo "${{ steps.vercel.outputs }}" >> $GITHUB_STEP_SUMMARY
