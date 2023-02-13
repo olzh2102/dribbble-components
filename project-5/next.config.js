@@ -26,7 +26,7 @@ const nextConfig = {
     fontLoaders: [
       {
         loader: '@next/font/google',
-        options: { subsets: ['latin', 'cyrillic'] },
+        options: { subsets: ['latin', 'latin-ext'] },
       },
     ],
   },

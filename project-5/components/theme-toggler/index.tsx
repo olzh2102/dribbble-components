@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 
 import { CursorContext } from '~contexts/cursor-provider'
 import { ThemeContext } from '~contexts/theme-provider'
-import useSoundOnToggle from '~hooks/use-sound-on-toggle'
+import useSoundOnToggle from 'hooks/use-sound-on-toggle'
 
 export default function ThemeToggler({ textColor }: { textColor: string }) {
   const { theme, setTheme } = useContext(ThemeContext)

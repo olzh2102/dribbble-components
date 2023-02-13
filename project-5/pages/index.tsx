@@ -2,9 +2,9 @@ import Image from 'next/image'
 
 import { motion } from 'framer-motion'
 
-import withLayout from 'common/components/layout/with-layout'
-import Marquee from 'common/components/marquee'
 import { Page } from 'common/types'
+import withLayout from '~components/layout/with-layout'
+import Marquee from '~components/marquee'
 
 import LogoIcon from '../public/nr-logo.svg'
 
@@ -26,10 +26,7 @@ const Home: Page = withLayout(() => {
         <Image src={LogoIcon} width={170} alt="logo" />
         <div className="flex justify-between text-secondary-300">
           {'interiors'.split('').map((l, i) => (
-            <span
-              key={`${i}-${l}`}
-              className="text-base text-center font-semibold uppercase"
-            >
+            <span key={`${i}-${l}`} className="text-base text-center font-semibold uppercase">
               {l}
             </span>
           ))}

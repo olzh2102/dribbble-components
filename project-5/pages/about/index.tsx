@@ -2,8 +2,8 @@ import React from 'react'
 
 import Image from 'next/image'
 
-import HorizontalScroll from 'common/components/horizontal-scroll'
-import withLayout from 'common/components/layout/with-layout'
+import HorizontalScroll from '~components/horizontal-scroll'
+import withLayout from '~components/layout/with-layout'
 
 const About = () => {
   return (
