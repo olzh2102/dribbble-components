@@ -33,5 +33,14 @@ jobs:
         id: vercel
         run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
 
+      - name: Deploy to Staging
+        id: deploy-vercel-staging
+        uses: amondnet/vercel-action@v20
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_TL_ENGINE }}
+          scope: ${{ secrets.VERCEL_ORG_ID }}
+
       - name: Get Preview URL
-        run: echo "${{ toJson(steps.vercel.outputs) }}" >> $GITHUB_STEP_SUMMARY
+        run: echo "${{ steps.deploy-vercel-staging.outputs.preview-url }}" >> $GITHUB_STEP_SUMMARY
