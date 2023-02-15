@@ -5,29 +5,30 @@ import { NextComponentType } from 'next'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 
-import { Inter, Noto_Sans, Work_Sans } from '@next/font/google'
+import { Work_Sans, Inter } from '@next/font/google'
 import { Canvas } from '@react-three/fiber'
 import { AnimatePresence } from 'framer-motion'
 
-import { Page } from 'common/types'
+import { Lang, Page } from 'common/types'
 import Header from '~components/header'
-import HeaderV2 from '~components/header/header-v2'
+import HeaderClipPath from '~components/header/header-clip-path'
 import Preloader from '~components/preloader'
 import RoundedCorner from '~components/rounded-corner'
 import Wave from '~components/wave'
 import ThemeLangCursorProvider from '~contexts/index'
+
 import '../styles/globals.css'
 
-// const font = Inter()
+const cyrillicFont = Inter({ subsets: ['cyrillic', 'cyrillic-ext'] })
 const font = Work_Sans()
-// TODO: select carefully what font to use
-// * const font = Commissioner()
 
 export default function App({
   Component,
   pageProps,
   router,
 }: AppProps & { Component: NextComponentType & Page }) {
+  const locale = router.locale as Lang
+
   const [loading, setLoading] = useState(true)
 
   return (
@@ -39,7 +40,7 @@ export default function App({
 
       <style jsx global>{`
         html {
-          font-family: ${font.style.fontFamily};
+          font-family: ${locale !== 'ru' ? font.style.fontFamily : cyrillicFont.style.fontFamily};
         }
       `}</style>
 

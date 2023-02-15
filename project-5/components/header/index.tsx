@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext } from 'react'
 
 import { useRouter } from 'next/router'
 
@@ -13,42 +13,40 @@ import MenuItem from './menu-item'
 
 export default function Header() {
   const { locale, asPath } = useRouter()
-
   const { onMouseOver, onMouseOut } = useContext(CursorContext)
-  const [isHidden, setIsHidden] = useState(false)
 
-  useEffect(() => {
-    setIsHidden(asPath !== '/')
-  }, [asPath])
+  const isHome = asPath === '/'
 
   return (
     <header
       className={`
       absolute top-1/2 -translate-y-1/2 
-      flex justify-between
+      flex justify-between w-full
       uppercase text-xl font-semibold
-      z-10 w-full pointer-events-none
+      pointer-events-none
     `}
     >
       <motion.div
-        animate={isHidden ? { translateX: '-100%' } : { translateX: 0 }}
-        whileHover={isHidden ? { translateX: '-20%' } : {}}
+        animate={!isHome ? { translateX: '-100%' } : { translateX: 0 }}
+        whileHover={!isHome ? { translateX: '-20%' } : {}}
         transition={{ type: 'just' }}
         className={`
           flex flex-col justify-between
           text-secondary-800 dark:text-primary-300
           pointer-events-auto h-48 p-5 pl-7 rounded-r-md
-          ${
-            isHidden
-              ? 'bg-secondary-100 dark:bg-primary-850 text-secondary-600 dark:text-secondary-100'
-              : 'text-primary-200 dark:text-secondary-300'
-          }
+          ${getNavigationClassnames(isHome)}
         `}
       >
-        <LangToggler lang={locale as Lang} isHomePath={asPath === '/'} />
+        <div
+          className="flex flex-col gap-1 pointer-events-auto text-base"
+          onMouseOver={(e) => onMouseOver(e, 'label')}
+          onMouseOut={(e) => onMouseOut(e, 'label')}
+        >
+          <LangToggler lang={locale as Lang} isHomePath={asPath === '/'} />
+        </div>
         <ThemeToggler
           textColor={
-            isHidden
+            !isHome
               ? 'text-primary-850 dark:text-secondary-100'
               : 'text-primary-200 dark:text-secondary-300'
           }
@@ -56,16 +54,12 @@ export default function Header() {
       </motion.div>
 
       <motion.nav
-        animate={isHidden ? { translateX: '100%' } : { translateX: 0 }}
-        whileHover={isHidden ? { translateX: '8%' } : {}}
+        animate={!isHome ? { translateX: '100%' } : { translateX: 0 }}
+        whileHover={!isHome ? { translateX: '8%' } : {}}
         transition={{ type: 'just' }}
         className={`
           pointer-events-auto h-48 p-5 pr-7 rounded-l-md
-          ${
-            isHidden
-              ? 'bg-secondary-100 dark:bg-primary-850 text-primary-850 dark:text-secondary-100'
-              : 'text-primary-200 dark:text-secondary-300'
-          } 
+          ${getNavigationClassnames(isHome)} 
         `}
       >
         <ul
@@ -82,4 +76,10 @@ export default function Header() {
       </motion.nav>
     </header>
   )
+}
+
+function getNavigationClassnames(predicate: boolean) {
+  return predicate
+    ? 'text-primary-200 dark:text-secondary-300'
+    : 'bg-secondary-100 dark:bg-primary-850 text-secondary-600 dark:text-secondary-100'
 }

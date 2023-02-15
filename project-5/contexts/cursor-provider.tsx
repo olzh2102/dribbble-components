@@ -2,14 +2,14 @@ import { createContext, ReactNode, useCallback, useEffect, useMemo, useRef, useS
 
 import { motion } from 'framer-motion'
 
-type Selector = keyof HTMLElementTagNameMap
+import { HTMLElementSelector } from 'common/types'
 
 export const CursorContext = createContext<{
-  onMouseOver: <T>(e: React.MouseEvent<T, MouseEvent>, selector: Selector) => void
-  onMouseOut: <T>(e: React.MouseEvent<T, MouseEvent>, selector: Selector) => void
+  onMouseOver: <T>(e: React.MouseEvent<T, MouseEvent>, selector: HTMLElementSelector) => void
+  onMouseOut: <T>(e: React.MouseEvent<T, MouseEvent>, selector: HTMLElementSelector) => void
 }>({
-  onMouseOver: () => undefined,
-  onMouseOut: () => undefined,
+  onMouseOver: () => null,
+  onMouseOut: () => null,
 })
 
 export default function CursorProvider({ children }: { children: ReactNode }) {
@@ -31,7 +31,7 @@ export default function CursorProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const onMouseOver = useCallback(
-    <TElement,>(e: React.MouseEvent<TElement, MouseEvent>, selector: Selector) => {
+    <TElement,>(e: React.MouseEvent<TElement, MouseEvent>, selector: HTMLElementSelector) => {
       const target = (e.target as HTMLElement).closest(selector)
       if (target) setActionHover(true)
     },
@@ -39,7 +39,7 @@ export default function CursorProvider({ children }: { children: ReactNode }) {
   )
 
   const onMouseOut = useCallback(
-    <TElement,>(e: React.MouseEvent<TElement, MouseEvent>, selector: Selector) => {
+    <TElement,>(e: React.MouseEvent<TElement, MouseEvent>, selector: HTMLElementSelector) => {
       const target = (e.target as HTMLElement).closest(selector)
       if (target) setActionHover(false)
     },

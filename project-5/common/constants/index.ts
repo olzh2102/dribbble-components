@@ -3,3 +3,5 @@ export enum LANG {
   DE = 'de',
   RU = 'ru',
 }
+
+export const LOGO_SUBTITLE = 'interiors'

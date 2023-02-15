@@ -2,26 +2,13 @@ import { useContext } from 'react'
 
 import { LANG } from 'common/constants'
 import { Lang } from 'common/types'
-import { CursorContext } from '~contexts/cursor-provider'
 import { LangContext } from '~contexts/lang-provider'
 
-export default function LangToggler({
-  lang,
-  isHomePath,
-}: {
-  lang: Lang
-  isHomePath?: boolean
-}) {
-  const setLang = useContext(LangContext)
-  const { onMouseOver, onMouseOut } = useContext(CursorContext)
+export default function LangToggler({ lang, isHomePath }: { lang: Lang; isHomePath?: boolean }) {
+  const { setLang } = useContext(LangContext)
 
   return (
-    <div
-      className="flex flex-col gap-1 pointer-events-auto text-base"
-      onMouseOver={(e) => onMouseOver(e, 'label')}
-      onMouseOut={(e) => onMouseOut(e, 'label')}
-    >
-      {/* english */}
+    <>
       <input
         className={`hidden peer/en ${lang == LANG.EN ? 'checked' : ''}`}
         type="radio"
@@ -30,9 +17,7 @@ export default function LangToggler({
         role="radio-en"
         value={LANG.EN}
         checked={lang == LANG.EN}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setLang(e.target.value as Lang)
-        }
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLang(e.target.value as Lang)}
       />
       <label
         htmlFor="english"
@@ -43,9 +28,8 @@ export default function LangToggler({
         }
       >
         en
-      </label>{' '}
-      {/* <span>/</span> */}
-      {/* german */}
+      </label>
+
       <input
         className={`hidden peer/de ${lang == LANG.DE ? 'checked' : ''}`}
         type="radio"
@@ -60,13 +44,15 @@ export default function LangToggler({
       />
       <label
         htmlFor="german"
-        className="peer-checked/de:text-primary-850 dark:peer-checked/de:text-secondary-300"
+        className={
+          isHomePath
+            ? 'peer-checked/de:text-primary-200 dark:peer-checked/de:text-secondary-300'
+            : 'peer-checked/de:text-primary-850 dark:peer-checked/de:text-primary-200'
+        }
       >
-        {' '}
         de
-      </label>{' '}
-      {/* <span>/</span> */}
-      {/* russian */}
+      </label>
+
       <input
         className={`hidden peer/ru ${lang == LANG.RU ? 'checked' : ''}`}
         type="radio"
@@ -75,17 +61,18 @@ export default function LangToggler({
         role="radio-ru"
         value={LANG.RU}
         checked={lang == LANG.RU}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setLang(e.target.value as Lang)
-        }
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLang(e.target.value as Lang)}
       />
       <label
         htmlFor="russian"
-        className="peer-checked/ru:text-primary-850 dark:peer-checked/ru:text-secondary-300"
+        className={
+          isHomePath
+            ? 'peer-checked/ru:text-primary-200 dark:peer-checked/ru:text-secondary-300'
+            : 'peer-checked/ru:text-primary-850 dark:peer-checked/ru:text-primary-200'
+        }
       >
-        {' '}
         ru
       </label>
-    </div>
+    </>
   )
 }

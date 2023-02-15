@@ -1,7 +1,7 @@
 import userEvent from '@testing-library/user-event'
 
-import Header from '~components/header'
 import { render, screen, waitFor } from 'common/utils/test-utils'
+import Header from '~components/header'
 
 describe('Custom Cursor', () => {
   function setup() {

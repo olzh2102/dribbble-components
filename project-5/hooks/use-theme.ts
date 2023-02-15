@@ -6,8 +6,8 @@ const useTheme = () => {
   const [theme, setTheme] = useState<Theme | null>(null)
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem('theme')
-    if (savedTheme) setTheme(savedTheme as Theme)
+    const savedTheme = localStorage.getItem('theme') as Theme
+    if (savedTheme) setTheme(savedTheme)
   }, [])
 
   useEffect(() => {

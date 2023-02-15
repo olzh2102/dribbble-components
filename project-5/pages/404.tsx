@@ -2,9 +2,9 @@ import { useContext } from 'react'
 
 import { useRouter } from 'next/router'
 
-import withLayout from '~components/layout/with-layout'
 import lang from 'common/lang.json'
 import { Lang, Page } from 'common/types'
+import withLayout from '~components/layout/with-layout'
 import { CursorContext } from '~contexts/cursor-provider'
 
 const Custom404: Page = withLayout(() => {

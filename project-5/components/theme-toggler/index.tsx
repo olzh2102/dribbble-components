@@ -2,10 +2,10 @@ import React, { useContext } from 'react'
 
 import { MoonIcon, SunIcon } from '@heroicons/react/24/solid'
 import { motion } from 'framer-motion'
+import useSoundOnToggle from 'hooks/use-sound-on-toggle'
 
 import { CursorContext } from '~contexts/cursor-provider'
 import { ThemeContext } from '~contexts/theme-provider'
-import useSoundOnToggle from 'hooks/use-sound-on-toggle'
 
 export default function ThemeToggler({ textColor }: { textColor: string }) {
   const { theme, setTheme } = useContext(ThemeContext)
@@ -27,12 +27,12 @@ export default function ThemeToggler({ textColor }: { textColor: string }) {
 
   function toLight() {
     setTheme('light')
-    playOn()
+    playOn?.()
   }
 
   function toDark() {
     setTheme('dark')
-    playOff()
+    playOff?.()
   }
 
   return (

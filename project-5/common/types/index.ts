@@ -16,3 +16,5 @@ export type TranslationKey =
   | 'search'
   | 'notHere'
   | 'goBack'
+
+export type HTMLElementSelector = keyof HTMLElementTagNameMap
