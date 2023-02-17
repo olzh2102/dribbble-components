@@ -6,7 +6,7 @@ import LangToggler from '.'
 
 describe('Language Toggler Component', () => {
   it('"english" language should be checked by default', () => {
-    render(<LangToggler lang="en" />)
+    render(<LangToggler currentLang="en" />)
     expect(screen.getByRole('radio-en')).toHaveClass('checked')
     expect(screen.getByRole('radio-de')).not.toHaveClass('checked')
     expect(screen.getByRole('radio-ru')).not.toHaveClass('checked')
@@ -18,7 +18,7 @@ describe('Language Toggler Component', () => {
       push,
       route: '/de',
     }))
-    const { rerender } = render(<LangToggler lang="en" />)
+    const { rerender } = render(<LangToggler currentLang="en" />)
 
     screen.getByRole('radio-de')
 
@@ -27,7 +27,7 @@ describe('Language Toggler Component', () => {
       locale: 'de',
     })
 
-    rerender(<LangToggler lang="de" />)
+    rerender(<LangToggler currentLang="de" />)
 
     expect(screen.getByRole('radio-de')).toHaveClass('checked')
     expect(screen.getByRole('radio-en')).not.toHaveClass('checked')

@@ -8,12 +8,12 @@ export default function RoundedCorner({
   children: React.ReactNode
 }) {
   return (
-    <div className="absolute top-0 left-0 w-full h-full p-2 bg-secondary-300 dark:bg-primary-200">
+    <div className="w-full h-full p-2 bg-secondary-300 dark:bg-primary-200">
       <motion.div
         animate={{ opacity: 1 }}
         transition={{ from: 0.5, duration: 1.5, delay: 2.5 }}
         className={`relative w-full h-full rounded-md ${
-          !waveBackground && 'bg-[#F7F5F2] dark:bg-secondary-100'
+          !waveBackground && 'bg-primary-850 dark:bg-secondary-100'
         }`}
       >
         {children}

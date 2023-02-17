@@ -42,7 +42,7 @@ export default function Header() {
           onMouseOver={(e) => onMouseOver(e, 'label')}
           onMouseOut={(e) => onMouseOut(e, 'label')}
         >
-          <LangToggler lang={locale as Lang} isHomePath={asPath === '/'} />
+          <LangToggler currentLang={locale as Lang} />
         </div>
         <ThemeToggler
           textColor={
