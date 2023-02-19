@@ -16,3 +16,4 @@ runs:
         browser: chrome
         build: yarn build
         start: yarn start
+        wait-on-timeout: 120
