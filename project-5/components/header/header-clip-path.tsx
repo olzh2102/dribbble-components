@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 
 import { motion } from 'framer-motion'
 
-import { Lang } from 'common/types'
+import { Lang, RoutePath } from 'common/types'
 import LangToggler from '~components/lang-toggler'
 import ThemeToggler from '~components/theme-toggler'
 import { CursorContext } from '~contexts/cursor-provider'
@@ -13,10 +13,10 @@ import MenuItem from './menu-item'
 import MenuToggler from './menu-toggler'
 
 export default function Header() {
-  const router = useRouter()
+  const { asPath, locale } = useRouter() as { asPath: RoutePath; locale: Lang }
   const { onMouseOver, onMouseOut } = useContext(CursorContext)
 
-  const [isOpen, toggleOpen] = useState(true)
+  const [isOpen, toggleOpen] = useState(false)
 
   const variants = {
     open: {
@@ -38,13 +38,12 @@ export default function Header() {
   }
 
   useEffect(() => {
-    toggleOpen(!isOpen)
-  }, [router.asPath])
+    toggleOpen(false)
+  }, [asPath])
 
   return (
     <motion.header
       className="absolute w-full h-full z-20 pointer-events-none"
-      initial={false}
       animate={isOpen ? 'open' : 'closed'}
     >
       <motion.div
@@ -53,15 +52,18 @@ export default function Header() {
         className={`
           relative 
           h-full 
-          bg-secondary-400 
-          dark:bg-secondary-50 
-          rounded-md 
+          bg-secondary-400 dark:bg-secondary-50 
           grid place-content-center
+          rounded-md 
         `}
       >
-        <nav className="w-min pointer-events-auto">
+        <nav className="pointer-events-auto">
           <ul
-            className="text-primary-200 dark:text-secondary-300 text-5xl font-semibold space-y-2"
+            className={`
+              text-primary-200 dark:text-secondary-300
+              text-5xl font-semibold
+              space-y-2 whitespace-nowrap
+            `}
             onMouseOver={(e) => onMouseOver(e, 'a')}
             onMouseOut={(e) => onMouseOut(e, 'a')}
           >
@@ -73,7 +75,13 @@ export default function Header() {
           </ul>
         </nav>
         <div className="flex justify-between w-full dark:text-primary-300 absolute bottom-0 p-4">
-          <LangToggler lang={router.locale as Lang} />
+          <div
+            className="flex gap-2 pointer-events-auto text-base uppercase font-semibold"
+            onMouseOver={(e) => onMouseOver(e, 'label')}
+            onMouseOut={(e) => onMouseOut(e, 'label')}
+          >
+            <LangToggler currentLang={locale as Lang} />
+          </div>
           <ThemeToggler textColor="text-primary-200 dark:text-secondary-300" />
         </div>
       </motion.div>

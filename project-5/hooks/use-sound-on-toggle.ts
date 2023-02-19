@@ -11,10 +11,10 @@ export default function useSoundOnToggle({ pathOn, pathOff }: { pathOn: string; 
     const pathOnAudio = new Audio(pathOn)
     pathOnAudio.volume = 0.2
     setPlayOn(pathOnAudio)
-  }, [])
+  }, [pathOff, pathOn])
 
   return {
-    playOff: playOff?.play.bind(playOff)!,
-    playOn: playOn?.play.bind(playOn)!,
+    playOff: playOff?.play.bind(playOff),
+    playOn: playOn?.play.bind(playOn),
   }
 }

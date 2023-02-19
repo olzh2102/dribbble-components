@@ -1,4 +1,4 @@
-import withLayout from 'common/components/layout/with-layout'
+import withLayout from '~components/layout/with-layout'
 
 const Contact = () => {
   return <div>Contact</div>

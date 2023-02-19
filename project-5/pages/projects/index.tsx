@@ -2,17 +2,16 @@ import Image from 'next/image'
 
 import { motion } from 'framer-motion'
 
-import withLayout from 'common/components/layout/with-layout'
-
-import LogoIcon from '../../public/nr-logo.svg'
+import withLayout from '~components/layout/with-layout'
 
 const Projects = () => (
-  <div className="flex flex-col h-full p-2">
+  <div className="flex flex-col h-full">
     <Image
-      src={LogoIcon}
+      src="/nr-logo.svg"
       width={40}
+      height={40}
       alt="logo"
-      className="absolute mix-blend-difference"
+      className="absolute mix-blend-difference m-2"
     />
     <div className="flex justify-center gap-4 my-auto">
       {[1, 2, 3, 4].map((i) => (

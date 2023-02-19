@@ -19,14 +19,14 @@ export default function Preloader({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: duration / 1000 }}
-        className="absolute text-neutral-900 dark:text-secondary-500 place-content-center text-2xl h-full w-full grid"
+        className="absolute h-full w-full grid place-content-center"
       >
-        Natallia Raksha
+        <h1 className="text-2xl text-neutral-900 dark:text-secondary-500">Natallia Raksha</h1>
       </motion.div>
       <motion.div
         className="h-full bg-secondary-300 dark:bg-primary-200"
         initial={{ width: 0 }}
-        animate={{ width: '110%' }}
+        animate={{ width: '100%' }}
         transition={{ duration: duration / 1000 }}
       />
     </div>

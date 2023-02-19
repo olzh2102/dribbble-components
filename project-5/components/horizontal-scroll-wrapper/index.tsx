@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 
-export default function HorizontalScroll({ children }: { children: React.ReactNode }) {
+export default function HorizontalScrollWrapper({ children }: { children: React.ReactNode }) {
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
