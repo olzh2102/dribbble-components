@@ -1,9 +1,10 @@
 describe('header version-1', () => {
-  it('header should get background color once page moved from page to another page', () => {
-    // * arrange
+  beforeEach(() => {
     cy.visit('/')
-    cy.wait(3200) // * preloader
+    cy.wait(3200)
+  })
 
+  it('header should get background color once page moved from page to another page', () => {
     // * act
     cy.get('[role="left-side-header"]').should(
       'not.have.css',
@@ -31,10 +32,6 @@ describe('header version-1', () => {
   })
 
   it(`header's content gets hidden when header is rendered on non-home page`, () => {
-    // * arrange
-    cy.visit('/')
-    cy.wait(3200) // * preloader
-
     // * assert
     cy.get('[data-test-id="language-toggler-wrapper"]').should('be.visible')
     cy.get('[data-test-id="theme-toggler-wrapper"]').should('be.visible')
