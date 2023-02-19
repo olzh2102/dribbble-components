@@ -4,12 +4,10 @@ import { MoonIcon, SunIcon } from '@heroicons/react/24/solid'
 import { motion } from 'framer-motion'
 import useSoundOnToggle from 'hooks/use-sound-on-toggle'
 
-import { CursorContext } from '~contexts/cursor-provider'
 import { ThemeContext } from '~contexts/theme-provider'
 
 export default function ThemeToggler({ textColor }: { textColor: string }) {
   const { theme, setTheme } = useContext(ThemeContext)
-  const { onMouseOver, onMouseOut } = useContext(CursorContext)
 
   const { playOn, playOff } = useSoundOnToggle({
     pathOn: '/sounds/light-on.mp3',
@@ -26,11 +24,7 @@ export default function ThemeToggler({ textColor }: { textColor: string }) {
   }
 
   return (
-    <div
-      className="relative w-6 h-6"
-      onMouseOver={(e) => onMouseOver(e, 'button')}
-      onMouseOut={(e) => onMouseOut(e, 'button')}
-    >
+    <>
       <motion.button
         animate={theme === 'light' ? 'hidden' : 'show'}
         variants={variants}
@@ -57,6 +51,6 @@ export default function ThemeToggler({ textColor }: { textColor: string }) {
       >
         <MoonIcon className={`h-5 w-5 ${textColor}`} />
       </motion.button>
-    </div>
+    </>
   )
 }

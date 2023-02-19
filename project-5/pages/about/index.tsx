@@ -2,12 +2,12 @@ import React from 'react'
 
 import Image from 'next/image'
 
-import HorizontalScroll from '~components/horizontal-scroll'
+import HorizontalScrollWrapper from '~components/horizontal-scroll-wrapper'
 import withLayout from '~components/layout/with-layout'
 
 const About = () => {
   return (
-    <HorizontalScroll>
+    <HorizontalScrollWrapper>
       <div
         className="flex flex-[0_0_100%] text-secondary-100 dark:text-secondary-300"
         data-test-id="hs-item"
@@ -30,7 +30,7 @@ const About = () => {
       <div className="flex flex-[0_0_100%] text-secondary-100 dark:text-secondary-300">
         <div className="w-full grid place-content-center">Experience history goes here...</div>
       </div>
-    </HorizontalScroll>
+    </HorizontalScrollWrapper>
   )
 }
 

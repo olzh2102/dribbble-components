@@ -20,20 +20,20 @@ export default function Header() {
   return (
     <header
       className={`
-      absolute top-1/2 -translate-y-1/2 
-      flex justify-between w-full
+      absolute top-1/2 -translate-y-1/2 z-10
+      flex justify-between w-full h-48 
       uppercase text-xl font-semibold
       pointer-events-none
     `}
     >
+      {/* LEFT SIDE */}
       <motion.div
         animate={!isHome ? { translateX: '-100%' } : { translateX: 0 }}
         whileHover={!isHome ? { translateX: '-20%' } : {}}
         transition={{ type: 'just' }}
         className={`
           flex flex-col justify-between
-          text-secondary-800 dark:text-primary-300
-          pointer-events-auto h-48 p-5 pl-7 rounded-r-md
+          pointer-events-auto p-5 pl-7 rounded-r-md
           ${getNavigationClassnames(isHome)}
         `}
       >
@@ -44,21 +44,28 @@ export default function Header() {
         >
           <LangToggler currentLang={locale as Lang} />
         </div>
-        <ThemeToggler
-          textColor={
-            !isHome
-              ? 'text-primary-850 dark:text-secondary-100'
-              : 'text-primary-200 dark:text-secondary-300'
-          }
-        />
+        <div
+          className="relative w-6 h-6"
+          onMouseOver={(e) => onMouseOver(e, 'button')}
+          onMouseOut={(e) => onMouseOut(e, 'button')}
+        >
+          <ThemeToggler
+            textColor={
+              !isHome
+                ? 'text-primary-850 dark:text-secondary-100'
+                : 'text-primary-200 dark:text-secondary-300'
+            }
+          />
+        </div>
       </motion.div>
 
+      {/* RIGHT SIDE */}
       <motion.nav
         animate={!isHome ? { translateX: '100%' } : { translateX: 0 }}
         whileHover={!isHome ? { translateX: '8%' } : {}}
         transition={{ type: 'just' }}
         className={`
-          pointer-events-auto h-48 p-5 pr-7 rounded-l-md
+          pointer-events-auto p-5 pr-7 rounded-l-md
           ${getNavigationClassnames(isHome)} 
         `}
       >
