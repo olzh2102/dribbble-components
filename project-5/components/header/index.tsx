@@ -39,6 +39,7 @@ export default function Header() {
         `}
       >
         <div
+          data-test-id="language-toggler-wrapper"
           className="flex flex-col gap-1 pointer-events-auto text-base"
           onMouseOver={(e) => onMouseOver(e, 'label')}
           onMouseOut={(e) => onMouseOut(e, 'label')}
@@ -46,6 +47,7 @@ export default function Header() {
           <LangToggler currentLang={locale as Lang} />
         </div>
         <div
+          data-test-id="theme-toggler-wrapper"
           className="relative w-6 h-6"
           onMouseOver={(e) => onMouseOver(e, 'button')}
           onMouseOut={(e) => onMouseOut(e, 'button')}
@@ -72,6 +74,7 @@ export default function Header() {
         `}
       >
         <ul
+          data-test-id="ul-nav-list"
           className="flex flex-col h-full justify-between whitespace-nowrap"
           onMouseOver={(e) => onMouseOver(e, 'a')}
           onMouseOut={(e) => onMouseOut(e, 'a')}
