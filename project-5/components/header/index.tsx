@@ -31,6 +31,7 @@ export default function Header() {
         animate={!isHome ? { translateX: '-100%' } : { translateX: 0 }}
         whileHover={!isHome ? { translateX: '-20%' } : {}}
         transition={{ type: 'just' }}
+        role="left-side-header"
         className={`
           flex flex-col justify-between
           pointer-events-auto p-5 pl-7 rounded-r-md
@@ -64,6 +65,7 @@ export default function Header() {
         animate={!isHome ? { translateX: '100%' } : { translateX: 0 }}
         whileHover={!isHome ? { translateX: '8%' } : {}}
         transition={{ type: 'just' }}
+        role="right-side-header"
         className={`
           pointer-events-auto p-5 pr-7 rounded-l-md
           ${getNavigationClassnames(isHome)} 

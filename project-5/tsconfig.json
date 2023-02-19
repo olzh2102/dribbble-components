@@ -19,6 +19,7 @@
     "jsx": "preserve",
     "incremental": true,
     "noImplicitAny": false,
+    "types": ["node", "jest", "@testing-library/jest-dom", "cypress"],
     "plugins": [
       {
         "name": "next"
@@ -42,6 +43,6 @@
     "next.config.js",
     ".next",
     "cypress",
-    "cypress.config.ts"
+    "./cypress.config.ts"
   ]
 }
