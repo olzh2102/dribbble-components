@@ -6,7 +6,7 @@ import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
-import { Nunito_Sans, Work_Sans } from '@next/font/google'
+import { Work_Sans } from '@next/font/google'
 import localFont from '@next/font/local'
 import { Canvas } from '@react-three/fiber'
 import { AnimatePresence } from 'framer-motion'
