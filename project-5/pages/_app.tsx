@@ -4,12 +4,14 @@ import { NextComponentType } from 'next'
 
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 
-import { Nunito_Sans } from '@next/font/google'
+import { Nunito_Sans, Work_Sans } from '@next/font/google'
+import localFont from '@next/font/local'
 import { Canvas } from '@react-three/fiber'
 import { AnimatePresence } from 'framer-motion'
 
-import { Page } from 'common/types'
+import { Lang, Page } from 'common/types'
 import Header from '~components/header'
 import HeaderClipPath from '~components/header/header-clip-path'
 import Preloader from '~components/preloader'
@@ -19,9 +21,10 @@ import ThemeLangCursorProvider from '~contexts/index'
 
 import '../styles/globals.css'
 
-const font = Nunito_Sans({
-  weight: ['200', '300', '400', '600', '700', '800', '900'],
-  subsets: ['latin', 'cyrillic'],
+const font = Work_Sans()
+
+const font2 = localFont({
+  src: '../public/fonts/WorkSans/WorkSans-Black.woff',
 })
 
 export default function App({
@@ -29,6 +32,8 @@ export default function App({
   pageProps,
   router,
 }: AppProps & { Component: NextComponentType & Page }) {
+  const locale = useRouter().locale as Lang
+
   const [loading, setLoading] = useState(true)
 
   return (
@@ -40,7 +45,7 @@ export default function App({
 
       <style jsx global>{`
         html {
-          font-family: ${font.style.fontFamily};
+          font-family: ${(locale == 'ru' ? font2 : font).style.fontFamily};
         }
       `}</style>
 

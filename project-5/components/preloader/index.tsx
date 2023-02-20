@@ -21,9 +21,7 @@ export default function Preloader({
         transition={{ duration: duration / 1000 }}
         className="absolute h-full w-full grid place-content-center"
       >
-        <h1 className="text-2xl font-semibold text-neutral-900 dark:text-secondary-500">
-          Natallia Raksha
-        </h1>
+        <h1 className="text-2xl text-neutral-900 dark:text-secondary-500">Natallia Raksha</h1>
       </motion.div>
       <motion.div
         className="h-full bg-secondary-300 dark:bg-primary-200"
