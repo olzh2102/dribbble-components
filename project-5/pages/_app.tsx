@@ -4,8 +4,10 @@ import { NextComponentType } from 'next'
 
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 
-import { Work_Sans, Inter } from '@next/font/google'
+import { Work_Sans } from '@next/font/google'
+import localFont from '@next/font/local'
 import { Canvas } from '@react-three/fiber'
 import { AnimatePresence } from 'framer-motion'
 
@@ -19,15 +21,18 @@ import ThemeLangCursorProvider from '~contexts/index'
 
 import '../styles/globals.css'
 
-const cyrillicFont = Inter({ subsets: ['cyrillic', 'cyrillic-ext'] })
 const font = Work_Sans()
+
+const font2 = localFont({
+  src: '../public/fonts/WorkSans/WorkSans-Black.woff',
+})
 
 export default function App({
   Component,
   pageProps,
   router,
 }: AppProps & { Component: NextComponentType & Page }) {
-  const locale = router.locale as Lang
+  const locale = useRouter().locale as Lang
 
   const [loading, setLoading] = useState(true)
 
@@ -40,7 +45,7 @@ export default function App({
 
       <style jsx global>{`
         html {
-          font-family: ${locale !== 'ru' ? font.style.fontFamily : cyrillicFont.style.fontFamily};
+          font-family: ${(locale == 'ru' ? font2 : font).style.fontFamily};
         }
       `}</style>
 
