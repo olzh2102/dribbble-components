@@ -31,6 +31,7 @@ export default function Header() {
         animate={!isHome ? { translateX: '-100%' } : { translateX: 0 }}
         whileHover={!isHome ? { translateX: '-20%' } : {}}
         transition={{ type: 'just' }}
+        role="left-side-header"
         className={`
           flex flex-col justify-between
           pointer-events-auto p-5 pl-7 rounded-r-md
@@ -38,6 +39,7 @@ export default function Header() {
         `}
       >
         <div
+          data-test-id="language-toggler-wrapper"
           className="flex flex-col gap-1 pointer-events-auto text-base"
           onMouseOver={(e) => onMouseOver(e, 'label')}
           onMouseOut={(e) => onMouseOut(e, 'label')}
@@ -45,6 +47,7 @@ export default function Header() {
           <LangToggler currentLang={locale as Lang} />
         </div>
         <div
+          data-test-id="theme-toggler-wrapper"
           className="relative w-6 h-6"
           onMouseOver={(e) => onMouseOver(e, 'button')}
           onMouseOut={(e) => onMouseOut(e, 'button')}
@@ -64,12 +67,14 @@ export default function Header() {
         animate={!isHome ? { translateX: '100%' } : { translateX: 0 }}
         whileHover={!isHome ? { translateX: '8%' } : {}}
         transition={{ type: 'just' }}
+        role="right-side-header"
         className={`
           pointer-events-auto p-5 pr-7 rounded-l-md
           ${getNavigationClassnames(isHome)} 
         `}
       >
         <ul
+          data-test-id="ul-nav-list"
           className="flex flex-col h-full justify-between whitespace-nowrap"
           onMouseOver={(e) => onMouseOver(e, 'a')}
           onMouseOut={(e) => onMouseOut(e, 'a')}
