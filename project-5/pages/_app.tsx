@@ -5,11 +5,11 @@ import { NextComponentType } from 'next'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 
-import { Work_Sans, Inter } from '@next/font/google'
+import { Nunito_Sans } from '@next/font/google'
 import { Canvas } from '@react-three/fiber'
 import { AnimatePresence } from 'framer-motion'
 
-import { Lang, Page } from 'common/types'
+import { Page } from 'common/types'
 import Header from '~components/header'
 import HeaderClipPath from '~components/header/header-clip-path'
 import Preloader from '~components/preloader'
@@ -19,16 +19,16 @@ import ThemeLangCursorProvider from '~contexts/index'
 
 import '../styles/globals.css'
 
-const cyrillicFont = Inter({ subsets: ['cyrillic', 'cyrillic-ext'] })
-const font = Work_Sans()
+const font = Nunito_Sans({
+  weight: ['200', '300', '400', '600', '700', '800', '900'],
+  subsets: ['latin', 'cyrillic'],
+})
 
 export default function App({
   Component,
   pageProps,
   router,
 }: AppProps & { Component: NextComponentType & Page }) {
-  const locale = router.locale as Lang
-
   const [loading, setLoading] = useState(true)
 
   return (
@@ -40,7 +40,7 @@ export default function App({
 
       <style jsx global>{`
         html {
-          font-family: ${locale !== 'ru' ? font.style.fontFamily : cyrillicFont.style.fontFamily};
+          font-family: ${font.style.fontFamily};
         }
       `}</style>
 

@@ -22,7 +22,7 @@ export default function Header() {
       className={`
       absolute top-1/2 -translate-y-1/2 z-10
       flex justify-between w-full h-48 
-      uppercase text-xl font-semibold
+      uppercase text-xl font-bold
       pointer-events-none
     `}
     >
