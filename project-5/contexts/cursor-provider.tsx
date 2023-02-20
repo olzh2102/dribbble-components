@@ -5,7 +5,11 @@ import { motion } from 'framer-motion'
 import { HTMLElementSelector } from 'common/types'
 
 export const CursorContext = createContext<{
-  onMouseOver: <T>(e: React.MouseEvent<T, MouseEvent>, selector: HTMLElementSelector) => void
+  onMouseOver: <T>(
+    e: React.MouseEvent<T, MouseEvent>,
+    selector: HTMLElementSelector,
+    tooltip?: { message: ReactNode; className?: string }
+  ) => void
   onMouseOut: <T>(e: React.MouseEvent<T, MouseEvent>, selector: HTMLElementSelector) => void
 }>({
   onMouseOver: () => null,
@@ -21,6 +25,35 @@ export default function CursorProvider({ children }: { children: ReactNode }) {
   }>({ x: 0, y: 0 })
   const [cursorHidden, setCursorHidden] = useState(false)
   const [actionHover, setActionHover] = useState(false)
+  const [message, setMessage] = useState<ReactNode | null>(null)
+
+  const onMouseOver = useCallback(
+    <TElement,>(
+      e: React.MouseEvent<TElement, MouseEvent>,
+      selector: HTMLElementSelector,
+      tooltip?: { message: ReactNode; className?: string }
+    ) => {
+      const target = (e.target as HTMLElement).closest(selector)
+      if (!target) return
+
+      setActionHover(true)
+      if (tooltip) {
+        setMessage(tooltip?.message)
+      }
+    },
+    []
+  )
+
+  const onMouseOut = useCallback(
+    <TElement,>(e: React.MouseEvent<TElement, MouseEvent>, selector: HTMLElementSelector) => {
+      const target = (e.target as HTMLElement).closest(selector)
+      if (!target) return
+
+      setActionHover(false)
+      setMessage(null)
+    },
+    []
+  )
 
   useEffect(() => {
     if (ref.current)
@@ -29,22 +62,6 @@ export default function CursorProvider({ children }: { children: ReactNode }) {
         y: ref.current.getBoundingClientRect().height / 2.5,
       })
   }, [])
-
-  const onMouseOver = useCallback(
-    <TElement,>(e: React.MouseEvent<TElement, MouseEvent>, selector: HTMLElementSelector) => {
-      const target = (e.target as HTMLElement).closest(selector)
-      if (target) setActionHover(true)
-    },
-    []
-  )
-
-  const onMouseOut = useCallback(
-    <TElement,>(e: React.MouseEvent<TElement, MouseEvent>, selector: HTMLElementSelector) => {
-      const target = (e.target as HTMLElement).closest(selector)
-      if (target) setActionHover(false)
-    },
-    []
-  )
 
   return (
     <CursorContext.Provider
@@ -65,20 +82,26 @@ export default function CursorProvider({ children }: { children: ReactNode }) {
             transition={{ type: 'spring', damping: 10, stiffness: 100 }}
             style={{ left: cursorPosition.x, top: cursorPosition.y }}
             animate={{
-              scale: actionHover ? 0.3 : 1,
+              scale: message && actionHover ? 9 : actionHover ? 0.3 : 1,
               translateX: '-50%',
               translateY: '-50%',
             }}
             className={`
+              grid place-content-center
               absolute 
               w-6 h-6 
-              bg-secondary-400 dark:bg-secondary-300 
-              rounded-full 
+              text-primary-850 dark:text-secondary-100
               z-50 
               pointer-events-none 
-              mix-blend-difference
+              ${
+                message
+                  ? 'bg-secondary-100 dark:bg-primary-850 rounded-[0.5px]'
+                  : 'bg-primary-850 dark:bg-secondary-300 rounded-full mix-blend-difference'
+              }
             `}
-          />
+          >
+            {message}
+          </motion.div>
         )}
         {children}
       </div>

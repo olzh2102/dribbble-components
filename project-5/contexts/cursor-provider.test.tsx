@@ -15,11 +15,14 @@ describe('Custom Cursor', () => {
 
     expect(customCursor).toBeInTheDocument()
     expect(customCursor).toHaveClass(
+      'grid place-content-center',
+      'absolute',
       'w-6 h-6',
-      'bg-secondary-400 dark:bg-secondary-300',
-      'rounded-full',
+      'text-primary-850 dark:text-secondary-100',
+      'bg-primary-850 dark:bg-secondary-300',
       'z-50',
       'pointer-events-none',
+      'rounded-full',
       'mix-blend-difference'
     )
   })
