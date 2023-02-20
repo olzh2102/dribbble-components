@@ -82,7 +82,7 @@ export default function CursorProvider({ children }: { children: ReactNode }) {
             transition={{ type: 'spring', damping: 10, stiffness: 100 }}
             style={{ left: cursorPosition.x, top: cursorPosition.y }}
             animate={{
-              scale: message && actionHover ? 7 : actionHover ? 0.3 : 1,
+              scale: message && actionHover ? 9 : actionHover ? 0.3 : 1,
               translateX: '-50%',
               translateY: '-50%',
             }}
@@ -90,11 +90,14 @@ export default function CursorProvider({ children }: { children: ReactNode }) {
               grid place-content-center
               absolute 
               w-6 h-6 
-              bg-secondary-400 dark:bg-secondary-300 
-              rounded-full 
+              text-primary-850 dark:text-secondary-100
               z-50 
               pointer-events-none 
-              ${!message ? 'mix-blend-difference' : ''}
+              ${
+                message
+                  ? 'bg-secondary-100 dark:bg-primary-850 rounded-[0.5px]'
+                  : 'bg-primary-850 dark:bg-secondary-300 rounded-full mix-blend-difference'
+              }
             `}
           >
             {message}
