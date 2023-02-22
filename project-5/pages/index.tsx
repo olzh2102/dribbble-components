@@ -21,7 +21,7 @@ const Home: Page = withLayout(() => {
         `}
       >
         <Image className="mb-2" src="/nr-logo.svg" width={170} height={150} alt="logo" />
-        <div className="flex justify-between text-secondary-300 font-semibold uppercase">
+        <div className="flex justify-between text-secondary-300 font-semibold uppercase text-base">
           {LOGO_SUBTITLE.split('').map((l, i) => (
             <span key={`${i}-${l}`}>{l}</span>
           ))}

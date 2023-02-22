@@ -22,7 +22,7 @@ export default function Header() {
       className={`
       absolute top-1/2 -translate-y-1/2 z-10
       flex justify-between w-full h-48 
-      uppercase text-xl font-semibold
+      uppercase
       pointer-events-none
     `}
     >
@@ -35,12 +35,16 @@ export default function Header() {
         className={`
           flex flex-col justify-between
           pointer-events-auto p-5 pl-7 rounded-r-md
-          ${getNavigationClassnames(isHome)}
+          ${
+            isHome
+              ? 'text-primary-200/40 dark:text-secondary-300/40'
+              : 'bg-secondary-100 dark:bg-primary-850 text-primary-850/40 dark:text-primary-200/40'
+          }
         `}
       >
         <div
           data-test-id="language-toggler-wrapper"
-          className="flex flex-col gap-1 pointer-events-auto text-base"
+          className="flex flex-col gap-1 pointer-events-auto font-semibold"
           onMouseOver={(e) => onMouseOver(e, 'label')}
           onMouseOut={(e) => onMouseOut(e, 'label')}
         >
@@ -70,12 +74,16 @@ export default function Header() {
         role="right-side-header"
         className={`
           pointer-events-auto p-5 pr-7 rounded-l-md
-          ${getNavigationClassnames(isHome)} 
+          ${
+            isHome
+              ? 'text-primary-200 dark:text-secondary-300'
+              : 'bg-secondary-100 dark:bg-primary-850 text-secondary-600 dark:text-secondary-100'
+          }
         `}
       >
         <ul
           data-test-id="ul-nav-list"
-          className="flex flex-col h-full justify-between whitespace-nowrap"
+          className="flex flex-col h-full justify-between whitespace-nowrap text-xl font-semibold"
           onMouseOver={(e) => onMouseOver(e, 'a')}
           onMouseOut={(e) => onMouseOut(e, 'a')}
         >
@@ -88,10 +96,4 @@ export default function Header() {
       </motion.nav>
     </header>
   )
-}
-
-function getNavigationClassnames(predicate: boolean) {
-  return predicate
-    ? 'text-primary-200 dark:text-secondary-300'
-    : 'bg-secondary-100 dark:bg-primary-850 text-secondary-600 dark:text-secondary-100'
 }
