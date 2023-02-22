@@ -6,7 +6,7 @@ import { motion } from 'framer-motion'
 import lang from 'common/lang.json'
 import { Lang, RoutePath, TranslationKey } from 'common/types'
 
-const activeLink = {
+const activeVariants = {
   common: 'bg-gradient-to-l bg-clip-text text-transparent from-secondary-900',
   home: 'via-primary-200 to-primary-200 dark:via-secondary-300 dark:to-secondary-300',
   away: 'via-primary-850 to-primary-850 dark:via-secondary-100 dark:to-secondary-100',
@@ -24,7 +24,7 @@ export default function MenuItem({ route }: { route: RoutePath }) {
         href={route}
         className={
           route === currentRoute
-            ? activeLink.common + ' ' + activeLink[route === '/' ? 'home' : 'away']
+            ? activeVariants.common + ' ' + activeVariants[route === '/' ? 'home' : 'away']
             : ''
         }
       >
