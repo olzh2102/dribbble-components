@@ -22,7 +22,7 @@ export default function Header() {
       className={`
       absolute top-1/2 -translate-y-1/2 z-10
       flex justify-between w-full h-48 
-      uppercase text-xl font-semibold
+      uppercase
       pointer-events-none
     `}
     >
@@ -44,7 +44,7 @@ export default function Header() {
       >
         <div
           data-test-id="language-toggler-wrapper"
-          className="flex flex-col gap-1 pointer-events-auto text-base"
+          className="flex flex-col gap-1 pointer-events-auto font-semibold"
           onMouseOver={(e) => onMouseOver(e, 'label')}
           onMouseOut={(e) => onMouseOut(e, 'label')}
         >
@@ -83,7 +83,7 @@ export default function Header() {
       >
         <ul
           data-test-id="ul-nav-list"
-          className="flex flex-col h-full justify-between whitespace-nowrap"
+          className="flex flex-col h-full justify-between whitespace-nowrap text-xl font-semibold"
           onMouseOver={(e) => onMouseOver(e, 'a')}
           onMouseOut={(e) => onMouseOut(e, 'a')}
         >
