@@ -35,7 +35,11 @@ export default function Header() {
         className={`
           flex flex-col justify-between
           pointer-events-auto p-5 pl-7 rounded-r-md
-          ${getNavigationClassnames(isHome)}
+          ${
+            isHome
+              ? 'text-primary-200/40 dark:text-secondary-300/40'
+              : 'bg-secondary-100 dark:bg-primary-850 text-primary-850/40 dark:text-primary-200/40'
+          }
         `}
       >
         <div
@@ -70,7 +74,11 @@ export default function Header() {
         role="right-side-header"
         className={`
           pointer-events-auto p-5 pr-7 rounded-l-md
-          ${getNavigationClassnames(isHome)} 
+          ${
+            isHome
+              ? 'text-primary-200 dark:text-secondary-300'
+              : 'bg-secondary-100 dark:bg-primary-850 text-secondary-600 dark:text-secondary-100'
+          }
         `}
       >
         <ul
@@ -88,10 +96,4 @@ export default function Header() {
       </motion.nav>
     </header>
   )
-}
-
-function getNavigationClassnames(predicate: boolean) {
-  return predicate
-    ? 'text-primary-200 dark:text-secondary-300'
-    : 'bg-secondary-100 dark:bg-primary-850 text-secondary-600 dark:text-secondary-100'
 }
