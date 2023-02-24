@@ -13,7 +13,7 @@ import { AnimatePresence } from 'framer-motion'
 
 import { Lang, Page } from 'common/types'
 import Header from '~components/header'
-import HeaderClipPath from '~components/header/header-clip-path'
+import HeaderClipPath from '~components/header/mobile-header-content'
 import Preloader from '~components/preloader'
 import RoundedCorner from '~components/rounded-corner'
 import Wave from '~components/wave'

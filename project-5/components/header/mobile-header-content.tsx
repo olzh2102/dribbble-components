@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 
 import { motion } from 'framer-motion'
 
+import { ROUTES } from 'common/constants'
 import { Lang, RoutePath } from 'common/types'
 import LangToggler from '~components/lang-toggler'
 import ThemeToggler from '~components/theme-toggler'
@@ -12,7 +13,7 @@ import { CursorContext } from '~contexts/cursor-provider'
 import MenuItem from './menu-item'
 import MenuToggler from './menu-toggler'
 
-export default function Header() {
+export default function MobileHeaderContent() {
   const { asPath, locale } = useRouter() as { asPath: RoutePath; locale: Lang }
   const { onMouseOver, onMouseOut } = useContext(CursorContext)
 
@@ -42,7 +43,7 @@ export default function Header() {
   }, [asPath])
 
   return (
-    <motion.header
+    <motion.div
       className="absolute w-full h-full z-20 pointer-events-none"
       animate={isOpen ? 'open' : 'closed'}
     >
@@ -67,11 +68,9 @@ export default function Header() {
             onMouseOver={(e) => onMouseOver(e, 'a')}
             onMouseOut={(e) => onMouseOut(e, 'a')}
           >
-            <MenuItem route="/" />
-            <MenuItem route="/projects" />
-            <MenuItem route="/about" />
-            <MenuItem route="/services" />
-            <MenuItem route="/contact" />
+            {ROUTES.map((route) => (
+              <MenuItem key={route} route={route} />
+            ))}
           </ul>
         </nav>
         <div className="flex justify-between w-full dark:text-primary-300 absolute bottom-0 p-4">
@@ -86,6 +85,6 @@ export default function Header() {
         </div>
       </motion.div>
       <MenuToggler toggle={() => toggleOpen(!isOpen)} />
-    </motion.header>
+    </motion.div>
   )
 }
