@@ -44,7 +44,7 @@ export default function MobileHeaderContent() {
 
   return (
     <motion.div
-      className="absolute w-full h-full z-20 pointer-events-none"
+      className="absolute w-full h-full z-50 pointer-events-none"
       animate={isOpen ? 'open' : 'closed'}
     >
       <motion.div
@@ -53,7 +53,7 @@ export default function MobileHeaderContent() {
         className={`
           relative 
           h-full 
-          bg-secondary-400 dark:bg-secondary-50 
+          bg-secondary-550 dark:bg-secondary-50 
           grid place-content-center
           rounded-md 
         `}
@@ -69,19 +69,21 @@ export default function MobileHeaderContent() {
             onMouseOut={(e) => onMouseOut(e, 'a')}
           >
             {ROUTES.map((route) => (
-              <MenuItem key={route} route={route} />
+              <MenuItem key={route} route={route} mobile />
             ))}
           </ul>
         </nav>
-        <div className="flex justify-between w-full dark:text-primary-300 absolute bottom-0 p-4">
+        <div className="flex justify-between w-full dark:text-primary-300 absolute bottom-0 p-4 pointer-events-auto">
           <div
-            className="flex gap-2 pointer-events-auto text-base uppercase font-semibold"
+            className="flex gap-2 text-base uppercase font-semibold"
             onMouseOver={(e) => onMouseOver(e, 'label')}
             onMouseOut={(e) => onMouseOut(e, 'label')}
           >
-            <LangToggler currentLang={locale as Lang} />
+            <LangToggler currentLang={locale as Lang} mobile />
           </div>
-          <ThemeToggler textColor="text-primary-200 dark:text-secondary-300" />
+          <div className="w-6 h-6">
+            <ThemeToggler textColor="text-primary-200 dark:text-secondary-300" />
+          </div>
         </div>
       </motion.div>
       <MenuToggler toggle={() => toggleOpen(!isOpen)} />
