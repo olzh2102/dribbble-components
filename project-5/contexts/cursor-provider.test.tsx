@@ -30,20 +30,28 @@ describe('Custom Cursor', () => {
   it('should render custom cursor size a bit smaller when text is hovered', async () => {
     setup()
 
-    const TRANSFORM_FROM = 'translateX(-50%) translateY(-50%) scale(1) translateZ(0)'
-    const TRANSFORM_TO = 'translateX(-50%) translateY(-50%) scale(0.3) translateZ(0)'
+    const TRANSFORM_FROM =
+      'translateX(-50%) translateY(-50%) scale(1) translateZ(0)'
+    const TRANSFORM_TO =
+      'translateX(-50%) translateY(-50%) scale(0.30000000000000004) translateZ(0)'
 
     const projectsMenuItem = screen.getByText(/projects/i)
     const customCursor = screen.getByRole('custom-cursor')
 
-    await waitFor(() => expect(customCursor).toHaveStyle({ transform: TRANSFORM_FROM }), {
-      timeout: 2000,
-    })
+    await waitFor(
+      () => expect(customCursor).toHaveStyle({ transform: TRANSFORM_FROM }),
+      {
+        timeout: 2000,
+      }
+    )
 
     userEvent.hover(projectsMenuItem)
 
-    await waitFor(() => expect(customCursor).toHaveStyle({ transform: TRANSFORM_TO }), {
-      timeout: 2000,
-    })
+    await waitFor(
+      () => expect(customCursor).toHaveStyle({ transform: TRANSFORM_TO }),
+      {
+        timeout: 2000,
+      }
+    )
   })
 })
