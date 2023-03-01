@@ -1,4 +1,12 @@
-import { createContext, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  createContext,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 
 import { motion } from 'framer-motion'
 
@@ -10,7 +18,10 @@ export const CursorContext = createContext<{
     selector: HTMLElementSelector,
     tooltip?: { message: ReactNode; className?: string }
   ) => void
-  onMouseOut: <T>(e: React.MouseEvent<T, MouseEvent>, selector: HTMLElementSelector) => void
+  onMouseOut: <T>(
+    e: React.MouseEvent<T, MouseEvent>,
+    selector: HTMLElementSelector
+  ) => void
 }>({
   onMouseOver: () => null,
   onMouseOut: () => null,
@@ -45,7 +56,10 @@ export default function CursorProvider({ children }: { children: ReactNode }) {
   )
 
   const onMouseOut = useCallback(
-    <TElement,>(e: React.MouseEvent<TElement, MouseEvent>, selector: HTMLElementSelector) => {
+    <TElement,>(
+      e: React.MouseEvent<TElement, MouseEvent>,
+      selector: HTMLElementSelector
+    ) => {
       const target = (e.target as HTMLElement).closest(selector)
       if (!target) return
 
@@ -65,7 +79,10 @@ export default function CursorProvider({ children }: { children: ReactNode }) {
 
   return (
     <CursorContext.Provider
-      value={useMemo(() => ({ onMouseOver, onMouseOut }), [onMouseOver, onMouseOut])}
+      value={useMemo(
+        () => ({ onMouseOver, onMouseOut }),
+        [onMouseOver, onMouseOut]
+      )}
     >
       <div
         ref={ref}
@@ -79,7 +96,10 @@ export default function CursorProvider({ children }: { children: ReactNode }) {
         {!cursorHidden && (
           <motion.div
             role="custom-cursor"
-            transition={{ type: 'spring', damping: 10, stiffness: 100 }}
+            transition={{
+              stiffness: 100,
+              duration: 0.5,
+            }}
             style={{ left: cursorPosition.x, top: cursorPosition.y }}
             animate={{
               scale: message && actionHover ? 9 : actionHover ? 0.3 : 1,
@@ -95,7 +115,7 @@ export default function CursorProvider({ children }: { children: ReactNode }) {
               pointer-events-none 
               ${
                 message
-                  ? 'bg-secondary-100 dark:bg-primary-850 rounded-[0.5px]'
+                  ? 'bg-secondary-100 dark:bg-primary-850 rounded-full'
                   : 'bg-primary-850 dark:bg-secondary-300 rounded-full mix-blend-difference'
               }
             `}
