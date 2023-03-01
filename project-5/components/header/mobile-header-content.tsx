@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 
+import Image from 'next/image'
 import { useRouter } from 'next/router'
 
 import { motion } from 'framer-motion'
@@ -86,7 +87,10 @@ export default function MobileHeaderContent() {
           </div>
         </div>
       </motion.div>
-      <MenuToggler toggle={() => toggleOpen(!isOpen)} />
+      <div className="absolute top-2 w-full flex justify-between items-start p-2">
+        <Image src="/nr-logo.svg" width={40} height={40} alt="logo" />
+        <MenuToggler toggle={() => toggleOpen(!isOpen)} />
+      </div>
     </motion.div>
   )
 }

@@ -1,11 +1,17 @@
 import React, { useEffect, useRef } from 'react'
 
-export default function HorizontalScrollWrapper({ children }: { children: React.ReactNode }) {
+export default function ScrollWrapper({
+  children,
+  direction = 'horizontal',
+}: {
+  children: React.ReactNode
+  direction?: 'horizontal' | 'vertical'
+}) {
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const target = ref.current
-    if (!target) return
+    if (!target || direction === 'vertical') return
 
     const onWheel = (e: WheelEvent) => {
       e.preventDefault()
@@ -18,10 +24,14 @@ export default function HorizontalScrollWrapper({ children }: { children: React.
     return () => {
       target.removeEventListener('wheel', onWheel)
     }
-  }, [])
+  }, [direction])
 
   return (
-    <div ref={ref} className="h-full flex overflow-x-scroll" data-test-id="horizontal-scroll">
+    <div
+      ref={ref}
+      className={'' + (direction === 'horizontal' ? `h-full flex overflow-x-scroll` : '')}
+      data-test-id="scroll"
+    >
       {children}
     </div>
   )

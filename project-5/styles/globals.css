@@ -7,10 +7,20 @@ body,
 body > div:first-child {
     height: 100%;
     cursor: none;
-    overflow-x: hidden;
-    overflow-y: hidden;
 }
 
 a, label, button {
     cursor: none;
+}
+
+@media screen and (max-width: 640px) {
+    #__next::-webkit-scrollbar {
+        width: 40px;
+        /* display: none !important; */
+    }
+
+    * {
+        scrollbar-width: none !important;
+        -ms-overflow-style: none !important;
+    }
 }

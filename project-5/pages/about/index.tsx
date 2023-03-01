@@ -3,15 +3,22 @@ import React from 'react'
 import Image from 'next/image'
 
 import { imageLoader } from 'common/utils'
-import HorizontalScrollWrapper from '~components/horizontal-scroll-wrapper'
+import ScrollWrapper from '~components/horizontal-scroll-wrapper'
 import withLayout from '~components/layout/with-layout'
+import useResponsive from '~hooks/use-responsive'
 
 const About = () => {
+  const isMobile = useResponsive('sm')
+
   return (
-    <HorizontalScrollWrapper>
+    <ScrollWrapper direction={isMobile ? 'vertical' : 'horizontal'}>
       <div
-        className="flex flex-[0_0_100%] text-secondary-100 dark:text-secondary-300"
         data-test-id="hs-item"
+        className={`
+          flex flex-[0_0_100%] flex-col 
+          md:flex-row 
+          text-secondary-100 dark:text-secondary-300
+        `}
       >
         <Image
           loader={imageLoader}
@@ -25,19 +32,27 @@ const About = () => {
             object-cover object-left
           `}
         />
-
-        <div className="w-2/3 grid place-content-center text-4xl">
-          <span>Interior and Concept Designer</span>
-          <span>Natallia Raksha</span>
-        </div>
+        {isMobile ? (
+          <div className="md:w-2/3 text-3xl p-2 uppercase font-medium">
+            <h2>Designer</h2>
+            <h3>Natallia Raksha</h3>
+          </div>
+        ) : (
+          <div className="w-2/3 grid place-content-center text-4xl">
+            <span>Interior and Concept Designer</span>
+            <span>Natallia Raksha</span>
+          </div>
+        )}
       </div>
 
       <div className="flex flex-[0_0_100%] text-secondary-100 dark:text-secondary-300">
-        <div className="w-full grid place-content-center">
-          Experience history goes here...
+        <div className="w-full grid place-content-center p-2">
+          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Molestias sit eius perspiciatis
+          sint fugit, delectus maiores accusantium doloremque. Nulla sunt ipsum vero sit enim
+          inventore officiis similique odio, facilis eos.
         </div>
       </div>
-    </HorizontalScrollWrapper>
+    </ScrollWrapper>
   )
 }
 
