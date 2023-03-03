@@ -14,3 +14,14 @@ body > div:first-child {
 a, label, button {
     cursor: none;
 }
+
+/* hide scrollbar for IE, Edge and Firefox */
+.hidden-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* hide scrollbar for chrome, safari and opera */
+.hidden-scrollbar::-webkit-scrollbar {
+    display: none;
+}

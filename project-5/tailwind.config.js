@@ -32,6 +32,7 @@ module.exports = {
           300: '#ffffff', // white
           400: '#a9bcd0', // sky blue
           500: '#d2d7df', // light gray
+          550: '#dad9d3',
           600: '#bdbbb0', // bone (temnee)
           700: '#8a897c', // bone (ewe temnee)
           800: colors.gray[400],

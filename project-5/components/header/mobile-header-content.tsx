@@ -1,9 +1,11 @@
 import { useContext, useEffect, useState } from 'react'
 
+import Image from 'next/image'
 import { useRouter } from 'next/router'
 
 import { motion } from 'framer-motion'
 
+import { ROUTES } from 'common/constants'
 import { Lang, RoutePath } from 'common/types'
 import LangToggler from '~components/lang-toggler'
 import ThemeToggler from '~components/theme-toggler'
@@ -12,7 +14,7 @@ import { CursorContext } from '~contexts/cursor-provider'
 import MenuItem from './menu-item'
 import MenuToggler from './menu-toggler'
 
-export default function Header() {
+export default function MobileHeaderContent() {
   const { asPath, locale } = useRouter() as { asPath: RoutePath; locale: Lang }
   const { onMouseOver, onMouseOut } = useContext(CursorContext)
 
@@ -42,8 +44,8 @@ export default function Header() {
   }, [asPath])
 
   return (
-    <motion.header
-      className="absolute w-full h-full z-20 pointer-events-none"
+    <motion.div
+      className="absolute w-full h-full z-50 pointer-events-none"
       animate={isOpen ? 'open' : 'closed'}
     >
       <motion.div
@@ -52,7 +54,7 @@ export default function Header() {
         className={`
           relative 
           h-full 
-          bg-secondary-400 dark:bg-secondary-50 
+          bg-secondary-550 dark:bg-secondary-50 
           grid place-content-center
           rounded-md 
         `}
@@ -67,25 +69,28 @@ export default function Header() {
             onMouseOver={(e) => onMouseOver(e, 'a')}
             onMouseOut={(e) => onMouseOut(e, 'a')}
           >
-            <MenuItem route="/" />
-            <MenuItem route="/projects" />
-            <MenuItem route="/about" />
-            <MenuItem route="/services" />
-            <MenuItem route="/contact" />
+            {ROUTES.map((route) => (
+              <MenuItem key={route} route={route} mobile />
+            ))}
           </ul>
         </nav>
-        <div className="flex justify-between w-full dark:text-primary-300 absolute bottom-0 p-4">
+        <div className="flex justify-between w-full dark:text-primary-300 absolute bottom-0 p-4 pointer-events-auto">
           <div
-            className="flex gap-2 pointer-events-auto text-base uppercase font-semibold"
+            className="flex gap-2 text-base uppercase font-semibold"
             onMouseOver={(e) => onMouseOver(e, 'label')}
             onMouseOut={(e) => onMouseOut(e, 'label')}
           >
-            <LangToggler currentLang={locale as Lang} />
+            <LangToggler currentLang={locale as Lang} mobile />
           </div>
-          <ThemeToggler textColor="text-primary-200 dark:text-secondary-300" />
+          <div className="w-6 h-6">
+            <ThemeToggler textColor="text-primary-200 dark:text-secondary-300" />
+          </div>
         </div>
       </motion.div>
-      <MenuToggler toggle={() => toggleOpen(!isOpen)} />
-    </motion.header>
+      <div className="absolute top-2 w-full flex justify-between items-start p-2">
+        <Image src="/nr-logo.svg" width={40} height={40} alt="logo" />
+        <MenuToggler toggle={() => toggleOpen(!isOpen)} />
+      </div>
+    </motion.div>
   )
 }

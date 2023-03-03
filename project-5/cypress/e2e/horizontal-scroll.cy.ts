@@ -6,6 +6,6 @@ describe('horizontal scroll on about page', () => {
     cy.get('[data-test-id="hs-item"]').first().click()
 
     // * act & assert
-    cy.get('[data-test-id="horizontal-scroll"]').scrollTo('bottom')
+    cy.get('[data-test-id="scroll-wrapper"]').scrollTo('bottom')
   })
 })

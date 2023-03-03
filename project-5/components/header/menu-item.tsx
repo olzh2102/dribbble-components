@@ -12,7 +12,7 @@ const activeVariants = {
   away: 'via-primary-850 to-primary-850 dark:via-secondary-100 dark:to-secondary-100',
 }
 
-export default function MenuItem({ route }: { route: RoutePath }) {
+export default function MenuItem({ route, mobile }: { route: RoutePath; mobile?: boolean }) {
   const { locale, route: currentRoute } = useRouter()
   const t = lang[locale as Lang]
 
@@ -24,7 +24,9 @@ export default function MenuItem({ route }: { route: RoutePath }) {
         href={route}
         className={
           route === currentRoute
-            ? activeVariants.common + ' ' + activeVariants[route === '/' ? 'home' : 'away']
+            ? activeVariants.common +
+              ' ' +
+              activeVariants[route === '/' || mobile ? 'home' : 'away']
             : ''
         }
       >

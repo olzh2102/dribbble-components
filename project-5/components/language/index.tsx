@@ -20,10 +20,12 @@ export default function Language({
   lang,
   currentLang,
   onSelect,
+  mobile,
 }: {
   lang: Lang
   currentLang: Lang
   onSelect: (e: Lang) => void
+  mobile?: boolean
 }) {
   const { asPath } = useRouter()
 
@@ -39,7 +41,10 @@ export default function Language({
         checked={currentLang == LANG[lang]}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => onSelect(e.target.value as Lang)}
       />
-      <label htmlFor={lang} className={labelConfig[asPath == '/' ? 'primary' : 'secondary'][lang]}>
+      <label
+        htmlFor={lang}
+        className={labelConfig[asPath == '/' && !mobile ? 'primary' : 'secondary'][lang]}
+      >
         {lang}
       </label>
     </>
