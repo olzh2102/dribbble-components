@@ -35,7 +35,7 @@ export default function ScrollWrapper({
           ? `flex overflow-x-scroll`
           : 'hidden-scrollbar overflow-y-scroll')
       }
-      data-test-id="scroll"
+      data-test-id="scroll-wrapper"
     >
       {children}
     </div>

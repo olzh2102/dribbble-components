@@ -3,8 +3,8 @@ import React from 'react'
 import Image from 'next/image'
 
 import { imageLoader } from 'common/utils'
-import ScrollWrapper from '~components/horizontal-scroll-wrapper'
 import withLayout from '~components/layout/with-layout'
+import ScrollWrapper from '~components/scroll-wrapper'
 import useResponsive from '~hooks/use-responsive'
 
 const About = () => {
