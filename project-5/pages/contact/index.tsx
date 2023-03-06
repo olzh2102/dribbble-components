@@ -1,19 +1,10 @@
-import { useState, ChangeEvent } from 'react'
 import withLayout from '~components/layout/with-layout'
+import useForm from '~hooks/use-form'
 
 const Contact = () => {
-  const [formState, setFormState] = useState({
-    name: '',
-    email: '',
-    details: '',
-  })
+  const { formState, errors, setValue } = useForm()
 
-  function setValue(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-    setFormState({
-      ...formState,
-      [e.target.name]: e.target.value,
-    })
-  }
+  console.log(errors)
 
   return (
     <form className="h-full flex">
@@ -34,38 +25,55 @@ const Contact = () => {
           <h2>Budget in EUR</h2>
         </div>
       </div>
-      <div className="w-3/5 h-full grid place-content-center">
-        <div>
-          <label>
-            Name
-            <input
-              type="text"
-              name="name"
-              value={formState.name}
-              onChange={setValue}
-            />
-          </label>
-          <label>
-            Email
-            <input
-              type="email"
-              name="email"
-              value={formState.email}
-              onChange={setValue}
-            />
-          </label>
+      <div className="w-3/5 h-full grid place-content-center dark:text-white">
+        <div className="flex gap-4 mb-6">
+          <div>
+            <label className="flex flex-col">
+              Name
+              <input
+                className="rounded p-2 border border-red-500 dark:border-primary-850 focus:outline-none dark:bg-secondary-100"
+                type="text"
+                name="name"
+                value={formState.name}
+                onChange={setValue}
+              />
+            </label>
+            {errors.name && <span className="text-red-500">{errors.name}</span>}
+          </div>
+          <div>
+            <label className="flex flex-col">
+              Email
+              <input
+                className="rounded p-2 border border-red-500 dark:border-primary-850 focus:outline-none dark:bg-secondary-100"
+                type="email"
+                name="email"
+                value={formState.email}
+                onChange={setValue}
+              />
+            </label>
+            {errors.email && (
+              <span className="text-red-500">{errors.email}</span>
+            )}
+          </div>
         </div>
-        <div>
-          <label>
+        <div className="mb-6">
+          <label className="flex flex-col">
             Project details
             <textarea
+              className="rounded p-2 border border-red-500 dark:border-primary-850 resize-none focus:outline-none dark:bg-secondary-100"
               name="details"
               value={formState.details}
               onChange={setValue}
             />
           </label>
+          {errors.details && (
+            <span className="text-red-500">{errors.details}</span>
+          )}
         </div>
-        <button className="block ml-auto" type="submit">
+        <button
+          className="block ml-auto rounded w-16 h-16 rounded-full border border-primary-850 uppercase text-lg hover:bg-primary-850 hover:text-secondary-100"
+          type="submit"
+        >
           Send
         </button>
       </div>
