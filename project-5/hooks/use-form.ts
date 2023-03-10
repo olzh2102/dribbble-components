@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from 'react'
+import { useState, ChangeEvent, FormEvent } from 'react'
 
 const NAME_MIN_LENGTH = 2
 const NAME_MAX_LENGTH = 40
@@ -11,6 +11,7 @@ const DEFAULT_VALUES = {
   email: '',
   details: '',
 }
+type Name = keyof typeof DEFAULT_VALUES
 
 const validation = {
   name: (value: string) => {
@@ -18,13 +19,16 @@ const validation = {
     if (NUM_REGEX.test(value)) return 'Name can only contain letters'
     if (2 > value.length || value.length > 40)
       return `Name must be at between ${NAME_MIN_LENGTH} and ${NAME_MAX_LENGTH} characters long`
+    return ''
   },
   email: (value: string) => {
     if (value.length === 0) return 'Email is required'
     if (!value.match(EMAIL_REGEX)) return 'Enter a valid email'
+    return ''
   },
   details: (value: string) => {
     if (value.length === 0) return 'Project details is required'
+    return ''
   },
 }
 
@@ -37,22 +41,38 @@ export default function useForm() {
     details: '',
   })
 
-  function validateForm(value: string, name: keyof typeof formState) {
-    setErrors({ ...errors, [name]: validation[name](value) })
+  function validateForm(value: string, name: Name) {
+    setErrors((prev) => ({ ...prev, [name]: validation[name](value) }))
   }
 
-  function setValue(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-    validateForm(e.target.value, e.target.name as keyof typeof formState)
+  function setValue(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+    validateForm(event.target.value, event.target.name as keyof typeof formState)
 
     setFormState({
       ...formState,
-      [e.target.name]: e.target.value,
+      [event.target.name]: event.target.value,
     })
+  }
+
+  function handleSubmit(
+    onSubmit: (data: typeof DEFAULT_VALUES, event?: FormEvent<HTMLFormElement>) => void
+  ) {
+    return (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault()
+
+      Object.entries(formState).forEach(([name, value]) => validateForm(value, name as Name))
+      console.log(Object.values(errors).every((error) => error !== ''))
+      if (Object.values(errors).every((error) => !error)) {
+        console.log('yooy')
+        onSubmit(formState, event)
+      }
+    }
   }
 
   return {
     formState,
     errors,
     setValue,
+    handleSubmit,
   }
 }
