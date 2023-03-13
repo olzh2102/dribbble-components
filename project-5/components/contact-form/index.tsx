@@ -1,5 +1,6 @@
-import { FormEvent } from 'react'
+import { FormEvent, useContext } from 'react'
 
+import { CursorContext } from '~contexts/cursor-provider'
 import useForm from '~hooks/use-form'
 
 export default function ContactForm({
@@ -10,6 +11,7 @@ export default function ContactForm({
     event?: FormEvent<HTMLFormElement>
   ) => void
 }) {
+  const { onMouseOver, onMouseOut } = useContext(CursorContext)
   const { formState, errors, setValue, handleSubmit } = useForm()
 
   return (
@@ -37,11 +39,13 @@ export default function ContactForm({
             <label className="flex flex-col">
               Name
               <input
-                className="rounded p-2 border border-red-500 dark:border-primary-850 focus:outline-none dark:bg-secondary-100"
+                className="rounded p-2 border border-red-500 dark:border-primary-850 focus:outline-none dark:bg-secondary-100 cursor-none"
                 type="text"
                 name="name"
                 value={formState.name}
                 onChange={setValue}
+                onMouseOver={(e) => onMouseOver(e, 'input')}
+                onMouseOut={(e) => onMouseOut(e, 'input')}
               />
             </label>
             {errors.name && (
@@ -54,11 +58,13 @@ export default function ContactForm({
             <label className="flex flex-col">
               Email
               <input
-                className="rounded p-2 border border-red-500 dark:border-primary-850 focus:outline-none dark:bg-secondary-100"
+                className="rounded p-2 border border-red-500 dark:border-primary-850 focus:outline-none dark:bg-secondary-100 cursor-none"
                 type="email"
                 name="email"
                 value={formState.email}
                 onChange={setValue}
+                onMouseOver={(e) => onMouseOver(e, 'input')}
+                onMouseOut={(e) => onMouseOut(e, 'input')}
               />
             </label>
             {errors.email && (
@@ -72,10 +78,12 @@ export default function ContactForm({
           <label className="flex flex-col">
             Project details
             <textarea
-              className="rounded p-2 border border-red-500 dark:border-primary-850 resize-none focus:outline-none dark:bg-secondary-100"
+              className="rounded p-2 border border-red-500 dark:border-primary-850 resize-none focus:outline-none dark:bg-secondary-100 cursor-none"
               name="details"
               value={formState.details}
               onChange={setValue}
+              onMouseOver={(e) => onMouseOver(e, 'textarea')}
+              onMouseOut={(e) => onMouseOut(e, 'textarea')}
             />
           </label>
           {errors.details && (
