@@ -1,7 +1,8 @@
+import ContactForm from '~components/contact-form'
 import withLayout from '~components/layout/with-layout'
 
 const Contact = () => {
-  return <div>Contact</div>
+  return <ContactForm onSubmit={console.log} />
 }
 
 export default withLayout(Contact)
