@@ -2,7 +2,7 @@ import { FormEvent } from 'react'
 
 import useForm from '~hooks/use-form'
 
-export default function ContactForm<T>({
+export default function ContactForm({
   onSubmit,
 }: {
   onSubmit: (

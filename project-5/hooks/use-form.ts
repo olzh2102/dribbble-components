@@ -36,35 +36,35 @@ export default function useForm() {
   const [formState, setFormState] = useState(DEFAULT_VALUES)
 
   const [errors, setErrors] = useState({
-    name: '',
-    email: '',
-    details: '',
+    name: null,
+    email: null,
+    details: null,
   })
 
   function validateForm(value: string, name: Name) {
     setErrors((prev) => ({ ...prev, [name]: validation[name](value) }))
   }
 
-  function setValue(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-    validateForm(event.target.value, event.target.name as keyof typeof formState)
-
-    setFormState({
-      ...formState,
-      [event.target.name]: event.target.value,
-    })
+  function setForm(value: string, name: Name) {
+    setFormState((prev) => ({ ...prev, [name]: value }))
   }
 
-  function handleSubmit(
-    onSubmit: (data: typeof DEFAULT_VALUES, event?: FormEvent<HTMLFormElement>) => void
-  ) {
+  function setValue(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+    validateForm(event.target.value, event.target.name as Name)
+    setForm(event.target.value, event.target.name as Name)
+  }
+
+  function handleSubmit(onSubmit: (data: typeof DEFAULT_VALUES) => void) {
     return (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault()
 
       Object.entries(formState).forEach(([name, value]) => validateForm(value, name as Name))
-      console.log(Object.values(errors).every((error) => error !== ''))
+
+      if (Object.values(errors).some((error) => error === null)) return
+
       if (Object.values(errors).every((error) => !error)) {
-        console.log('yooy')
-        onSubmit(formState, event)
+        onSubmit(formState)
+        Object.keys(formState).forEach((name) => setForm('', name as Name))
       }
     }
   }
