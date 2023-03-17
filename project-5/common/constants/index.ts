@@ -1,10 +1,4 @@
-import { Lang } from 'common/types'
-
-export const LANG: Record<Lang, Lang> = {
-  en: 'en',
-  de: 'de',
-  ru: 'ru',
-}
+export const LANGS = ['en', 'de', 'ru'] as const
 
 export const LOGO_SUBTITLE = 'interiors'
 
@@ -17,3 +11,5 @@ export const BREAKPOINTS = {
   xl: 1280,
   '2xl': 1536,
 }
+
+export const SERVICE_TYPES = ['design', 'branding', 'consulting'] as const

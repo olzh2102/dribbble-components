@@ -1,16 +1,20 @@
 import { useState, ChangeEvent, FormEvent } from 'react'
 
+import { ServiceType } from 'common/types'
+
 const NAME_MIN_LENGTH = 2
 const NAME_MAX_LENGTH = 40
 const NUM_REGEX = /\d/
 const EMAIL_REGEX =
   /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
-const DEFAULT_VALUES = {
-  name: '',
-  email: '',
-  details: '',
-}
+const DEFAULT_VALUES: { name: string; email: string; details: string; serviceType?: ServiceType } =
+  {
+    name: '',
+    email: '',
+    details: '',
+    serviceType: undefined,
+  }
 type Name = keyof typeof DEFAULT_VALUES
 
 const validation = {
@@ -30,6 +34,10 @@ const validation = {
     if (value.length === 0) return 'Project details is required'
     return ''
   },
+  serviceType: (value: string) => {
+    if (!value) return 'Service type is required'
+    return ''
+  },
 }
 
 export default function useForm() {
@@ -39,6 +47,7 @@ export default function useForm() {
     name: null,
     email: null,
     details: null,
+    serviceType: null,
   })
 
   function validateForm(value: string, name: Name) {
