@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 
-import { LANG } from 'common/constants'
+import { LANGS } from 'common/constants'
 import { Lang } from 'common/types'
 import Language from '~components/language'
 import { LangContext } from '~contexts/lang-provider'
@@ -16,7 +16,7 @@ export default function LangToggler({
 
   return (
     <>
-      {Object.values(LANG).map((lang) => (
+      {LANGS.map((lang) => (
         <Language
           key={lang}
           currentLang={currentLang}

@@ -1,6 +1,5 @@
 import { useRouter } from 'next/router'
 
-import { LANG } from 'common/constants'
 import { Lang } from 'common/types'
 
 const labelConfig = {
@@ -32,13 +31,13 @@ export default function Language({
   return (
     <>
       <input
-        className={`hidden peer/${lang} ${currentLang == LANG[lang] ? 'checked' : ''}`}
+        className={`hidden peer/${lang}`}
         type="radio"
         name="lang"
         id={lang}
         role={`radio-${lang}`}
-        value={LANG[lang]}
-        checked={currentLang == LANG[lang]}
+        value={lang}
+        checked={currentLang == lang}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => onSelect(e.target.value as Lang)}
       />
       <label

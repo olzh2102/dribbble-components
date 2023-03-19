@@ -1,8 +1,8 @@
 import { NextPage } from 'next'
 
-import { ROUTES } from 'common/constants'
+import { LANGS, ROUTES, SERVICE_TYPES } from 'common/constants'
 
-export type Lang = 'en' | 'de' | 'ru'
+export type Lang = typeof LANGS[number]
 
 export type Theme = 'light' | 'dark'
 export type Page = NextPage & { waveBackground?: boolean }
@@ -20,3 +20,5 @@ export type TranslationKey =
   | 'goBack'
 
 export type HTMLElementSelector = keyof HTMLElementTagNameMap
+
+export type ServiceType = typeof SERVICE_TYPES[number]
