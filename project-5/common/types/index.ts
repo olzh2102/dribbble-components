@@ -22,3 +22,10 @@ export type TranslationKey =
 export type HTMLElementSelector = keyof HTMLElementTagNameMap
 
 export type ServiceType = typeof SERVICE_TYPES[number]
+
+export type ContactFormFields = {
+  name: string
+  email: string
+  details: string
+  serviceType?: ServiceType
+}

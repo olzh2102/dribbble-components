@@ -1,3 +1,5 @@
+import { send } from '@emailjs/browser'
+
 export function imageLoader({
   src,
   width,
@@ -17,4 +19,12 @@ export function imageLoader({
   const urlEndpoint = 'https://ik.imagekit.io/' + IMAGE_KIT_ID
 
   return `${urlEndpoint}/${src}?tr=${params}`
+}
+
+export async function sendEmail<T>(data: Record<string, T>) {
+  const serviceId = process.env.NEXT_PUBLIC_SERVICE_ID as string
+  const templateId = process.env.NEXT_PUBLIC_TEMPLATE_ID as string
+  const publicKey = process.env.NEXT_PUBLIC_PUBLIC_KEY as string
+
+  return await send(serviceId, templateId, data, publicKey)
 }

@@ -1,23 +1,19 @@
-import { send } from '@emailjs/browser'
-
-import ContactForm from '~components/contact-form'
+import { ContactFormFields } from 'common/types'
+import { sendEmail } from 'common/utils'
+import Form from '~components/contact-form'
 import withLayout from '~components/layout/with-layout'
 
 const Contact = () => {
-  async function sendEmail(data: any) {
-    const serviceId = process.env.NEXT_PUBLIC_SERVICE_ID as string
-    const templateId = process.env.NEXT_PUBLIC_TEMPLATE_ID as string
-    const publicKey = process.env.NEXT_PUBLIC_PUBLIC_KEY as string
-
+  async function sendForm(formData: ContactFormFields) {
     try {
-      const result = await send(serviceId, templateId, data, publicKey)
-      console.log(result)
+      await sendEmail(formData)
+      console.log('OK')
     } catch (error) {
       console.error(error)
     }
   }
 
-  return <ContactForm onSubmit={sendEmail} />
+  return <Form onSubmit={sendForm} />
 }
 
 export default withLayout(Contact)

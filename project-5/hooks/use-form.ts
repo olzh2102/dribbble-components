@@ -1,6 +1,6 @@
 import { useState, ChangeEvent, FormEvent } from 'react'
 
-import { ServiceType } from 'common/types'
+import { ContactFormFields } from 'common/types'
 
 const NAME_MIN_LENGTH = 2
 const NAME_MAX_LENGTH = 40
@@ -8,14 +8,13 @@ const NUM_REGEX = /\d/
 const EMAIL_REGEX =
   /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
-const DEFAULT_VALUES: { name: string; email: string; details: string; serviceType?: ServiceType } =
-  {
-    name: '',
-    email: '',
-    details: '',
-    serviceType: undefined,
-  }
-type Name = keyof typeof DEFAULT_VALUES
+const DEFAULT_VALUES: ContactFormFields = {
+  name: '',
+  email: '',
+  details: '',
+  serviceType: undefined,
+}
+type Name = keyof ContactFormFields
 
 const validation = {
   name: (value: string) => {
@@ -63,7 +62,7 @@ export default function useForm() {
     setForm(event.target.value, event.target.name as Name)
   }
 
-  function handleSubmit(onSubmit: (data: typeof DEFAULT_VALUES) => void) {
+  function handleSubmit(onSubmit: (data: ContactFormFields) => void) {
     return (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault()
 
