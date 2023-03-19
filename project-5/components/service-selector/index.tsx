@@ -14,10 +14,12 @@ const labelCommonClassName =
 
 export default function ServiceSelector({
   selectedValue,
-  setValue,
+  onSelect,
+  errorMessage,
 }: {
   selectedValue?: ServiceType
-  setValue: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
+  onSelect: (event: ChangeEvent<HTMLInputElement>) => void
+  errorMessage: string | null
 }) {
   return (
     <>
@@ -30,13 +32,18 @@ export default function ServiceSelector({
             id={service}
             value={service}
             checked={selectedValue === service}
-            onChange={setValue}
+            onChange={onSelect}
           />
           <label className={labelConfig[service] + ' ' + labelCommonClassName} htmlFor={service}>
             {service}
           </label>
         </Fragment>
       ))}
+      {errorMessage && (
+        <span className="text-red-500" role="alert">
+          {errorMessage}
+        </span>
+      )}
     </>
   )
 }

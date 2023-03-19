@@ -13,6 +13,7 @@
     "cypress": "cypress open"
   },
   "dependencies": {
+    "@emailjs/browser": "^3.10.0",
     "@heroicons/react": "^2.0.13",
     "@next/font": "^13.0.5",
     "@react-three/drei": "^9.43.3",
