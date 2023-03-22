@@ -18,10 +18,10 @@ export default function Input({
 
   return (
     <>
-      <label className="flex flex-col capitalize">
+      <label className="flex flex-col uppercase">
         {name}
         <input
-          className="rounded p-2 border border-red-500 dark:border-primary-850 focus:outline-none dark:bg-secondary-100 cursor-none"
+          className="rounded p-2 h-12 border border-red-500 dark:border-primary-850 focus:outline-none dark:bg-secondary-100 cursor-none"
           type="text"
           name={name}
           value={value}
@@ -31,7 +31,7 @@ export default function Input({
         />
       </label>
       {errorMessage && (
-        <span className="text-red-500" role="alert">
+        <span className="text-[#a57548]" role="alert">
           {errorMessage}
         </span>
       )}

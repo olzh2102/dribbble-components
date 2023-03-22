@@ -1,16 +1,19 @@
-import { ChangeEvent, Fragment } from 'react'
+import { ChangeEvent } from 'react'
 
 import { SERVICE_TYPES } from 'common/constants'
 import { ServiceType } from 'common/types'
 
 const labelConfig = {
-  design: 'peer-checked/design:text-blue-500',
-  branding: 'peer-checked/branding:text-blue-500',
-  consulting: 'peer-checked/consulting:text-blue-500',
+  design:
+    'peer-checked/design:text-[#a57548] peer-checked/design:border-[#a57548]',
+  branding:
+    'peer-checked/branding:text-[#a57548] peer-checked/branding:border-[#a57548]',
+  consulting:
+    'peer-checked/consulting:text-[#a57548] peer-checked/consulting:border-[#a57548]',
 }
 
 const labelCommonClassName =
-  'uppercase w-[150px] h-[150px] rounded border border-blue-500 grid place-content-center'
+  'uppercase w-40 h-52 rounded-md border border-primary-850 grid place-content-center border-2'
 
 export default function ServiceSelector({
   selectedValue,
@@ -23,8 +26,8 @@ export default function ServiceSelector({
 }) {
   return (
     <>
-      {SERVICE_TYPES.map((service) => (
-        <Fragment key={service}>
+      {SERVICE_TYPES.map((service, i) => (
+        <div key={service}>
           <input
             className={`hidden peer/${service}`}
             type="radio"
@@ -34,10 +37,16 @@ export default function ServiceSelector({
             checked={selectedValue === service}
             onChange={onSelect}
           />
-          <label className={labelConfig[service] + ' ' + labelCommonClassName} htmlFor={service}>
-            {service}
+          <label
+            className={labelConfig[service] + ' ' + labelCommonClassName}
+            htmlFor={service}
+          >
+            <span className="mx-auto mb-3 w-20 h-20 rounded-full bg-[#d0b297] text-6xl text-[#a57548] font-medium relative">
+              <span className="absolute -top-4 -left-1">{i + 1}</span>
+            </span>
+            <span className="text-center font-medium">{service}</span>
           </label>
-        </Fragment>
+        </div>
       ))}
       {errorMessage && (
         <span className="text-red-500" role="alert">

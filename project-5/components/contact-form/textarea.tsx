@@ -15,10 +15,10 @@ export default function Textarea({
 
   return (
     <>
-      <label className="flex flex-col">
+      <label className="flex flex-col uppercase">
         Project details
         <textarea
-          className="rounded p-2 border border-red-500 dark:border-primary-850 resize-none focus:outline-none dark:bg-secondary-100 cursor-none"
+          className="rounded p-2 h-28 border border-red-500 dark:border-primary-850 resize-none focus:outline-none dark:bg-secondary-100 cursor-none"
           name="details"
           value={value}
           onChange={onChange}
@@ -27,7 +27,7 @@ export default function Textarea({
         />
       </label>
       {errorMessage && (
-        <span className="text-red-500" role="alert">
+        <span className="text-[#a57548]" role="alert">
           {errorMessage}
         </span>
       )}
