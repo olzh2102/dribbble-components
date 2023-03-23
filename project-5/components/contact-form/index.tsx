@@ -19,11 +19,15 @@ export default function ContactForm({
 
   return (
     <form className="h-full flex" onSubmit={handleSubmit(onSubmit)}>
-      <div className="h-full w-2/5 bg-[#474747] rounded-l-md space-y-4 grid place-content-center text-primary-850">
-        <h2 className="text-2xl text-primary-850 font-medium uppercase">
-          What can I do for you ?
-        </h2>
-        <div className="flex gap-4 place-">
+      <div
+        className={`
+        w-2/5 bg-[#e0d8cc] dark:bg-secondary-650 rounded-l-md 
+        grid place-content-center space-y-4
+        font-medium uppercase text-secondary-100 dark:text-primary-850 
+      `}
+      >
+        <h2 className="text-2xl">what can I do for you ?</h2>
+        <div className="flex flex-col gap-4">
           <ServiceSelector
             selectedValue={formState.serviceType}
             onSelect={setValue}
@@ -32,32 +36,28 @@ export default function ContactForm({
         </div>
       </div>
 
-      <div className="h-full w-3/5 mt-14 dark:text-white grid place-content-center">
-        <div className="flex gap-4 mb-6">
-          <div className="w-min">
-            <Input
-              name="name"
-              value={formState.name}
-              onChange={setValue}
-              errorMessage={errors.name}
-            />
-          </div>
-          <div className="w-min">
-            <Input
-              name="email"
-              value={formState.email}
-              onChange={setValue}
-              errorMessage={errors.email}
-            />
-          </div>
-        </div>
-        <div className="mb-6">
-          <Textarea
-            value={formState.details}
+      <div className="w-3/5 dark:text-white grid place-content-center mt-28 space-y-6">
+        <div className="flex gap-4 w-min">
+          <Input
+            name="name"
+            value={formState.name}
             onChange={setValue}
-            errorMessage={errors.details}
+            errorMessage={errors.name}
+          />
+
+          <Input
+            name="email"
+            value={formState.email}
+            onChange={setValue}
+            errorMessage={errors.email}
           />
         </div>
+
+        <Textarea
+          value={formState.details}
+          onChange={setValue}
+          errorMessage={errors.details}
+        />
 
         <button
           type="submit"
@@ -67,9 +67,11 @@ export default function ContactForm({
             rounded-md
             py-2 px-6 
             border border-primary-850 
-            hover:bg-primary-850 
+            dark:hover:bg-primary-850 
+            hover:bg-primary-950
             uppercase text-lg 
-            hover:text-secondary-100
+            dark:hover:text-secondary-100
+            hover:text-primary-850
           `}
         >
           Send

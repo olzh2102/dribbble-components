@@ -20,21 +20,25 @@ const validation = {
   name: (value: string) => {
     if (value.length === 0) return 'Name is required'
     if (NUM_REGEX.test(value)) return 'Name can only contain letters'
-    if (2 > value.length || value.length > 40)
-      return `Name must be at between ${NAME_MIN_LENGTH} and ${NAME_MAX_LENGTH} characters long`
+    if (value.length < 2) return 'Too short'
+    if (value.length > 40) return 'Too long'
+
     return ''
   },
   email: (value: string) => {
     if (value.length === 0) return 'Email is required'
     if (!value.match(EMAIL_REGEX)) return 'Enter a valid email'
+
     return ''
   },
   details: (value: string) => {
     if (value.length === 0) return 'Project details is required'
+
     return ''
   },
   serviceType: (value: string) => {
     if (!value) return 'Service type is required'
+
     return ''
   },
 }
@@ -57,16 +61,22 @@ export default function useForm() {
     setFormState((prev) => ({ ...prev, [name]: value }))
   }
 
-  function setValue(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-    validateForm(event.target.value, event.target.name as Name)
-    setForm(event.target.value, event.target.name as Name)
+  function setValue(
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) {
+    const { value, name } = event.target
+
+    validateForm(value, name as Name)
+    setForm(value, name as Name)
   }
 
   function handleSubmit(onSubmit: (data: ContactFormFields) => void) {
     return (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault()
 
-      Object.entries(formState).forEach(([name, value]) => validateForm(value, name as Name))
+      Object.entries(formState).forEach(([name, value]) =>
+        validateForm(value, name as Name)
+      )
 
       if (Object.values(errors).some((error) => error === null)) return
 
