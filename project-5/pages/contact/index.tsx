@@ -11,6 +11,7 @@ const Contact = () => {
 
   async function sendForm(formData: ContactFormFields) {
     try {
+      setAlert({ show: true, severity: 'info', message: 'Sending email' })
       await sendEmail(formData)
       setAlert({ show: true, severity: 'success', message: 'All good' })
     } catch (error) {
