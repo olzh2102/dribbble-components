@@ -1,15 +1,20 @@
+import { useContext } from 'react'
+
 import { ContactFormFields } from 'common/types'
 import { sendEmail } from 'common/utils'
 import Form from '~components/contact-form'
 import withLayout from '~components/layout/with-layout'
+import { AlertContext } from '~contexts/alert-provider'
 
 const Contact = () => {
+  const { setAlert } = useContext(AlertContext)
+
   async function sendForm(formData: ContactFormFields) {
     try {
       await sendEmail(formData)
-      console.log('OK')
+      setAlert({ show: true, severity: 'success', message: 'All good' })
     } catch (error) {
-      console.error(error)
+      setAlert({ show: true, severity: 'error', message: 'Something went wrong' })
     }
   }
 
