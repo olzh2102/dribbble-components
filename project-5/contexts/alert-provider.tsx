@@ -17,13 +17,17 @@ export const AlertContext = createContext<{
 })
 
 export default function AlertProvider({ children }: { children: ReactNode }) {
-  const [alert, setAlert] = useState<Alert>({ show: false, message: '' })
+  const [alert, setAlert] = useState<Alert>({ show: true, message: 'TRALALA' })
 
   return (
     <AlertContext.Provider value={{ setAlert }}>
       {children}
       <Snackbar open={alert.show} onClose={() => setAlert({ show: false })} autoHideDuration={3000}>
-        <div className={'p-2 rounded-md text-white ' + alertStyle[alert.severity || 'info']}>
+        <div
+          className={
+            'px-3 py-4 rounded text-white font-medium w-72 ' + alertStyle[alert.severity || 'info']
+          }
+        >
           {alert.message}
         </div>
       </Snackbar>
