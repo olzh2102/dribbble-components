@@ -24,6 +24,7 @@ module.exports = {
           800: '#c49f5d', // camel
           850: '#f7f5f2', // light camel
           900: '#ab6f00', // golden brown
+          950: '#a57548'
         },
         secondary: {
           50: '#2c2c2c', // (kōmir qara)
@@ -34,6 +35,7 @@ module.exports = {
           500: '#d2d7df', // light gray
           550: '#dad9d3',
           600: '#bdbbb0', // bone (temnee)
+          650: '#474747',
           700: '#8a897c', // bone (ewe temnee)
           800: colors.gray[400],
           900: '#c9b2a6',

@@ -16,7 +16,9 @@ describe('Contact Form', () => {
 
     await user.click(submitButton)
 
-    expect(await screen.findAllByRole('alert')).toHaveLength(FIELDS_LENGTH)
+    const fieldAlerts = await screen.findAllByRole('alert')
+
+    expect(fieldAlerts).toHaveLength(FIELDS_LENGTH)
     expect(onSubmit).not.toBeCalled()
   })
 

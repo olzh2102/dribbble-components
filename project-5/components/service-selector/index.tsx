@@ -1,16 +1,18 @@
-import { ChangeEvent, Fragment } from 'react'
+import { ChangeEvent } from 'react'
+
+import { motion } from 'framer-motion'
 
 import { SERVICE_TYPES } from 'common/constants'
 import { ServiceType } from 'common/types'
 
 const labelConfig = {
-  design: 'peer-checked/design:text-blue-500',
-  branding: 'peer-checked/branding:text-blue-500',
-  consulting: 'peer-checked/consulting:text-blue-500',
+  design: 'peer-checked/design:text-primary-950 peer-checked/design:border-primary-950',
+  branding: 'peer-checked/branding:text-primary-950 peer-checked/branding:border-primary-950',
+  consulting: 'peer-checked/consulting:text-primary-950 peer-checked/consulting:border-primary-950',
 }
 
 const labelCommonClassName =
-  'uppercase w-[150px] h-[150px] rounded border border-blue-500 grid place-content-center'
+  'w-40 h-52 rounded-md border border-primary-850 grid place-content-center border-2'
 
 export default function ServiceSelector({
   selectedValue,
@@ -23,27 +25,49 @@ export default function ServiceSelector({
 }) {
   return (
     <>
-      {SERVICE_TYPES.map((service) => (
-        <Fragment key={service}>
-          <input
-            className={`hidden peer/${service}`}
-            type="radio"
-            name="serviceType"
-            id={service}
-            value={service}
-            checked={selectedValue === service}
-            onChange={onSelect}
-          />
-          <label className={labelConfig[service] + ' ' + labelCommonClassName} htmlFor={service}>
-            {service}
-          </label>
-        </Fragment>
-      ))}
-      {errorMessage && (
-        <span className="text-red-500" role="alert">
-          {errorMessage}
-        </span>
-      )}
+      <div className="flex gap-4">
+        {SERVICE_TYPES.map((service, i) => (
+          <div key={service}>
+            <input
+              className={`hidden peer/${service}`}
+              type="radio"
+              name="serviceType"
+              id={service}
+              value={service}
+              checked={selectedValue === service}
+              onChange={onSelect}
+            />
+            <label className={`${labelConfig[service]} ${labelCommonClassName}`} htmlFor={service}>
+              <span
+                className={`
+              relative
+              mx-auto mb-6 
+              w-20 h-20 
+              rounded-full 
+              bg-primary-850 
+              text-6xl text-primary-950 
+              `}
+              >
+                <span className="absolute -top-4 -left-0.5">{i + 1}</span>
+              </span>
+              <span className="text-center">{service}</span>
+            </label>
+          </div>
+        ))}
+      </div>
+      <motion.span
+        animate={errorMessage ? 'visible' : 'hidden'}
+        transition={{ delay: 0.5 }}
+        variants={{
+          visible: { opacity: 1 },
+          hidden: { opacity: 0 },
+          initial: { opacity: 0 },
+        }}
+        className="text-primary-950"
+        role={errorMessage ? 'alert' : 'none'}
+      >
+        {errorMessage ? errorMessage : ''}
+      </motion.span>
     </>
   )
 }

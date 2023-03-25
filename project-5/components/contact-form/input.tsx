@@ -1,5 +1,7 @@
 import { ChangeEvent, useContext } from 'react'
 
+import { motion } from 'framer-motion'
+
 import { ContactFormFields } from 'common/types'
 import { CursorContext } from '~contexts/cursor-provider'
 
@@ -17,11 +19,11 @@ export default function Input({
   const { onMouseOver, onMouseOut } = useContext(CursorContext)
 
   return (
-    <>
-      <label className="flex flex-col capitalize">
+    <div>
+      <label className="flex flex-col uppercase">
         {name}
         <input
-          className="rounded p-2 border border-red-500 dark:border-primary-850 focus:outline-none dark:bg-secondary-100 cursor-none"
+          className="rounded p-2 h-12 border focus:outline-none dark:bg-secondary-100 cursor-none"
           type="text"
           name={name}
           value={value}
@@ -30,11 +32,19 @@ export default function Input({
           onMouseOut={(e) => onMouseOut(e, 'input')}
         />
       </label>
-      {errorMessage && (
-        <span className="text-red-500" role="alert">
-          {errorMessage}
-        </span>
-      )}
-    </>
+      <motion.span
+        animate={errorMessage ? 'visible' : 'hidden'}
+        transition={{ delay: 0.5 }}
+        variants={{
+          visible: { opacity: 1 },
+          hidden: { opacity: 0 },
+          initial: { opacity: 0 },
+        }}
+        className="text-[#a57548]"
+        role={errorMessage ? 'alert' : 'none'}
+      >
+        {errorMessage}
+      </motion.span>
+    </div>
   )
 }
