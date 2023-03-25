@@ -41,7 +41,7 @@ export default function Input({
           initial: { opacity: 0 },
         }}
         className="text-[#a57548]"
-        role="alert"
+        role={errorMessage ? 'alert' : 'none'}
       >
         {errorMessage}
       </motion.span>

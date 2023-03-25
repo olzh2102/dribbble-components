@@ -6,12 +6,9 @@ import { SERVICE_TYPES } from 'common/constants'
 import { ServiceType } from 'common/types'
 
 const labelConfig = {
-  design:
-    'peer-checked/design:text-primary-950 peer-checked/design:border-primary-950',
-  branding:
-    'peer-checked/branding:text-primary-950 peer-checked/branding:border-primary-950',
-  consulting:
-    'peer-checked/consulting:text-primary-950 peer-checked/consulting:border-primary-950',
+  design: 'peer-checked/design:text-primary-950 peer-checked/design:border-primary-950',
+  branding: 'peer-checked/branding:text-primary-950 peer-checked/branding:border-primary-950',
+  consulting: 'peer-checked/consulting:text-primary-950 peer-checked/consulting:border-primary-950',
 }
 
 const labelCommonClassName =
@@ -40,10 +37,7 @@ export default function ServiceSelector({
               checked={selectedValue === service}
               onChange={onSelect}
             />
-            <label
-              className={`${labelConfig[service]} ${labelCommonClassName}`}
-              htmlFor={service}
-            >
+            <label className={`${labelConfig[service]} ${labelCommonClassName}`} htmlFor={service}>
               <span
                 className={`
               relative
@@ -70,7 +64,7 @@ export default function ServiceSelector({
           initial: { opacity: 0 },
         }}
         className="text-primary-950"
-        role="alert"
+        role={errorMessage ? 'alert' : 'none'}
       >
         {errorMessage ? errorMessage : ''}
       </motion.span>

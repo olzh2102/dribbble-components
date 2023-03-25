@@ -45,7 +45,7 @@ export default function Textarea({
           initial: { opacity: 0 },
         }}
         className="text-primary-950"
-        role="alert"
+        role={errorMessage ? 'alert' : 'none'}
       >
         {errorMessage ? errorMessage : ''}
       </motion.span>
