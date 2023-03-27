@@ -22,13 +22,10 @@ export function imageLoader({
 }
 
 export async function sendEmail<T>(data: Record<string, T>) {
-  const serviceId = process.env.NEXT_PUBLIC_SERVICE_ID as string
-  const templateId = process.env.NEXT_PUBLIC_TEMPLATE_ID as string
-  const publicKey = process.env.NEXT_PUBLIC_PUBLIC_KEY as string
-
-  console.log('service id', serviceId)
-  console.log('template id', templateId)
-  console.log('public key', publicKey)
-
-  return await send(serviceId, templateId, data, publicKey)
+  await send(
+    process.env.NEXT_PUBLIC_SERVICE_ID as string,
+    process.env.NEXT_PUBLIC_TEMPLATE_ID as string,
+    data,
+    process.env.NEXT_PUBLIC_PUBLIC_KEY as string
+  )
 }
