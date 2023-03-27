@@ -32,9 +32,9 @@ export default withLayout(Contact)
 export async function getStaticProps() {
   return {
     props: {
-      serviceId: process.env.SERVICE_ID,
-      templateId: process.env.TEMPLATE_ID,
-      publicKey: process.env.PUBLIC_KEY,
+      serviceId: process.env.SERVICE_ID || null,
+      templateId: process.env.TEMPLATE_ID || null,
+      publicKey: process.env.PUBLIC_KEY || null,
     },
   }
 }
