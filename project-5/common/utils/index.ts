@@ -20,12 +20,3 @@ export function imageLoader({
 
   return `${urlEndpoint}/${src}?tr=${params}`
 }
-
-export async function sendEmail<T>(data: Record<string, T>) {
-  await send(
-    process.env.NEXT_PUBLIC_SERVICE_ID as string,
-    process.env.NEXT_PUBLIC_TEMPLATE_ID as string,
-    data,
-    process.env.NEXT_PUBLIC_PUBLIC_KEY as string
-  )
-}
