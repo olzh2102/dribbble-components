@@ -1,5 +1,3 @@
-import { send } from '@emailjs/browser'
-
 export function imageLoader({
   src,
   width,
