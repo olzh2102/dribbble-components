@@ -110,13 +110,13 @@ export default function CursorProvider({ children }: { children: ReactNode }) {
               grid place-content-center
               absolute 
               w-6 h-6 
-              text-primary-850 dark:text-secondary-100
+              text-primary-milk dark:text-primary-zinc
               z-50 
               pointer-events-none 
               ${
                 message
-                  ? 'bg-secondary-100 dark:bg-primary-850 rounded-full'
-                  : 'bg-primary-850 dark:bg-secondary-300 rounded-full mix-blend-difference'
+                  ? 'bg-primary-zinc dark:bg-primary-milk rounded-full'
+                  : 'bg-primary-zinc dark:bg-primary-milk rounded-full mix-blend-difference'
               }
             `}
           >

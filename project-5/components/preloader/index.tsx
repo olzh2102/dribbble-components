@@ -1,5 +1,3 @@
-import { useEffect } from 'react'
-
 import { motion } from 'framer-motion'
 
 export default function Preloader({
@@ -9,22 +7,27 @@ export default function Preloader({
   duration: number
   setLoading: (val: boolean) => void
 }) {
-  useEffect(() => {
-    setTimeout(() => setLoading(false), duration)
-  }, [duration, setLoading])
+  setTimeout(() => setLoading(false), duration)
 
   return (
-    <div className="h-full z-50 relative bg-primary-400 dark:bg-secondary-100">
+    <div
+      className={`
+      h-full z-50 
+      relative text-2xl 
+      bg-primary-white dark:bg-primary-black 
+      text-primary-zinc dark:text-primary-milk
+    `}
+    >
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: duration / 1000 }}
         className="absolute h-full w-full grid place-content-center"
       >
-        <h1 className="text-2xl text-neutral-900 dark:text-secondary-500">Natallia Raksha</h1>
+        <h1>Natallia Raksha</h1>
       </motion.div>
       <motion.div
-        className="h-full bg-secondary-300 dark:bg-primary-200"
+        className="h-full bg-primary-milk dark:bg-primary-zinc"
         initial={{ width: 0 }}
         animate={{ width: '100%' }}
         transition={{ duration: duration / 1000 }}
