@@ -17,7 +17,7 @@ const About = () => {
         className={`
           flex flex-[0_0_100%] flex-col 
           md:flex-row 
-          text-secondary-100 dark:text-secondary-300
+          text-primary-zinc dark:text-primary-milk
         `}
       >
         <Image
@@ -45,11 +45,12 @@ const About = () => {
         )}
       </div>
 
-      <div className="flex flex-[0_0_100%] text-secondary-100 dark:text-secondary-300">
+      <div className="flex flex-[0_0_100%] text-primary-zinc dark:text-primary-milk">
         <div className="w-full grid place-content-center p-2">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Molestias sit eius perspiciatis
-          sint fugit, delectus maiores accusantium doloremque. Nulla sunt ipsum vero sit enim
-          inventore officiis similique odio, facilis eos.
+          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Molestias
+          sit eius perspiciatis sint fugit, delectus maiores accusantium
+          doloremque. Nulla sunt ipsum vero sit enim inventore officiis
+          similique odio, facilis eos.
         </div>
       </div>
     </ScrollWrapper>

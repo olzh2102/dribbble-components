@@ -6,7 +6,6 @@ import { useRouter } from 'next/router'
 import { motion } from 'framer-motion'
 
 import { ROUTES } from 'common/constants'
-import { Lang, RoutePath } from 'common/types'
 import LangToggler from '~components/lang-toggler'
 import ThemeToggler from '~components/theme-toggler'
 import { CursorContext } from '~contexts/cursor-provider'
@@ -15,7 +14,7 @@ import MenuItem from './menu-item'
 import MenuToggler from './menu-toggler'
 
 export default function MobileHeaderContent() {
-  const { asPath, locale } = useRouter() as { asPath: RoutePath; locale: Lang }
+  const { asPath, locale } = useRouter()
   const { onMouseOver, onMouseOut } = useContext(CursorContext)
 
   const [isOpen, toggleOpen] = useState(false)
@@ -54,18 +53,15 @@ export default function MobileHeaderContent() {
         className={`
           relative 
           h-full 
-          bg-secondary-550 dark:bg-secondary-50 
+          text-primary-zinc dark:text-primary-milk
+          bg-primary-milk dark:bg-primary-zinc
           grid place-content-center
           rounded-md 
         `}
       >
         <nav className="pointer-events-auto">
           <ul
-            className={`
-              text-primary-200 dark:text-secondary-300
-              text-5xl font-semibold
-              space-y-2 whitespace-nowrap
-            `}
+            className="text-5xl font-medium space-y-2 whitespace-nowrap"
             onMouseOver={(e) => onMouseOver(e, 'a')}
             onMouseOut={(e) => onMouseOut(e, 'a')}
           >
@@ -74,16 +70,20 @@ export default function MobileHeaderContent() {
             ))}
           </ul>
         </nav>
-        <div className="flex justify-between w-full dark:text-primary-300 absolute bottom-0 p-4 pointer-events-auto">
+        <div className="flex justify-between w-full absolute bottom-0 p-4 pointer-events-auto">
           <div
-            className="flex gap-2 text-base uppercase font-semibold"
+            className={`
+              flex gap-2
+              text-primary-zinc dark:text-primary-milk
+              text-base uppercase font-medium
+            `}
             onMouseOver={(e) => onMouseOver(e, 'label')}
             onMouseOut={(e) => onMouseOut(e, 'label')}
           >
-            <LangToggler currentLang={locale as Lang} mobile />
+            <LangToggler currentLang={locale} mobile />
           </div>
           <div className="w-6 h-6">
-            <ThemeToggler textColor="text-primary-200 dark:text-secondary-300" />
+            <ThemeToggler textColor="text-primary-zinc dark:text-primary-milk" />
           </div>
         </div>
       </motion.div>

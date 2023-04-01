@@ -15,7 +15,7 @@ const Custom404: Page = withLayout(() => {
 
   return (
     <>
-      <div className="absolute top-40 left-80 text-[#353535] dark:text-[#f7f5f2] font-medium">
+      <div className="absolute top-40 left-80 text-primary-zinc dark:text-primary-milk font-medium">
         <div className="mb-2">404 {t['404']['pageNotFound']}</div>
         <div>{t['404']['search']}</div>
         <div className="mb-2">{t['404']['notHere']} :(</div>

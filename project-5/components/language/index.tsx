@@ -3,15 +3,13 @@ import { useRouter } from 'next/router'
 import { Lang } from 'common/types'
 
 const labelConfig = {
-  primary: {
-    en: 'peer-checked/en:text-primary-200 dark:peer-checked/en:text-secondary-300',
-    de: 'peer-checked/de:text-primary-200 dark:peer-checked/de:text-secondary-300',
-    ru: 'peer-checked/ru:text-primary-200 dark:peer-checked/ru:text-secondary-300',
-  },
-  secondary: {
-    en: 'peer-checked/en:text-primary-850 dark:peer-checked/en:text-primary-200',
-    de: 'peer-checked/de:text-primary-850 dark:peer-checked/de:text-primary-200',
-    ru: 'peer-checked/ru:text-primary-850 dark:peer-checked/ru:text-primary-200',
+  en: 'peer-checked/en:text-primary-milk/40 dark:peer-checked/en:text-primary-zinc/40',
+  de: 'peer-checked/de:text-primary-milk/40 dark:peer-checked/de:text-primary-zinc/40',
+  ru: 'peer-checked/ru:text-primary-milk/40 dark:peer-checked/ru:text-primary-zinc/40',
+  home: {
+    en: 'peer-checked/en:text-primary-zinc dark:peer-checked/en:text-primary-milk',
+    de: 'peer-checked/de:text-primary-zinc dark:peer-checked/de:text-primary-milk',
+    ru: 'peer-checked/ru:text-primary-zinc dark:peer-checked/ru:text-primary-milk',
   },
 }
 
@@ -19,14 +17,14 @@ export default function Language({
   lang,
   currentLang,
   onSelect,
-  mobile,
+  mobile = false,
 }: {
   lang: Lang
   currentLang: Lang
   onSelect: (e: Lang) => void
   mobile?: boolean
 }) {
-  const { asPath } = useRouter()
+  const isHomePage = useRouter().asPath == '/'
 
   return (
     <>
@@ -38,11 +36,15 @@ export default function Language({
         role={`radio-${lang}`}
         value={lang}
         checked={currentLang == lang}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => onSelect(e.target.value as Lang)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          onSelect(e.target.value as Lang)
+        }
       />
       <label
         htmlFor={lang}
-        className={labelConfig[asPath == '/' && !mobile ? 'primary' : 'secondary'][lang]}
+        className={
+          isHomePage || mobile ? labelConfig['home'][lang] : labelConfig[lang]
+        }
       >
         {lang}
       </label>

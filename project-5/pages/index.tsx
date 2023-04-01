@@ -19,7 +19,7 @@ const Home: Page = withLayout(() => {
           -translate-x-1/2 -translate-y-1/2
           mix-blend-difference 
           pointer-events-none
-          text-[#f7f5f2] font-medium uppercase text-base
+          text-primary-milk font-medium uppercase
         `}
       >
         <Image

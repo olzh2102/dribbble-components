@@ -1,21 +1,26 @@
 import { useContext } from 'react'
 
-import { Cycle, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 
 import { CursorContext } from '~contexts/cursor-provider'
 
-export default function MenuToggler({ toggle }: { toggle: Cycle }) {
+export default function MenuToggler({ toggle }: { toggle: () => void }) {
   const { onMouseOver, onMouseOut } = useContext(CursorContext)
 
   return (
     <button
       className="rounded-full pointer-events-auto"
-      onClick={() => toggle()}
+      onClick={toggle}
       onMouseOver={(e) => onMouseOver(e, 'button')}
       onMouseOut={(e) => onMouseOut(e, 'button')}
       data-test-id="burger-menu"
     >
-      <svg className="stroke-primary-300" width="33" height="33" viewBox="0 0 33 33">
+      <svg
+        className="stroke-primary-zinc dark:stroke-primary-milk"
+        width="33"
+        height="33"
+        viewBox="0 0 33 33"
+      >
         <motion.path
           strokeWidth="2"
           strokeLinecap="round"

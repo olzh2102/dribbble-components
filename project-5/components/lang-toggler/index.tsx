@@ -7,7 +7,7 @@ import { LangContext } from '~contexts/lang-provider'
 
 export default function LangToggler({
   currentLang,
-  mobile,
+  mobile = false,
 }: {
   currentLang: Lang
   mobile?: boolean

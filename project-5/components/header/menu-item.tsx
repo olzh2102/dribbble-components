@@ -7,16 +7,24 @@ import lang from 'common/lang.json'
 import { Lang, RoutePath, TranslationKey } from 'common/types'
 
 const activeVariants = {
-  common: 'bg-gradient-to-l bg-clip-text text-transparent from-secondary-900',
-  home: 'via-primary-200 to-primary-200 dark:via-secondary-300 dark:to-secondary-300',
-  away: 'via-primary-850 to-primary-850 dark:via-secondary-100 dark:to-secondary-100',
+  common:
+    'bg-gradient-to-l bg-clip-text text-transparent from-action-peach dark:from-action-gold',
+  home: 'via-primary-zinc to-primary-zinc dark:via-primary-milk dark:to-primary-milk',
+  away: 'via-primary-milk to-primary-milk dark:via-primary-zinc dark:to-primary-zinc',
 }
 
-export default function MenuItem({ route, mobile }: { route: RoutePath; mobile?: boolean }) {
+export default function MenuItem({
+  route,
+  mobile,
+}: {
+  route: RoutePath
+  mobile?: boolean
+}) {
   const { locale, route: currentRoute } = useRouter()
   const t = lang[locale as Lang]
 
-  const translationKey = route === '/' ? 'home' : (route.replace('/', '') as TranslationKey)
+  const translationKey =
+    route === '/' ? 'home' : (route.replace('/', '') as TranslationKey)
 
   return (
     <li className="relative w-min">
@@ -40,7 +48,7 @@ export default function MenuItem({ route, mobile }: { route: RoutePath; mobile?:
         variants={{ show: { opacity: 1 }, hidden: { opacity: 0 } }}
         className={`
           absolute top-2 -right-3 
-          w-1 h-1 rounded-full bg-primary-900
+          w-1 h-1 rounded-full bg-action-peach dark:bg-action-gold
           shadow-active-menu-item
         `}
       />
