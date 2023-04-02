@@ -108,15 +108,14 @@ export default function CursorProvider({ children }: { children: ReactNode }) {
             }}
             className={`
               grid place-content-center
-              absolute 
+              absolute z-50 
               w-6 h-6 
               text-primary-milk dark:text-primary-zinc
-              z-50 
-              pointer-events-none 
+              pointer-events-none rounded-full
               ${
                 message
-                  ? 'bg-primary-zinc dark:bg-primary-milk rounded-full'
-                  : 'bg-primary-zinc dark:bg-primary-milk rounded-full mix-blend-difference'
+                  ? 'bg-primary-zinc dark:bg-primary-milk'
+                  : 'bg-primary-milk mix-blend-difference'
               }
             `}
           >
