@@ -16,13 +16,11 @@ describe('Custom Cursor', () => {
     expect(customCursor).toBeInTheDocument()
     expect(customCursor).toHaveClass(
       'grid place-content-center',
-      'absolute',
-      'w-6 h-6',
+      'absolute z-50',
+      'w-6 h-6 rounded-full',
       'text-primary-milk dark:text-primary-zinc',
-      'bg-primary-zinc dark:bg-primary-milk',
-      'z-50',
+      'bg-primary-milk',
       'pointer-events-none',
-      'rounded-full',
       'mix-blend-difference'
     )
   })
