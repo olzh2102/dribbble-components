@@ -11,9 +11,8 @@ import localFont from '@next/font/local'
 import { Canvas } from '@react-three/fiber'
 import { AnimatePresence } from 'framer-motion'
 
-import { Lang, Page } from 'common/types'
+import { Page } from 'common/types'
 import Header from '~components/header'
-import HeaderClipPath from '~components/header/mobile-header-content'
 import Preloader from '~components/preloader'
 import RoundedCorner from '~components/rounded-corner'
 import Wave from '~components/wave'
@@ -21,9 +20,8 @@ import ThemeLangCursorProvider from '~contexts/index'
 
 import '../styles/globals.css'
 
-const font = Work_Sans()
-
-const font2 = localFont({
+const latinFont = Work_Sans()
+const cyrillicFont = localFont({
   src: '../public/fonts/WorkSans/WorkSans-Black.woff',
 })
 
@@ -32,7 +30,7 @@ export default function App({
   pageProps,
   router,
 }: AppProps & { Component: NextComponentType & Page }) {
-  const locale = useRouter().locale as Lang
+  const font = useRouter().locale == 'ru' ? cyrillicFont : latinFont
 
   const [loading, setLoading] = useState(true)
 
@@ -45,12 +43,13 @@ export default function App({
 
       <style jsx global>{`
         html {
-          font-family: ${(locale == 'ru' ? font2 : font).style.fontFamily};
+          font-family: ${font.style.fontFamily};
         }
       `}</style>
 
       <ThemeLangCursorProvider>
         {loading && <Preloader duration={3000} setLoading={setLoading} />}
+
         <RoundedCorner waveBackground={!!Component.waveBackground}>
           {Component.waveBackground && (
             <div className="absolute top-0 left-0 w-full h-full">
@@ -59,7 +58,9 @@ export default function App({
               </Canvas>
             </div>
           )}
+
           {router.pathname !== '/404' && <Header />}
+
           <AnimatePresence mode="wait">
             <Component {...pageProps} key={router.asPath} />
           </AnimatePresence>

@@ -5,7 +5,6 @@ import { useRouter } from 'next/router'
 import { motion } from 'framer-motion'
 
 import { ROUTES } from 'common/constants'
-import { Lang } from 'common/types'
 import LangToggler from '~components/lang-toggler'
 import ThemeToggler from '~components/theme-toggler'
 import { CursorContext } from '~contexts/cursor-provider'
@@ -39,18 +38,18 @@ export default function DesktopHeaderContent() {
       pointer-events-auto p-5 pl-7 rounded-r-md
       ${
         isHome
-          ? 'text-primary-200/40 dark:text-secondary-300/40'
-          : 'bg-secondary-100 dark:bg-primary-850 text-primary-850/40 dark:text-primary-200/40'
+          ? 'text-primary-zinc/40 dark:text-primary-milk/40'
+          : 'bg-primary-zinc dark:bg-primary-milk text-primary-milk dark:text-primary-zinc'
       }
     `}
       >
         <div
           data-test-id="language-toggler-wrapper"
-          className="flex flex-col gap-1 pointer-events-auto font-semibold"
+          className="flex flex-col gap-1 pointer-events-auto font-medium"
           onMouseOver={(e) => onMouseOver(e, 'label')}
           onMouseOut={(e) => onMouseOut(e, 'label')}
         >
-          <LangToggler currentLang={locale as Lang} />
+          <LangToggler currentLang={locale} />
         </div>
         <div
           data-test-id="theme-toggler-wrapper"
@@ -60,9 +59,9 @@ export default function DesktopHeaderContent() {
         >
           <ThemeToggler
             textColor={
-              !isHome
-                ? 'text-primary-850 dark:text-secondary-100'
-                : 'text-primary-200 dark:text-secondary-300'
+              isHome
+                ? 'text-primary-zinc dark:text-primary-milk'
+                : 'text-primary-milk dark:text-primary-zinc'
             }
           />
         </div>
@@ -78,14 +77,14 @@ export default function DesktopHeaderContent() {
       pointer-events-auto p-5 pr-7 rounded-l-md
       ${
         isHome
-          ? 'text-primary-200 dark:text-secondary-300'
-          : 'bg-secondary-100 dark:bg-primary-850 text-secondary-600 dark:text-secondary-100'
+          ? 'text-primary-zinc dark:text-primary-milk'
+          : 'bg-primary-zinc dark:bg-primary-milk text-primary-milk dark:text-primary-zinc'
       }
     `}
       >
         <ul
           data-test-id="ul-nav-list"
-          className="flex flex-col h-full justify-between whitespace-nowrap text-xl font-semibold"
+          className="flex flex-col h-full justify-between whitespace-nowrap text-xl font-medium"
           onMouseOver={(e) => onMouseOver(e, 'a')}
           onMouseOut={(e) => onMouseOut(e, 'a')}
         >
