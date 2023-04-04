@@ -11,8 +11,8 @@ export default function MenuToggler({ toggle }: { toggle: () => void }) {
     <button
       className="rounded-full pointer-events-auto"
       onClick={toggle}
-      onMouseOver={(e) => onMouseOver(e, 'button')}
-      onMouseOut={(e) => onMouseOut(e, 'button')}
+      onMouseOver={onMouseOver('button')}
+      onMouseOut={onMouseOut}
       data-test-id="burger-menu"
     >
       <svg

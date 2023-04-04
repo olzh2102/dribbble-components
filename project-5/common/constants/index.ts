@@ -13,3 +13,22 @@ export const BREAKPOINTS = {
 }
 
 export const SERVICE_TYPES = ['design', 'branding', 'consulting'] as const
+
+export const MOBILE_HEADER_VARIANTS = {
+  open: {
+    clipPath: 'circle(5000px at 100vw 0)',
+    transition: {
+      type: 'spring',
+      stiffness: 20,
+      damping: 20,
+    },
+  },
+  closed: {
+    clipPath: 'circle(1px at 100vw 0)',
+    transition: {
+      type: 'spring',
+      stiffness: 300,
+      damping: 60,
+    },
+  },
+}

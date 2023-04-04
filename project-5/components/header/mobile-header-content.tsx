@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 
 import { motion } from 'framer-motion'
 
-import { ROUTES } from 'common/constants'
+import { MOBILE_HEADER_VARIANTS, ROUTES } from 'common/constants'
 import LangToggler from '~components/lang-toggler'
 import ThemeToggler from '~components/theme-toggler'
 import { CursorContext } from '~contexts/cursor-provider'
@@ -19,51 +19,25 @@ export default function MobileHeaderContent() {
 
   const [isOpen, toggleOpen] = useState(false)
 
-  const variants = {
-    open: {
-      clipPath: 'circle(5000px at 100vw 0)',
-      transition: {
-        type: 'spring',
-        stiffness: 20,
-        damping: 20,
-      },
-    },
-    closed: {
-      clipPath: 'circle(1px at 100vw 0)',
-      transition: {
-        type: 'spring',
-        stiffness: 300,
-        damping: 60,
-      },
-    },
-  }
-
   useEffect(() => {
     toggleOpen(false)
   }, [asPath])
 
   return (
     <motion.div
-      className="absolute w-full h-full z-50 pointer-events-none"
+      className="absolute w-full h-full z-50 pointer-events-none text-primary-zinc dark:text-primary-milk"
       animate={isOpen ? 'open' : 'closed'}
     >
       <motion.div
         data-test-id="header"
-        variants={variants}
-        className={`
-          relative 
-          h-full 
-          text-primary-zinc dark:text-primary-milk
-          bg-primary-milk dark:bg-primary-zinc
-          grid place-content-center
-          rounded-md 
-        `}
+        variants={MOBILE_HEADER_VARIANTS}
+        className="relative h-full grid place-content-center rounded-md bg-primary-milk dark:bg-primary-zinc"
       >
         <nav className="pointer-events-auto">
           <ul
-            className="text-5xl font-medium space-y-2 whitespace-nowrap"
-            onMouseOver={(e) => onMouseOver(e, 'a')}
-            onMouseOut={(e) => onMouseOut(e, 'a')}
+            className="text-4xl font-medium space-y-2 whitespace-nowrap"
+            onMouseOver={onMouseOver('a')}
+            onMouseOut={onMouseOut}
           >
             {ROUTES.map((route) => (
               <MenuItem key={route} route={route} mobile />
@@ -72,13 +46,9 @@ export default function MobileHeaderContent() {
         </nav>
         <div className="flex justify-between w-full absolute bottom-0 p-4 pointer-events-auto">
           <div
-            className={`
-              flex gap-2
-              text-primary-zinc dark:text-primary-milk
-              text-base uppercase font-medium
-            `}
-            onMouseOver={(e) => onMouseOver(e, 'label')}
-            onMouseOut={(e) => onMouseOut(e, 'label')}
+            className="space-x-2 text-primary-zinc dark:text-primary-milk text-base uppercase font-medium"
+            onMouseOver={onMouseOver('label')}
+            onMouseOut={onMouseOut}
           >
             <LangToggler currentLang={locale} mobile />
           </div>
