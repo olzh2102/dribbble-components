@@ -12,9 +12,8 @@ import { Canvas } from '@react-three/fiber'
 import { AnimatePresence } from 'framer-motion'
 
 import { Page } from 'common/types'
-import Header from '~components/header'
+import { Header, RoundedCorner } from '~components/layout'
 import Preloader from '~components/preloader'
-import RoundedCorner from '~components/rounded-corner'
 import Wave from '~components/wave'
 import ThemeLangCursorProvider from '~contexts/index'
 

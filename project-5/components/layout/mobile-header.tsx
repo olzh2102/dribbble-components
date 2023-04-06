@@ -7,11 +7,10 @@ import { motion } from 'framer-motion'
 
 import { MOBILE_HEADER_VARIANTS, ROUTES } from 'common/constants'
 import LangToggler from '~components/lang-toggler'
+import MenuItem from '~components/navigation/menu-item'
+import MenuToggler from '~components/navigation/menu-toggler'
 import ThemeToggler from '~components/theme-toggler'
 import { CursorContext } from '~contexts/cursor-provider'
-
-import MenuItem from './menu-item'
-import MenuToggler from './menu-toggler'
 
 export default function MobileHeaderContent() {
   const { asPath, locale } = useRouter()

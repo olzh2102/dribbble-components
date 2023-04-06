@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 
 import { Page } from 'common/types'
 
-export default function withLayout(Component: any): Page {
+export default function withPageTransition(Component: any): Page {
   const displayName = Component.displayName || 'Component'
 
   const ComponentWithPageTransition = (props: AppProps) => (
@@ -22,7 +22,7 @@ export default function withLayout(Component: any): Page {
     </motion.div>
   )
 
-  ComponentWithPageTransition.displayName = `withLayout(${displayName})`
+  ComponentWithPageTransition.displayName = `withPageTransition(${displayName})`
 
   return ComponentWithPageTransition as any
 }

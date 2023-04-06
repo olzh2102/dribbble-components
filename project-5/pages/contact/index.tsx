@@ -4,7 +4,7 @@ import { send } from '@emailjs/browser'
 
 import { ContactFormFields } from 'common/types'
 import Form from '~components/contact-form'
-import withLayout from '~components/layout/with-layout'
+import { withPageTransition } from '~components/layout'
 import { AlertContext } from '~contexts/alert-provider'
 
 const Contact = ({ serviceId, templateId, publicKey }) => {
@@ -27,7 +27,7 @@ const Contact = ({ serviceId, templateId, publicKey }) => {
   return <Form onSubmit={sendForm} />
 }
 
-export default withLayout(Contact)
+export default withPageTransition(Contact)
 
 export async function getStaticProps() {
   return {

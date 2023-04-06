@@ -3,8 +3,7 @@ import React from 'react'
 import Image from 'next/image'
 
 import { imageLoader } from 'common/utils'
-import withLayout from '~components/layout/with-layout'
-import ScrollWrapper from '~components/scroll-wrapper'
+import { ScrollWrapper, withPageTransition } from '~components/layout'
 import useResponsive from '~hooks/use-responsive'
 
 const About = () => {
@@ -47,14 +46,13 @@ const About = () => {
 
       <div className="flex flex-[0_0_100%] text-primary-zinc dark:text-primary-milk">
         <div className="w-full grid place-content-center p-2">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Molestias
-          sit eius perspiciatis sint fugit, delectus maiores accusantium
-          doloremque. Nulla sunt ipsum vero sit enim inventore officiis
-          similique odio, facilis eos.
+          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Molestias sit eius perspiciatis
+          sint fugit, delectus maiores accusantium doloremque. Nulla sunt ipsum vero sit enim
+          inventore officiis similique odio, facilis eos.
         </div>
       </div>
     </ScrollWrapper>
   )
 }
 
-export default withLayout(About)
+export default withPageTransition(About)

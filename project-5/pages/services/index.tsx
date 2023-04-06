@@ -1,7 +1,7 @@
-import withLayout from '~components/layout/with-layout'
+import { withPageTransition } from '~components/layout'
 
 const Services = () => {
   return <div>Services</div>
 }
 
-export default withLayout(Services)
+export default withPageTransition(Services)

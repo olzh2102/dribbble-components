@@ -7,10 +7,9 @@ import { motion } from 'framer-motion'
 
 import { ROUTES } from 'common/constants'
 import LangToggler from '~components/lang-toggler'
+import MenuItem from '~components/navigation/menu-item'
 import ThemeToggler from '~components/theme-toggler'
 import { CursorContext } from '~contexts/cursor-provider'
-
-import MenuItem from './menu-item'
 
 export default function DesktopHeaderContent() {
   const { locale, asPath } = useRouter()
