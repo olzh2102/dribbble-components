@@ -1,30 +1,32 @@
 import { useContext } from 'react'
 
 import { send } from '@emailjs/browser'
+import { ToastContainer, toast } from 'react-toastify'
 
 import { ContactFormFields } from 'common/types'
 import Form from '~components/contact-form'
 import { withPageTransition } from '~components/layout'
-import { AlertContext } from '~contexts/alert-provider'
+import { ThemeContext } from '~contexts/theme-provider'
 
 const Contact = ({ serviceId, templateId, publicKey }) => {
-  const { setAlert } = useContext(AlertContext)
+  const { theme } = useContext(ThemeContext)
 
   async function sendForm(formData: ContactFormFields) {
     try {
-      setAlert({ show: true, severity: 'info', message: 'Sending email' })
+      toast.info('Sending email')
       await send(serviceId, templateId, formData, publicKey)
-      setAlert({ show: true, severity: 'success', message: 'All good' })
+      toast.success('All good')
     } catch (error) {
-      setAlert({
-        show: true,
-        severity: 'error',
-        message: 'Something went wrong',
-      })
+      toast.error('Something went wrong')
     }
   }
 
-  return <Form onSubmit={sendForm} />
+  return (
+    <>
+      <Form onSubmit={sendForm} />
+      <ToastContainer theme={theme} autoClose={3000} />
+    </>
+  )
 }
 
 export default withPageTransition(Contact)
