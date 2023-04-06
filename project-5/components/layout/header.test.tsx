@@ -2,7 +2,7 @@ import { useRouter as mockedUseRouter } from 'next/router'
 
 import { render, screen, within } from 'common/utils/test-utils'
 
-import Header from '.'
+import Header from './header'
 
 describe('Navigation Menu', () => {
   it('"Home" item should be active by default', () => {

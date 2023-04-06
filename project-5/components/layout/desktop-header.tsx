@@ -6,7 +6,7 @@ import clsx from 'clsx'
 import { motion } from 'framer-motion'
 
 import { ROUTES } from 'common/constants'
-import LangToggler from '~components/lang-toggler'
+import LangToggler from '~components/language'
 import MenuItem from '~components/navigation/menu-item'
 import ThemeToggler from '~components/theme-toggler'
 import { CursorContext } from '~contexts/cursor-provider'
