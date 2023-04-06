@@ -3,11 +3,10 @@ import { useContext } from 'react'
 import { useRouter } from 'next/router'
 
 import lang from 'common/lang.json'
-import { Page } from 'common/types'
-import withLayout from '~components/layout/with-layout'
+import { withPageTransition } from '~components/layout'
 import { CursorContext } from '~contexts/cursor-provider'
 
-const Custom404: Page = withLayout(() => {
+const Custom404 = () => {
   const router = useRouter()
   const t = lang[router.locale]
 
@@ -31,6 +30,6 @@ const Custom404: Page = withLayout(() => {
       <div className="absolute bottom-0 right-2 text-9xl font-bold opacity-20">404</div>
     </>
   )
-})
+}
 
-export default Custom404
+export default withPageTransition(Custom404)
