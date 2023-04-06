@@ -31,8 +31,8 @@ export default function Textarea({
           name="details"
           value={value}
           onChange={onChange}
-          onMouseOver={(e) => onMouseOver(e, 'textarea')}
-          onMouseOut={(e) => onMouseOut(e, 'textarea')}
+          onMouseOver={onMouseOver('textarea')}
+          onMouseOut={onMouseOut}
         />
       </label>
 

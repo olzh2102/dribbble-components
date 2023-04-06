@@ -21,16 +21,14 @@ const Custom404: Page = withLayout(() => {
         <div className="mb-2">{t['404']['notHere']} :(</div>
         <div
           className="hover:underline underline-offset-8"
-          onMouseOver={(e) => onMouseOver(e, 'span')}
-          onMouseOut={(e) => onMouseOut(e, 'span')}
+          onMouseOver={onMouseOver('span')}
+          onMouseOut={onMouseOut}
           onClick={() => router.push('/')}
         >
           <span>{t['404']['goBack']}</span>
         </div>
       </div>
-      <div className="absolute bottom-0 right-2 text-9xl font-bold opacity-20">
-        404
-      </div>
+      <div className="absolute bottom-0 right-2 text-9xl font-bold opacity-20">404</div>
     </>
   )
 })
