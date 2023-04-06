@@ -20,8 +20,8 @@ const validation = {
   name: (value: string) => {
     if (value.length === 0) return 'Name is required'
     if (NUM_REGEX.test(value)) return 'Name can only contain letters'
-    if (value.length < 2) return 'Too short'
-    if (value.length > 40) return 'Too long'
+    if (value.length < NAME_MIN_LENGTH) return 'Too short'
+    if (value.length > NAME_MAX_LENGTH) return 'Too long'
 
     return ''
   },
@@ -45,6 +45,7 @@ const validation = {
 
 export default function useForm() {
   const [formState, setFormState] = useState(DEFAULT_VALUES)
+  const [isDisabled, setIsDisabled] = useState(false)
 
   const [errors, setErrors] = useState({
     name: null,
@@ -61,27 +62,25 @@ export default function useForm() {
     setFormState((prev) => ({ ...prev, [name]: value }))
   }
 
-  function setValue(
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) {
+  function setValue(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { value, name } = event.target
 
     validateForm(value, name as Name)
     setForm(value, name as Name)
   }
 
-  function handleSubmit(onSubmit: (data: ContactFormFields) => void) {
-    return (event: FormEvent<HTMLFormElement>) => {
+  function handleSubmit(onSubmit: (data: ContactFormFields) => Promise<void>) {
+    return async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault()
 
-      Object.entries(formState).forEach(([name, value]) =>
-        validateForm(value, name as Name)
-      )
+      Object.entries(formState).forEach(([name, value]) => validateForm(value, name as Name))
 
       if (Object.values(errors).some((error) => error === null)) return
 
       if (Object.values(errors).every((error) => !error)) {
-        onSubmit(formState)
+        setIsDisabled(true)
+        await onSubmit(formState)
+        setIsDisabled(false)
         Object.keys(formState).forEach((name) => setForm('', name as Name))
       }
     }
@@ -92,5 +91,6 @@ export default function useForm() {
     errors,
     setValue,
     handleSubmit,
+    isDisabled,
   }
 }
