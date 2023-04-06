@@ -28,8 +28,8 @@ export default function Input({
           name={name}
           value={value}
           onChange={onChange}
-          onMouseOver={(e) => onMouseOver(e, 'input')}
-          onMouseOut={(e) => onMouseOut(e, 'input')}
+          onMouseOver={onMouseOver('input')}
+          onMouseOut={onMouseOut}
         />
       </label>
       <motion.span

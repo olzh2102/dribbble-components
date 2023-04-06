@@ -1,30 +1,22 @@
-import {
-  createContext,
-  ReactNode,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import { createContext, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { motion } from 'framer-motion'
 
 import { HTMLElementSelector } from 'common/types'
 
 export const CursorContext = createContext<{
-  onMouseOver: <T>(
-    e: React.MouseEvent<T, MouseEvent>,
-    selector: HTMLElementSelector,
-    tooltip?: { message: ReactNode; className?: string }
-  ) => void
-  onMouseOut: <T>(
-    e: React.MouseEvent<T, MouseEvent>,
-    selector: HTMLElementSelector
-  ) => void
+  onMouseOver: (
+    ...args: (
+      | HTMLElementSelector
+      | {
+          tooltip: { message: ReactNode; className?: string }
+        }
+    )[]
+  ) => <T>(e: React.MouseEvent<T, MouseEvent>) => void
+  onMouseOut: () => void
 }>({
-  onMouseOver: () => null,
-  onMouseOut: () => null,
+  onMouseOver: () => () => undefined,
+  onMouseOut: () => undefined,
 })
 
 export default function CursorProvider({ children }: { children: ReactNode }) {
@@ -39,35 +31,33 @@ export default function CursorProvider({ children }: { children: ReactNode }) {
   const [message, setMessage] = useState<ReactNode | null>(null)
 
   const onMouseOver = useCallback(
-    <TElement,>(
-      e: React.MouseEvent<TElement, MouseEvent>,
-      selector: HTMLElementSelector,
-      tooltip?: { message: ReactNode; className?: string }
+    (
+      ...args: (
+        | HTMLElementSelector
+        | {
+            tooltip: { message: ReactNode; className?: string }
+          }
+      )[]
     ) => {
-      const target = (e.target as HTMLElement).closest(selector)
-      if (!target) return
+      return <TElement,>(e: React.MouseEvent<TElement, MouseEvent>) =>
+        args.forEach((arg) => {
+          if (typeof arg !== 'string') {
+            if ('tooltip' in arg) setMessage(arg.tooltip.message)
+          } else {
+            const target = (e.target as HTMLElement).closest(arg)
+            if (!target) return
 
-      setActionHover(true)
-      if (tooltip) {
-        setMessage(tooltip?.message)
-      }
+            setActionHover(true)
+          }
+        })
     },
     []
   )
 
-  const onMouseOut = useCallback(
-    <TElement,>(
-      e: React.MouseEvent<TElement, MouseEvent>,
-      selector: HTMLElementSelector
-    ) => {
-      const target = (e.target as HTMLElement).closest(selector)
-      if (!target) return
-
-      setActionHover(false)
-      setMessage(null)
-    },
-    []
-  )
+  const onMouseOut = useCallback(() => {
+    setActionHover(false)
+    setMessage(null)
+  }, [])
 
   useEffect(() => {
     if (ref.current)
@@ -79,10 +69,7 @@ export default function CursorProvider({ children }: { children: ReactNode }) {
 
   return (
     <CursorContext.Provider
-      value={useMemo(
-        () => ({ onMouseOver, onMouseOut }),
-        [onMouseOver, onMouseOut]
-      )}
+      value={useMemo(() => ({ onMouseOver, onMouseOut }), [onMouseOver, onMouseOut])}
     >
       <div
         ref={ref}
