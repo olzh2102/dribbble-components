@@ -18,4 +18,5 @@ runs:
         start: yarn start
         wait-on-timeout: 300
         config: defaultCommandTimeout=100000,pageLoadTimeout=100000,watchForFileChanges=false,video=false
+        parallel: true
 

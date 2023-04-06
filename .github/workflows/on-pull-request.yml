@@ -30,6 +30,10 @@ jobs:
   integration-test:
     name: 🧩 Integration Tests
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        containers: [🐼, 🐨, 🦦]
     steps:
       - name: ⬇️ Checkout the branch
         uses: actions/checkout@v3
