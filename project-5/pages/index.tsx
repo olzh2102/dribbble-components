@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import { LOGO_SUBTITLE } from 'common/constants'
 import { withPageTransition } from '~components/layout'
 
-const Home = () => (
+const Home = withPageTransition(() => (
   <motion.div
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
@@ -29,8 +29,8 @@ const Home = () => (
       </div>
     </div>
   </motion.div>
-)
+))
 
-export default withPageTransition(Home)
+export default Home
 
 Home.waveBackground = true
