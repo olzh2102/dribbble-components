@@ -16,7 +16,7 @@ runs:
       uses: actions/cache@v3
       with:
         path: |
-          ${{inputs.workdir}}/node_modules
+          **/${{inputs.workdir}}/node_modules
           ~/.cache/Cypress
         key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
