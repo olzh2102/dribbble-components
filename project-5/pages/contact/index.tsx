@@ -12,13 +12,13 @@ const Contact = ({ serviceId, templateId, publicKey }) => {
   const { theme } = useContext(ThemeContext)
 
   async function sendForm(formData: ContactFormFields) {
-    try {
-      toast.info('Sending email')
-      await send(serviceId, templateId, formData, publicKey)
-      toast.success('All good')
-    } catch (error) {
-      toast.error('Something went wrong')
-    }
+    const submission = send(serviceId, templateId, formData, publicKey)
+
+    await toast.promise(submission, {
+      pending: 'Sending an email',
+      success: 'Email was send successfully',
+      error: 'Something went wrong',
+    })
   }
 
   return (
