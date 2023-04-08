@@ -10,12 +10,9 @@ import Textarea from './textarea'
 export default function ContactForm({
   onSubmit,
 }: {
-  onSubmit: (
-    data: ContactFormFields,
-    event?: FormEvent<HTMLFormElement>
-  ) => void
+  onSubmit: (data: ContactFormFields, event?: FormEvent<HTMLFormElement>) => Promise<void>
 }) {
-  const { formState, errors, setValue, handleSubmit } = useForm()
+  const { formState, errors, setValue, handleSubmit, isDisabled } = useForm()
 
   return (
     <form className="h-full flex" onSubmit={handleSubmit(onSubmit)}>
@@ -53,11 +50,7 @@ export default function ContactForm({
           />
         </div>
 
-        <Textarea
-          value={formState.details}
-          onChange={setValue}
-          errorMessage={errors.details}
-        />
+        <Textarea value={formState.details} onChange={setValue} errorMessage={errors.details} />
 
         <button
           type="submit"
@@ -67,12 +60,16 @@ export default function ContactForm({
             rounded-md
             py-2 px-6 
             border border-primary-850 
-            dark:hover:bg-primary-850 
-            hover:bg-primary-950
+            dark:enabled:hover:bg-primary-850 
+            dark:disabled:hover:bg-primary-850/50
+            enabled:hover:bg-primary-950
+            disabled:hover:bg-primary-950/50
             uppercase text-lg 
             dark:hover:text-secondary-100
             hover:text-primary-850
+            disabled:cursor-none
           `}
+          disabled={isDisabled}
         >
           Send
         </button>
