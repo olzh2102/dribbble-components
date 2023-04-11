@@ -19,10 +19,15 @@ jobs:
       - name: ⬇️ Checkout the branch
         uses: actions/checkout@v3
 
-      - name: 🛠 Install dependencies
-        uses: ./.github/actions/install-dependencies
+      - name: Download deps
+        uses: bahmutov/npm-install@v1
         with:
-          workdir: project-5
+          useLockFile: false
+
+      # - name: 🛠 Install dependencies
+      #   uses: ./.github/actions/install-dependencies
+      #   with:
+      #     workdir: project-5
 
       - name: 🚦 Run Tests
         run: yarn test
