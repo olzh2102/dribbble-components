@@ -23,6 +23,7 @@ jobs:
         uses: bahmutov/npm-install@v1
         with:
           useLockFile: false
+          working-directory: project-5
 
       # - name: 🛠 Install dependencies
       #   uses: ./.github/actions/install-dependencies
