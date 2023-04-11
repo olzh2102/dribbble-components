@@ -25,11 +25,6 @@ jobs:
           useLockFile: false
           working-directory: project-5
 
-      # - name: 🛠 Install dependencies
-      #   uses: ./.github/actions/install-dependencies
-      #   with:
-      #     workdir: project-5
-
       - name: 🚦 Run Tests
         run: yarn test
 
@@ -40,10 +35,11 @@ jobs:
       - name: ⬇️ Checkout the branch
         uses: actions/checkout@v3
 
-      - name: 🛠 Install dependencies
-        uses: ./.github/actions/install-dependencies
+      - name: Download deps
+        uses: bahmutov/npm-install@v1
         with:
-          workdir: project-5
+          useLockFile: false
+          working-directory: project-5
 
       - name: 🇨🇾 Cypress run
         uses: ./.github/actions/cypress-run
@@ -63,10 +59,11 @@ jobs:
       - name: ⬇️ Checkout the branch
         uses: actions/checkout@v3
 
-      - name: 🛠 Install dependencies
-        uses: ./.github/actions/install-dependencies
+      - name: Download deps
+        uses: bahmutov/npm-install@v1
         with:
-          workdir: project-5
+          useLockFile: false
+          working-directory: project-5
 
       - name: 🔬 Type checking
         run: yarn typecheck
@@ -83,10 +80,11 @@ jobs:
       - name: ⬇️ Checkout the branch
         uses: actions/checkout@v3
 
-      - name: 🛠 Install dependencies
-        uses: ./.github/actions/install-dependencies
+      - name: Download deps
+        uses: bahmutov/npm-install@v1
         with:
-          workdir: project-5
+          useLockFile: false
+          working-directory: project-5
 
       - name: 💀 Deadcode checking
         run: |
