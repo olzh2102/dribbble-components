@@ -12,7 +12,7 @@ import ThemeToggler from '~components/theme-toggler'
 import { CursorContext } from '~contexts/cursor-provider'
 
 export default function DesktopHeaderContent() {
-  const { locale, asPath } = useRouter()
+  const { asPath } = useRouter()
   const { onMouseOver, onMouseOut } = useContext(CursorContext)
 
   const isHome = asPath === '/'
@@ -21,13 +21,15 @@ export default function DesktopHeaderContent() {
     'flex flex-col justify-between pointer-events-auto p-5 pl-7 rounded-r-md font-medium',
     {
       'text-primary-zinc/40 dark:text-primary-milk/40': isHome,
-      'bg-primary-zinc dark:bg-primary-milk text-primary-milk dark:text-primary-zinc': !isHome,
+      'bg-primary-zinc dark:bg-primary-milk text-primary-milk dark:text-primary-zinc':
+        !isHome,
     }
   )
 
   const RHS = clsx('pointer-events-auto p-5 pr-7 rounded-l-md', {
     'text-primary-zinc dark:text-primary-milk': isHome,
-    'bg-primary-zinc dark:bg-primary-milk text-primary-milk dark:text-primary-zinc': !isHome,
+    'bg-primary-zinc dark:bg-primary-milk text-primary-milk dark:text-primary-zinc':
+      !isHome,
   })
 
   return (
@@ -45,7 +47,7 @@ export default function DesktopHeaderContent() {
           data-test-id="language-toggler-wrapper"
           className="flex flex-col gap-1 pointer-events-auto"
         >
-          <LangToggler currentLang={locale} />
+          <LangToggler />
         </div>
         <div data-test-id="theme-toggler-wrapper" className="relative w-6 h-6">
           <ThemeToggler
