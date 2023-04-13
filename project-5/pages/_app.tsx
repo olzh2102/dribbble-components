@@ -15,7 +15,7 @@ import { Page } from 'common/types'
 import { Header, RoundedCorner } from '~components/layout'
 import Preloader from '~components/preloader'
 import Wave from '~components/wave'
-import ThemeLangCursorProvider from '~contexts/index'
+import ThemeCursorProvider from '~contexts/index'
 
 import '../styles/globals.css'
 
@@ -46,7 +46,7 @@ export default function App({
         }
       `}</style>
 
-      <ThemeLangCursorProvider>
+      <ThemeCursorProvider>
         {loading && <Preloader duration={3000} setLoading={setLoading} />}
 
         <RoundedCorner waveBackground={!!Component.waveBackground}>
@@ -64,7 +64,7 @@ export default function App({
             <Component {...pageProps} key={router.asPath} />
           </AnimatePresence>
         </RoundedCorner>
-      </ThemeLangCursorProvider>
+      </ThemeCursorProvider>
     </>
   )
 }
