@@ -30,7 +30,6 @@ export default function DesktopHeaderContent() {
   return (
     <div className="absolute top-1/2 -translate-y-1/2 z-10 flex justify-between w-full h-48 uppercase pointer-events-none">
       <motion.div
-        role="left-side-header"
         className="pr-4 pointer-events-auto"
         transition={{ type: 'just' }}
         whileHover={!isHome ? { translateX: '-20%' } : {}}
@@ -38,7 +37,7 @@ export default function DesktopHeaderContent() {
         onMouseOver={onMouseOver('label', 'button')}
         onMouseOut={onMouseOut}
       >
-        <div className={LHS}>
+        <div className={LHS} role="left-side-header">
           <div
             data-test-id="language-toggler-wrapper"
             className="flex flex-col gap-1 pointer-events-auto"
@@ -57,7 +56,6 @@ export default function DesktopHeaderContent() {
       </motion.div>
 
       <motion.div
-        role="right-side-header"
         className="pl-4 pointer-events-auto"
         transition={{ type: 'just' }}
         whileHover={!isHome ? { translateX: '5%' } : {}}
@@ -65,7 +63,7 @@ export default function DesktopHeaderContent() {
         onMouseOver={onMouseOver('a')}
         onMouseOut={onMouseOut}
       >
-        <nav className={RHS}>
+        <nav className={RHS} role="right-side-header">
           <ul
             data-test-id="ul-nav-list"
             className="flex flex-col h-full justify-between whitespace-nowrap text-xl font-medium"
