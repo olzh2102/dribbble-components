@@ -5,5 +5,7 @@ jest.mock('next/router', () => ({
   useRouter: jest.fn(() => ({
     route: '/',
     locale: 'en',
+    locales: ['en', 'de', 'ru'],
+    push: jest.fn()
   })),
 }))

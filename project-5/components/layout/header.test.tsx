@@ -20,6 +20,7 @@ describe('Navigation Menu', () => {
   it('should switch active menu item', () => {
     ;(mockedUseRouter as any).mockImplementation(() => ({
       route: '/projects',
+      locales: ['en', 'de', 'ru'],
       locale: 'en',
     }))
 
