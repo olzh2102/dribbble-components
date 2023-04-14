@@ -13,7 +13,7 @@ import ThemeToggler from '~components/theme-toggler'
 import { CursorContext } from '~contexts/cursor-provider'
 
 export default function MobileHeaderContent() {
-  const { asPath, locale } = useRouter()
+  const { asPath } = useRouter()
   const { onMouseOver, onMouseOut } = useContext(CursorContext)
 
   const [isOpen, toggleOpen] = useState(false)
@@ -49,7 +49,7 @@ export default function MobileHeaderContent() {
             onMouseOver={onMouseOver('label')}
             onMouseOut={onMouseOut}
           >
-            <LangToggler currentLang={locale} mobile />
+            <LangToggler mobile />
           </div>
           <div className="w-6 h-6">
             <ThemeToggler textColor="text-primary-zinc dark:text-primary-milk" />

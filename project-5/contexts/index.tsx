@@ -1,13 +1,10 @@
 import CursorProvider from './cursor-provider'
-import LangProvider from './lang-provider'
 import ThemeProvider from './theme-provider'
 
-export default function ThemeLangCursorProvider({ children }) {
+export default function ThemeCursorProvider({ children }) {
   return (
-    <LangProvider>
-      <ThemeProvider>
-        <CursorProvider>{children}</CursorProvider>
-      </ThemeProvider>
-    </LangProvider>
+    <ThemeProvider>
+      <CursorProvider>{children}</CursorProvider>
+    </ThemeProvider>
   )
 }

@@ -1,4 +1,4 @@
-import { useRouter as mockedUseRouter } from 'next/router'
+import * as NextRouter from 'next/router'
 
 import user from '@testing-library/user-event'
 
@@ -6,33 +6,33 @@ import { render, screen } from 'common/utils/test-utils'
 
 import LangToggler from '.'
 
-describe('Language Toggler Component', () => {
-  it('"english" language should be checked by default', () => {
-    render(<LangToggler currentLang="en" />)
-    expect(screen.getByRole('radio-en')).toBeChecked()
-    expect(screen.getByRole('radio-de')).not.toBeChecked()
-    expect(screen.getByRole('radio-ru')).not.toBeChecked()
-  })
+it('English language should be selected as default language', () => {
+  render(<LangToggler />)
 
-  it('"german" should be checked once selected', async () => {
-    const push = jest.fn()
-    ;(mockedUseRouter as jest.Mock).mockImplementation(() => ({
-      push,
-      route: '/de',
-    }))
-    const { rerender } = render(<LangToggler currentLang="en" />)
+  const eng = screen.getByRole('radio', { name: /en/i })
+  const de = screen.getByRole('radio', { name: /de/i })
+  const ru = screen.getByRole('radio', { name: /ru/i })
 
-    screen.getByRole('radio-de')
+  expect(eng).toBeChecked()
+  expect(de).not.toBeChecked()
+  expect(ru).not.toBeChecked()
+})
 
-    await user.click(screen.getByLabelText('de'))
-    expect(push).toHaveBeenCalledWith('/de', undefined, {
-      locale: 'de',
-    })
+it('router locale gets pushed once German language is clicked', async () => {
+  const mockPush = jest.fn()
 
-    rerender(<LangToggler currentLang="de" />)
+  jest.spyOn(NextRouter, 'useRouter').mockReturnValue({
+    locales: ['en', 'de', 'ru'],
+    locale: 'en',
+    route: '/',
+    push: mockPush,
+  } as any)
+  render(<LangToggler />)
+  const de = screen.getByRole('radio', { name: /de/i })
 
-    expect(screen.getByRole('radio-de')).toBeChecked()
-    expect(screen.getByRole('radio-en')).not.toBeChecked()
-    expect(screen.getByRole('radio-ru')).not.toBeChecked()
+  await user.click(de)
+
+  expect(mockPush).toHaveBeenCalledWith('/', undefined, {
+    locale: 'de',
   })
 })

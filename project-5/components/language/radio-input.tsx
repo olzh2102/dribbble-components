@@ -15,16 +15,15 @@ const labelConfig = {
 
 export default function Language({
   lang,
-  currentLang,
   onSelect,
   mobile = false,
 }: {
   lang: Lang
-  currentLang: Lang
   onSelect: (e: Lang) => void
   mobile?: boolean
 }) {
-  const isHomePage = useRouter().asPath == '/'
+  const { locale, asPath } = useRouter()
+  const isHomePage = asPath == '/'
 
   return (
     <>
@@ -33,14 +32,17 @@ export default function Language({
         type="radio"
         name="lang"
         id={lang}
-        role={`radio-${lang}`}
         value={lang}
-        checked={currentLang == lang}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => onSelect(e.target.value as Lang)}
+        checked={locale == lang}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          onSelect(e.target.value as Lang)
+        }
       />
       <label
         htmlFor={lang}
-        className={isHomePage || mobile ? labelConfig['home'][lang] : labelConfig[lang]}
+        className={
+          isHomePage || mobile ? labelConfig['home'][lang] : labelConfig[lang]
+        }
       >
         {lang}
       </label>
