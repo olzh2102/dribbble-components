@@ -5,6 +5,8 @@ import { useRouter } from 'next/router'
 import { imageLoader } from 'common/utils'
 import { ScrollWrapper, withPageTransition } from '~components/layout'
 
+import { PROJECTS } from '.'
+
 const Project = () => {
   const project = useRouter().query.project as string
 
@@ -13,7 +15,7 @@ const Project = () => {
       <PageOne project={project} />
       <PageTwo />
       <PageThree project={project} />
-      <PageFour />
+      <PageFour restProjects={PROJECTS.filter((p) => p !== project)} />
     </ScrollWrapper>
   )
 }
@@ -116,7 +118,7 @@ function PageThree({ project }: { project: string }) {
   )
 }
 
-function PageFour() {
+function PageFour({ restProjects }: { restProjects: string[] }) {
   return (
     <div className="flex justify-between flex-[0_0_100%] text-primary-zinc dark:text-primary-milk">
       <Image
@@ -128,48 +130,22 @@ function PageFour() {
         className="md:w-6/12 md:rounded-r rounded-t md:rounded-tl-none object-cover object-left"
       />
       <div className="my-auto flex flex-col gap-2 mr-2 font-medium">
-        <Link href="#" className="flex items-center gap-2">
-          <div className="text-right">
-            <h3>Project-1</h3>
-            <span>Some description</span>
-          </div>
-          <Image
-            loader={imageLoader}
-            src={`project-1.jpg`}
-            width="150"
-            height="100"
-            alt="Profile picture"
-            className="rounded grayscale hover:grayscale-0"
-          />
-        </Link>
-        <Link href="" className="flex items-center gap-2">
-          <div className="text-right">
-            <h3>Project-1</h3>
-            <span>Some description</span>
-          </div>
-          <Image
-            loader={imageLoader}
-            src={`project-2.jpg`}
-            width="150"
-            height="100"
-            alt="Profile picture"
-            className="rounded grayscale hover:grayscale-0"
-          />
-        </Link>
-        <Link href="" className="flex items-center gap-2">
-          <div className="text-right">
-            <h3>Project-1</h3>
-            <span>Some description</span>
-          </div>
-          <Image
-            loader={imageLoader}
-            src={`project-3.jpg`}
-            width="150"
-            height="100"
-            alt="Profile picture"
-            className="rounded grayscale hover:grayscale-0"
-          />
-        </Link>
+        {restProjects.map((project) => (
+          <Link href={project} key={project} className="flex items-center gap-2">
+            <div className="text-right">
+              <h3 className="capitalized">{project}</h3>
+              <span>Some description</span>
+            </div>
+            <Image
+              loader={imageLoader}
+              src={`${project}.jpg`}
+              width="150"
+              height="100"
+              alt="Profile picture"
+              className="rounded grayscale hover:grayscale-0"
+            />
+          </Link>
+        ))}
       </div>
     </div>
   )

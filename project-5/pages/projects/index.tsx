@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { imageLoader } from 'common/utils'
 import { withPageTransition } from '~components/layout'
 
-const PROJECTS = ['project-1', 'project-2', 'project-3', 'project-4']
+export const PROJECTS = ['project-1', 'project-2', 'project-3', 'project-4']
 
 const Projects = () => {
   return (
