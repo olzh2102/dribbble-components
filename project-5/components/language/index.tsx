@@ -1,19 +1,23 @@
-import { useRouter } from 'next/router'
+import clsx from 'clsx'
+import Link from 'next/link'
+import { Locale, useRouter } from 'next/router'
 
-import Language from './radio-input'
+export default function Languages({ mobile = false }: { mobile?: boolean }) {
+  const { locales, locale, asPath } = useRouter()
 
-export default function LangToggler({ mobile = false }: { mobile?: boolean }) {
-  const { locales, push, route } = useRouter()
+  const styles = (lang: Locale) =>
+    clsx({
+      'text-primary-zinc dark:text-primary-milk': locale == lang,
+      'text-primary-milk/40 dark:text-primary-zinc/40':
+        locale == lang && asPath !== '/',
+    })
 
   return (
     <>
       {locales.map((lang) => (
-        <Language
-          key={lang}
-          lang={lang}
-          mobile={mobile}
-          onSelect={(lang) => push(route, undefined, { locale: lang })}
-        />
+        <Link className={styles(lang)} href={asPath} locale={lang}>
+          {lang}
+        </Link>
       ))}
     </>
   )
