@@ -22,6 +22,7 @@ describe('Navigation Menu', () => {
       route: '/projects',
       locales: ['en', 'de', 'ru'],
       locale: 'en',
+      asPath: '/',
     }))
 
     render(<Header />)

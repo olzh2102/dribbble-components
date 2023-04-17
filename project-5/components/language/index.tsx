@@ -15,7 +15,7 @@ export default function Languages({ mobile = false }: { mobile?: boolean }) {
   return (
     <>
       {locales.map((lang) => (
-        <Link className={styles(lang)} href={asPath} locale={lang}>
+        <Link key={lang} className={styles(lang)} href={asPath} locale={lang}>
           {lang}
         </Link>
       ))}
