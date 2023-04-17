@@ -17,10 +17,14 @@ export default function DesktopHeaderContent() {
 
   const isHome = asPath === '/'
 
-  const LHS = clsx('flex flex-col justify-between p-5 pl-7 h-full rounded-r-md font-medium', {
-    'text-primary-zinc/40 dark:text-primary-milk/40': isHome,
-    'bg-primary-zinc dark:bg-primary-milk text-primary-milk dark:text-primary-zinc': !isHome,
-  })
+  const LHS = clsx(
+    'flex flex-col justify-between p-5 pl-7 h-full rounded-r-md font-medium',
+    {
+      'text-primary-zinc/40 dark:text-primary-milk/40': isHome,
+      'bg-primary-zinc dark:bg-primary-milk text-primary-milk dark:text-primary-zinc':
+        !isHome,
+    }
+  )
 
   const RHS = clsx('p-5 pr-7 h-full rounded-l-md', {
     'text-primary-zinc dark:text-primary-milk': isHome,
@@ -38,7 +42,6 @@ export default function DesktopHeaderContent() {
         onMouseOver={onMouseOver('label', 'button')}
         onMouseOut={onMouseOut}
       >
-
         <div className={LHS} role="left-side-header">
           <div
             data-test-id="language-toggler-wrapper"
@@ -46,7 +49,10 @@ export default function DesktopHeaderContent() {
           >
             <LangToggler />
           </div>
-          <div data-test-id="theme-toggler-wrapper" className="relative w-6 h-6">
+          <div
+            data-test-id="theme-toggler-wrapper"
+            className="relative w-6 h-6"
+          >
             <ThemeToggler
               textColor={clsx({
                 'text-primary-zinc dark:text-primary-milk': isHome,

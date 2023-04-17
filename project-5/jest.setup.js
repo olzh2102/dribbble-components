@@ -6,6 +6,7 @@ jest.mock('next/router', () => ({
     route: '/',
     locale: 'en',
     locales: ['en', 'de', 'ru'],
-    push: jest.fn()
+    push: jest.fn(),
+    asPath: '/'
   })),
 }))

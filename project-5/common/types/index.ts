@@ -1,10 +1,9 @@
 import { NextPage } from 'next'
 
-import { LANGS, ROUTES, SERVICE_TYPES } from 'common/constants'
-
-export type Lang = typeof LANGS[number]
+import { ROUTES, SERVICE_TYPES } from 'common/constants'
 
 export type Theme = 'light' | 'dark'
+
 export type Page = NextPage & { waveBackground?: boolean }
 
 export type RoutePath = typeof ROUTES[number]
