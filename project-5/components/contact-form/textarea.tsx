@@ -20,14 +20,6 @@ export default function Textarea({
       <label className="flex flex-col uppercase">
         Project details
         <textarea
-          className={`
-            rounded 
-            p-2 h-28 
-            border dark:border-primary-850 
-            resize-none focus:outline-none 
-            dark:bg-secondary-100 
-            cursor-none
-          `}
           name="details"
           value={value}
           onChange={onChange}

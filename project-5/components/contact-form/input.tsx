@@ -23,7 +23,6 @@ export default function Input({
       <label className="flex flex-col uppercase">
         {name}
         <input
-          className="rounded p-2 h-12 border focus:outline-none dark:bg-secondary-100 cursor-none"
           type="text"
           name={name}
           value={value}
