@@ -22,14 +22,6 @@ const nextConfig = {
     locales: ['en', 'de', 'ru'],
     defaultLocale: 'en',
   },
-  experimental: {
-    fontLoaders: [
-      {
-        loader: '@next/font/google',
-        options: { subsets: ['latin', 'latin-ext'] },
-      },
-    ],
-  },
   eslint: {
     ignoreDuringBuilds: true,
   },

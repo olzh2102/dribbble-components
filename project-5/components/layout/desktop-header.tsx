@@ -74,7 +74,7 @@ export default function DesktopHeaderContent() {
         <nav className={RHS} role="right-side-header">
           <ul
             data-test-id="ul-nav-list"
-            className="flex flex-col h-full justify-between whitespace-nowrap text-xl font-medium"
+            className="flex flex-col h-full it justify-between whitespace-nowrap text-xl font-medium"
           >
             {ROUTES.map((route) => (
               <MenuItem key={route} route={route} />

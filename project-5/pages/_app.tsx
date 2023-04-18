@@ -19,9 +19,9 @@ import ThemeCursorProvider from '~contexts/index'
 
 import '../styles/globals.css'
 
-const latinFont = Work_Sans()
+const latinFont = Work_Sans({ subsets: ['latin', 'latin-ext'] })
 const cyrillicFont = localFont({
-  src: '../public/fonts/WorkSans/WorkSans-Black.woff',
+  src: '../public/fonts/WorkSans/WorkSans-Black.woff2',
 })
 
 export default function App({
