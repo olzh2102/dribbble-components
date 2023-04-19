@@ -5,15 +5,6 @@ import { motion } from 'framer-motion'
 import { SERVICE_TYPES } from 'common/constants'
 import { ServiceType } from 'common/types'
 
-const labelConfig = {
-  design: 'peer-checked/design:text-primary-950 peer-checked/design:border-primary-950',
-  branding: 'peer-checked/branding:text-primary-950 peer-checked/branding:border-primary-950',
-  consulting: 'peer-checked/consulting:text-primary-950 peer-checked/consulting:border-primary-950',
-}
-
-const labelCommonClassName =
-  'w-40 h-52 rounded-md border border-primary-850 grid place-content-center border-2'
-
 export default function ServiceSelector({
   selectedValue,
   onSelect,
@@ -37,19 +28,7 @@ export default function ServiceSelector({
               checked={selectedValue === service}
               onChange={onSelect}
             />
-            <label className={`${labelConfig[service]} ${labelCommonClassName}`} htmlFor={service}>
-              <span
-                className={`
-              relative
-              mx-auto mb-6 
-              w-20 h-20 
-              rounded-full 
-              bg-primary-850 
-              text-6xl text-primary-950 
-              `}
-              >
-                <span className="absolute -top-4 -left-0.5">{i + 1}</span>
-              </span>
+            <label htmlFor={service}>
               <span className="text-center">{service}</span>
             </label>
           </div>
