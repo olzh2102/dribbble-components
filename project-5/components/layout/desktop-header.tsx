@@ -17,19 +17,14 @@ export default function DesktopHeaderContent() {
 
   const isHome = asPath === '/'
 
-  const LHS = clsx(
-    'flex flex-col justify-between p-5 pl-7 h-full rounded-r-md font-medium',
-    {
-      'text-primary-zinc/40 dark:text-primary-milk/40': isHome,
-      'bg-primary-zinc dark:bg-primary-milk text-primary-milk dark:text-primary-zinc':
-        !isHome,
-    }
-  )
+  const LHS = clsx('flex flex-col justify-between p-5 pl-7 h-full rounded-r-md font-medium', {
+    'text-primary-zinc/40 dark:text-primary-milk/40': isHome,
+    'bg-primary-zinc dark:bg-primary-milk text-primary-milk dark:text-primary-zinc': !isHome,
+  })
 
   const RHS = clsx('p-5 pr-7 h-full rounded-l-md', {
     'text-primary-zinc dark:text-primary-milk': isHome,
-    'bg-primary-zinc dark:bg-primary-milk text-primary-milk dark:text-primary-zinc':
-      !isHome,
+    'bg-primary-zinc dark:bg-primary-milk text-primary-milk dark:text-primary-zinc': !isHome,
   })
 
   return (
@@ -38,7 +33,7 @@ export default function DesktopHeaderContent() {
         className="pr-4 pointer-events-auto"
         transition={{ type: 'just' }}
         whileHover={!isHome ? { translateX: '-20%' } : {}}
-        animate={!isHome ? { translateX: '-80%' } : { translateX: 0 }}
+        animate={!isHome ? { translateX: '-71%' } : { translateX: 0 }}
         onMouseOver={onMouseOver('label', 'button')}
         onMouseOut={onMouseOut}
       >
@@ -49,10 +44,7 @@ export default function DesktopHeaderContent() {
           >
             <LangToggler />
           </div>
-          <div
-            data-test-id="theme-toggler-wrapper"
-            className="relative w-6 h-6"
-          >
+          <div data-test-id="theme-toggler-wrapper" className="relative w-6 h-6">
             <ThemeToggler
               textColor={clsx({
                 'text-primary-zinc dark:text-primary-milk': isHome,
@@ -67,7 +59,7 @@ export default function DesktopHeaderContent() {
         className="pl-4 pointer-events-auto"
         transition={{ type: 'just' }}
         whileHover={!isHome ? { translateX: '5%' } : {}}
-        animate={!isHome ? { translateX: '90%' } : { translateX: 0 }}
+        animate={!isHome ? { translateX: '85%' } : { translateX: 0 }}
         onMouseOver={onMouseOver('a')}
         onMouseOut={onMouseOut}
       >

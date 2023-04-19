@@ -13,11 +13,7 @@ const About = () => {
     <ScrollWrapper direction={isMobile ? 'vertical' : 'horizontal'}>
       <div
         data-test-id="hs-item"
-        className={`
-          flex flex-[0_0_100%] flex-col 
-          md:flex-row 
-          text-primary-zinc dark:text-primary-milk
-        `}
+        className="flex flex-[0_0_100%] flex-col md:flex-row text-primary-zinc dark:text-primary-milk"
       >
         <Image
           loader={imageLoader}
@@ -25,11 +21,7 @@ const About = () => {
           width="1000"
           height="2000"
           alt="Profile picture"
-          className={`
-            md:w-1/3 grayscale 
-            md:rounded-l rounded-t-md md:rounded-t-none 
-            object-cover object-left
-          `}
+          className="md:w-1/3 grayscale object-cover object-left"
         />
         {isMobile ? (
           <div className="md:w-2/3 text-3xl p-2 uppercase font-medium">

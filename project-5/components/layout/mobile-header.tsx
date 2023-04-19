@@ -30,7 +30,7 @@ export default function MobileHeaderContent() {
       <motion.div
         data-test-id="header"
         variants={MOBILE_HEADER_VARIANTS}
-        className="relative h-full grid place-content-center rounded-md bg-primary-milk dark:bg-primary-zinc"
+        className="relative h-full grid place-content-center bg-primary-milk dark:bg-primary-zinc"
       >
         <nav className="pointer-events-auto">
           <ul

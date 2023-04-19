@@ -49,16 +49,16 @@ export default function App({
       <ThemeCursorProvider>
         {loading && <Preloader duration={3000} setLoading={setLoading} />}
 
+        {router.pathname !== '/404' && <Header />}
+
         <RoundedCorner waveBackground={!!Component.waveBackground}>
           {Component.waveBackground && (
             <div className="absolute top-0 left-0 w-full h-full">
-              <Canvas className="rounded-md" camera={{ position: [0, 0, 1] }}>
+              <Canvas camera={{ position: [0, 0, 1] }}>
                 <Wave />
               </Canvas>
             </div>
           )}
-
-          {router.pathname !== '/404' && <Header />}
 
           <AnimatePresence mode="wait">
             <Component {...pageProps} key={router.asPath} />
