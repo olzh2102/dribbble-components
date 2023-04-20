@@ -7,7 +7,7 @@ import {
 import Preloader from '.'
 
 describe('Preloader', () => {
-  it('should call setLoading after duration time passed', async () => {
+  it('should render nothing when loading time passed', async () => {
     render(<Preloader duration={100} />)
 
     expect(screen.getByTestId('preloader')).toBeInTheDocument()
