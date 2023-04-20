@@ -1,5 +1,3 @@
-import React, { useState } from 'react'
-
 import { NextComponentType } from 'next'
 
 import type { AppProps } from 'next/app'
@@ -28,8 +26,6 @@ export default function App({
   pageProps,
   router: { locale, pathname, asPath },
 }: AppProps & { Component: NextComponentType & Page }) {
-  const [loading, setLoading] = useState(true)
-
   return (
     <>
       <Head>
@@ -47,7 +43,7 @@ export default function App({
       </style>
 
       <ThemeCursorProvider>
-        {loading && <Preloader duration={3000} setLoading={setLoading} />}
+        <Preloader duration={3000} />
         {pathname !== '/404' && <Header />}
 
         <RoundedCorner waveBackground={!!Component.waveBackground}>

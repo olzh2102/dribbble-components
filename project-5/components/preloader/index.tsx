@@ -1,13 +1,12 @@
+import { useState } from 'react'
+
 import { motion } from 'framer-motion'
 
-export default function Preloader({
-  duration,
-  setLoading,
-}: {
-  duration: number
-  setLoading: (val: boolean) => void
-}) {
+export default function Preloader({ duration }: { duration: number }) {
+  const [loading, setLoading] = useState(true)
   setTimeout(() => setLoading(false), duration)
+
+  if (!loading) return null
 
   return (
     <div
