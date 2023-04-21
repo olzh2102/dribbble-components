@@ -1,10 +1,7 @@
-import React, { useState } from 'react'
-
 import { NextComponentType } from 'next'
 
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
-import { useRouter } from 'next/router'
 
 import { Work_Sans } from '@next/font/google'
 import localFont from '@next/font/local'
@@ -27,12 +24,8 @@ const cyrillicFont = localFont({
 export default function App({
   Component,
   pageProps,
-  router,
+  router: { locale, pathname, asPath },
 }: AppProps & { Component: NextComponentType & Page }) {
-  const font = useRouter().locale == 'ru' ? cyrillicFont : latinFont
-
-  const [loading, setLoading] = useState(true)
-
   return (
     <>
       <Head>
@@ -40,16 +33,18 @@ export default function App({
         <meta name="description" content="NR" />
       </Head>
 
-      <style jsx global>{`
-        html {
-          font-family: ${font.style.fontFamily};
-        }
-      `}</style>
+      <style jsx global>
+        {`
+          html {
+            font-family: ${(locale == 'ru' ? cyrillicFont : latinFont).style
+              .fontFamily};
+          }
+        `}
+      </style>
 
       <ThemeCursorProvider>
-        {loading && <Preloader duration={3000} setLoading={setLoading} />}
-
-        {router.pathname !== '/404' && <Header />}
+        <Preloader duration={3000} />
+        {pathname !== '/404' && <Header />}
 
         <RoundedCorner waveBackground={!!Component.waveBackground}>
           {Component.waveBackground && (
@@ -61,7 +56,7 @@ export default function App({
           )}
 
           <AnimatePresence mode="wait">
-            <Component {...pageProps} key={router.asPath} />
+            <Component {...pageProps} key={asPath} />
           </AnimatePresence>
         </RoundedCorner>
       </ThemeCursorProvider>
