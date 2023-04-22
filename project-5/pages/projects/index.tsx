@@ -1,9 +1,10 @@
 import Image from 'next/image'
+import Link from 'next/link'
 
 import { imageLoader } from 'common/utils'
 import { withPageTransition } from '~components/layout'
 
-const PROJECTS = ['project-1', 'project-2', 'project-3', 'project-4']
+export const PROJECTS = ['project-1', 'project-2', 'project-3', 'project-4']
 
 const Projects = () => {
   return (
@@ -18,7 +19,11 @@ const Projects = () => {
 
       <div className="flex justify-center gap-8 my-auto">
         {PROJECTS.map((project, i) => (
-          <div className="flex flex-col text-primary-zinc dark:text-primary-milk uppercase" key={i}>
+          <Link
+            href={`/projects/${project}`}
+            className="flex flex-col text-primary-zinc dark:text-primary-milk uppercase"
+            key={i}
+          >
             <h2>{project}</h2>
 
             <div className="rounded overflow-hidden">
@@ -35,7 +40,7 @@ const Projects = () => {
 
             <span className="text-sm text-right">design style: scandinavian</span>
             <span className="text-sm text-right">square meters: 78 sqm</span>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

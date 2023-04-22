@@ -32,7 +32,7 @@ export default function ScrollWrapper({
       className={
         'h-full ' +
         (direction === 'horizontal'
-          ? `flex overflow-x-scroll`
+          ? `flex overflow-x-scroll gap-1`
           : 'hidden-scrollbar overflow-y-scroll')
       }
       data-test-id="scroll-wrapper"
