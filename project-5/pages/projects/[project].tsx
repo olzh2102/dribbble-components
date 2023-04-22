@@ -8,21 +8,21 @@ import { ScrollWrapper, withPageTransition } from '~components/layout'
 import { PROJECTS } from '.'
 
 const Project = () => {
-  const project = useRouter().query.project as string
-
   return (
     <ScrollWrapper direction="horizontal">
-      <PageOne project={project} />
+      <PageOne />
       <PageTwo />
-      <PageThree project={project} />
-      <PageFour restProjects={PROJECTS.filter((p) => p !== project)} />
+      <PageThree />
+      <PageFour />
     </ScrollWrapper>
   )
 }
 
 export default withPageTransition(Project)
 
-function PageOne({ project }: { project: string }) {
+function PageOne() {
+  const { project } = useRouter().query
+
   return (
     <div
       data-test-id="hs-item"
@@ -43,7 +43,7 @@ function PageOne({ project }: { project: string }) {
         width="1000"
         height="2000"
         alt="Profile picture"
-        className="md:w-5/12 md:rounded-r rounded-t md:rounded-tl-none object-cover object-left"
+        className="md:w-5/12 object-cover object-left"
       />
     </div>
   )
@@ -58,7 +58,7 @@ function PageTwo() {
         width="1000"
         height="2000"
         alt="Profile picture"
-        className="md:w-5/12 md:rounded-r rounded-t md:rounded-tl-none object-cover object-left"
+        className="md:w-5/12 object-cover object-left"
       />
       <div className="w-full flex flex-col px-2 py-5">
         <div className="flex-1 relative">
@@ -84,7 +84,9 @@ function PageTwo() {
   )
 }
 
-function PageThree({ project }: { project: string }) {
+function PageThree() {
+  const { project } = useRouter().query
+
   return (
     <div
       data-test-id="hs-item"
@@ -112,13 +114,16 @@ function PageThree({ project }: { project: string }) {
         width="1000"
         height="2000"
         alt="Profile picture"
-        className="md:w-5/12 md:rounded-r rounded-t md:rounded-tl-none object-cover object-left"
+        className="md:w-5/12 object-cover object-left"
       />
     </div>
   )
 }
 
-function PageFour({ restProjects }: { restProjects: string[] }) {
+function PageFour() {
+  const { project } = useRouter().query
+  const restProjects = PROJECTS.filter((p) => p !== project)
+
   return (
     <div className="flex justify-between flex-[0_0_100%] text-primary-zinc dark:text-primary-milk">
       <Image
@@ -127,7 +132,7 @@ function PageFour({ restProjects }: { restProjects: string[] }) {
         width="1000"
         height="2000"
         alt="Profile picture"
-        className="md:w-6/12 md:rounded-r rounded-t md:rounded-tl-none object-cover object-left"
+        className="md:w-6/12 object-cover object-left"
       />
       <div className="my-auto flex flex-col gap-2 mr-2 font-medium">
         {restProjects.map((project) => (
