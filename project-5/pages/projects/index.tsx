@@ -1,10 +1,9 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
+import { PROJECTS } from 'common/constants'
 import { imageLoader } from 'common/utils'
 import { withPageTransition } from '~components/layout'
-
-export const PROJECTS = ['project-1', 'project-2', 'project-3', 'project-4']
 
 const Projects = () => {
   return (
@@ -38,7 +37,9 @@ const Projects = () => {
               />
             </div>
 
-            <span className="text-sm text-right">design style: scandinavian</span>
+            <span className="text-sm text-right">
+              design style: scandinavian
+            </span>
             <span className="text-sm text-right">square meters: 78 sqm</span>
           </Link>
         ))}

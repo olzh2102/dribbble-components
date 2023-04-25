@@ -1,13 +1,33 @@
+import { useContext } from 'react'
+
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
+import { PROJECTS } from 'common/constants'
 import { imageLoader } from 'common/utils'
 import { ScrollWrapper, withPageTransition } from '~components/layout'
-
-import { PROJECTS } from '.'
+import { CursorContext } from '~contexts/cursor-provider'
 
 const Project = () => {
+  const { project } = useRouter().query
+  const { onMouseOver, onMouseOut } = useContext(CursorContext)
+
+  if (!PROJECTS.includes(project))
+    return (
+      <div className="grid place-content-center w-full h-full">
+        <h1>Unfortunately there isn&apos;t such a project.</h1>
+        <Link
+          href="/projects"
+          onMouseOver={onMouseOver('a')}
+          onMouseOut={onMouseOut}
+          className="uppercase font-medium text-action-peach dark:text-action-gold text-lg"
+        >
+          Available projects
+        </Link>
+      </div>
+    )
+
   return (
     <ScrollWrapper direction="horizontal">
       <PageOne />
@@ -72,11 +92,13 @@ function PageTwo() {
           />
         </div>
         <div>
-          <h2 className="text-5xl uppercase font-semibold italic">Living Room</h2>
+          <h2 className="text-5xl uppercase font-semibold italic">
+            Living Room
+          </h2>
           <p className="text-lg">
-            Living room design refers to the arrangement and styling of furniture, decor, lighting,
-            and other elements in a space typically used for socializing, relaxation, and
-            entertainment.
+            Living room design refers to the arrangement and styling of
+            furniture, decor, lighting, and other elements in a space typically
+            used for socializing, relaxation, and entertainment.
           </p>
         </div>
       </div>
@@ -136,7 +158,11 @@ function PageFour() {
       />
       <div className="my-auto flex flex-col gap-2 mr-2 font-medium">
         {restProjects.map((project) => (
-          <Link href={project} key={project} className="flex items-center gap-2">
+          <Link
+            href={project}
+            key={project}
+            className="flex items-center gap-2"
+          >
             <div className="text-right">
               <h3 className="capitalized">{project}</h3>
               <span>Some description</span>
