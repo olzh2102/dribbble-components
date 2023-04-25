@@ -42,14 +42,6 @@ const SERVICES = [
 const Services = () => {
   return (
     <div className="flex h-full">
-      <Image
-        src="/nr-logo.svg"
-        width="40"
-        height="40"
-        alt="logo"
-        className="absolute mix-blend-difference top-4 left-4"
-      />
-
       <div className="w-7/12 h-min mt-auto mb-0 dark:text-primary-milk">
         <h1 className="uppercase text-7xl font-semibold m-4">services</h1>
         <ul
@@ -70,7 +62,9 @@ const Services = () => {
               >
                 {i + 1}
               </span>
-              <h2 className="col-span-2 uppercase font-medium">{service.title}</h2>
+              <h2 className="col-span-2 uppercase font-medium">
+                {service.title}
+              </h2>
               <p className="col-span-3 text-primary-zinc/80 dark:text-primary-milk/70">
                 {service.description}
               </p>

@@ -4,7 +4,7 @@ import { ROUTES, SERVICE_TYPES } from 'common/constants'
 
 export type Theme = 'light' | 'dark'
 
-export type Page = NextPage & { waveBackground?: boolean }
+export type Page = NextPage & { waveBackground?: boolean; hasLogo?: boolean }
 
 export type RoutePath = typeof ROUTES[number]
 

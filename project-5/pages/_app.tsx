@@ -2,6 +2,7 @@ import { NextComponentType } from 'next'
 
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
+import Image from 'next/image'
 
 import { Work_Sans } from '@next/font/google'
 import localFont from '@next/font/local'
@@ -13,7 +14,6 @@ import { Header, RoundedCorner } from '~components/layout'
 import Preloader from '~components/preloader'
 import Wave from '~components/wave'
 import ThemeCursorProvider from '~contexts/index'
-
 import '../styles/globals.css'
 
 const latinFont = Work_Sans({ subsets: ['latin', 'latin-ext'] })
@@ -26,6 +26,8 @@ export default function App({
   pageProps,
   router: { locale, pathname, asPath },
 }: AppProps & { Component: NextComponentType & Page }) {
+  const { hasLogo = true } = Component
+
   return (
     <>
       <Head>
@@ -56,6 +58,16 @@ export default function App({
           )}
 
           <AnimatePresence mode="wait">
+            {hasLogo && (
+              <Image
+                src="/nr-logo.svg"
+                width="40"
+                height="40"
+                alt="logo"
+                className="absolute mix-blend-difference top-4 left-4"
+              />
+            )}
+
             <Component {...pageProps} key={asPath} />
           </AnimatePresence>
         </RoundedCorner>

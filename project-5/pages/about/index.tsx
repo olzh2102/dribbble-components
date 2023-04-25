@@ -40,14 +40,6 @@ const About = () => {
         className="flex flex-[0_0_100%] flex-col md:flex-row text-primary-zinc dark:text-primary-milk"
       >
         <Image
-          src="/nr-logo.svg"
-          width="40"
-          height="40"
-          alt="logo"
-          className="absolute mix-blend-difference top-4 left-4"
-        />
-
-        <Image
           loader={imageLoader}
           src="profile.jpg"
           width="1000"
@@ -65,10 +57,11 @@ const About = () => {
             <h2>Interior and Concept Designer</h2>
             <h3>Natallia Raksha</h3>
             <p className="text-base mt-3">
-              Interior designers are professionals who design and create functional and
-              aesthetically pleasing spaces for residential or commercial clients. They typically
-              work closely with clients to understand their needs and preferences, and then develop
-              design plans that meet those requirements.
+              Interior designers are professionals who design and create
+              functional and aesthetically pleasing spaces for residential or
+              commercial clients. They typically work closely with clients to
+              understand their needs and preferences, and then develop design
+              plans that meet those requirements.
             </p>
           </div>
         )}

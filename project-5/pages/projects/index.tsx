@@ -9,14 +9,6 @@ export const PROJECTS = ['project-1', 'project-2', 'project-3', 'project-4']
 const Projects = () => {
   return (
     <div className="flex flex-col h-full p-2">
-      <Image
-        src="/nr-logo.svg"
-        width="40"
-        height="40"
-        alt="logo"
-        className="absolute mix-blend-difference"
-      />
-
       <div className="flex justify-center gap-8 my-auto">
         {PROJECTS.map((project, i) => (
           <Link
@@ -38,7 +30,9 @@ const Projects = () => {
               />
             </div>
 
-            <span className="text-sm text-right">design style: scandinavian</span>
+            <span className="text-sm text-right">
+              design style: scandinavian
+            </span>
             <span className="text-sm text-right">square meters: 78 sqm</span>
           </Link>
         ))}

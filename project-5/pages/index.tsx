@@ -13,7 +13,13 @@ const Home = withPageTransition(() => (
     className="h-full w-full grid place-content-center"
   >
     <div className="mix-blend-difference pointer-events-none text-primary-milk font-medium uppercase">
-      <Image className="mb-2" src="/nr-logo.svg" width="170" height="150" alt="logo" />
+      <Image
+        className="mb-2"
+        src="/nr-logo.svg"
+        width="170"
+        height="150"
+        alt="logo"
+      />
 
       <div className="flex justify-between">
         {LOGO_SUBTITLE.split('').map((letter, i) => (
@@ -27,3 +33,4 @@ const Home = withPageTransition(() => (
 export default Home
 
 Home.waveBackground = true
+Home.hasLogo = false

@@ -20,6 +20,8 @@ const Project = () => {
 
 export default withPageTransition(Project)
 
+Project.hasLogo = true
+
 function PageOne() {
   const { project } = useRouter().query
 
@@ -72,11 +74,13 @@ function PageTwo() {
           />
         </div>
         <div>
-          <h2 className="text-5xl uppercase font-semibold italic">Living Room</h2>
+          <h2 className="text-5xl uppercase font-semibold italic">
+            Living Room
+          </h2>
           <p className="text-lg">
-            Living room design refers to the arrangement and styling of furniture, decor, lighting,
-            and other elements in a space typically used for socializing, relaxation, and
-            entertainment.
+            Living room design refers to the arrangement and styling of
+            furniture, decor, lighting, and other elements in a space typically
+            used for socializing, relaxation, and entertainment.
           </p>
         </div>
       </div>
@@ -136,7 +140,11 @@ function PageFour() {
       />
       <div className="my-auto flex flex-col gap-2 mr-2 font-medium">
         {restProjects.map((project) => (
-          <Link href={project} key={project} className="flex items-center gap-2">
+          <Link
+            href={project}
+            key={project}
+            className="flex items-center gap-2"
+          >
             <div className="text-right">
               <h3 className="capitalized">{project}</h3>
               <span>Some description</span>
