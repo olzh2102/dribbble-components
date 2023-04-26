@@ -8,14 +8,6 @@ import { withPageTransition } from '~components/layout'
 const Projects = () => {
   return (
     <div className="flex flex-col h-full p-2">
-      <Image
-        src="/nr-logo.svg"
-        width="40"
-        height="40"
-        alt="logo"
-        className="absolute mix-blend-difference"
-      />
-
       <div className="flex justify-center gap-8 my-auto">
         {PROJECTS.map((project, i) => (
           <Link

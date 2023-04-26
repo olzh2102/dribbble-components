@@ -40,6 +40,8 @@ const Project = () => {
 
 export default withPageTransition(Project)
 
+Project.hasLogo = true
+
 function PageOne() {
   const { project } = useRouter().query
 
