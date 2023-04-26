@@ -36,3 +36,5 @@ export const MOBILE_HEADER_VARIANTS = {
     },
   },
 }
+
+export const PROJECTS = ['project-1', 'project-2', 'project-3', 'project-4']
