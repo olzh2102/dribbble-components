@@ -19,18 +19,17 @@ export default function Input({
   const { onMouseOver, onMouseOut } = useContext(CursorContext)
 
   return (
-    <div>
-      <label className="flex flex-col uppercase">
-        {name}
-        <input
-          type="text"
-          name={name}
-          value={value}
-          onChange={onChange}
-          onMouseOver={onMouseOver('input')}
-          onMouseOut={onMouseOut}
-        />
-      </label>
+    <>
+      <label htmlFor={name}>{name}</label>
+      <input
+        className="p-2 rounded-sm text-primary-zinc col-span-3 outline-0 caret-primary-milk dark:caret-primary-zinc"
+        type="text"
+        name={name}
+        value={value}
+        onChange={onChange}
+        onMouseOver={onMouseOver('input')}
+        onMouseOut={onMouseOut}
+      />
       <motion.span
         animate={errorMessage ? 'visible' : 'hidden'}
         transition={{ delay: 0.5 }}
@@ -39,11 +38,11 @@ export default function Input({
           hidden: { opacity: 0 },
           initial: { opacity: 0 },
         }}
-        className="text-[#a57548]"
+        className="text-[#a57548] col-span-3 self-end lowercase"
         role={errorMessage ? 'alert' : 'none'}
       >
         {errorMessage}
       </motion.span>
-    </div>
+    </>
   )
 }

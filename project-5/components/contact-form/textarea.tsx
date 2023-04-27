@@ -16,18 +16,18 @@ export default function Textarea({
   const { onMouseOver, onMouseOut } = useContext(CursorContext)
 
   return (
-    <div>
-      <label className="flex flex-col uppercase">
-        Project details
-        <textarea
-          name="details"
-          value={value}
-          onChange={onChange}
-          onMouseOver={onMouseOver('textarea')}
-          onMouseOut={onMouseOut}
-        />
+    <>
+      <label htmlFor="details" className="row-span-2">
+        project details
       </label>
-
+      <textarea
+        className="p-2 rounded-sm text-primary-zinc resize-none col-span-3 row-span-2 outline-0"
+        name="details"
+        value={value}
+        onChange={onChange}
+        onMouseOver={onMouseOver('textarea')}
+        onMouseOut={onMouseOut}
+      />
       <motion.span
         animate={errorMessage ? 'visible' : 'hidden'}
         transition={{ delay: 0.5 }}
@@ -36,11 +36,11 @@ export default function Textarea({
           hidden: { opacity: 0 },
           initial: { opacity: 0 },
         }}
-        className="text-primary-950"
+        className="text-primary-950 row-span-2 col-span-3 self-end lowercase"
         role={errorMessage ? 'alert' : 'none'}
       >
         {errorMessage ? errorMessage : ''}
       </motion.span>
-    </div>
+    </>
   )
 }

@@ -16,9 +16,9 @@ export default function ServiceSelector({
 }) {
   return (
     <>
-      <div className="flex gap-4">
+      <div className="flex flex-col gap-4 justify-between">
         {SERVICE_TYPES.map((service, i) => (
-          <div key={service}>
+          <div key={service} className="border-2 rounded-sm p-4">
             <input
               className={`hidden peer/${service}`}
               type="radio"

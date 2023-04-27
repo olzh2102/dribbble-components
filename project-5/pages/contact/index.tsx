@@ -12,7 +12,7 @@ const Contact = ({ serviceId, templateId, publicKey }) => {
   const { theme } = useContext(ThemeContext)
 
   async function sendForm(formData: ContactFormFields) {
-    const submission = send(serviceId, templateId, formData, publicKey)
+    const submission = new Promise((res) => res(formData)) // send(serviceId, templateId, formData, publicKey)
 
     await toast.promise(submission, {
       pending: 'Sending an email',
@@ -22,10 +22,18 @@ const Contact = ({ serviceId, templateId, publicKey }) => {
   }
 
   return (
-    <>
-      <Form onSubmit={sendForm} />
+    <div className="h-full flex flex-col p-10">
+      <div className="flex-1 w-min grid place-content-center gap-10">
+        <h1 className="font-semibold text-7xl text-primary-zinc dark:text-primary-milk whitespace-nowrap">
+          Let&apos;s chat !
+        </h1>
+        <div className="ml-10">
+          <Form onSubmit={sendForm} />
+        </div>
+      </div>
+      <div className="mt-auto mb-0">here goes social link icons</div>
       <ToastContainer theme={theme} autoClose={3000} />
-    </>
+    </div>
   )
 }
 
