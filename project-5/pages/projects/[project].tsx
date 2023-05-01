@@ -1,15 +1,16 @@
-import { useContext, useRef } from 'react'
+import { useContext } from 'react'
 
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-import { motion, useInView } from 'framer-motion'
+import { motion } from 'framer-motion'
 
 import { PROJECTS } from 'common/constants'
 import { imageLoader } from 'common/utils'
 import { ScrollWrapper, withPageTransition } from '~components/layout'
 import { CursorContext } from '~contexts/cursor-provider'
+import useInScroll from '~hooks/use-in-scroll'
 
 const Project = () => {
   const { project } = useRouter().query
@@ -74,21 +75,13 @@ function PageOne() {
 }
 
 function PageTwo() {
-  const ref = useRef<HTMLDivElement>(null)
-  const inView = useInView(ref, { once: true })
+  const { ref, animate, variants } = useInScroll()
 
   return (
     <motion.div
       ref={ref}
-      animate={inView ? 'visible' : 'hidden'}
-      variants={{
-        visible: { opacity: 1, scale: 1, y: 0 },
-        hidden: {
-          opacity: 0,
-          scale: 0.65,
-          y: 50,
-        },
-      }}
+      animate={animate}
+      variants={variants}
       transition={{ duration: 1, ease: 'easeOut' }}
       className="flex flex-[0_0_100%] text-primary-zinc dark:text-primary-milk"
     >
@@ -126,21 +119,13 @@ function PageTwo() {
 
 function PageThree() {
   const { project } = useRouter().query
-  const ref = useRef(null)
-  const inView = useInView(ref, { once: true })
+  const { ref, animate, variants } = useInScroll()
 
   return (
     <motion.div
       ref={ref}
-      animate={inView ? 'visible' : 'hidden'}
-      variants={{
-        visible: { opacity: 1, scale: 1, y: 0 },
-        hidden: {
-          opacity: 0,
-          scale: 0.65,
-          y: 50,
-        },
-      }}
+      animate={animate}
+      variants={variants}
       transition={{ duration: 1, ease: 'easeOut' }}
       data-test-id="hs-item"
       className="flex flex-[0_0_100%] flex-col md:flex-row text-primary-zinc dark:text-primary-milk"
@@ -176,21 +161,13 @@ function PageThree() {
 function PageFour() {
   const { project } = useRouter().query
   const restProjects = PROJECTS.filter((p) => p !== project)
-  const ref = useRef(null)
-  const inView = useInView(ref, { once: true })
+  const { ref, animate, variants } = useInScroll()
 
   return (
     <motion.div
       ref={ref}
-      animate={inView ? 'visible' : 'hidden'}
-      variants={{
-        visible: { opacity: 1, scale: 1, y: 0 },
-        hidden: {
-          opacity: 0,
-          scale: 0.65,
-          y: 50,
-        },
-      }}
+      animate={animate}
+      variants={variants}
       transition={{ duration: 1, ease: 'easeOut' }}
       className="flex justify-between flex-[0_0_100%] text-primary-zinc dark:text-primary-milk"
     >
