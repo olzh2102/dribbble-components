@@ -9,6 +9,7 @@ body > div:first-child {
     cursor: none;
     overflow-x: hidden;
     overflow-y: hidden;
+    scroll-behavior: smooth;
 }
 
 a, label, button {

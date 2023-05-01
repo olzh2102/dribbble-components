@@ -4,10 +4,13 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
+import { motion } from 'framer-motion'
+
 import { PROJECTS } from 'common/constants'
 import { imageLoader } from 'common/utils'
 import { ScrollWrapper, withPageTransition } from '~components/layout'
 import { CursorContext } from '~contexts/cursor-provider'
+import useInScroll from '~hooks/use-in-scroll'
 
 const Project = () => {
   const { project } = useRouter().query
@@ -72,8 +75,16 @@ function PageOne() {
 }
 
 function PageTwo() {
+  const { ref, animate, variants } = useInScroll()
+
   return (
-    <div className="flex flex-[0_0_100%] text-primary-zinc dark:text-primary-milk">
+    <motion.div
+      ref={ref}
+      animate={animate}
+      variants={variants}
+      transition={{ duration: 1, ease: 'easeOut' }}
+      className="flex flex-[0_0_100%] text-primary-zinc dark:text-primary-milk"
+    >
       <Image
         loader={imageLoader}
         src={`project-2.jpg`}
@@ -94,25 +105,28 @@ function PageTwo() {
           />
         </div>
         <div>
-          <h2 className="text-5xl uppercase font-semibold italic">
-            Living Room
-          </h2>
+          <h2 className="text-5xl uppercase font-semibold italic">Living Room</h2>
           <p className="text-lg">
-            Living room design refers to the arrangement and styling of
-            furniture, decor, lighting, and other elements in a space typically
-            used for socializing, relaxation, and entertainment.
+            Living room design refers to the arrangement and styling of furniture, decor, lighting,
+            and other elements in a space typically used for socializing, relaxation, and
+            entertainment.
           </p>
         </div>
       </div>
-    </div>
+    </motion.div>
   )
 }
 
 function PageThree() {
   const { project } = useRouter().query
+  const { ref, animate, variants } = useInScroll()
 
   return (
-    <div
+    <motion.div
+      ref={ref}
+      animate={animate}
+      variants={variants}
+      transition={{ duration: 1, ease: 'easeOut' }}
       data-test-id="hs-item"
       className="flex flex-[0_0_100%] flex-col md:flex-row text-primary-zinc dark:text-primary-milk"
     >
@@ -140,16 +154,23 @@ function PageThree() {
         alt="Profile picture"
         className="md:w-5/12 object-cover object-left"
       />
-    </div>
+    </motion.div>
   )
 }
 
 function PageFour() {
   const { project } = useRouter().query
   const restProjects = PROJECTS.filter((p) => p !== project)
+  const { ref, animate, variants } = useInScroll()
 
   return (
-    <div className="flex justify-between flex-[0_0_100%] text-primary-zinc dark:text-primary-milk">
+    <motion.div
+      ref={ref}
+      animate={animate}
+      variants={variants}
+      transition={{ duration: 1, ease: 'easeOut' }}
+      className="flex justify-between flex-[0_0_100%] text-primary-zinc dark:text-primary-milk"
+    >
       <Image
         loader={imageLoader}
         src={`profile.jpg`}
@@ -160,11 +181,7 @@ function PageFour() {
       />
       <div className="my-auto flex flex-col gap-2 mr-2 font-medium">
         {restProjects.map((project) => (
-          <Link
-            href={project}
-            key={project}
-            className="flex items-center gap-2"
-          >
+          <Link href={project} key={project} className="flex items-center gap-2">
             <div className="text-right">
               <h3 className="capitalized">{project}</h3>
               <span>Some description</span>
@@ -180,6 +197,6 @@ function PageFour() {
           </Link>
         ))}
       </div>
-    </div>
+    </motion.div>
   )
 }
