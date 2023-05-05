@@ -12,7 +12,6 @@ const DEFAULT_VALUES: ContactFormFields = {
   name: '',
   email: '',
   details: '',
-  serviceType: undefined,
 }
 type Name = keyof ContactFormFields
 
@@ -36,11 +35,6 @@ const validation = {
 
     return ''
   },
-  serviceType: (value: string) => {
-    if (!value) return 'Service type is required'
-
-    return ''
-  },
 }
 
 export default function useForm() {
@@ -51,7 +45,6 @@ export default function useForm() {
     name: null,
     email: null,
     details: null,
-    serviceType: null,
   })
 
   function validateForm(value: string, name: Name) {

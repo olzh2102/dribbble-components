@@ -36,7 +36,7 @@ export default function Textarea({
           hidden: { opacity: 0 },
           initial: { opacity: 0 },
         }}
-        className="text-primary-950 row-span-2 col-span-3 self-end lowercase"
+        className="text-action-peach dark:text-action-gold row-span-2 col-span-3 lowercase"
         role={errorMessage ? 'alert' : 'none'}
       >
         {errorMessage ? errorMessage : ''}

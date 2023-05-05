@@ -38,7 +38,7 @@ export default function Input({
           hidden: { opacity: 0 },
           initial: { opacity: 0 },
         }}
-        className="text-[#a57548] col-span-3 self-end lowercase"
+        className="text-action-peach dark:text-action-gold col-span-3 lowercase"
         role={errorMessage ? 'alert' : 'none'}
       >
         {errorMessage}
