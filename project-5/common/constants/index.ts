@@ -1,12 +1,6 @@
 export const LOGO_SUBTITLE = 'interiors'
 
-export const ROUTES = [
-  '/',
-  '/projects',
-  '/about',
-  '/services',
-  '/contact',
-] as const
+export const ROUTES = ['/', '/projects', '/about', '/services', '/contact'] as const
 
 export const BREAKPOINTS = {
   sm: 640,
@@ -15,8 +9,6 @@ export const BREAKPOINTS = {
   xl: 1280,
   '2xl': 1536,
 }
-
-export const SERVICE_TYPES = ['design', 'branding', 'consulting'] as const
 
 export const MOBILE_HEADER_VARIANTS = {
   open: {

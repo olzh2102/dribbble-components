@@ -1,15 +1,22 @@
 import { useContext } from 'react'
 
+import Link from 'next/link'
+
 import { send } from '@emailjs/browser'
 import { ToastContainer, toast } from 'react-toastify'
 
 import { ContactFormFields } from 'common/types'
 import Form from '~components/contact-form'
+import InstagramIcon from '~components/icons/instagram'
+import LinkedinIcon from '~components/icons/linkedin'
 import { withPageTransition } from '~components/layout'
+import { CursorContext } from '~contexts/cursor-provider'
 import { ThemeContext } from '~contexts/theme-provider'
 
 const Contact = ({ serviceId, templateId, publicKey }) => {
   const { theme } = useContext(ThemeContext)
+
+  const { onMouseOver, onMouseOut } = useContext(CursorContext)
 
   async function sendForm(formData: ContactFormFields) {
     const submission = send(serviceId, templateId, formData, publicKey)
@@ -22,10 +29,29 @@ const Contact = ({ serviceId, templateId, publicKey }) => {
   }
 
   return (
-    <>
-      <Form onSubmit={sendForm} />
-      <ToastContainer theme={theme} autoClose={3000} />
-    </>
+    <div className="h-full flex flex-col">
+      <div className="flex-1 w-min grid place-content-center gap-10 p-10">
+        <h1 className="font-semibold text-7xl text-primary-zinc dark:text-primary-milk whitespace-nowrap">
+          Let&apos;s chat !
+        </h1>
+        <div className="ml-28">
+          <Form onSubmit={sendForm} />
+        </div>
+      </div>
+      <div
+        onMouseOver={onMouseOver('a')}
+        onMouseOut={onMouseOut}
+        className="flex justify-end gap-2 items-center mt-auto mb-0 bg-gradient-to-r from-action-peach via-indigo-500 via-purple-500 to-pink-500 p-10 text-primary-milk dark:text-primary-zinc"
+      >
+        <Link href="#">
+          <InstagramIcon />
+        </Link>
+        <Link href="#">
+          <LinkedinIcon />
+        </Link>
+      </div>
+      <ToastContainer theme={theme} autoClose={false} />
+    </div>
   )
 }
 
@@ -34,9 +60,9 @@ export default withPageTransition(Contact)
 export async function getStaticProps() {
   return {
     props: {
-      serviceId: process.env.SERVICE_ID || null,
-      templateId: process.env.TEMPLATE_ID || null,
-      publicKey: process.env.PUBLIC_KEY || null,
+      serviceId: process.env.NEXT_PUBLIC_SERVICE_ID || null,
+      templateId: process.env.NEXT_PUBLIC_TEMPLATE_ID || null,
+      publicKey: process.env.NEXT_PUBLIC_PUBLIC_KEY || null,
     },
   }
 }
