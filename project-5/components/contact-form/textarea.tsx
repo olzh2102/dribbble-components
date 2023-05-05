@@ -23,6 +23,7 @@ export default function Textarea({
       <textarea
         className="p-2 rounded-sm text-primary-zinc resize-none col-span-3 row-span-2 outline-0"
         name="details"
+        id="details"
         value={value}
         onChange={onChange}
         onMouseOver={onMouseOver('textarea')}

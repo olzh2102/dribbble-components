@@ -4,7 +4,7 @@ import { render, screen } from 'common/utils/test-utils'
 
 import ContactForm from '.'
 
-const FIELDS_LENGTH = 4
+const FIELDS_LENGTH = 3
 
 const onSubmit = jest.fn()
 
@@ -28,13 +28,11 @@ describe('Contact Form', () => {
     const name = screen.getByRole('textbox', { name: /name/i })
     const email = screen.getByRole('textbox', { name: /email/i })
     const details = screen.getByRole('textbox', { name: /details/i })
-    const designService = screen.getByRole('radio', { name: /design/i })
     const submitButton = screen.getByRole('button', { name: /send/i })
 
     await user.type(name, 'J')
     await user.type(email, 'johndoe@gmail.com')
     await user.type(details, 'project details')
-    await user.click(designService)
     await user.click(submitButton)
 
     expect(await screen.findAllByRole('alert')).toHaveLength(1)
@@ -47,13 +45,11 @@ describe('Contact Form', () => {
     const name = screen.getByRole('textbox', { name: /name/i })
     const email = screen.getByRole('textbox', { name: /email/i })
     const details = screen.getByRole('textbox', { name: /details/i })
-    const designService = screen.getByRole('radio', { name: /design/i })
     const submitButton = screen.getByRole('button', { name: /send/i })
 
     await user.type(name, 'John')
     await user.type(email, 'johndoe@gmail.com')
     await user.type(details, 'project details')
-    await user.click(designService)
 
     await user.click(submitButton)
 
@@ -62,7 +58,6 @@ describe('Contact Form', () => {
       name: 'John',
       email: 'johndoe@gmail.com',
       details: 'project details',
-      serviceType: 'design',
     })
     expect(name).toHaveValue('')
     expect(email).toHaveValue('')

@@ -22,6 +22,7 @@ export default function Input({
     <>
       <label htmlFor={name}>{name}</label>
       <input
+        id={name}
         className="p-2 rounded-sm text-primary-zinc col-span-3 outline-0 caret-primary-milk dark:caret-primary-zinc"
         type="text"
         name={name}
