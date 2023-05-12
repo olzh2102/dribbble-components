@@ -83,6 +83,7 @@ export default function CursorProvider({ children }: { children: ReactNode }) {
         {!cursorHidden && (
           <motion.div
             role="custom-cursor"
+            data-cy="cursor"
             transition={{
               stiffness: 100,
               duration: 0.5,
