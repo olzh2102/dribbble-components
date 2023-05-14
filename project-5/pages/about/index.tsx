@@ -57,17 +57,19 @@ const About = () => {
             <h2>Interior and Concept Designer</h2>
             <h3>Natallia Raksha</h3>
             <p className="text-base mt-3">
-              Interior designers are professionals who design and create
-              functional and aesthetically pleasing spaces for residential or
-              commercial clients. They typically work closely with clients to
-              understand their needs and preferences, and then develop design
-              plans that meet those requirements.
+              Interior designers are professionals who design and create functional and
+              aesthetically pleasing spaces for residential or commercial clients. They typically
+              work closely with clients to understand their needs and preferences, and then develop
+              design plans that meet those requirements.
             </p>
           </div>
         )}
       </div>
 
-      <div className="flex flex-[0_0_100%] text-primary-zinc dark:text-primary-milk">
+      <div
+        data-cy="about-experience"
+        className="flex flex-[0_0_100%] text-primary-zinc dark:text-primary-milk"
+      >
         <div className="flex m-auto p-2 gap-10 w-1/2">
           {EXPERIENCES.map((exp) => (
             <div key={exp.title} className="space-y-3">
