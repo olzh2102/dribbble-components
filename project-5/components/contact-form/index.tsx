@@ -27,6 +27,7 @@ export default function ContactForm({
       <Textarea value={formState.details} onChange={setValue} errorMessage={errors.details} />
 
       <motion.button
+        data-cy="form-submit"
         onMouseOver={onMouseOver('button')}
         onMouseOut={onMouseOut}
         whileHover={{
