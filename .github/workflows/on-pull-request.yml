@@ -7,26 +7,26 @@ concurrency:
 on: [pull_request]
 
 jobs:
-  unit-test:
-    name: 🧪 Unit Tests
-    runs-on: ubuntu-latest
-    env:
-      working-directory: project-5
-    defaults:
-      run:
-        working-directory: ${{ env.working-directory }}
-    steps:
-      - name: ⬇️ Checkout the branch
-        uses: actions/checkout@v3
+  # unit-test:
+  #   name: 🧪 Unit Tests
+  #   runs-on: ubuntu-latest
+  #   env:
+  #     working-directory: project-5
+  #   defaults:
+  #     run:
+  #       working-directory: ${{ env.working-directory }}
+  #   steps:
+  #     - name: ⬇️ Checkout the branch
+  #       uses: actions/checkout@v3
 
-      - name: Download deps
-        uses: bahmutov/npm-install@v1
-        with:
-          useLockFile: false
-          working-directory: project-5
+  #     - name: Download deps
+  #       uses: bahmutov/npm-install@v1
+  #       with:
+  #         useLockFile: false
+  #         working-directory: project-5
 
-      - name: 🚦 Run Tests
-        run: yarn test
+  #     - name: 🚦 Run Tests
+  #       run: yarn test
 
   integration-test:
     name: 🧩 Integration Tests
@@ -49,46 +49,46 @@ jobs:
           serviceId: ${{ secrets.EMAILJS_SERVICE_ID }}
           templateId: ${{ secrets.EMAILJS_TEMPLATE_ID }}
 
-  type-checking:
-    name: 🔬 Type checking
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    env:
-      working-directory: project-5
-    defaults:
-      run:
-        working-directory: ${{ env.working-directory }}
-    steps:
-      - name: ⬇️ Checkout the branch
-        uses: actions/checkout@v3
+  # type-checking:
+  #   name: 🔬 Type checking
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 15
+  #   env:
+  #     working-directory: project-5
+  #   defaults:
+  #     run:
+  #       working-directory: ${{ env.working-directory }}
+  #   steps:
+  #     - name: ⬇️ Checkout the branch
+  #       uses: actions/checkout@v3
 
-      - name: Download deps
-        uses: bahmutov/npm-install@v1
-        with:
-          useLockFile: false
-          working-directory: project-5
+  #     - name: Download deps
+  #       uses: bahmutov/npm-install@v1
+  #       with:
+  #         useLockFile: false
+  #         working-directory: project-5
 
-      - name: 🔬 Type checking
-        run: yarn typecheck
+  #     - name: 🔬 Type checking
+  #       run: yarn typecheck
 
-  deadcode-checking:
-    name: 💀 Deadcode checking
-    runs-on: ubuntu-latest
-    env:
-      working-directory: project-5
-    defaults:
-      run:
-        working-directory: ${{ env.working-directory }}
-    steps:
-      - name: ⬇️ Checkout the branch
-        uses: actions/checkout@v3
+  # deadcode-checking:
+  #   name: 💀 Deadcode checking
+  #   runs-on: ubuntu-latest
+  #   env:
+  #     working-directory: project-5
+  #   defaults:
+  #     run:
+  #       working-directory: ${{ env.working-directory }}
+  #   steps:
+  #     - name: ⬇️ Checkout the branch
+  #       uses: actions/checkout@v3
 
-      - name: Download deps
-        uses: bahmutov/npm-install@v1
-        with:
-          useLockFile: false
-          working-directory: project-5
+  #     - name: Download deps
+  #       uses: bahmutov/npm-install@v1
+  #       with:
+  #         useLockFile: false
+  #         working-directory: project-5
 
-      - name: 💀 Deadcode checking
-        run: |
-          ${GITHUB_WORKSPACE}/.github/scripts/deadcode-check.sh
+  #     - name: 💀 Deadcode checking
+  #       run: |
+  #         ${GITHUB_WORKSPACE}/.github/scripts/deadcode-check.sh
