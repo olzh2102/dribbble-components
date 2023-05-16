@@ -45,6 +45,9 @@ jobs:
         uses: ./.github/actions/cypress-run
         with:
           workdir: project-5
+          publicKey: ${{ secrets.EMAILJS_PUBLIC_KEY }}
+          serviceId: ${{ secrets.EMAILJS_SERVICE_ID }}
+          templateId: ${{ secrets.EMAILJS_TEMPLATE_ID }}
 
   type-checking:
     name: 🔬 Type checking

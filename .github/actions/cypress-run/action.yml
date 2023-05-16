@@ -5,6 +5,15 @@ inputs:
     description: '(path)'
     required: false
     default: ./
+  publicKey:
+    description: 'EmailJS public key'
+    required: true
+  serviceId:
+    description: 'EmailJS service id'
+    required: true
+  templateId:
+    description: 'EmailJS template id'
+    required: true
 runs:
   using: 'composite'
   steps:
@@ -16,6 +25,6 @@ runs:
         build: yarn build
         start: yarn start
       env:
-        PUBLIC_KEY: ${{ secrets.EMAILJS_PUBLIC_KEY }}
-        SERVICE_ID: ${{ secrets.EMAILJS_SERVICE_ID }}
-        TEMPLATE_ID: ${{ secrets.EMAILJS_TEMPLATE_ID }}
+        PUBLIC_KEY: ${{ inputs.publicKey }}
+        SERVICE_ID: ${{ inputs.serviceId }}
+        TEMPLATE_ID: ${{ inputs.templateId }}
