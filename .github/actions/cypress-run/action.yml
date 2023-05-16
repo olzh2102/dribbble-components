@@ -13,9 +13,9 @@ runs:
       with:
         working-directory: ${{ inputs.workdir }}
         install: false
-        browser: chrome
         build: yarn build
         start: yarn start
-        wait-on-timeout: 300
-        config: defaultCommandTimeout=100000,pageLoadTimeout=100000,watchForFileChanges=false,video=false
-
+      env:
+        PUBLIC_KEY: ${{ secrets.EMAILJS_PUBLIC_KEY }}
+        SERVICE_ID: ${{ secrets.EMAILJS_SERVICE_ID }}
+        TEMPLATE_ID: ${{ secrets.EMAILJS_TEMPLATE_ID }}
