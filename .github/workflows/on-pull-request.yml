@@ -41,6 +41,9 @@ jobs:
           useLockFile: false
           working-directory: project-5
 
+      - run: echo "${{ secrets.EMAILJS_PUBLIC_KEY }}"
+        shell: bash
+
       - name: 🇨🇾 Cypress run
         uses: ./.github/actions/cypress-run
         with:
