@@ -17,8 +17,6 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - run: echo "PUBLIC_KEY:$inputs.publicKey"
-      shell: bash
     - name: 🇨🇾 Cypress run
       uses: cypress-io/github-action@v5
       with:
@@ -27,6 +25,6 @@ runs:
         build: yarn build
         start: yarn start
       env:
-        PUBLIC_KEY: ${{ inputs.publicKey }}
-        SERVICE_ID: ${{ inputs.serviceId }}
-        TEMPLATE_ID: ${{ inputs.templateId }}
+        NEXT_PUBLIC_PUBLIC_KEY: ${{ inputs.publicKey }}
+        NEXT_PUBLIC_SERVICE_ID: ${{ inputs.serviceId }}
+        NEXT_PUBLIC_TEMPLATE_ID: ${{ inputs.templateId }}

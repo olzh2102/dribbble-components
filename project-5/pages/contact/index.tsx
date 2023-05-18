@@ -54,7 +54,7 @@ const Contact = ({ serviceId, templateId, publicKey }) => {
           <LinkedinIcon />
         </Link>
       </div>
-      <ToastContainer data-cy="toast-container" theme={theme} autoClose={false} />
+      <ToastContainer theme={theme} />
     </div>
   )
 }
