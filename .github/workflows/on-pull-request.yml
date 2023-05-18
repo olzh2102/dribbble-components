@@ -22,15 +22,19 @@ jobs:
       - name: Download deps
         uses: bahmutov/npm-install@v1
         with:
-          useLockFile: false
+          useRollingCache: true
           working-directory: project-5
 
       - name: 🚦 Run Tests
         run: yarn test
 
   integration-test:
-    name: 🧩 Integration Tests
+    name: 🧩 Cypress run
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        containers: ['🐨', '🦦', '🐼']
     steps:
       - name: ⬇️ Checkout the branch
         uses: actions/checkout@v3
@@ -38,19 +42,24 @@ jobs:
       - name: Download deps
         uses: bahmutov/npm-install@v1
         with:
-          useLockFile: false
           working-directory: project-5
 
-      - run: echo "${{ secrets.EMAILJS_PUBLIC_KEY }}"
-        shell: bash
-
       - name: 🇨🇾 Cypress run
-        uses: ./.github/actions/cypress-run
+        uses: cypress-io/github-action@v5
         with:
-          workdir: project-5
-          publicKey: ${{ secrets.EMAILJS_PUBLIC_KEY }}
-          serviceId: ${{ secrets.EMAILJS_SERVICE_ID }}
-          templateId: ${{ secrets.EMAILJS_TEMPLATE_ID }}
+          working-directory: project-5
+          parallel: true
+          record: true
+          build: yarn build
+          start: yarn start
+
+      # - name: 🇨🇾 Cypress run
+      #   uses: ./.github/actions/cypress-run
+      #   with:
+      #     workdir: project-5
+      #     publicKey: ${{ secrets.EMAILJS_PUBLIC_KEY }}
+      #     serviceId: ${{ secrets.EMAILJS_SERVICE_ID }}
+      #     templateId: ${{ secrets.EMAILJS_TEMPLATE_ID }}
 
   type-checking:
     name: 🔬 Type checking
@@ -68,7 +77,6 @@ jobs:
       - name: Download deps
         uses: bahmutov/npm-install@v1
         with:
-          useLockFile: false
           working-directory: project-5
 
       - name: 🔬 Type checking
@@ -89,7 +97,6 @@ jobs:
       - name: Download deps
         uses: bahmutov/npm-install@v1
         with:
-          useLockFile: false
           working-directory: project-5
 
       - name: 💀 Deadcode checking
