@@ -56,6 +56,9 @@ jobs:
           start: yarn start
         env:
           CYPRESS_RECORD_KEY: 2e1f418e-f568-4593-add0-15dba69888b7
+          NEXT_PUBLIC_PUBLIC_KEY: ${{ secrets.EMAILJS_PUBLIC_KEY }}
+          NEXT_PUBLIC_SERVICE_ID: ${{ secrets.EMAILJS_SERVICE_ID }}
+          NEXT_PUBLIC_TEMPLATE_ID: ${{ secrets.EMAILJS_TEMPLATE_ID }}
 
       # - name: 🇨🇾 Cypress run
       #   uses: ./.github/actions/cypress-run
