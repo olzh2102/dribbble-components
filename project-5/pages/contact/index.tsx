@@ -15,7 +15,6 @@ import { ThemeContext } from '~contexts/theme-provider'
 
 const Contact = ({ serviceId, templateId, publicKey }) => {
   const { theme } = useContext(ThemeContext)
-
   const { onMouseOver, onMouseOut } = useContext(CursorContext)
 
   async function sendForm(formData: ContactFormFields) {
