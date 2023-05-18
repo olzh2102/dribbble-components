@@ -34,7 +34,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        containers: ['🐨', '🦦', '🐼']
+        containers: ['🐨', '🦦', '🐼', '🦧', '🦀']
     steps:
       - name: ⬇️ Checkout the branch
         uses: actions/checkout@v3
@@ -59,14 +59,6 @@ jobs:
           NEXT_PUBLIC_PUBLIC_KEY: ${{ secrets.EMAILJS_PUBLIC_KEY }}
           NEXT_PUBLIC_SERVICE_ID: ${{ secrets.EMAILJS_SERVICE_ID }}
           NEXT_PUBLIC_TEMPLATE_ID: ${{ secrets.EMAILJS_TEMPLATE_ID }}
-
-      # - name: 🇨🇾 Cypress run
-      #   uses: ./.github/actions/cypress-run
-      #   with:
-      #     workdir: project-5
-      #     publicKey: ${{ secrets.EMAILJS_PUBLIC_KEY }}
-      #     serviceId: ${{ secrets.EMAILJS_SERVICE_ID }}
-      #     templateId: ${{ secrets.EMAILJS_TEMPLATE_ID }}
 
   type-checking:
     name: 🔬 Type checking
