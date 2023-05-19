@@ -15,17 +15,20 @@ import { ThemeContext } from '~contexts/theme-provider'
 
 const Contact = ({ serviceId, templateId, publicKey }) => {
   const { theme } = useContext(ThemeContext)
-
   const { onMouseOver, onMouseOut } = useContext(CursorContext)
 
   async function sendForm(formData: ContactFormFields) {
     const submission = send(serviceId, templateId, formData, publicKey)
 
-    await toast.promise(submission, {
-      pending: 'Sending an email',
-      success: 'Email was send successfully',
-      error: 'Something went wrong',
-    })
+    try {
+      await toast.promise(submission, {
+        pending: 'Sending an email',
+        success: 'Email was send successfully',
+        error: 'Something went wrong',
+      })
+    } catch (e) {
+      console.error(e)
+    }
   }
 
   return (
@@ -50,7 +53,7 @@ const Contact = ({ serviceId, templateId, publicKey }) => {
           <LinkedinIcon />
         </Link>
       </div>
-      <ToastContainer theme={theme} autoClose={false} />
+      <ToastContainer theme={theme} />
     </div>
   )
 }

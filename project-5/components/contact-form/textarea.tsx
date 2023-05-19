@@ -21,6 +21,7 @@ export default function Textarea({
         project details
       </label>
       <textarea
+        data-cy="input-details"
         className="p-2 rounded-sm text-primary-zinc resize-none col-span-3 row-span-2 outline-0"
         name="details"
         id="details"

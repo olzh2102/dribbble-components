@@ -33,7 +33,7 @@ export default function ScrollWrapper({
         'h-full hidden-scrollbar ' +
         (direction === 'horizontal' ? `flex overflow-x-scroll gap-1` : 'overflow-y-scroll')
       }
-      data-test-id="scroll-wrapper"
+      data-cy="scroll-wrapper"
     >
       {children}
     </div>

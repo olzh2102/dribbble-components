@@ -37,14 +37,14 @@ export default function DesktopHeaderContent() {
         onMouseOver={onMouseOver('label', 'button')}
         onMouseOut={onMouseOut}
       >
-        <div className={LHS} role="left-side-header">
+        <div className={LHS} data-cy="language-and-theme-toggler-container">
           <div
-            data-test-id="language-toggler-wrapper"
+            data-cy="language-toggler-container"
             className="flex flex-col gap-1 pointer-events-auto"
           >
             <LangToggler />
           </div>
-          <div data-test-id="theme-toggler-wrapper" className="relative w-6 h-6">
+          <div data-cy="theme-toggler-container" className="relative w-6 h-6">
             <ThemeToggler
               textColor={clsx({
                 'text-primary-zinc dark:text-primary-milk': isHome,
@@ -63,9 +63,9 @@ export default function DesktopHeaderContent() {
         onMouseOver={onMouseOver('a')}
         onMouseOut={onMouseOut}
       >
-        <nav className={RHS} role="right-side-header">
+        <nav className={RHS} data-cy="navigation-menu">
           <ul
-            data-test-id="ul-nav-list"
+            data-cy="navigation-menu-list"
             className="flex flex-col h-full justify-between whitespace-nowrap text-xl font-medium"
           >
             {ROUTES.map((route) => (

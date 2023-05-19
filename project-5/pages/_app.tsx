@@ -7,6 +7,7 @@ import { Work_Sans } from '@next/font/google'
 import localFont from '@next/font/local'
 import { AnimatePresence } from 'framer-motion'
 
+import { PRELOADER_DELAY } from 'common/constants'
 import { Page } from 'common/types'
 import { Header, RoundedCorner } from '~components/layout'
 import Logo from '~components/logo'
@@ -38,7 +39,7 @@ export default function App({
 
       <main className={`${className} w-full h-full`}>
         <ThemeCursorProvider>
-          <Preloader duration={3000} />
+          <Preloader duration={PRELOADER_DELAY} />
           {pathname !== '/404' && <Header />}
 
           <RoundedCorner waveBackground={!!waveBackground}>
