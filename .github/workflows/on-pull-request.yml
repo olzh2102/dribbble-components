@@ -28,79 +28,79 @@ jobs:
       - name: 🚦 Run Testss
         run: yarn test
 
-  # integration-test:
-  #   name: 🧩 Cypress run
-  #   runs-on: ubuntu-latest
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       containers: ['🐨', '🦀', '🐼']
-  #   steps:
-  #     - name: ⬇️ Checkout the branch
-  #       uses: actions/checkout@v3
+  integration-test:
+    name: 🧩 Cypress run
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        containers: ['🐨', '🦀', '🐼']
+    steps:
+      - name: ⬇️ Checkout the branch
+        uses: actions/checkout@v3
 
-  #     - name: Download deps
-  #       uses: bahmutov/npm-install@v1
-  #       with:
-  #         useRollingCache: true
-  #         working-directory: project-5
+      - name: Download deps
+        uses: bahmutov/npm-install@v1
+        with:
+          useRollingCache: true
+          working-directory: project-5
 
-  #     - name: 🇨🇾 Cypress run
-  #       uses: cypress-io/github-action@v5
-  #       with:
-  #         working-directory: project-5
-  #         browser: chrome
-  #         install: false
-  #         parallel: true
-  #         record: true
-  #         build: yarn build
-  #         start: yarn start
-  #       env:
-  #         CYPRESS_RECORD_KEY: 2e1f418e-f568-4593-add0-15dba69888b7
-  #         NEXT_PUBLIC_PUBLIC_KEY: ${{ secrets.EMAILJS_PUBLIC_KEY }}
-  #         NEXT_PUBLIC_SERVICE_ID: ${{ secrets.EMAILJS_SERVICE_ID }}
-  #         NEXT_PUBLIC_TEMPLATE_ID: ${{ secrets.EMAILJS_TEMPLATE_ID }}
+      - name: 🇨🇾 Cypress run
+        uses: cypress-io/github-action@v5
+        with:
+          working-directory: project-5
+          browser: chrome
+          install: false
+          parallel: true
+          record: true
+          build: yarn build
+          start: yarn start
+        env:
+          CYPRESS_RECORD_KEY: 2e1f418e-f568-4593-add0-15dba69888b7
+          NEXT_PUBLIC_PUBLIC_KEY: ${{ secrets.EMAILJS_PUBLIC_KEY }}
+          NEXT_PUBLIC_SERVICE_ID: ${{ secrets.EMAILJS_SERVICE_ID }}
+          NEXT_PUBLIC_TEMPLATE_ID: ${{ secrets.EMAILJS_TEMPLATE_ID }}
 
-  # type-checking:
-  #   name: 🔬 Type checking
-  #   runs-on: ubuntu-latest
-  #   timeout-minutes: 15
-  #   env:
-  #     working-directory: project-5
-  #   defaults:
-  #     run:
-  #       working-directory: ${{ env.working-directory }}
-  #   steps:
-  #     - name: ⬇️ Checkout the branch
-  #       uses: actions/checkout@v3
+  type-checking:
+    name: 🔬 Type checking
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      working-directory: project-5
+    defaults:
+      run:
+        working-directory: ${{ env.working-directory }}
+    steps:
+      - name: ⬇️ Checkout the branch
+        uses: actions/checkout@v3
 
-  #     - name: Download deps
-  #       uses: bahmutov/npm-install@v1
-  #       with:
-  #         useRollingCache: true
-  #         working-directory: project-5
+      - name: Download deps
+        uses: bahmutov/npm-install@v1
+        with:
+          useRollingCache: true
+          working-directory: project-5
 
-  #     - name: 🔬 Type checking
-  #       run: yarn typecheck
+      - name: 🔬 Type checking
+        run: yarn typecheck
 
-  # deadcode-checking:
-  #   name: 💀 Deadcode checking
-  #   runs-on: ubuntu-latest
-  #   env:
-  #     working-directory: project-5
-  #   defaults:
-  #     run:
-  #       working-directory: ${{ env.working-directory }}
-  #   steps:
-  #     - name: ⬇️ Checkout the branch
-  #       uses: actions/checkout@v3
+  deadcode-checking:
+    name: 💀 Deadcode checking
+    runs-on: ubuntu-latest
+    env:
+      working-directory: project-5
+    defaults:
+      run:
+        working-directory: ${{ env.working-directory }}
+    steps:
+      - name: ⬇️ Checkout the branch
+        uses: actions/checkout@v3
 
-  #     - name: Download deps
-  #       uses: bahmutov/npm-install@v1
-  #       with:
-  #         useRollingCache: true
-  #         working-directory: project-5
+      - name: Download deps
+        uses: bahmutov/npm-install@v1
+        with:
+          useRollingCache: true
+          working-directory: project-5
 
-  #     - name: 💀 Deadcode checking
-  #       run: |
-  #         ${GITHUB_WORKSPACE}/.github/scripts/deadcode-check.sh
+      - name: 💀 Deadcode checking
+        run: |
+          ${GITHUB_WORKSPACE}/.github/scripts/deadcode-check.sh
