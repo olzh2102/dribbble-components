@@ -25,7 +25,7 @@ jobs:
           useRollingCache: true
           working-directory: project-5
 
-      - name: 🚦 Run Tests
+      - name: 🚦 Run Testss
         run: yarn test
 
   # integration-test:
