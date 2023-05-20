@@ -4,7 +4,7 @@ export const apiVersion =
 console.log(process.env)
 
 export const dataset = assertValue(
-  process.env.NEXT_PUBLIC_SANITY_DATASET,
+  process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
   'Missing environment variable: NEXT_PUBLIC_SANITY_DATASET'
 )
 
