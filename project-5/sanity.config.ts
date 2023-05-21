@@ -12,8 +12,8 @@ import { schema } from './sanity/schema'
 
 export default defineConfig({
   basePath: '/studio',
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || '',
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
+  projectId: 'supvdpio',
+  dataset: 'production',
   // Add and edit the content schema in the './sanity/schema' folder
   schema,
   plugins: [
