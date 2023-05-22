@@ -12,16 +12,19 @@ import { client } from '../../sanity/lib/client'
 const Projects = () => {
   return (
     <div className="flex flex-col h-full p-2">
-      <div className="flex justify-center gap-8 my-auto">
+      <div className="sm:flex sm:pt-0 pt-12 my-auto justify-center items-start gap-8 overflow-scroll hidden-scrollbar">
         {PROJECTS.map((project, i) => (
           <Link
             href={`/projects/${project}`}
-            className="flex flex-col text-primary-zinc dark:text-primary-milk uppercase"
+            className="flex flex-col gap-2 text-primary-zinc dark:text-primary-milk uppercase"
             key={i}
           >
-            <h2>{project}</h2>
+            <h2 className="sm:order-1">{project}</h2>
 
-            <div className="rounded overflow-hidden">
+            <span className="text-sm sm:text-right sm:order-3">design style: scandinavian</span>
+            <span className="text-sm sm:text-right sm:order-4">square meters: 78 sqm</span>
+
+            <div className="rounded overflow-hidden sm:order-2">
               <Image
                 key={i}
                 loader={imageLoader}
@@ -29,14 +32,9 @@ const Projects = () => {
                 width="280"
                 height="700"
                 alt="Project picture"
-                className="grayscale hover:grayscale-0 hover:scale-105 transition-all duration-500"
+                className="w-full grayscale hover:grayscale-0 hover:scale-105 transition-all duration-500"
               />
             </div>
-
-            <span className="text-sm text-right">
-              design style: scandinavian
-            </span>
-            <span className="text-sm text-right">square meters: 78 sqm</span>
           </Link>
         ))}
       </div>

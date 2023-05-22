@@ -9,7 +9,7 @@ export default function Languages({ mobile = false }: { mobile?: boolean }) {
   const styles = (lang: Locale) =>
     clsx({
       'text-action-peach dark:text-action-gold': locale == lang && mobile,
-      'text-primary-zinc dark:text-primary-milk': locale == lang && !mobile,
+      'text-primary-gold dark:text-primary-milk': locale == lang && !mobile,
       'text-primary-milk/40 dark:text-primary-zinc/40': locale == lang && asPath !== '/' && !mobile,
     })
 
