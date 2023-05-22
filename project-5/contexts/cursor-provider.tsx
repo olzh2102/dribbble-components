@@ -3,6 +3,7 @@ import { createContext, ReactNode, useCallback, useEffect, useMemo, useRef, useS
 import { motion } from 'framer-motion'
 
 import { HTMLElementSelector } from 'common/types'
+import useResponsive from '~hooks/use-responsive'
 
 export const CursorContext = createContext<{
   onMouseOver: (
@@ -21,6 +22,7 @@ export const CursorContext = createContext<{
 
 export default function CursorProvider({ children }: { children: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null)
+  const isMobile = useResponsive('sm')
 
   const [cursorPosition, setCursorPosition] = useState<{
     x: number
@@ -67,6 +69,10 @@ export default function CursorProvider({ children }: { children: ReactNode }) {
       })
   }, [])
 
+  useEffect(() => {
+    if (isMobile) setCursorHidden(true)
+  }, [])
+
   return (
     <CursorContext.Provider
       value={useMemo(() => ({ onMouseOver, onMouseOut }), [onMouseOver, onMouseOut])}
@@ -74,10 +80,14 @@ export default function CursorProvider({ children }: { children: ReactNode }) {
       <div
         ref={ref}
         className="w-full h-full"
-        onMouseMove={(e) => {
-          setCursorHidden(false)
-          setCursorPosition({ x: e.pageX, y: e.pageY })
-        }}
+        onMouseMove={
+          !isMobile
+            ? (e) => {
+                setCursorHidden(false)
+                setCursorPosition({ x: e.pageX, y: e.pageY })
+              }
+            : undefined
+        }
         onMouseOut={() => setCursorHidden(true)}
       >
         {!cursorHidden && (
