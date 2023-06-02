@@ -2,7 +2,7 @@ import { visionTool } from '@sanity/vision'
 import { defineConfig } from 'sanity'
 import { deskTool } from 'sanity/desk'
 
-import { schema } from './sanity/schema'
+import { schema } from './sanity/schemas'
 
 export default defineConfig({
   basePath: '/studio',
