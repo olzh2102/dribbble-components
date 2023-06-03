@@ -56,11 +56,11 @@ function PageOne() {
       data-test-id="hs-item"
       className="flex flex-[0_0_100%] flex-col md:flex-row text-primary-zinc dark:text-primary-milk"
     >
-      <div className="w-5/12 sm:text-4xl sm:font-normal font-medium text-xl uppercase sm:ml-10 my-auto">
+      <div className="w-5/12 sm:text-4xl sm:font-normal font-medium text-xl uppercase sm:ml-10 sm:mt-0 mt-12 my-auto p-2">
         <h1 className="italic">{project}</h1>
         <span>58 SQM.</span>
       </div>
-      <div className="md:w-2/12 flex flex-col mt-5">
+      <div className="md:w-2/12 flex flex-col sm:mt-5 p-2">
         <span>Design Style: Bohemian</span>
         <span>Location: Minsk, Belarus</span>
         <span>Year: 2019</span>
@@ -133,7 +133,7 @@ function PageThree() {
       data-test-id="hs-item"
       className="flex flex-[0_0_100%] flex-col md:flex-row text-primary-zinc dark:text-primary-milk"
     >
-      <div className="w-full sm:w-5/12 text-xl sm:text-4xl uppercase sm:ml-10 my-auto relative">
+      <div className="w-full sm:w-5/12 text-xl sm:text-4xl uppercase sm:ml-10 my-auto relative flex sm:block items-center justify-around">
         <h2 className="w-1/2 italic">Creating a Haven: The Art of Interior Design</h2>
         <Image
           loader={imageLoader}
@@ -141,7 +141,7 @@ function PageThree() {
           width="200"
           height="200"
           alt="Profile picture"
-          className="w-36 sm:w-52 rounded absolute top-10 sm:top-32 left-full sm:left-1/2"
+          className="w-36 sm:w-52 rounded sm:absolute top-10 sm:top-32 left-full sm:left-1/2"
         />
       </div>
       <div className="md:w-2/12 flex flex-col mt-5">
@@ -183,12 +183,16 @@ function PageFour() {
         className="md:w-6/12 object-cover object-left"
       />
 
-      <h3 className="sm:hidden text-center text-2xl italic uppercase">Other projects</h3>
+      <h3 className="sm:hidden text-center text-2xl italic uppercase mt-20">projects</h3>
 
-      <div className="my-auto flex sm:flex-col flex-row items-end sm:items-center gap-2 mr-2 font-medium">
+      <div className="flex my-auto sm:flex-col flex-wrap items-end sm:items-center gap-2 sm:mr-2 font-medium">
         {restProjects.map((project) => (
-          <Link href={project} key={project} className="flex items-center gap-2">
-            <div className="hidden sm:block text-right">
+          <Link
+            href={project}
+            key={project}
+            className="flex flex-grow flex-shrink w-1/3 items-center gap-2"
+          >
+            <div className="max-sm:hidden text-right">
               <h3 className="capitalized">{project}</h3>
               <span>Some description</span>
             </div>
@@ -198,7 +202,7 @@ function PageFour() {
               width="150"
               height="100"
               alt="Profile picture"
-              className="rounded sm:grayscale hover:grayscale-0"
+              className="max-sm:w-full max-sm:h-80 rounded sm:grayscale hover:grayscale-0 object-cover object-bottom"
             />
           </Link>
         ))}

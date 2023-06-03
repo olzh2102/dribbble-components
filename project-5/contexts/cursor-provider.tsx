@@ -71,7 +71,7 @@ export default function CursorProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (isMobile) setCursorHidden(true)
-  }, [])
+  }, [isMobile])
 
   return (
     <CursorContext.Provider
