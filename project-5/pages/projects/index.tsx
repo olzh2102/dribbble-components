@@ -1,9 +1,13 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
+import { groq } from 'next-sanity'
+
 import { PROJECTS } from 'common/constants'
 import { imageLoader } from 'common/utils'
 import { withPageTransition } from '~components/layout'
+
+import { client } from '../../sanity/lib/client'
 
 const Projects = () => {
   return (
@@ -41,3 +45,9 @@ const Projects = () => {
 }
 
 export default withPageTransition(Projects)
+
+const query = groq`*`
+export async function getStaticProps() {
+  const data = await client.fetch(query)
+  return { props: { data } }
+}
