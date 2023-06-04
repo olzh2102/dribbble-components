@@ -7,7 +7,7 @@ export default function Logo() {
       width="40"
       height="40"
       alt="logo"
-      className="absolute mix-blend-difference top-4 left-4"
+      className="w-auto h-auto absolute mix-blend-difference top-4 left-4"
     />
   )
 }
