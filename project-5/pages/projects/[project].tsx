@@ -56,7 +56,7 @@ function PageOne() {
       data-test-id="hs-item"
       className="flex flex-[0_0_100%] flex-col md:flex-row text-primary-zinc dark:text-primary-milk"
     >
-      <div className="w-5/12 sm:text-4xl sm:font-normal font-medium text-xl uppercase sm:ml-10 sm:mt-0 mt-12 my-auto p-2">
+      <div className="w-5/12 sm:text-4xl max-sm:font-medium text-xl uppercase sm:ml-10 max-sm:mt-12 my-auto p-2">
         <h1 className="italic">{project}</h1>
         <span>58 SQM.</span>
       </div>
@@ -185,12 +185,12 @@ function PageFour() {
 
       <h3 className="sm:hidden text-center text-2xl italic uppercase mt-20">projects</h3>
 
-      <div className="flex my-auto sm:flex-col flex-wrap items-end sm:items-center gap-2 sm:mr-2 font-medium">
+      <div className="flex flex-wrap my-auto sm:flex-col gap-2 sm:mr-5 font-medium uppercase">
         {restProjects.map((project) => (
           <Link
             href={project}
             key={project}
-            className="flex flex-grow flex-shrink w-1/3 items-center gap-2"
+            className="flex flex-grow flex-shrink items-start max-sm:w-1/3 gap-2"
           >
             <div className="max-sm:hidden text-right">
               <h3 className="capitalized">{project}</h3>
@@ -199,7 +199,7 @@ function PageFour() {
             <Image
               loader={imageLoader}
               src={`${project}.jpg`}
-              width="150"
+              width="200"
               height="100"
               alt="Profile picture"
               className="max-sm:w-full max-sm:h-80 rounded sm:grayscale hover:grayscale-0 object-cover object-bottom"
