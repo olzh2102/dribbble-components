@@ -70,7 +70,7 @@ const About = () => {
         data-cy="about-experience"
         className="flex flex-[0_0_100%] text-primary-zinc dark:text-primary-milk"
       >
-        <div className="flex m-auto p-2 gap-10 w-1/2">
+        <div className="flex max-sm:flex-col m-auto p-2 gap-10 sm:w-1/2">
           {EXPERIENCES.map((exp) => (
             <div key={exp.title} className="space-y-3">
               <h4 className="font-semibold text-xl">{exp.title}</h4>
