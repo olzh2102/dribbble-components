@@ -17,12 +17,12 @@ export default function Textarea({
 
   return (
     <>
-      <label htmlFor="details" className="row-span-2">
+      <label htmlFor="details" className="row-span-2 block mt-3">
         project details
       </label>
       <textarea
         data-cy="input-details"
-        className="p-2 rounded-sm text-primary-zinc resize-none col-span-3 row-span-2 outline-0"
+        className="w-full p-2 rounded-sm text-primary-zinc resize-none col-span-3 row-span-2 outline-0"
         name="details"
         id="details"
         value={value}
@@ -38,7 +38,7 @@ export default function Textarea({
           hidden: { opacity: 0 },
           initial: { opacity: 0 },
         }}
-        className="text-action-peach dark:text-action-gold row-span-2 col-span-3 lowercase"
+        className="block text-action-peach dark:text-action-gold row-span-2 col-span-3 lowercase"
         role={errorMessage ? 'alert' : 'none'}
       >
         {errorMessage ? errorMessage : ''}

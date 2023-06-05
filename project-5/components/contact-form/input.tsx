@@ -20,11 +20,13 @@ export default function Input({
 
   return (
     <>
-      <label htmlFor={name}>{name}</label>
+      <label className="block mt-3" htmlFor={name}>
+        {name}
+      </label>
       <input
         id={name}
         data-cy={`input-${name}`}
-        className="p-2 rounded-sm text-primary-zinc col-span-3 outline-0 caret-primary-milk dark:caret-primary-zinc"
+        className="w-full p-2 rounded-sm text-primary-zinc col-span-3 outline-0 caret-primary-milk dark:caret-primary-zinc"
         type="text"
         name={name}
         value={value}
@@ -40,7 +42,7 @@ export default function Input({
           hidden: { opacity: 0 },
           initial: { opacity: 0 },
         }}
-        className="text-action-peach dark:text-action-gold col-span-3 lowercase"
+        className="block text-action-peach dark:text-action-gold col-span-3 lowercase"
         role={errorMessage ? 'alert' : 'none'}
       >
         {errorMessage}
