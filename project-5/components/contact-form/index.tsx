@@ -20,7 +20,7 @@ export default function ContactForm({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="w-[1000px] text-primary-zinc uppercase dark:text-primary-milk grid grid-cols-7 grid-rows-4 gap-3"
+      className="sm:w-[1000px] max-sm:h-[300px] text-primary-zinc uppercase dark:text-primary-milk sm:grid grid-cols-7 grid-rows-4 gap-3"
     >
       <Input name="name" value={formState.name} onChange={setValue} errorMessage={errors.name} />
       <Input name="email" value={formState.email} onChange={setValue} errorMessage={errors.email} />
@@ -37,7 +37,7 @@ export default function ContactForm({
         }}
         type="submit"
         disabled={isDisabled}
-        className="bg-action-peach dark:bg-action-gold hover:text-primary-milk rounded-full py-4 px-8 col-start-4"
+        className="ml-auto mr-0 block bg-action-peach dark:bg-action-gold hover:text-primary-milk rounded-full py-4 px-8 col-start-4"
       >
         send
       </motion.button>

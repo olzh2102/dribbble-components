@@ -45,7 +45,7 @@ export default function App({
           <RoundedCorner waveBackground={!!waveBackground}>
             {waveBackground && <WaveMesh />}
 
-            <AnimatePresence mode="wait">
+            <AnimatePresence mode="sync">
               {hasLogo && <Logo />}
               <Component {...pageProps} key={asPath} />
             </AnimatePresence>

@@ -33,11 +33,11 @@ const Contact = ({ serviceId, templateId, publicKey }) => {
 
   return (
     <div className="h-full flex flex-col">
-      <div className="flex-1 w-min grid place-content-center gap-10 p-10">
-        <h1 className="font-semibold text-7xl text-primary-zinc dark:text-primary-milk whitespace-nowrap">
-          Let&apos;s chat !
+      <div className="flex-1 sm:w-min grid place-content-center gap-10 sm:p-10">
+        <h1 className="font-bold sm:text-7xl text-5xl text-primary-zinc dark:text-primary-milk whitespace-nowrap uppercase">
+          Let&apos;s chat!
         </h1>
-        <div className="ml-28">
+        <div className="sm:ml-28">
           <Form onSubmit={sendForm} />
         </div>
       </div>

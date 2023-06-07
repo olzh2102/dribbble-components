@@ -31,7 +31,9 @@ export default function ScrollWrapper({
       ref={ref}
       className={
         'h-full hidden-scrollbar ' +
-        (direction === 'horizontal' ? `flex overflow-x-scroll gap-1` : 'overflow-y-scroll')
+        (direction === 'horizontal'
+          ? `flex overflow-x-scroll gap-1`
+          : 'overflow-y-scroll space-y-4')
       }
       data-cy="scroll-wrapper"
     >

@@ -42,8 +42,8 @@ const SERVICES = [
 const Services = () => {
   return (
     <div className="flex h-full">
-      <div className="w-7/12 h-min mt-auto mb-0 dark:text-primary-milk">
-        <h1 className="uppercase text-7xl font-semibold m-4">services</h1>
+      <div className="sm:w-7/12 h-full sm:h-min mt-auto mb-0 dark:text-primary-milk max-sm:overflow-scroll">
+        <h1 className="uppercase sm:text-7xl text-xl font-semibold m-4">services</h1>
         <ul
           className={`
           border-y border-primary-zinc dark:border-primary-milk
@@ -52,9 +52,10 @@ const Services = () => {
         `}
         >
           {SERVICES.map((service, i) => (
-            <li key={i} className="grid grid-cols-6 items-center p-4">
+            <li key={i} className="grid grid-cols-6 items-center p-4 max-sm:gap-2">
               <span
                 className={`
+                max-sm:col-span-2
                 text-4xl w-20 h-20 rounded-full
                 border-2 border-primary-zinc dark:border-primary-milk
                 grid place-content-center
@@ -62,10 +63,8 @@ const Services = () => {
               >
                 {i + 1}
               </span>
-              <h2 className="col-span-2 uppercase font-medium">
-                {service.title}
-              </h2>
-              <p className="col-span-3 text-primary-zinc/80 dark:text-primary-milk/70">
+              <h2 className="sm:col-span-2 col-span-4 uppercase font-medium">{service.title}</h2>
+              <p className="sm:col-span-3 col-span-full text-primary-zinc/80 dark:text-primary-milk/70">
                 {service.description}
               </p>
             </li>
@@ -79,7 +78,8 @@ const Services = () => {
         width="1000"
         height="2000"
         alt="Profile picture"
-        className="md:w-5/12 grayscale object-cover object-left"
+        className="max-sm:hidden md:w-5/12 grayscale object-cover object-left"
+        priority
       />
     </div>
   )

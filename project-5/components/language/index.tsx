@@ -1,15 +1,16 @@
-import clsx from 'clsx'
 import Link from 'next/link'
 import { Locale, useRouter } from 'next/router'
+
+import clsx from 'clsx'
 
 export default function Languages({ mobile = false }: { mobile?: boolean }) {
   const { locales, locale, asPath } = useRouter()
 
   const styles = (lang: Locale) =>
     clsx({
-      'text-primary-zinc dark:text-primary-milk': locale == lang,
-      'text-primary-milk/40 dark:text-primary-zinc/40':
-        locale == lang && asPath !== '/',
+      'text-action-peach dark:text-action-gold': locale == lang && mobile,
+      'text-primary-gold dark:text-primary-milk': locale == lang && !mobile,
+      'text-primary-milk/40 dark:text-primary-zinc/40': locale == lang && asPath !== '/' && !mobile,
     })
 
   return (
