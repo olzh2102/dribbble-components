@@ -13,30 +13,38 @@ import { CursorContext } from '~contexts/cursor-provider'
 import useInScroll from '~hooks/use-in-scroll'
 import useResponsive from '~hooks/use-responsive'
 
-const Project = withPageTransition(() => {
-  const { project } = useRouter().query
+import { client } from '~sanity/lib/client'
+
+const Project = withPageTransition(({ project }: { project: any }) => {
+  const { locale } = useRouter()
+  console.log('🚀 ~ file: [project].tsx:19 ~ Project ~ project:', project)
   const { onMouseOver, onMouseOut } = useContext(CursorContext)
 
   const isMobile = useResponsive('sm')
 
-  if (!PROJECTS.includes(project))
-    return (
-      <div className="grid place-content-center w-full h-full">
-        <h1>Unfortunately there isn&apos;t such a project.</h1>
-        <Link
-          href="/projects"
-          onMouseOver={onMouseOver('a')}
-          onMouseOut={onMouseOut}
-          className="uppercase font-medium text-action-peach dark:text-action-gold text-lg"
-        >
-          Available projects
-        </Link>
-      </div>
-    )
+  // if (!PROJECTS.includes(project))
+  //   return (
+  //     <div className="grid place-content-center w-full h-full">
+  //       <h1>Unfortunately there isn&apos;t such a project.</h1>
+  //       <Link
+  //         href="/projects"
+  //         onMouseOver={onMouseOver('a')}
+  //         onMouseOut={onMouseOut}
+  //         className="uppercase font-medium text-action-peach dark:text-action-gold text-lg"
+  //       >
+  //         Available projects
+  //       </Link>
+  //     </div>
+  //   )
 
   return (
     <ScrollWrapper direction={isMobile ? 'vertical' : 'horizontal'}>
-      <PageOne />
+      <PageOne
+        name={project.name}
+        area={project.area}
+        location={project.location[locale]}
+        year={project.year}
+      />
       <PageTwo />
       <PageThree />
       <PageFour />
@@ -48,26 +56,52 @@ export default Project
 
 Project.hasLogo = false
 
-function PageOne() {
-  const { project } = useRouter().query
+export async function getStaticPaths() {
+  const paths = await client.fetch(`*[_type == "project" && defined(slug.current)][].slug.current`)
+  return {
+    paths: paths.map((slug) => ({ params: { slug } })),
+    fallback: true,
+  }
+}
 
+export async function getStaticProps(ctx: any) {
+  const { slug = '' } = ctx.params
+  const project = await client.fetch(`*[_type == "project" && defined(slug.current == $slug)][0]`, {
+    slug,
+  })
+  return {
+    props: { project },
+  }
+}
+
+function PageOne({
+  name,
+  area,
+  location,
+  year,
+}: {
+  name: string
+  area: number
+  location: string
+  year: number
+}) {
   return (
     <div
       data-test-id="hs-item"
       className="flex flex-[0_0_100%] flex-col md:flex-row text-primary-zinc dark:text-primary-milk"
     >
       <div className="w-5/12 sm:text-4xl max-sm:font-medium text-xl uppercase sm:ml-10 max-sm:mt-12 my-auto p-2">
-        <h1 className="italic">{project}</h1>
-        <span>58 SQM.</span>
+        <h1 className="italic">{name}</h1>
+        <span>{area} SQM.</span>
       </div>
       <div className="md:w-2/12 flex flex-col sm:mt-5 p-2">
         <span>Design Style: Bohemian</span>
-        <span>Location: Minsk, Belarus</span>
-        <span>Year: 2019</span>
+        <span>Location: {location}</span>
+        <span>Year: {year}</span>
       </div>
       <Image
         loader={imageLoader}
-        src={`${project}.jpg`}
+        src={`project-1.jpg`}
         width="1000"
         height="2000"
         alt="Profile picture"
@@ -121,7 +155,6 @@ function PageTwo() {
 }
 
 function PageThree() {
-  const { project } = useRouter().query
   const { ref, animate, variants } = useInScroll()
 
   return (
@@ -151,7 +184,7 @@ function PageThree() {
       </div>
       <Image
         loader={imageLoader}
-        src={`${project}.jpg`}
+        src={`project-1.jpg`}
         width="1000"
         height="2000"
         alt="Profile picture"

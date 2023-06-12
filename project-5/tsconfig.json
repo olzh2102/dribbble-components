@@ -29,7 +29,8 @@
     "paths": {
       "~components/*": ["components/*"],
       "~contexts/*": ["contexts/*"],
-      "~hooks/*": ["hooks/*"]
+      "~hooks/*": ["hooks/*"],
+      "~sanity/*": ["sanity/*"]
     }
   },
   "include": [
