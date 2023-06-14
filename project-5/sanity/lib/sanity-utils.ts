@@ -9,7 +9,7 @@ export async function getProjects() {
   })
 
   return client.fetch(
-    groq`*[_type=="project"]{
+    groq`*[_type=="project"] | order(order){
         _id,
         name,
         "slug": slug.current,

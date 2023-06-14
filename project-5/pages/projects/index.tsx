@@ -18,7 +18,7 @@ const Projects = ({ data }: { data: any }) => {
             className="flex flex-col gap-2 text-primary-zinc dark:text-primary-milk uppercase"
             key={project._id}
           >
-            <h2 className="sm:order-1 font-medium sm:font-normal">{project.name}</h2>
+            <h2 className="sm:order-1 font-medium">{project.name}</h2>
 
             <span className="text-sm sm:text-right sm:order-3">design style: scandinavian</span>
             <span className="text-sm sm:text-right sm:order-4">
@@ -29,7 +29,7 @@ const Projects = ({ data }: { data: any }) => {
               <Image
                 key={project._id}
                 loader={imageLoader}
-                src={`project-${i + 1}.jpg`}
+                src={`${project.slug}.jpg`}
                 width="280"
                 height="700"
                 alt="Project picture"

@@ -33,6 +33,12 @@ const project = {
       name: 'year',
       title: 'Year',
       type: 'number',
+      order: 'number',
+    },
+    {
+      name: 'order',
+      title: 'Order',
+      type: 'number',
     },
   ],
 }

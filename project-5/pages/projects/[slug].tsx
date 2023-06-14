@@ -17,7 +17,7 @@ import { client } from '~sanity/lib/client'
 
 const Project = withPageTransition(({ project }: { project: any }) => {
   const { locale } = useRouter()
-  console.log('🚀 ~ file: [project].tsx:19 ~ Project ~ project:', project)
+  // console.log('🚀 ~ file: [project].tsx:19 ~ Project ~ project:', project)
   const { onMouseOver, onMouseOut } = useContext(CursorContext)
 
   const isMobile = useResponsive('sm')
@@ -66,9 +66,11 @@ export async function getStaticPaths() {
 
 export async function getStaticProps(ctx: any) {
   const { slug = '' } = ctx.params
+  console.log('🚀 ~ file: [slug].tsx:69 ~ getStaticProps ~ slug:', slug)
   const project = await client.fetch(`*[_type == "project" && defined(slug.current == $slug)][0]`, {
     slug,
   })
+  console.log('🚀 ~ file: [slug].tsx:71 ~ project ~ project:', project)
   return {
     props: { project },
   }
