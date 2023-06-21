@@ -25,4 +25,5 @@ export type Project = {
   area: number
   year: number
   location: Record<Locale, string>
+  images: string[]
 }

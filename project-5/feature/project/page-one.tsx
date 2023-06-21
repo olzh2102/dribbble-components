@@ -8,8 +8,8 @@ export default function PageOne({
   area,
   location,
   year,
-  slug,
-}: Omit<Project, 'location' | '_id'> & { location: string }) {
+  imageSrc,
+}: Omit<Project, 'location' | '_id' | 'images' | 'slug'> & { location: string; imageSrc: string }) {
   return (
     <div
       data-test-id="hs-item"
@@ -26,7 +26,7 @@ export default function PageOne({
       </div>
       <Image
         loader={imageLoader}
-        src={`${slug}.jpg`}
+        src={imageSrc}
         width="1000"
         height="2000"
         alt="Profile picture"

@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import { imageLoader } from 'common/utils'
 import useInScroll from '~hooks/use-in-scroll'
 
-export default function PageThree() {
+export default function PageThree({ images }: { images: string[] }) {
   const { ref, animate, variants } = useInScroll()
 
   return (
@@ -21,7 +21,7 @@ export default function PageThree() {
         <h2 className="w-1/2 italic">Creating a Haven: The Art of Interior Design</h2>
         <Image
           loader={imageLoader}
-          src={`project-4.jpg`}
+          src={images[0]}
           width="200"
           height="200"
           alt="Profile picture"
@@ -35,7 +35,7 @@ export default function PageThree() {
       </div>
       <Image
         loader={imageLoader}
-        src={`project-1.jpg`}
+        src={images[1]}
         width="1000"
         height="2000"
         alt="Profile picture"

@@ -21,6 +21,7 @@ const Project = withPageTransition(
   ({ project, projects }: { project?: TProject; projects: TProject[] }) => {
     const { locale } = useRouter()
     const { onMouseOver, onMouseOut } = useContext(CursorContext)
+    console.log(project)
 
     const isMobile = useResponsive('sm')
 
@@ -42,15 +43,15 @@ const Project = withPageTransition(
     return (
       <ScrollWrapper direction={isMobile ? 'vertical' : 'horizontal'}>
         <PageOne
-          slug={project.slug}
           name={project.name}
           area={project.area}
           location={project.location[locale]}
           year={project.year}
+          imageSrc={project.images[0]}
         />
-        <PageTwo />
-        <PageThree />
-        <PageFour projects={projects} />
+        <PageTwo images={project.images.slice(1, 3)} />
+        <PageThree images={project.images.slice(3, 5)} />
+        <PageFour imageSrc={project.images[5]} projects={projects} />
       </ScrollWrapper>
     )
   }

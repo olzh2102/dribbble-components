@@ -8,7 +8,13 @@ import { Project } from 'common/types'
 import { imageLoader } from 'common/utils'
 import useInScroll from '~hooks/use-in-scroll'
 
-export default function PageFour({ projects }: { projects: Project[] }) {
+export default function PageFour({
+  projects,
+  imageSrc,
+}: {
+  imageSrc: string
+  projects: Project[]
+}) {
   const { slug } = useRouter().query
   const restProjects = projects.filter((p) => p.slug !== slug)
   const { ref, animate, variants } = useInScroll()
@@ -23,7 +29,7 @@ export default function PageFour({ projects }: { projects: Project[] }) {
     >
       <Image
         loader={imageLoader}
-        src={`profile.jpg`}
+        src={imageSrc}
         width="1000"
         height="2000"
         alt="Profile picture"

@@ -40,6 +40,12 @@ const project = {
       title: 'Order',
       type: 'number',
     },
+    {
+      name: 'images',
+      title: 'Images',
+      type: 'array',
+      of: [{ type: 'string' }],
+    },
   ],
 }
 

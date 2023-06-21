@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import { imageLoader } from 'common/utils'
 import useInScroll from '~hooks/use-in-scroll'
 
-export default function PageTwo() {
+export default function PageTwo({ images }: { images: string[] }) {
   const { ref, animate, variants } = useInScroll()
 
   return (
@@ -20,7 +20,7 @@ export default function PageTwo() {
         <div className="hidden sm:block flex-1 relative">
           <Image
             loader={imageLoader}
-            src={`project-3.jpg`}
+            src={images[0]}
             width="300"
             height="200"
             alt="Profile picture"
@@ -38,7 +38,7 @@ export default function PageTwo() {
       </div>
       <Image
         loader={imageLoader}
-        src={`project-2.jpg`}
+        src={images[1]}
         width="1000"
         height="2000"
         alt="Profile picture"
