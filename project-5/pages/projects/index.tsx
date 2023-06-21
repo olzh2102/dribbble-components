@@ -1,18 +1,17 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
+import { Project } from 'common/types'
 import { imageLoader } from 'common/utils'
 import { withPageTransition } from '~components/layout'
 
 import { getProjects } from '~sanity/lib/sanity-utils'
 
-const Projects = ({ data }: { data: any }) => {
-  console.log(data)
-
+const Projects = ({ projects }: { projects: Project[] }) => {
   return (
     <div className="flex flex-col h-full p-2">
       <div className="sm:flex sm:pt-0 max-sm:space-y-6 pt-16 my-auto justify-center items-start gap-8 overflow-scroll hidden-scrollbar">
-        {data.map((project, i) => (
+        {projects.map((project) => (
           <Link
             href={`/projects/${project.slug}`}
             className="flex flex-col gap-2 text-primary-zinc dark:text-primary-milk uppercase"
@@ -46,6 +45,6 @@ const Projects = ({ data }: { data: any }) => {
 export default withPageTransition(Projects)
 
 export async function getStaticProps() {
-  const data = await getProjects()
-  return { props: { data } }
+  const projects = await getProjects()
+  return { props: { projects } }
 }

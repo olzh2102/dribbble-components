@@ -30,7 +30,8 @@
       "~components/*": ["components/*"],
       "~contexts/*": ["contexts/*"],
       "~hooks/*": ["hooks/*"],
-      "~sanity/*": ["sanity/*"]
+      "~sanity/*": ["sanity/*"],
+      "~feature/*": ["feature/*"],
     }
   },
   "include": [
