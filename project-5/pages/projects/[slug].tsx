@@ -62,6 +62,7 @@ Project.hasLogo = false
 
 export async function getStaticPaths() {
   const paths = await client.fetch(`*[_type == "project" && defined(slug.current)][].slug.current`)
+
   return {
     paths: paths.map((slug) => ({ params: { slug } })),
     fallback: true,
