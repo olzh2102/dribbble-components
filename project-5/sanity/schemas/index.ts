@@ -1,5 +1,6 @@
 import { SchemaTypeDefinition } from 'sanity'
 
+import about from './about'
 import project from './project'
 
 const supportedLanguages = [
@@ -28,5 +29,5 @@ const localeString = {
 }
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [localeString, project],
+  types: [localeString, project, about],
 }
