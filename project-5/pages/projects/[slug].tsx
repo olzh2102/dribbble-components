@@ -21,7 +21,6 @@ const Project = withPageTransition(
   ({ project, projects }: { project?: TProject; projects: TProject[] }) => {
     const { locale } = useRouter()
     const { onMouseOver, onMouseOut } = useContext(CursorContext)
-    console.log(project)
 
     const isMobile = useResponsive('sm')
 
