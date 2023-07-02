@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 
 import { Project } from 'common/types'
 import { imageLoader } from 'common/utils'
@@ -9,7 +10,12 @@ export default function PageOne({
   location,
   year,
   imageSrc,
-}: Omit<Project, 'location' | '_id' | 'images' | 'slug'> & { location: string; imageSrc: string }) {
+  description,
+}: Omit<Project, 'location' | '_id' | 'images' | 'slug' | 'category'> & {
+  location: string
+  imageSrc: string
+}) {
+  const { locale } = useRouter()
   return (
     <div
       data-test-id="hs-item"
@@ -23,6 +29,7 @@ export default function PageOne({
         <span>Design Style: Bohemian</span>
         <span>Location: {location}</span>
         <span>Year: {year}</span>
+        <p>{description[locale]}</p>
       </div>
       <Image
         loader={imageLoader}

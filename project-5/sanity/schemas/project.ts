@@ -20,8 +20,8 @@ const project = {
       type: 'number',
     },
     {
-      name: 'designStyle',
-      title: 'Design style',
+      name: 'category',
+      title: 'Category',
       type: 'localeString',
     },
     {
@@ -34,6 +34,11 @@ const project = {
       title: 'Year',
       type: 'number',
       order: 'number',
+    },
+    {
+      name: 'description',
+      title: 'Description',
+      type: 'localeString',
     },
     {
       name: 'order',

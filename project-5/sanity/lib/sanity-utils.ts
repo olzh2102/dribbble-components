@@ -15,7 +15,9 @@ export async function getProjects() {
         "slug": slug.current,
         area,
         location,
-        year
+        year,
+        category,
+        description
     }`
   )
 }

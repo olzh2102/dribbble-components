@@ -26,4 +26,6 @@ export type Project = {
   year: number
   location: Record<Locale, string>
   images: string[]
+  category: Record<Locale, string>
+  description: Record<Locale, string>
 }
