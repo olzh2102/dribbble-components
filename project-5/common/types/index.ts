@@ -28,4 +28,5 @@ export type Project = {
   images: string[]
   category: Record<Locale, string>
   description: Record<Locale, string>
+  photo: Record<Locale, string>
 }

@@ -47,6 +47,7 @@ const Project = withPageTransition(
           location={project.location[locale]}
           year={project.year}
           description={project.description}
+          photo={project.photo}
           imageSrc={project.images[0]}
         />
         <PageTwo images={project.images.slice(1, 3)} />
@@ -62,9 +63,7 @@ export default Project
 Project.hasLogo = false
 
 export async function getStaticPaths() {
-  const paths = await client.fetch(
-    `*[_type == "project" && defined(slug.current)][].slug.current`
-  )
+  const paths = await client.fetch(`*[_type == "project" && defined(slug.current)][].slug.current`)
 
   return {
     paths: paths.map((slug) => ({ params: { slug } })),
@@ -77,12 +76,9 @@ export async function getStaticProps(ctx: GetStaticPropsContext) {
 
   const projects = await getProjects()
   const { slug = '' } = ctx.params
-  const project = await client.fetch(
-    `*[_type == "project" && slug.current == '${slug}'][0]`,
-    {
-      slug,
-    }
-  )
+  const project = await client.fetch(`*[_type == "project" && slug.current == '${slug}'][0]`, {
+    slug,
+  })
 
   return {
     props: { project: { ...project, slug: project.slug.current }, projects },

@@ -17,21 +17,15 @@ export default function PageThree({ images }: { images: string[] }) {
       data-test-id="hs-item"
       className="flex flex-[0_0_100%] flex-col md:flex-row text-primary-zinc dark:text-primary-milk"
     >
-      <div className="w-full sm:w-5/12 text-xl sm:text-4xl uppercase sm:ml-10 my-auto relative flex sm:block items-center justify-around">
-        <h2 className="w-1/2 italic">Creating a Haven: The Art of Interior Design</h2>
+      <div className="w-4/12 grid place-content-center">
         <Image
           loader={imageLoader}
           src={images[0]}
-          width="200"
-          height="200"
+          width="250"
+          height="350"
           alt="Profile picture"
-          className="w-36 sm:w-52 rounded sm:absolute top-10 sm:top-32 left-full sm:left-1/2"
+          className="rounded object-cover"
         />
-      </div>
-      <div className="md:w-2/12 flex flex-col mt-5">
-        <span>Design Style: Bohemian</span>
-        <span>Location: Minsk, Belarus</span>
-        <span>Year: 2019</span>
       </div>
       <Image
         loader={imageLoader}
@@ -39,7 +33,7 @@ export default function PageThree({ images }: { images: string[] }) {
         width="1000"
         height="2000"
         alt="Profile picture"
-        className="md:w-5/12 object-cover object-left"
+        className="w-8/12 object-cover object-left"
       />
     </motion.div>
   )

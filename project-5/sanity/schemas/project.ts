@@ -15,6 +15,11 @@ const project = {
       options: { source: 'name' },
     },
     {
+      name: 'photo',
+      title: 'Photo',
+      type: 'localeString',
+    },
+    {
       name: 'area',
       title: 'Area',
       type: 'number',

@@ -7,6 +7,7 @@ const supportedLanguages = [
   { id: 'en', title: 'English', isDefault: true },
   { id: 'de', title: 'German' },
   { id: 'ru', title: 'Russian' },
+  { id: 'by', title: 'Belarusian' },
 ]
 
 const localeString = {

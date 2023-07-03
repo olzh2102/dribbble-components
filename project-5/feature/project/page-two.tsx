@@ -16,34 +16,24 @@ export default function PageTwo({ images }: { images: string[] }) {
       transition={{ duration: 1, ease: 'easeOut' }}
       className="sm:flex flex-[0_0_100%] text-primary-zinc dark:text-primary-milk"
     >
-      <div className="w-full flex flex-col px-2 py-5 sm:order-2">
-        <div className="hidden sm:block flex-1 relative">
-          <Image
-            loader={imageLoader}
-            src={images[0]}
-            width="300"
-            height="200"
-            alt="Profile picture"
-            className="rounded absolute top-40 right-40"
-          />
-        </div>
-        <div>
-          <h2 className="text-5xl uppercase font-semibold italic">Living Room</h2>
-          <p className="text-lg">
-            Living room design refers to the arrangement and styling of furniture, decor, lighting,
-            and other elements in a space typically used for socializing, relaxation, and
-            entertainment.
-          </p>
-        </div>
-      </div>
       <Image
         loader={imageLoader}
         src={images[1]}
         width="1000"
         height="2000"
         alt="Profile picture"
-        className="md:w-5/12 object-cover object-left sm:order-1"
+        className="w-4/12 object-cover object-left"
       />
+      <div className="w-8/12 grid place-content-center">
+        <Image
+          loader={imageLoader}
+          src={images[0]}
+          width="700"
+          height="500"
+          alt="Profile picture"
+          className="rounded object-cover"
+        />
+      </div>
     </motion.div>
   )
 }

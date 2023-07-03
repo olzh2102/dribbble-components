@@ -11,7 +11,8 @@ export default function PageOne({
   year,
   imageSrc,
   description,
-}: Omit<Project, 'location' | '_id' | 'images' | 'slug' | 'category'> & {
+  photo,
+}: Omit<Project, 'location' | '_id' | 'images' | 'slug' | 'category' | 'photo'> & {
   location: string
   imageSrc: string
 }) {
@@ -21,15 +22,21 @@ export default function PageOne({
       data-test-id="hs-item"
       className="flex flex-[0_0_100%] flex-col md:flex-row text-primary-zinc dark:text-primary-milk"
     >
-      <div className="w-5/12 sm:text-4xl max-sm:font-medium text-xl uppercase sm:ml-10 max-sm:mt-12 my-auto p-2">
-        <h1 className="italic">{name}</h1>
-        <span>{area} SQM.</span>
-      </div>
-      <div className="md:w-2/12 flex flex-col sm:mt-5 p-2">
-        <span>Design Style: Bohemian</span>
-        <span>Location: {location}</span>
-        <span>Year: {year}</span>
-        <p>{description[locale]}</p>
+      <div className="flex flex-col justify-between w-8/12 p-10">
+        <div className="flex flex-col text-right">
+          <span>Design Style: Bohemian</span>
+          <span>Location: {location}</span>
+          <span>Photo: {photo[locale]}</span>
+          <span>Area: {area} sqm.</span>
+          <span>Year: {year}</span>
+        </div>
+        <div className="space-y-10">
+          <div className="sm:text-4xl text-xl uppercase">
+            <h2 className="font-light">PROJECT</h2>
+            <h1 className="font-bold">{name}</h1>
+          </div>
+          <p>{description[locale]}</p>
+        </div>
       </div>
       <Image
         loader={imageLoader}
@@ -37,7 +44,7 @@ export default function PageOne({
         width="1000"
         height="2000"
         alt="Profile picture"
-        className="md:w-5/12 object-cover object-left"
+        className="md:w-4/12 object-cover object-left"
       />
     </div>
   )

@@ -43,5 +43,20 @@
             "notHere": "is certainly not here",
             "goBack": "LET'S GO HOME"
         }
+    },
+    "by": {
+        "header": {
+            "home": "главная",
+            "projects": "проекты",
+            "about": "обо мне",
+            "services": "услуги",
+            "contact": "контакты"
+        },
+        "404": {
+            "pageNotFound": "page not found",
+            "search": "the page you searched for",
+            "notHere": "is certainly not here",
+            "goBack": "LET'S GO HOME"
+        }
     }
 }
