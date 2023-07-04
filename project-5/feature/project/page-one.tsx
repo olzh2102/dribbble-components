@@ -12,7 +12,7 @@ export default function PageOne({
   imageSrc,
   description,
   photo,
-}: Omit<Project, 'location' | '_id' | 'images' | 'slug' | 'category' | 'photo'> & {
+}: Omit<Project, 'location' | '_id' | 'images' | 'slug' | 'category'> & {
   location: string
   imageSrc: string
 }) {
@@ -44,7 +44,7 @@ export default function PageOne({
         width="1000"
         height="2000"
         alt="Profile picture"
-        className="md:w-4/12 object-cover object-left"
+        className="md:w-4/12 object-cover"
       />
     </div>
   )

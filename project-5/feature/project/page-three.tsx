@@ -33,7 +33,7 @@ export default function PageThree({ images }: { images: string[] }) {
         width="1000"
         height="2000"
         alt="Profile picture"
-        className="w-8/12 object-cover object-left"
+        className="w-8/12 object-cover"
       />
     </motion.div>
   )

@@ -6,12 +6,15 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 import { Project as TProject } from 'common/types'
+import { take } from 'common/utils'
 import { ScrollWrapper, withPageTransition } from '~components/layout'
 import { CursorContext } from '~contexts/cursor-provider'
 import useResponsive from '~hooks/use-responsive'
 
+import PageFive from '~feature/project/page-five'
 import PageFour from '~feature/project/page-four'
 import PageOne from '~feature/project/page-one'
+import PageSix from '~feature/project/page-six'
 import PageThree from '~feature/project/page-three'
 import PageTwo from '~feature/project/page-two'
 import { client } from '~sanity/lib/client'
@@ -39,6 +42,8 @@ const Project = withPageTransition(
         </div>
       )
 
+    const range = take(project.images)
+
     return (
       <ScrollWrapper direction={isMobile ? 'vertical' : 'horizontal'}>
         <PageOne
@@ -50,9 +55,11 @@ const Project = withPageTransition(
           photo={project.photo}
           imageSrc={project.images[0]}
         />
-        <PageTwo images={project.images.slice(1, 3)} />
-        <PageThree images={project.images.slice(3, 5)} />
-        <PageFour imageSrc={project.images[5]} projects={projects} />
+        <PageTwo images={range(1, 2)} />
+        <PageThree images={range(3, 5)} />
+        <PageFour images={range(5, 7)} />
+        <PageFive images={range(8, 9)} />
+        <PageSix imageSrc={range(10)[0]} projects={projects} />
       </ScrollWrapper>
     )
   }

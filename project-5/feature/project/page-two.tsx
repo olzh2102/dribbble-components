@@ -18,7 +18,7 @@ export default function PageTwo({ images }: { images: string[] }) {
     >
       <Image
         loader={imageLoader}
-        src={images[1]}
+        src={images[0]}
         width="1000"
         height="2000"
         alt="Profile picture"
@@ -27,7 +27,7 @@ export default function PageTwo({ images }: { images: string[] }) {
       <div className="w-8/12 grid place-content-center">
         <Image
           loader={imageLoader}
-          src={images[0]}
+          src={images[1]}
           width="700"
           height="500"
           alt="Profile picture"

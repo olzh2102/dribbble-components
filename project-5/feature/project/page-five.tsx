@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import { imageLoader } from 'common/utils'
 import useInScroll from '~hooks/use-in-scroll'
 
-export default function PageFour({ images }: { images: string[] }) {
+export default function PageFive({ images }: { images: string[] }) {
   const { ref, animate, variants } = useInScroll()
 
   return (
@@ -16,32 +16,24 @@ export default function PageFour({ images }: { images: string[] }) {
       transition={{ duration: 1, ease: 'easeOut' }}
       className="flex sm:flex-row flex-col justify-between flex-[0_0_100%] text-primary-zinc dark:text-primary-milk"
     >
-      <div className="w-1/3 grid place-content-center">
+      <div className="w-1/4 grid place-content-center">
         <Image
           loader={imageLoader}
           src={images[0]}
-          width="250"
-          height="350"
+          width="300"
+          height="500"
           alt="Profile picture"
           className="object-cover"
         />
       </div>
-      <Image
-        loader={imageLoader}
-        src={images[1]}
-        width="300"
-        height="500"
-        alt="Profile picture"
-        className="w-1/3 object-cover"
-      />
-      <div className="w-1/3 grid place-content-center">
+      <div className="w-3/4 grid place-content-center">
         <Image
           loader={imageLoader}
-          src={images[2]}
-          width="250"
-          height="350"
+          src={images[1]}
+          width="500"
+          height="300"
           alt="Profile picture"
-          className="object-cover"
+          className="w-3/4 object-cover mx-auto"
         />
       </div>
     </motion.div>
