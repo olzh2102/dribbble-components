@@ -15,11 +15,18 @@ export default function MenuItem({ route, mobile }: { route: RoutePath; mobile?:
 
   const linkStyles = clsx({
     'bg-gradient-to-l bg-clip-text text-transparent from-action-peach dark:from-action-gold':
-      route === currentRoute,
+      route === currentRoute && route === '/',
+    'bg-gradient-to-l bg-clip-text text-transparent from-action-gold dark:from-action-peach':
+      route === currentRoute && route !== '/',
     'via-primary-zinc to-primary-zinc dark:via-primary-milk dark:to-primary-milk':
       route === '/' || mobile,
     'via-primary-milk to-primary-milk dark:via-primary-zinc dark:to-primary-zinc':
       route !== '/' && !mobile,
+  })
+
+  const activeLinkDotStyles = clsx({
+    'bg-action-peach dark:bg-action-gold': route === '/',
+    'bg-action-gold dark:bg-action-peach': route !== '/',
   })
 
   return (
@@ -33,7 +40,7 @@ export default function MenuItem({ route, mobile }: { route: RoutePath; mobile?:
         animate={route === currentRoute ? 'show' : 'hidden'}
         transition={{ opacity: { duration: 1.2, type: 'spring' } }}
         variants={{ show: { opacity: 1 }, hidden: { opacity: 0 } }}
-        className="absolute top-2 -right-3 w-1 h-1 rounded-full bg-action-peach dark:bg-action-gold shadow-active-menu-item"
+        className={`absolute top-2 -right-3 w-1.5 h-1.5 rounded-full ${activeLinkDotStyles}`}
       />
     </li>
   )

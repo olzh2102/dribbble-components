@@ -22,9 +22,6 @@ module.exports = {
           gold: '#DDA455'
         },
       },
-      boxShadow: {
-        'active-menu-item': '0 0 3px 2px #c49f5d',
-      },
     },
   },
 }
