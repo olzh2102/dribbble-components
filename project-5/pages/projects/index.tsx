@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
+import lang from 'common/lang.json'
 import { Project } from 'common/types'
 import { imageLoader } from 'common/utils'
 import { withPageTransition } from '~components/layout'
@@ -10,6 +11,7 @@ import { getProjects } from '~sanity/lib/sanity-utils'
 
 const Projects = ({ projects }: { projects: Project[] }) => {
   const { locale } = useRouter()
+  const t = lang[locale]
   return (
     <div className="flex flex-col h-full p-2">
       <div className="sm:flex sm:pt-0 max-sm:space-y-6 pt-16 my-auto justify-center items-start gap-8 overflow-scroll hidden-scrollbar">
@@ -22,16 +24,16 @@ const Projects = ({ projects }: { projects: Project[] }) => {
             <h2 className="sm:order-1 font-medium">{project.name}</h2>
 
             <span className="text-sm sm:text-right sm:order-3">
-              category: {project.category[locale]}
+              {t['projects']['category']}: {project.category[locale]}
             </span>
             <span className="text-sm sm:text-right sm:order-4">
-              location: {project.location[locale]}
+              {t['projects']['location']}: {project.location[locale]}
             </span>
             <span className="text-sm sm:text-right sm:order-4">
-              year: {project.year}
+              {t['projects']['year']}: {project.year}
             </span>
             <span className="text-sm sm:text-right sm:order-4">
-              square meters: {project.area} sqm
+              {t['projects']['area']}: {project.area} sqm
             </span>
 
             <div className="rounded overflow-hidden sm:order-2">

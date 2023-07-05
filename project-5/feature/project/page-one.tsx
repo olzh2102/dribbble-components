@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 
+import lang from 'common/lang.json'
 import { Project } from 'common/types'
 import { imageLoader } from 'common/utils'
 
@@ -17,6 +18,8 @@ export default function PageOne({
   imageSrc: string
 }) {
   const { locale } = useRouter()
+  const t = lang[locale]
+
   return (
     <div
       data-test-id="hs-item"
@@ -24,15 +27,23 @@ export default function PageOne({
     >
       <div className="flex flex-col justify-between w-8/12 p-10">
         <div className="flex flex-col text-right">
-          <span>Design Style: Bohemian</span>
-          <span>Location: {location}</span>
-          <span>Photo: {photo[locale]}</span>
-          <span>Area: {area} sqm.</span>
-          <span>Year: {year}</span>
+          <span>{t['projects']['style']}: Bohemian</span>
+          <span>
+            {t['projects']['location']}: {location}
+          </span>
+          <span>
+            {t['projects']['photo']}: {photo[locale]}
+          </span>
+          <span>
+            {t['projects']['area']}: {area} sqm.
+          </span>
+          <span>
+            {t['projects']['year']}: {year}
+          </span>
         </div>
         <div className="space-y-10">
           <div className="sm:text-4xl text-xl uppercase">
-            <h2 className="font-light">PROJECT</h2>
+            <h2 className="font-light uppercase">{t['projects']['title']}</h2>
             <h1 className="font-bold">{name}</h1>
           </div>
           <p>{description[locale]}</p>

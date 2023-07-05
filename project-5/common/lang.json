@@ -12,12 +12,21 @@
             "search": "the page you searched for",
             "notHere": "is certainly not here",
             "goBack": "LET'S GO HOME"
+        },
+        "projects": {
+            "title": "Project",
+            "category": "Category",
+            "style": "Design Style",
+            "location": "Location",
+            "year": "Year",
+            "area": "Area",
+            "photo": "Photo"
         }
     },
     "de": {
         "header": {
             "home": "zu haus",
-            "projects": "projects",
+            "projects": "projekte",
             "about": "about",
             "services": "services",
             "contact": "contact"
@@ -27,6 +36,15 @@
             "search": "the page you searched for",
             "notHere": "is certainly not here",
             "goBack": "LET'S GO HOME"
+        },
+        "projects": {
+            "title": "Projekt",
+            "category": "Kategorie",
+            "style": "Designstil",
+            "location": "Standort",
+            "year": "Jahr",
+            "area": "Bereich",
+            "photo": "Foto"
         }
     },
     "ru": {
@@ -42,6 +60,15 @@
             "search": "the page you searched for",
             "notHere": "is certainly not here",
             "goBack": "LET'S GO HOME"
+        },
+        "projects": {
+            "title": "Проект",
+            "category": "Категория",
+            "style": "Дизайн Стиль",
+            "location": "Местонахождение",
+            "year": "Год",
+            "area": "Площадь",
+            "photo": "Фото"
         }
     },
     "by": {
@@ -57,6 +84,15 @@
             "search": "the page you searched for",
             "notHere": "is certainly not here",
             "goBack": "LET'S GO HOME"
+        },
+        "projects": {
+            "title": "Проект",
+            "category": "Катэгорыя",
+            "style": "Дызайн Стыль",
+            "location": "Месцазнаходжанне",
+            "year": "Год",
+            "area": "Плошча",
+            "photo": "Фота"
         }
     }
 }
