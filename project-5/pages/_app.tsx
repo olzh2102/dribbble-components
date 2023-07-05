@@ -3,8 +3,7 @@ import { NextComponentType } from 'next'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 
-import { Work_Sans } from '@next/font/google'
-import localFont from '@next/font/local'
+import { Noto_Sans_Display } from '@next/font/google'
 import { AnimatePresence } from 'framer-motion'
 
 import { PRELOADER_DELAY } from 'common/constants'
@@ -17,18 +16,14 @@ import ThemeCursorProvider from '~contexts/index'
 
 import '../styles/globals.css'
 
-const latinFont = Work_Sans({ subsets: ['latin', 'latin-ext'] })
-const cyrillicFont = localFont({
-  src: '../public/fonts/WorkSans/WorkSans-Black.woff2',
-})
+const font = Noto_Sans_Display({ subsets: ['cyrillic', 'cyrillic-ext', 'latin', 'latin-ext'] })
 
 export default function App({
   Component,
   pageProps,
-  router: { locale, pathname, asPath },
+  router: { pathname, asPath },
 }: AppProps & { Component: NextComponentType & Page }) {
   const { hasLogo = true, waveBackground } = Component
-  const { className } = locale == 'ru' ? cyrillicFont : latinFont
 
   return (
     <>
@@ -37,7 +32,7 @@ export default function App({
         <meta name="description" content="NR" />
       </Head>
 
-      <main className={`${className} w-full h-full`}>
+      <main className={`${font} w-full h-full`}>
         <ThemeCursorProvider>
           <Preloader duration={PRELOADER_DELAY} />
           {pathname !== '/404' && <Header />}
