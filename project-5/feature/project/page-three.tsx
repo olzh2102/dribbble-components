@@ -15,16 +15,16 @@ export default function PageThree({ images }: { images: string[] }) {
       variants={variants}
       transition={{ duration: 1, ease: 'easeOut' }}
       data-test-id="hs-item"
-      className="flex flex-[0_0_100%] flex-col md:flex-row text-primary-zinc dark:text-primary-milk"
+      className="flex flex-[0_0_100%] flex-col md:flex-row text-primary-zinc dark:text-primary-milk max-sm:space-y-4"
     >
-      <div className="w-4/12 grid place-content-center">
+      <div className="sm:w-4/12 grid place-content-center">
         <Image
           loader={imageLoader}
           src={images[0]}
           width="250"
           height="350"
           alt="Profile picture"
-          className="rounded object-cover"
+          className="rounded object-cover max-sm:w-full"
         />
       </div>
       <Image
@@ -33,7 +33,7 @@ export default function PageThree({ images }: { images: string[] }) {
         width="1000"
         height="2000"
         alt="Profile picture"
-        className="w-8/12 object-cover"
+        className="sm:w-8/12 object-cover"
       />
     </motion.div>
   )

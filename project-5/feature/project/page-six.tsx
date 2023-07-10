@@ -33,10 +33,10 @@ export default function PageFive({
         width="1000"
         height="2000"
         alt="Profile picture"
-        className="md:w-7/12 object-cover"
+        className="sm:w-7/12 object-cover"
       />
 
-      <h3 className="sm:hidden text-center text-2xl italic uppercase mt-20">projects</h3>
+      <h3 className="sm:hidden text-center text-2xl italic uppercase mt-10 mb-1">projects</h3>
 
       <div className="flex flex-wrap my-auto sm:flex-col gap-2 sm:mr-5 font-medium uppercase">
         {restProjects.map((project) => (

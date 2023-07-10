@@ -50,7 +50,7 @@ export default function MobileHeaderContent() {
           >
             <LangToggler mobile />
           </div>
-          <div className="w-6 h-6">
+          <div className="w-6 h-6 relative">
             <ThemeToggler textColor="text-primary-zinc dark:text-primary-milk" />
           </div>
         </div>

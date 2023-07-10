@@ -14,7 +14,7 @@ export default function PageTwo({ images }: { images: string[] }) {
       animate={animate}
       variants={variants}
       transition={{ duration: 1, ease: 'easeOut' }}
-      className="sm:flex flex-[0_0_100%] text-primary-zinc dark:text-primary-milk"
+      className="sm:flex flex-[0_0_100%] text-primary-zinc dark:text-primary-milk max-sm:space-y-4"
     >
       <Image
         loader={imageLoader}
@@ -22,9 +22,9 @@ export default function PageTwo({ images }: { images: string[] }) {
         width="1000"
         height="2000"
         alt="Profile picture"
-        className="w-4/12 object-cover object-left"
+        className="sm:w-4/12 object-cover object-left"
       />
-      <div className="w-8/12 grid place-content-center">
+      <div className="sm:w-8/12 grid place-content-center">
         <Image
           loader={imageLoader}
           src={images[1]}

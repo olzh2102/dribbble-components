@@ -23,31 +23,31 @@ export default function PageOne({
   return (
     <div
       data-test-id="hs-item"
-      className="flex flex-[0_0_100%] flex-col md:flex-row text-primary-zinc dark:text-primary-milk"
+      className="flex flex-[0_0_100%] flex-col sm:flex-row text-primary-zinc dark:text-primary-milk"
     >
-      <div className="flex flex-col justify-between w-8/12 p-10">
-        <div className="flex flex-col text-right">
-          <span>{t['projects']['style']}: Bohemian</span>
+      <div className="flex flex-col justify-between sm:w-8/12 sm:p-10 p-4">
+        <div className="flex flex-col text-right max-sm:order-2">
           <span>
-            {t['projects']['location']}: {location}
+            <strong>{t['projects']['style']}</strong>: Bohemian
           </span>
           <span>
-            {t['projects']['photo']}: {photo[locale]}
+            <strong>{t['projects']['location']}</strong>: {location}
           </span>
           <span>
-            {t['projects']['area']}: {area} sqm.
+            <strong>{t['projects']['photo']}</strong>: {photo[locale]}
           </span>
           <span>
-            {t['projects']['year']}: {year}
+            <strong>{t['projects']['area']}</strong>: {area} sqm.
+          </span>
+          <span>
+            <strong>{t['projects']['year']}</strong>: {year}
           </span>
         </div>
-        <div className="space-y-10">
-          <div className="sm:text-4xl text-xl uppercase">
-            <h2 className="font-light uppercase">{t['projects']['title']}</h2>
-            <h1 className="font-bold">{name}</h1>
-          </div>
-          <p>{description[locale]}</p>
+        <div className="sm:text-4xl text-xl uppercase max-sm:order-1">
+          <h2 className="font-light uppercase">{t['projects']['title']}</h2>
+          <h1 className="font-bold">{name}</h1>
         </div>
+        <p className="max-sm:order-3 sm:mt-10 mt-5">{description[locale]}</p>
       </div>
       <Image
         loader={imageLoader}

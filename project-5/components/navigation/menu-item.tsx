@@ -15,9 +15,9 @@ export default function MenuItem({ route, mobile }: { route: RoutePath; mobile?:
 
   const linkStyles = clsx({
     'bg-gradient-to-l bg-clip-text text-transparent from-action-peach dark:from-action-gold':
-      route === currentRoute && route === '/',
+      route === currentRoute && (route === '/' || mobile),
     'bg-gradient-to-l bg-clip-text text-transparent from-action-gold dark:from-action-peach':
-      route === currentRoute && route !== '/',
+      route === currentRoute && route !== '/' && !mobile,
     'via-primary-zinc to-primary-zinc dark:via-primary-milk dark:to-primary-milk':
       route === '/' || mobile,
     'via-primary-milk to-primary-milk dark:via-primary-zinc dark:to-primary-zinc':
@@ -25,8 +25,8 @@ export default function MenuItem({ route, mobile }: { route: RoutePath; mobile?:
   })
 
   const activeLinkDotStyles = clsx({
-    'bg-action-peach dark:bg-action-gold': route === '/',
-    'bg-action-gold dark:bg-action-peach': route !== '/',
+    'bg-action-peach dark:bg-action-gold': route === '/' || mobile,
+    'bg-action-gold dark:bg-action-peach': route !== '/' && !mobile,
   })
 
   return (
