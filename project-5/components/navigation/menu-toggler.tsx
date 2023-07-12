@@ -9,7 +9,7 @@ export default function MenuToggler({ toggle }: { toggle: () => void }) {
 
   return (
     <button
-      className="rounded-full pointer-events-auto"
+      className="rounded-full"
       onClick={toggle}
       onMouseOver={onMouseOver('button')}
       onMouseOut={onMouseOut}
@@ -18,8 +18,8 @@ export default function MenuToggler({ toggle }: { toggle: () => void }) {
       <svg
         className="stroke-primary-zinc dark:stroke-primary-milk"
         width="33"
-        height="33"
-        viewBox="0 0 33 33"
+        height="20"
+        viewBox="0 0 33 20"
       >
         <motion.path
           strokeWidth="2"

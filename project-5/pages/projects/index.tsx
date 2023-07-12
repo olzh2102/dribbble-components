@@ -12,9 +12,10 @@ import { getProjects } from '~sanity/lib/sanity-utils'
 const Projects = ({ projects }: { projects: Project[] }) => {
   const { locale } = useRouter()
   const t = lang[locale]
+
   return (
     <div className="flex flex-col h-full p-2">
-      <div className="sm:flex sm:pt-0 max-sm:space-y-6 pt-16 my-auto justify-center items-start gap-8 overflow-scroll hidden-scrollbar">
+      <div className="sm:flex sm:pt-0 max-sm:space-y-6 my-auto justify-center items-start gap-8 overflow-scroll hidden-scrollbar">
         {projects.map((project) => (
           <Link
             href={`/projects/${project.slug}`}

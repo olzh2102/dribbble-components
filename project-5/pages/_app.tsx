@@ -13,7 +13,7 @@ import Logo from '~components/logo'
 import Preloader from '~components/preloader'
 import WaveMesh from '~components/wave'
 import ThemeCursorProvider from '~contexts/index'
-
+import useResponsive from '~hooks/use-responsive'
 import '../styles/globals.css'
 
 const font = Noto_Sans_Display({ subsets: ['cyrillic', 'cyrillic-ext', 'latin', 'latin-ext'] })
@@ -24,6 +24,7 @@ export default function App({
   router: { pathname, asPath },
 }: AppProps & { Component: NextComponentType & Page }) {
   const { hasLogo = true, waveBackground } = Component
+  const isMobile = useResponsive('sm')
 
   return (
     <>
@@ -32,7 +33,7 @@ export default function App({
         <meta name="description" content="NR" />
       </Head>
 
-      <main className={`${font} w-full h-full`}>
+      <main className={`${font.style.fontFamily} w-full h-full`}>
         <ThemeCursorProvider>
           <Preloader duration={PRELOADER_DELAY} />
           {pathname !== '/404' && <Header />}
@@ -41,7 +42,11 @@ export default function App({
             {waveBackground && <WaveMesh />}
 
             <AnimatePresence mode="sync">
-              {hasLogo && <Logo />}
+              {hasLogo && !isMobile && (
+                <div className="absolute top-4 left-4">
+                  <Logo />
+                </div>
+              )}
               <Component {...pageProps} key={asPath} />
             </AnimatePresence>
           </RoundedCorner>

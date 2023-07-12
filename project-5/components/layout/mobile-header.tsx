@@ -6,6 +6,7 @@ import { motion } from 'framer-motion'
 
 import { MOBILE_HEADER_VARIANTS, ROUTES } from 'common/constants'
 import LangToggler from '~components/language'
+import Logo from '~components/logo'
 import MenuItem from '~components/navigation/menu-item'
 import MenuToggler from '~components/navigation/menu-toggler'
 import ThemeToggler from '~components/theme-toggler'
@@ -55,7 +56,12 @@ export default function MobileHeaderContent() {
           </div>
         </div>
       </motion.div>
-      <div className="absolute top-6 right-6">
+      <div
+        className={`${
+          asPath !== '/' ? 'bg-primary-milk dark:bg-primary-zinc' : ''
+        } absolute z-50 top-0 w-[calc(100%-1rem)] h-16 flex justify-between items-center rounded-t-md mt-2 mx-2 px-4 pointer-events-auto`}
+      >
+        {asPath !== '/' ? <Logo /> : <span />}
         <MenuToggler toggle={() => toggleOpen(!isOpen)} />
       </div>
     </motion.div>
