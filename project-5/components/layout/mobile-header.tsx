@@ -59,7 +59,7 @@ export default function MobileHeaderContent() {
       <div
         className={`${
           asPath !== '/' ? 'bg-primary-milk dark:bg-primary-zinc' : ''
-        } absolute z-50 top-0 w-[calc(100%-1rem)] h-16 flex justify-between items-center rounded-t-md mt-2 mx-2 px-4 pointer-events-auto`}
+        } absolute z-50 top-0 w-[calc(100%-1rem)] h-12 flex justify-between items-center rounded-t-md mt-2 mx-2 px-2 pointer-events-auto`}
       >
         {asPath !== '/' ? <Logo /> : <span />}
         <MenuToggler toggle={() => toggleOpen(!isOpen)} />

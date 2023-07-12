@@ -25,7 +25,7 @@ const About = ({ data }: any) => {
           width="1000"
           height="2000"
           alt="Profile picture"
-          className="md:w-2/5 md:mt-14 grayscale rounded-tr object-cover"
+          className="md:w-2/5 md:mt-14 grayscale sm:rounded-tr object-cover"
         />
         {isMobile ? (
           <div className="md:w-2/3 text-3xl p-2 uppercase font-medium">
