@@ -34,7 +34,7 @@ export default function MobileHeaderContent() {
       >
         <nav className="pointer-events-auto">
           <ul
-            className="text-4xl font-medium space-y-2 whitespace-nowrap"
+            className="text-4xl space-y-2 whitespace-nowrap"
             onMouseOver={onMouseOver('a')}
             onMouseOut={onMouseOut}
           >
@@ -45,7 +45,7 @@ export default function MobileHeaderContent() {
         </nav>
         <div className="flex justify-between w-full absolute bottom-0 p-4 pointer-events-auto">
           <div
-            className="space-x-2 text-primary-zinc dark:text-primary-milk text-base uppercase font-medium"
+            className="space-x-2 text-primary-zinc dark:text-primary-milk text-base uppercase"
             onMouseOver={onMouseOver('label')}
             onMouseOut={onMouseOut}
           >

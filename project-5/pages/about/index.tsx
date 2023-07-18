@@ -25,17 +25,17 @@ const About = ({ data }: any) => {
           width="1000"
           height="2000"
           alt="Profile picture"
-          className="md:w-2/5 md:mt-14 grayscale sm:rounded-tr object-cover"
+          className="md:w-2/5 md:mt-14 grayscale sm:rounded-tr object-cover object-left"
         />
         {isMobile ? (
           <div className="md:w-2/3 text-3xl p-2 uppercase font-medium">
             <h2>Designer</h2>
-            <h3>Natallia Raksha</h3>
+            <h3 className="font-bold uppercase">Natallia Raksha</h3>
           </div>
         ) : (
-          <div className="w-3/5 mt-auto mb-0 text-4xl p-10">
+          <div className="w-3/5 my-auto text-4xl p-10">
             <h2>{data.title[locale]}</h2>
-            <h3>Natallia Raksha</h3>
+            <h3 className="font-bold uppercase">Natallia Raksha</h3>
             <p className="text-base mt-3">{data.description[locale]}</p>
           </div>
         )}
