@@ -6,6 +6,7 @@ module.exports = {
     './pages/**/*.{js,ts,jsx,tsx}',
     './components/**/*.{js,ts,jsx,tsx}',
     './contexts/**/*.{js,ts,jsx,tsx}',
+    './feature/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
     extend: {
@@ -21,9 +22,16 @@ module.exports = {
           gold: '#DDA455'
         },
       },
-      boxShadow: {
-        'active-menu-item': '0 0 3px 2px #c49f5d',
-      },
     },
+    // fontWeight: {
+    //   extralight: '100',
+    //   light: '200',
+    //   normal: '300',
+    //   medium: '400',
+    //   semibold: '500',
+    //   bold: '600',
+    //   extrabold: '700',
+    //   black: '800',
+    // }
   },
 }

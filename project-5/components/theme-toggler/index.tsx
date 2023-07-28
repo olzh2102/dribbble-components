@@ -29,7 +29,7 @@ export default function ThemeToggler({ textColor }: { textColor: string }) {
         animate={theme === 'light' ? 'hidden' : 'show'}
         variants={variants}
         transition={transition}
-        className="absolute bottom-1/3"
+        className="absolute -left-px bottom-0"
         onClick={() => {
           setTheme('light')
           playOn?.()
@@ -42,7 +42,7 @@ export default function ThemeToggler({ textColor }: { textColor: string }) {
         animate={theme === 'dark' ? 'hidden' : 'show'}
         variants={variants}
         transition={transition}
-        className="absolute bottom-1/3"
+        className="absolute bottom-0"
         onClick={() => {
           setTheme('dark')
           playOff?.()

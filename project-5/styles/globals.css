@@ -10,6 +10,7 @@ body > div:first-child {
     overflow-x: hidden;
     overflow-y: hidden;
     scroll-behavior: smooth;
+    font-weight: 300;
 }
 
 a, label, button {

@@ -12,7 +12,7 @@ export default function RoundedCorner({
       <motion.div
         animate={{ opacity: 1 }}
         transition={{ from: 0.5, duration: 1.5, delay: 2.5 }}
-        className={`relative w-full h-full rounded-md overflow-hidden ${
+        className={`relative w-full h-full rounded-md overflow-hidden max-sm:pt-12 ${
           !waveBackground && 'bg-primary-milk dark:bg-primary-zinc'
         }`}
       >

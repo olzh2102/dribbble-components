@@ -19,6 +19,7 @@ const customJestConfig = {
     '~components/(.*)$': '<rootDir>/components/$1',
     '~contexts/(.*)$': '<rootDir>/contexts/$1',
     '~hooks/(.*)$': '<rootDir>/hooks/$1',
+    '~feature(.*)$': '<rootDir>/feature/$1',
   },
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js']
 }

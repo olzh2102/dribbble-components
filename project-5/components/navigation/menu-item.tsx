@@ -11,15 +11,23 @@ export default function MenuItem({ route, mobile }: { route: RoutePath; mobile?:
   const { locale, route: currentRoute } = useRouter()
   const t = lang[locale]
 
-  const translationKey = route === '/' ? 'home' : route.replace('/', '')
+  const isHome = route === '/'
+  const isActive = currentRoute.split('/')[1] === route.slice(1)
+  const translationKey = isHome ? 'home' : route.slice(1)
 
   const linkStyles = clsx({
     'bg-gradient-to-l bg-clip-text text-transparent from-action-peach dark:from-action-gold':
-      route === currentRoute,
-    'via-primary-zinc to-primary-zinc dark:via-primary-milk dark:to-primary-milk':
-      route === '/' || mobile,
+      isActive && (isHome || mobile),
+    'bg-gradient-to-l bg-clip-text text-transparent from-action-gold dark:from-action-peach':
+      isActive && !isHome && !mobile,
+    'via-primary-zinc to-primary-zinc dark:via-primary-milk dark:to-primary-milk': isHome || mobile,
     'via-primary-milk to-primary-milk dark:via-primary-zinc dark:to-primary-zinc':
-      route !== '/' && !mobile,
+      !isHome && !mobile,
+  })
+
+  const activeLinkDotStyles = clsx({
+    'bg-action-peach dark:bg-action-gold': isHome || mobile,
+    'bg-action-gold dark:bg-action-peach': !isHome && !mobile,
   })
 
   return (
@@ -29,11 +37,11 @@ export default function MenuItem({ route, mobile }: { route: RoutePath; mobile?:
       </Link>
 
       <motion.span
-        role={route === currentRoute ? 'active-mark' : ''}
-        animate={route === currentRoute ? 'show' : 'hidden'}
+        role={isActive ? 'active-mark' : ''}
+        animate={isActive ? 'show' : 'hidden'}
         transition={{ opacity: { duration: 1.2, type: 'spring' } }}
         variants={{ show: { opacity: 1 }, hidden: { opacity: 0 } }}
-        className="absolute top-2 -right-3 w-1 h-1 rounded-full bg-action-peach dark:bg-action-gold shadow-active-menu-item"
+        className={`absolute top-2 -right-3 w-1.5 h-1.5 rounded-full ${activeLinkDotStyles}`}
       />
     </li>
   )

@@ -18,3 +18,7 @@ export function imageLoader({
 
   return `${urlEndpoint}/${src}?tr=${params}`
 }
+
+export function take<T>(list: T[]) {
+  return (start: number, end?: number) => list.slice(start, !end ? list.length : end + 1)
+}

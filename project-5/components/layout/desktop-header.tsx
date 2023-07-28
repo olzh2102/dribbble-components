@@ -17,12 +17,12 @@ export default function DesktopHeaderContent() {
 
   const isHome = asPath === '/'
 
-  const LHS = clsx('flex flex-col justify-between p-5 pl-7 h-full rounded-r-md font-medium', {
+  const LHS = clsx('flex flex-col justify-between p-5 pl-10 h-full rounded-r-md ', {
     'text-primary-zinc/40 dark:text-primary-milk/40': isHome,
     'bg-primary-zinc dark:bg-primary-milk text-primary-milk dark:text-primary-zinc': !isHome,
   })
 
-  const RHS = clsx('p-5 pr-7 h-full rounded-l-md', {
+  const RHS = clsx('p-5 pr-10 h-full rounded-l-md', {
     'text-primary-zinc dark:text-primary-milk': isHome,
     'bg-primary-zinc dark:bg-primary-milk text-primary-milk dark:text-primary-zinc': !isHome,
   })
@@ -33,7 +33,7 @@ export default function DesktopHeaderContent() {
         className="pr-4 pointer-events-auto"
         transition={{ type: 'just' }}
         whileHover={!isHome ? { translateX: '-20%' } : {}}
-        animate={!isHome ? { translateX: '-71%' } : { translateX: 0 }}
+        animate={!isHome ? { translateX: '-74%' } : { translateX: 0 }}
         onMouseOver={onMouseOver('label', 'button')}
         onMouseOut={onMouseOut}
       >
@@ -59,14 +59,14 @@ export default function DesktopHeaderContent() {
         className="pl-4 pointer-events-auto"
         transition={{ type: 'just' }}
         whileHover={!isHome ? { translateX: '5%' } : {}}
-        animate={!isHome ? { translateX: '85%' } : { translateX: 0 }}
+        animate={!isHome ? { translateX: '85.2%' } : { translateX: 0 }}
         onMouseOver={onMouseOver('a')}
         onMouseOut={onMouseOut}
       >
         <nav className={RHS} data-cy="navigation-menu">
           <ul
             data-cy="navigation-menu-list"
-            className="flex flex-col h-full justify-between whitespace-nowrap text-xl font-medium"
+            className="flex flex-col h-full justify-between whitespace-nowrap text-xl"
           >
             {ROUTES.map((route) => (
               <MenuItem key={route} route={route} />
