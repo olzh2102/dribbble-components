@@ -66,7 +66,7 @@ export default function DesktopHeaderContent() {
         <nav className={RHS} data-cy="navigation-menu">
           <ul
             data-cy="navigation-menu-list"
-            className="flex flex-col h-full justify-between whitespace-nowrap text-xl"
+            className="flex flex-col h-full justify-between whitespace-nowrap"
           >
             {ROUTES.map((route) => (
               <MenuItem key={route} route={route} />

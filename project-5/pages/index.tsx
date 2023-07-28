@@ -15,7 +15,7 @@ const Home = withPageTransition(() => (
     <div className="mix-blend-difference pointer-events-none text-primary-milk font-medium uppercase">
       <Image className="mb-3" src="/nr-logo.svg" width="190" height="170" alt="logo" />
 
-      <div className="flex justify-between">
+      <div className="logo-subtitle flex justify-between">
         {LOGO_SUBTITLE.split('').map((letter, i) => (
           <span key={`${i}-${letter}`}>{letter}</span>
         ))}
