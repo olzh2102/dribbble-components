@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 export default function Logo() {
   return (
-    <Link href="/">
+    <Link href="/" className="text-logo text-4xl">
       <Image
         src="/nr-logo.svg"
         width="40"

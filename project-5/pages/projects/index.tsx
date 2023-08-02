@@ -14,14 +14,14 @@ const Projects = ({ projects }: { projects: Project[] }) => {
   const t = lang[locale]
 
   return (
-    <div className="flex flex-col h-full p-2">
-      <div className="sm:flex sm:pt-0 max-sm:space-y-6 my-auto justify-center items-start gap-6 overflow-scroll hidden-scrollbar">
+    <div className="grid place-content-center h-full p-2">
+      <div className="sm:flex sm:pt-0 max-sm:space-y-6 mx-auto w-11/12 gap-6 overflow-scroll hidden-scrollbar">
         {projects.map((project) => (
           <div
             className="flex flex-col text-primary-zinc dark:text-primary-milk uppercase"
             key={project._id}
           >
-            <h2 className="sm:order-1 font-semibold">{project.name}</h2>
+            <h2 className="sm:order-1 font-medium text-xl">{project.name}</h2>
             <span className="text-sm sm:text-right sm:order-3">
               {t['projects']['category']}: {project.category[locale]}
             </span>
@@ -45,7 +45,7 @@ const Projects = ({ projects }: { projects: Project[] }) => {
                 loader={imageLoader}
                 src={`${project.slug}.jpg`}
                 width="280"
-                height="700"
+                height="400"
                 alt="Project picture"
                 className="w-full sm:grayscale hover:grayscale-0 hover:scale-105 transition-all duration-500"
               />
