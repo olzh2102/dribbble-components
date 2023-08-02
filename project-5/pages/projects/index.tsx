@@ -22,16 +22,16 @@ const Projects = ({ projects }: { projects: Project[] }) => {
             key={project._id}
           >
             <h2 className="sm:order-1 font-medium text-xl">{project.name}</h2>
-            <span className="text-sm sm:text-right sm:order-3">
+            <span className="sm:text-right sm:order-3">
               {t['projects']['category']}: {project.category[locale]}
             </span>
-            <span className="text-sm sm:text-right sm:order-4">
+            <span className="sm:text-right sm:order-4">
               {t['projects']['location']}: {project.location[locale]}
             </span>
-            <span className="text-sm sm:text-right sm:order-4">
+            <span className="sm:text-right sm:order-4">
               {t['projects']['year']}: {project.year}
             </span>
-            <span className="text-sm sm:text-right sm:order-4">
+            <span className="sm:text-right sm:order-4">
               {t['projects']['area']}: {project.area} sqm
             </span>
 
