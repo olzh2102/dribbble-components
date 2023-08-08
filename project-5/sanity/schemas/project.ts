@@ -30,6 +30,16 @@ const project = {
       type: 'localeString',
     },
     {
+      name: 'studio',
+      title: 'Studio',
+      type: 'localeString',
+    },
+    {
+      name: 'design',
+      title: 'Design',
+      type: 'localeString',
+    },
+    {
       name: 'location',
       title: 'Location',
       type: 'localeString',

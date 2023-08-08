@@ -16,26 +16,24 @@ export default function PageFive({ images }: { images: string[] }) {
       transition={{ duration: 1, ease: 'easeOut' }}
       className="flex sm:flex-row flex-col justify-between flex-[0_0_100%] text-primary-zinc dark:text-primary-milk max-sm:space-y-4"
     >
-      <div className="sm:w-1/4 grid place-content-center">
+      <div className="relative h-[500px] m-auto sm:w-6/12 rounded">
         <Image
           loader={imageLoader}
           src={images[0]}
-          width="300"
-          height="500"
+          fill={true}
           alt="Profile picture"
-          className="object-cover w-full"
+          className="object-cover"
         />
       </div>
-      <div className="sm:w-3/4 grid place-content-center">
-        <Image
-          loader={imageLoader}
-          src={images[1]}
-          width="500"
-          height="300"
-          alt="Profile picture"
-          className="sm:w-3/4 object-cover mx-auto"
-        />
-      </div>
+
+      <Image
+        loader={imageLoader}
+        src={images[1]}
+        width="1000"
+        height="2000"
+        alt="Profile picture"
+        className="sm:w-4/12 object-cover"
+      />
     </motion.div>
   )
 }

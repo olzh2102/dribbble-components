@@ -13,8 +13,8 @@ import useResponsive from '~hooks/use-responsive'
 
 import PageFive from '~feature/project/page-five'
 import PageFour from '~feature/project/page-four'
+import PageLast from '~feature/project/page-last'
 import PageOne from '~feature/project/page-one'
-import PageSix from '~feature/project/page-six'
 import PageThree from '~feature/project/page-three'
 import PageTwo from '~feature/project/page-two'
 import { client } from '~sanity/lib/client'
@@ -51,15 +51,22 @@ const Project = withPageTransition(
           area={project.area}
           location={project.location[locale]}
           year={project.year}
+          category={project.category}
           description={project.description}
           photo={project.photo}
           imageSrc={project.images[0]}
+          studio={project.studio}
+          design={project.design}
         />
         <PageTwo images={range(1, 2)} />
         <PageThree images={range(3, 5)} />
         <PageFour images={range(5, 7)} />
         <PageFive images={range(8, 9)} />
-        <PageSix imageSrc={range(10)[0]} projects={projects} />
+        {project.slug === 'moby-dick' && <PageTwo images={range(10, 11)} />}
+        <PageLast
+          images={project.slug === 'moby-dick' ? range(12, 13) : range(10)}
+          projects={projects}
+        />
       </ScrollWrapper>
     )
   }

@@ -14,35 +14,39 @@ export default function PageFour({ images }: { images: string[] }) {
       animate={animate}
       variants={variants}
       transition={{ duration: 1, ease: 'easeOut' }}
-      className="flex sm:flex-row flex-col justify-between flex-[0_0_100%] text-primary-zinc dark:text-primary-milk max-sm:space-y-4"
+      className="flex sm:flex-row flex-col flex-[0_0_100%] text-primary-zinc dark:text-primary-milk max-sm:space-y-4"
     >
-      <div className="sm:w-1/3 grid place-content-center">
-        <Image
-          loader={imageLoader}
-          src={images[0]}
-          width="250"
-          height="350"
-          alt="Profile picture"
-          className="object-cover max-sm:w-full"
-        />
+      <div className="w-3/12 my-auto">
+        <div className="relative h-[500px] sm:w-2/3 mx-auto">
+          <Image
+            loader={imageLoader}
+            src={images[0]}
+            fill={true}
+            alt="Profile picture"
+            className="rounded object-cover max-sm:w-full"
+          />
+        </div>
       </div>
+
       <Image
         loader={imageLoader}
         src={images[1]}
         width="300"
         height="500"
         alt="Profile picture"
-        className="sm:w-1/3 object-cover max-sm:w-full"
+        className="sm:w-6/12 object-cover max-sm:w-full"
       />
-      <div className="sm:w-1/3 grid place-content-center">
-        <Image
-          loader={imageLoader}
-          src={images[2]}
-          width="250"
-          height="350"
-          alt="Profile picture"
-          className="object-cover max-sm:w-full"
-        />
+
+      <div className="w-3/12 my-auto">
+        <div className="relative h-[500px] sm:w-2/3 mx-auto">
+          <Image
+            loader={imageLoader}
+            src={images[2]}
+            fill={true}
+            alt="Profile picture"
+            className="rounded object-cover max-sm:w-full"
+          />
+        </div>
       </div>
     </motion.div>
   )

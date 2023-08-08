@@ -13,7 +13,10 @@ export default function PageOne({
   imageSrc,
   description,
   photo,
-}: Omit<Project, 'location' | '_id' | 'images' | 'slug' | 'category'> & {
+  category,
+  design,
+  studio,
+}: Omit<Project, 'location' | '_id' | 'images' | 'slug'> & {
   location: string
   imageSrc: string
 }) {
@@ -27,9 +30,17 @@ export default function PageOne({
     >
       <div className="flex flex-col sm:w-8/12 p-4 sm:gap-4">
         <div className="flex flex-col flex-1 text-right max-sm:order-2 uppercase">
-          <span>{t['projects']['style']}: Bohemian</span>
+          <span>
+            {t['projects']['category']}: {category[locale]}
+          </span>
           <span>
             {t['projects']['location']}: {location}
+          </span>
+          <span>
+            {t['projects']['studio']}: {studio[locale]}
+          </span>
+          <span>
+            {t['projects']['design']}: {design[locale]}
           </span>
           <span>
             {t['projects']['photo']}: {photo[locale]}
