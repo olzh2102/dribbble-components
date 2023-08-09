@@ -2,7 +2,7 @@ import Image from 'next/image'
 
 import { motion } from 'framer-motion'
 
-import { imageLoader } from 'common/utils'
+import { getBlurImageURL, imageLoader } from 'common/utils'
 import useInScroll from '~hooks/use-in-scroll'
 
 export default function PageTwo({ images }: { images: string[] }) {
@@ -19,6 +19,8 @@ export default function PageTwo({ images }: { images: string[] }) {
       <Image
         loader={imageLoader}
         src={images[0]}
+        placeholder="blur"
+        blurDataURL={getBlurImageURL(images[0])}
         width="1000"
         height="2000"
         alt="Profile picture"
@@ -29,8 +31,9 @@ export default function PageTwo({ images }: { images: string[] }) {
       <div className="relative sm:w-6/12 grid place-content-center h-[500px] my-auto">
         <Image
           loader={imageLoader}
-          // placeholder="blur"
           src={images[1]}
+          placeholder="blur"
+          blurDataURL={getBlurImageURL(images[1])}
           fill={true}
           alt="Profile picture"
           className="rounded object-cover"

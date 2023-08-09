@@ -1,6 +1,6 @@
 import Image from 'next/image'
 
-import { imageLoader } from 'common/utils'
+import { getBlurImageURL, imageLoader } from 'common/utils'
 import { withPageTransition } from '~components/layout'
 
 const SERVICES = [
@@ -75,6 +75,8 @@ const Services = () => {
       <Image
         loader={imageLoader}
         src="profile.jpg"
+        placeholder="blur"
+        blurDataURL={getBlurImageURL('profile.jpg')}
         width="1000"
         height="2000"
         alt="Profile picture"

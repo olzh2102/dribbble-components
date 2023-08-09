@@ -2,7 +2,7 @@ import Image from 'next/image'
 
 import { motion } from 'framer-motion'
 
-import { imageLoader } from 'common/utils'
+import { getBlurImageURL, imageLoader } from 'common/utils'
 import useInScroll from '~hooks/use-in-scroll'
 
 export default function PageFive({ images }: { images: string[] }) {
@@ -23,6 +23,8 @@ export default function PageFive({ images }: { images: string[] }) {
           fill={true}
           alt="Profile picture"
           className="object-cover"
+          placeholder="blur"
+          blurDataURL={getBlurImageURL(images[0])}
         />
       </div>
 
@@ -33,6 +35,8 @@ export default function PageFive({ images }: { images: string[] }) {
         height="2000"
         alt="Profile picture"
         className="sm:w-4/12 object-cover"
+        placeholder="blur"
+        blurDataURL={getBlurImageURL(images[1])}
       />
     </motion.div>
   )

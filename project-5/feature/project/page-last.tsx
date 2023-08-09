@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 import { motion } from 'framer-motion'
 
 import { Project } from 'common/types'
-import { imageLoader } from 'common/utils'
+import { getBlurImageURL, imageLoader } from 'common/utils'
 import useInScroll from '~hooks/use-in-scroll'
 
 export default function PageLast({ projects, images }: { images: string[]; projects: Project[] }) {
@@ -30,6 +30,8 @@ export default function PageLast({ projects, images }: { images: string[]; proje
               fill={true}
               alt="Profile picture"
               className="object-cover"
+              placeholder="blur"
+              blurDataURL={getBlurImageURL(images[0])}
             />
           </div>
           <div className="relative h-[500px] w-4/12 m-auto">
@@ -39,6 +41,8 @@ export default function PageLast({ projects, images }: { images: string[]; proje
               fill={true}
               alt="Profile picture"
               className="object-cover"
+              placeholder="blur"
+              blurDataURL={getBlurImageURL(images[0])}
             />
           </div>
         </>
@@ -50,6 +54,8 @@ export default function PageLast({ projects, images }: { images: string[]; proje
           height="2000"
           alt="Profile picture"
           className="sm:w-7/12 object-cover"
+          placeholder="blur"
+          blurDataURL={getBlurImageURL(images[0])}
         />
       )}
 
@@ -70,6 +76,8 @@ export default function PageLast({ projects, images }: { images: string[]; proje
               height="100"
               alt="Profile picture"
               className="max-sm:w-full max-sm:h-80 rounded sm:grayscale hover:grayscale-0 object-cover object-bottom"
+              placeholder="blur"
+              blurDataURL={getBlurImageURL(images[0])}
             />
           </Link>
         ))}

@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 
 import lang from 'common/lang.json'
 import { Project } from 'common/types'
-import { imageLoader } from 'common/utils'
+import { getBlurImageURL, imageLoader } from 'common/utils'
 
 export default function PageOne({
   name,
@@ -65,6 +65,8 @@ export default function PageOne({
         height="2000"
         alt="Profile picture"
         className="md:w-4/12 object-cover"
+        placeholder="blur"
+        blurDataURL={getBlurImageURL(imageSrc)}
       />
     </div>
   )

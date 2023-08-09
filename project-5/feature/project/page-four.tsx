@@ -2,7 +2,7 @@ import Image from 'next/image'
 
 import { motion } from 'framer-motion'
 
-import { imageLoader } from 'common/utils'
+import { getBlurImageURL, imageLoader } from 'common/utils'
 import useInScroll from '~hooks/use-in-scroll'
 
 export default function PageFour({ images }: { images: string[] }) {
@@ -21,6 +21,8 @@ export default function PageFour({ images }: { images: string[] }) {
           <Image
             loader={imageLoader}
             src={images[0]}
+            placeholder="blur"
+            blurDataURL={getBlurImageURL(images[0])}
             fill={true}
             alt="Profile picture"
             className="rounded object-cover max-sm:w-full"
