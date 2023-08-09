@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 
 import lang from 'common/lang.json'
 import { Project } from 'common/types'
-import { imageLoader } from 'common/utils'
+import { getBlurImageURL, imageLoader } from 'common/utils'
 
 export default function PageOne({
   name,
@@ -13,7 +13,10 @@ export default function PageOne({
   imageSrc,
   description,
   photo,
-}: Omit<Project, 'location' | '_id' | 'images' | 'slug' | 'category'> & {
+  category,
+  design,
+  studio,
+}: Omit<Project, 'location' | '_id' | 'images' | 'slug'> & {
   location: string
   imageSrc: string
 }) {
@@ -25,29 +28,35 @@ export default function PageOne({
       data-test-id="hs-item"
       className="flex flex-[0_0_100%] flex-col sm:flex-row text-primary-zinc dark:text-primary-milk"
     >
-      <div className="flex flex-col justify-between sm:w-8/12 sm:p-10 p-4">
-        <div className="flex flex-col text-right max-sm:order-2">
+      <div className="flex flex-col sm:w-8/12 p-4 sm:gap-4">
+        <div className="flex flex-col flex-1 text-right max-sm:order-2 uppercase">
           <span>
-            <strong>{t['projects']['style']}</strong>: Bohemian
+            {t['projects']['category']}: {category[locale]}
           </span>
           <span>
-            <strong>{t['projects']['location']}</strong>: {location}
+            {t['projects']['location']}: {location}
           </span>
           <span>
-            <strong>{t['projects']['photo']}</strong>: {photo[locale]}
+            {t['projects']['studio']}: {studio[locale]}
           </span>
           <span>
-            <strong>{t['projects']['area']}</strong>: {area} sqm.
+            {t['projects']['design']}: {design[locale]}
           </span>
           <span>
-            <strong>{t['projects']['year']}</strong>: {year}
+            {t['projects']['photo']}: {photo[locale]}
+          </span>
+          <span>
+            {t['projects']['area']}: {area} sqm.
+          </span>
+          <span>
+            {t['projects']['year']}: {year}
           </span>
         </div>
         <div className="sm:text-4xl text-xl uppercase max-sm:order-1">
           <h2 className="font-light uppercase">{t['projects']['title']}</h2>
           <h1 className="font-bold">{name}</h1>
         </div>
-        <p className="max-sm:order-3 sm:mt-10 mt-5">{description[locale]}</p>
+        <p className="max-sm:order-3">{description[locale]}</p>
       </div>
       <Image
         loader={imageLoader}
@@ -56,6 +65,8 @@ export default function PageOne({
         height="2000"
         alt="Profile picture"
         className="md:w-4/12 object-cover"
+        placeholder="blur"
+        blurDataURL={getBlurImageURL(imageSrc)}
       />
     </div>
   )

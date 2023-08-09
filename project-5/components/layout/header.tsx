@@ -6,5 +6,9 @@ import MobileHeaderContent from './mobile-header'
 export default function Header() {
   const isMobile = useResponsive('sm')
 
-  return <header>{!isMobile ? <DesktopHeaderContent /> : <MobileHeaderContent />}</header>
+  return (
+    <header className="text-xl">
+      {!isMobile ? <DesktopHeaderContent /> : <MobileHeaderContent />}
+    </header>
+  )
 }

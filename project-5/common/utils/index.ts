@@ -1,3 +1,6 @@
+const IMAGE_KIT_ID = '778gxjsp5'
+const IMAGE_KIT_URL = 'https://ik.imagekit.io/'
+
 export function imageLoader({
   src,
   width,
@@ -11,12 +14,15 @@ export function imageLoader({
 
   let params = `w-${width}`
 
-  if (quality) params = params + ',' + `q=${quality}`
+  if (quality) params = params + ',' + `q-${quality}`
 
-  const IMAGE_KIT_ID = '778gxjsp5'
-  const urlEndpoint = 'https://ik.imagekit.io/' + IMAGE_KIT_ID
+  const urlEndpoint = IMAGE_KIT_URL + IMAGE_KIT_ID
 
-  return `${urlEndpoint}/${src}?tr=${params}`
+  return `${urlEndpoint}/tr:${params}/${src}`
+}
+
+export function getBlurImageURL(src: string) {
+  return `${IMAGE_KIT_URL}/${IMAGE_KIT_ID}/tr:bl-10,q-10/${src}`
 }
 
 export function take<T>(list: T[]) {

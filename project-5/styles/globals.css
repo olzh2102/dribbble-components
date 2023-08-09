@@ -7,7 +7,6 @@ body,
 body > div:first-child {
     height: 100%;
     cursor: none;
-    overflow-x: hidden;
     overflow-y: hidden;
     scroll-behavior: smooth;
     font-weight: 300;

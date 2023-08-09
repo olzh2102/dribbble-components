@@ -16,11 +16,12 @@
         "projects": {
             "title": "Project",
             "category": "Category",
-            "style": "Design Style",
+            "design": "Design",
             "location": "Location",
             "year": "Year",
             "area": "Area",
-            "photo": "Photo"
+            "photo": "Photo",
+            "studio": "Studio"
         }
     },
     "de": {
@@ -40,11 +41,13 @@
         "projects": {
             "title": "Projekt",
             "category": "Kategorie",
-            "style": "Designstil",
+            "design": "Design",
             "location": "Standort",
             "year": "Jahr",
             "area": "Bereich",
-            "photo": "Foto"
+            "photo": "Foto",
+            "studio": "Studio"
+
         }
     },
     "ru": {
@@ -64,11 +67,12 @@
         "projects": {
             "title": "Проект",
             "category": "Категория",
-            "style": "Дизайн Стиль",
+            "design": "Дизайн",
             "location": "Местонахождение",
             "year": "Год",
             "area": "Площадь",
-            "photo": "Фото"
+            "photo": "Фото",
+            "studio": "Студия"
         }
     },
     "by": {
@@ -88,11 +92,12 @@
         "projects": {
             "title": "Проект",
             "category": "Катэгорыя",
-            "style": "Дызайн Стыль",
+            "design": "Дызайн",
             "location": "Месцазнаходжанне",
             "year": "Год",
             "area": "Плошча",
-            "photo": "Фота"
+            "photo": "Фота",
+            "studio": "Студыя"
         }
     }
 }

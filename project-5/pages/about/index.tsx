@@ -3,7 +3,7 @@ import React from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 
-import { imageLoader } from 'common/utils'
+import { getBlurImageURL, imageLoader } from 'common/utils'
 import { ScrollWrapper, withPageTransition } from '~components/layout'
 import useResponsive from '~hooks/use-responsive'
 
@@ -26,6 +26,8 @@ const About = ({ data }: any) => {
           height="2000"
           alt="Profile picture"
           className="md:w-2/5 md:mt-14 grayscale sm:rounded-tr object-cover object-left"
+          placeholder="blur"
+          blurDataURL={getBlurImageURL('profile.jpg')}
         />
         {isMobile ? (
           <div className="md:w-2/3 text-3xl p-2 uppercase font-medium">
@@ -46,8 +48,8 @@ const About = ({ data }: any) => {
         className="flex flex-[0_0_100%] text-primary-zinc dark:text-primary-milk"
       >
         <div className="flex max-sm:flex-col m-auto p-2 gap-10 sm:w-1/2">
-          {data.experiences.map((exp) => (
-            <div key={exp._id} className="space-y-3">
+          {data.experiences.map((exp, i) => (
+            <div key={exp._key + '' + i} className="space-y-3">
               <h4 className="font-semibold text-xl">{exp.position[locale]}</h4>
               <time dateTime={exp.start}>
                 {new Date(exp.start).toLocaleDateString(locale, {

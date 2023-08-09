@@ -29,4 +29,6 @@ export type Project = {
   category: Record<Locale, string>
   description: Record<Locale, string>
   photo: Record<Locale, string>
+  design: Record<Locale, string>
+  studio: Record<Locale, string>
 }

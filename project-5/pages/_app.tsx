@@ -1,9 +1,9 @@
 import { NextComponentType } from 'next'
 
 import type { AppProps } from 'next/app'
+import localFont from 'next/font/local'
 import Head from 'next/head'
 
-import { Noto_Sans_Display } from '@next/font/google'
 import { AnimatePresence } from 'framer-motion'
 
 import { PRELOADER_DELAY } from 'common/constants'
@@ -16,7 +16,30 @@ import ThemeCursorProvider from '~contexts/index'
 import useResponsive from '~hooks/use-responsive'
 import '../styles/globals.css'
 
-const font = Noto_Sans_Display({ subsets: ['cyrillic', 'cyrillic-ext', 'latin', 'latin-ext'] })
+const fontHelveticaNeueCyr = localFont({
+  src: [
+    {
+      path: '../public/fonts/helvetica-neue/HelveticaNeueCyr-Light.woff',
+      weight: '300',
+    },
+    {
+      path: '../public/fonts/helvetica-neue/HelveticaNeueCyr-Black.woff',
+      weight: '400',
+    },
+    {
+      path: '../public/fonts/helvetica-neue/HelveticaNeueCyr-Medium.woff',
+      weight: '500',
+    },
+    {
+      path: '../public/fonts/helvetica-neue/HelveticaNeueCyr-Bold.woff',
+      weight: '800',
+    },
+  ],
+})
+
+const fontBaron = localFont({
+  src: '../public/fonts/baron-neue/BaronNeue.woff',
+})
 
 export default function App({
   Component,
@@ -33,7 +56,17 @@ export default function App({
         <meta name="description" content="NR" />
       </Head>
 
-      <main className={`${font.style.fontFamily} w-full h-full`}>
+      <style jsx global>{`
+        html {
+          font-family: ${fontHelveticaNeueCyr.style.fontFamily};
+        }
+
+        .text-logo {
+          font-family: ${fontBaron.style.fontFamily};
+        }
+      `}</style>
+
+      <main className={`w-full h-full`}>
         <ThemeCursorProvider>
           <Preloader duration={PRELOADER_DELAY} />
           {pathname !== '/404' && <Header />}
