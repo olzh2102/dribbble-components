@@ -1,7 +1,10 @@
 import { ChangeEvent, useContext } from 'react'
 
+import { useRouter } from 'next/router'
+
 import { motion } from 'framer-motion'
 
+import lang from 'common/lang.json'
 import { CursorContext } from '~contexts/cursor-provider'
 
 export default function Textarea({
@@ -13,12 +16,15 @@ export default function Textarea({
   onChange: (event: ChangeEvent<HTMLTextAreaElement>) => void
   errorMessage: string | null
 }) {
+  const { locale } = useRouter()
+  const t = lang[locale]
+
   const { onMouseOver, onMouseOut } = useContext(CursorContext)
 
   return (
     <>
-      <label htmlFor="details" className="row-span-2 block mt-3">
-        project details
+      <label htmlFor="details" className="row-span-2 block">
+        {t['contact']['label']['details']}
       </label>
       <textarea
         data-cy="input-details"

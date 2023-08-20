@@ -1,10 +1,12 @@
 import { useContext } from 'react'
 
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 import { send } from '@emailjs/browser'
 import { ToastContainer, toast } from 'react-toastify'
 
+import lang from 'common/lang.json'
 import { ContactFormFields } from 'common/types'
 import Form from '~components/contact-form'
 import InstagramIcon from '~components/icons/instagram'
@@ -14,6 +16,9 @@ import { CursorContext } from '~contexts/cursor-provider'
 import { ThemeContext } from '~contexts/theme-provider'
 
 const Contact = ({ serviceId, templateId, publicKey }) => {
+  const { locale } = useRouter()
+  const t = lang[locale]
+
   const { theme } = useContext(ThemeContext)
   const { onMouseOver, onMouseOut } = useContext(CursorContext)
 
@@ -22,9 +27,9 @@ const Contact = ({ serviceId, templateId, publicKey }) => {
 
     try {
       await toast.promise(submission, {
-        pending: 'Sending an email',
-        success: 'Email was send successfully',
-        error: 'Something went wrong',
+        pending: t['contact']['email']['pending'],
+        success: t['contact']['email']['success'],
+        error: t['contact']['email']['error'],
       })
     } catch (e) {
       console.error(e)
@@ -34,22 +39,22 @@ const Contact = ({ serviceId, templateId, publicKey }) => {
   return (
     <div className="h-full flex flex-col">
       <div className="flex-1 sm:w-min grid place-content-center gap-10 sm:p-10">
-        <h1 className="font-bold sm:text-7xl text-5xl text-primary-zinc dark:text-primary-milk whitespace-nowrap uppercase">
-          Let&apos;s chat!
+        <h1 className="font-bold sm:text-3xl text-5xl text-primary-zinc dark:text-primary-milk whitespace-nowrap uppercase">
+          {t['contact']['header']}
         </h1>
-        <div className="sm:ml-28">
+        <div className="sm:ml-20">
           <Form onSubmit={sendForm} />
         </div>
       </div>
       <div
         onMouseOver={onMouseOver('a')}
         onMouseOut={onMouseOut}
-        className="flex justify-end gap-2 items-center mt-auto mb-0 bg-gradient-to-r from-action-peach via-indigo-500 via-purple-500 to-pink-500 p-10 text-primary-milk dark:text-primary-zinc"
+        className="flex justify-end gap-3 items-center mt-auto mb-0 p-5 text-primary-milk dark:text-primary-zinc"
       >
-        <Link href="#">
+        <Link href="https://www.instagram.com/natalliaraksha/?hl=en">
           <InstagramIcon />
         </Link>
-        <Link href="#">
+        <Link href="https://www.linkedin.com/in/natallia-raksha-832b72115/">
           <LinkedinIcon />
         </Link>
       </div>

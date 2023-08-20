@@ -2,7 +2,6 @@ import { ChangeEvent, useContext } from 'react'
 
 import { motion } from 'framer-motion'
 
-import { ContactFormFields } from 'common/types'
 import { CursorContext } from '~contexts/cursor-provider'
 
 export default function Input({
@@ -11,7 +10,7 @@ export default function Input({
   onChange,
   errorMessage,
 }: {
-  name: keyof ContactFormFields
+  name: string
   value: string
   onChange: (event: ChangeEvent<HTMLInputElement>) => void
   errorMessage: string | null
@@ -20,7 +19,7 @@ export default function Input({
 
   return (
     <>
-      <label className="block mt-3" htmlFor={name}>
+      <label className="block" htmlFor={name}>
         {name}
       </label>
       <input
