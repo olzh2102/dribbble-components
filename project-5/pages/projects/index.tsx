@@ -2,16 +2,16 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-import lang from 'common/lang.json'
 import { Project } from 'common/types'
 import { getBlurImageURL, imageLoader } from 'common/utils'
 import { withPageTransition } from '~components/layout'
+import useI18n from '~hooks/use-i18n'
 
 import { getProjects } from '~sanity/lib/sanity-utils'
 
 const Projects = ({ projects }: { projects: Project[] }) => {
   const { locale } = useRouter()
-  const t = lang[locale]
+  const t = useI18n('projects')
 
   return (
     <div className="grid place-content-center h-full p-2">
@@ -24,16 +24,16 @@ const Projects = ({ projects }: { projects: Project[] }) => {
             >
               <h2 className="sm:order-1 font-medium text-xl">{project.name}</h2>
               <span className="sm:text-right sm:order-3">
-                {t['projects']['category']}: {project.category[locale]}
+                {t['category']}: {project.category[locale]}
               </span>
               <span className="sm:text-right sm:order-4">
-                {t['projects']['location']}: {project.location[locale]}
+                {t['location']}: {project.location[locale]}
               </span>
               <span className="sm:text-right sm:order-4">
-                {t['projects']['year']}: {project.year}
+                {t['year']}: {project.year}
               </span>
               <span className="sm:text-right sm:order-4">
-                {t['projects']['area']}: {project.area} sqm
+                {t['area']}: {project.area} sqm
               </span>
 
               <Link

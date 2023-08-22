@@ -1,9 +1,9 @@
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 
-import lang from 'common/lang.json'
 import { Project } from 'common/types'
 import { getBlurImageURL, imageLoader } from 'common/utils'
+import useI18n from '~hooks/use-i18n'
 
 export default function PageOne({
   name,
@@ -21,7 +21,7 @@ export default function PageOne({
   imageSrc: string
 }) {
   const { locale } = useRouter()
-  const t = lang[locale]
+  const t = useI18n('projects')
 
   return (
     <div
@@ -31,29 +31,29 @@ export default function PageOne({
       <div className="flex flex-col sm:w-8/12 p-4 sm:gap-4">
         <div className="flex flex-col flex-1 text-right max-sm:order-2 uppercase">
           <span>
-            {t['projects']['category']}: {category[locale]}
+            {t['category']}: {category[locale]}
           </span>
           <span>
-            {t['projects']['location']}: {location}
+            {t['location']}: {location}
           </span>
           <span>
-            {t['projects']['studio']}: {studio[locale]}
+            {t['studio']}: {studio[locale]}
           </span>
           <span>
-            {t['projects']['design']}: {design[locale]}
+            {t['design']}: {design[locale]}
           </span>
           <span>
-            {t['projects']['photo']}: {photo[locale]}
+            {t['photo']}: {photo[locale]}
           </span>
           <span>
-            {t['projects']['area']}: {area} sqm.
+            {t['area']}: {area} sqm.
           </span>
           <span>
-            {t['projects']['year']}: {year}
+            {t['year']}: {year}
           </span>
         </div>
         <div className="sm:text-4xl text-xl uppercase max-sm:order-1">
-          <h2 className="font-light uppercase">{t['projects']['title']}</h2>
+          <h2 className="font-light uppercase">{t['title']}</h2>
           <h1 className="font-bold">{name}</h1>
         </div>
         <p className="max-sm:order-3">{description[locale]}</p>
