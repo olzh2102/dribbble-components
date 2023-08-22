@@ -11,7 +11,7 @@ import { getProjects } from '~sanity/lib/sanity-utils'
 
 const Projects = ({ projects }: { projects: Project[] }) => {
   const { locale } = useRouter()
-  const t = useI18n('projects')
+  const t = useI18n('projects') as Record<string, string>
 
   return (
     <div className="grid place-content-center h-full p-2">

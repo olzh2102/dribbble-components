@@ -8,7 +8,7 @@ import useI18n from '~hooks/use-i18n'
 
 const Custom404 = () => {
   const { push } = useRouter()
-  const t = useI18n('404')
+  const t = useI18n('404') as Record<string, string>
 
   const { onMouseOver, onMouseOut } = useContext(CursorContext)
 

@@ -21,7 +21,7 @@ export default function PageOne({
   imageSrc: string
 }) {
   const { locale } = useRouter()
-  const t = useI18n('projects')
+  const t = useI18n('projects') as Record<string, string>
 
   return (
     <div
