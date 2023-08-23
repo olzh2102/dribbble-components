@@ -1,6 +1,6 @@
 import { useState, ChangeEvent, FormEvent } from 'react'
 
-import { Locale, useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 
 import lang from 'common/lang.json'
 import { ContactFormFields } from 'common/types'

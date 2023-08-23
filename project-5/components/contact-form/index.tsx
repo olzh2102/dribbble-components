@@ -28,18 +28,8 @@ export default function ContactForm({
       onSubmit={handleSubmit(onSubmit)}
       className="sm:w-[1000px] max-sm:h-[300px] text-primary-zinc uppercase dark:text-primary-milk sm:grid grid-cols-7 grid-rows-4 gap-3"
     >
-      <Input
-        name={`${t['contact']['label']['name']}`}
-        value={formState.name}
-        onChange={setValue}
-        errorMessage={errors.name}
-      />
-      <Input
-        name={`${t['contact']['label']['email']}`}
-        value={formState.email}
-        onChange={setValue}
-        errorMessage={errors.email}
-      />
+      <Input name="name" value={formState.name} onChange={setValue} errorMessage={errors.name} />
+      <Input name="email" value={formState.email} onChange={setValue} errorMessage={errors.email} />
       <Textarea value={formState.details} onChange={setValue} errorMessage={errors.details} />
 
       <motion.button

@@ -1,7 +1,11 @@
 import { ChangeEvent, useContext } from 'react'
 
+import { useRouter } from 'next/router'
+
 import { motion } from 'framer-motion'
 
+import lang from 'common/lang.json'
+import { ContactFormFields } from 'common/types'
 import { CursorContext } from '~contexts/cursor-provider'
 
 export default function Input({
@@ -10,17 +14,20 @@ export default function Input({
   onChange,
   errorMessage,
 }: {
-  name: string
+  name: keyof ContactFormFields
   value: string
   onChange: (event: ChangeEvent<HTMLInputElement>) => void
   errorMessage: string | null
 }) {
+  const { locale } = useRouter()
+  const t = lang[locale]
+
   const { onMouseOver, onMouseOut } = useContext(CursorContext)
 
   return (
     <>
       <label className="block" htmlFor={name}>
-        {name}
+        {t['contact']['label'][name]}
       </label>
       <input
         id={name}
