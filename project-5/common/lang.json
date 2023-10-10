@@ -22,6 +22,37 @@
             "area": "Area",
             "photo": "Photo",
             "studio": "Studio"
+        },
+        "contact": {
+            "header": "Contact me",
+            "email": {
+                "pending": "Sending an email",
+                "success": "Email was send successfully",
+                "error": "Something went wrong"
+            },
+            "label": {
+                "name": "Name",
+                "email": "Email",
+                "details": "Project details"
+            },
+            "validation": {
+                "name": {
+                    "required": "Name is required",
+                    "valid": "Name can only contain letters",
+                    "short": "Too short",
+                    "long": "Too long"
+                },
+                "email": {
+                    "required": "Email is required",
+                    "valid": "Enter a valid email"
+                },
+                "details": {
+                    "required": "Project details is required"
+                }
+            },
+            "action": {
+                "send": "send"
+            }
         }
     },
     "de": {
@@ -47,7 +78,37 @@
             "area": "Bereich",
             "photo": "Foto",
             "studio": "Studio"
-
+        },
+        "contact": {
+            "header": "Kontaktiere mich",
+            "email": {
+                "pending": "E-Mail wird gesendet",
+                "success": "E-Mail wurde erfolgreich gesendet",
+                "error": "Etwas ist schiefgelaufen"
+            },
+            "label": {
+                "name": "Name",
+                "email": "E-Mail",
+                "details": "Projektdetails"
+            },
+            "validation": {
+                "name": {
+                    "required": "Name ist erforderlich",
+                    "valid": "Name darf nur Buchstaben enthalten",
+                    "short": "Zu kurz",
+                    "long": "Zu lang"
+                },
+                "email": {
+                    "required": "E-Mail ist erforderlich",
+                    "valid": "Geben Sie eine gültige E-Mail-Adresse ein"
+                },
+                "details": {
+                    "required": "Projektdetails sind erforderlich"
+                }
+            },
+            "action": {
+                "send": "senden"
+            }
         }
     },
     "ru": {
@@ -73,6 +134,37 @@
             "area": "Площадь",
             "photo": "Фото",
             "studio": "Студия"
+        },
+        "contact": {
+            "header": "Напишите мне",
+            "email": {
+                "pending": "Отправка письма",
+                "success": "Письмо успешно отправлено",
+                "error": "Что-то пошло не так"
+            },
+            "label": {
+                "name": "Имя",
+                "email": "Электронная почта",
+                "details": "Детали проекта"
+            },
+            "validation": {
+                "name": {
+                    "required": "Обязательное поле",
+                    "valid": "Имя может содержать только буквы",
+                    "short": "Слишком короткое",
+                    "long": "Слишком длинное"
+                },
+                "email": {
+                    "required": "Обязательное поле",
+                    "valid": "Введите действительный email"
+                },
+                "details": {
+                    "required": "Обязательное поле"
+                }
+            },
+            "action": {
+                "send": "отправить"
+            }
         }
     },
     "by": {
@@ -98,6 +190,37 @@
             "area": "Плошча",
             "photo": "Фота",
             "studio": "Студыя"
+        },
+        "contact": {
+            "header": "Напішыце мне",
+            "email": {
+                "pending": "Адпраўка электроннага ліста",
+                "success": "Ліст быў пасьпяхова адпраўлены",
+                "error": "Нешта пайшло не так"
+            },
+            "label": {
+                "name": "Імя",
+                "email": "Электронная пошта",
+                "details": "Дэталі праекта"
+            },
+            "validation": {
+                "name": {
+                    "required": "Абавязковае поле",
+                    "valid": "Імя можа змяшчаць толькі літары",
+                    "short": "Занадта кароткі",
+                    "long": "Занадта доўгае"
+                },
+                "email": {
+                    "required": "Абавязковае поле",
+                    "valid": "Увядзіце сапраўдны email"
+                },
+                "details": {
+                    "required": "Абавязковае поле"
+                }
+            },
+            "action": {
+                "send": "адправіць"
+            }
         }
     }
 }

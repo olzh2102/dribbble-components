@@ -1,7 +1,10 @@
 import { FormEvent, useContext } from 'react'
 
+import { useRouter } from 'next/router'
+
 import { motion } from 'framer-motion'
 
+import lang from 'common/lang.json'
 import { ContactFormFields } from 'common/types'
 import { CursorContext } from '~contexts/cursor-provider'
 import useForm from '~hooks/use-form'
@@ -14,6 +17,9 @@ export default function ContactForm({
 }: {
   onSubmit: (data: ContactFormFields, event?: FormEvent<HTMLFormElement>) => Promise<void>
 }) {
+  const { locale } = useRouter()
+  const t = lang[locale]
+
   const { formState, errors, setValue, handleSubmit, isDisabled } = useForm()
   const { onMouseOver, onMouseOut } = useContext(CursorContext)
 
@@ -37,9 +43,9 @@ export default function ContactForm({
         }}
         type="submit"
         disabled={isDisabled}
-        className="ml-auto mr-0 block bg-action-peach dark:bg-action-gold hover:text-primary-milk rounded-full py-4 px-8 col-start-4"
+        className="ml-auto mr-0 block bg-action-peach dark:bg-action-gold hover:text-primary-milk rounded-sm px-4 py-1 col-start-4"
       >
-        send
+        {t['contact']['action']['send']}
       </motion.button>
     </form>
   )

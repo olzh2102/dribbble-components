@@ -1,5 +1,8 @@
 import { useState, ChangeEvent, FormEvent } from 'react'
 
+import { useRouter } from 'next/router'
+
+import lang from 'common/lang.json'
 import { ContactFormFields } from 'common/types'
 
 const NAME_MIN_LENGTH = 2
@@ -15,29 +18,32 @@ const DEFAULT_VALUES: ContactFormFields = {
 }
 type Name = keyof ContactFormFields
 
-const validation = {
+const validation = (tr: Record<string, Record<string, string>>) => ({
   name: (value: string) => {
-    if (value.length === 0) return 'Name is required'
-    if (NUM_REGEX.test(value)) return 'Name can only contain letters'
-    if (value.length < NAME_MIN_LENGTH) return 'Too short'
-    if (value.length > NAME_MAX_LENGTH) return 'Too long'
+    if (value.length === 0) return tr['name']['required']
+    if (NUM_REGEX.test(value)) return tr['name']['valid']
+    if (value.length < NAME_MIN_LENGTH) return tr['name']['short']
+    if (value.length > NAME_MAX_LENGTH) return tr['name']['long']
 
     return ''
   },
   email: (value: string) => {
-    if (value.length === 0) return 'Email is required'
-    if (!value.match(EMAIL_REGEX)) return 'Enter a valid email'
+    if (value.length === 0) return tr['email']['required']
+    if (!value.match(EMAIL_REGEX)) return tr['email']['valid']
 
     return ''
   },
   details: (value: string) => {
-    if (value.length === 0) return 'Project details is required'
+    if (value.length === 0) return tr['details']['required']
 
     return ''
   },
-}
+})
 
 export default function useForm() {
+  const { locale } = useRouter()
+  const t = lang[locale]
+
   const [formState, setFormState] = useState(DEFAULT_VALUES)
   const [isDisabled, setIsDisabled] = useState(false)
 
@@ -48,7 +54,7 @@ export default function useForm() {
   })
 
   function validateForm(value: string, name: Name) {
-    setErrors((prev) => ({ ...prev, [name]: validation[name](value) }))
+    setErrors((prev) => ({ ...prev, [name]: validation(t['contact']['validation'])[name](value) }))
   }
 
   function setForm(value: string, name: Name) {

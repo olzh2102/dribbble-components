@@ -16,6 +16,14 @@ a, label, button {
     cursor: none;
 }
 
+html {
+    --primary: #353535;
+}
+
+html.dark {
+    --primary: #f7f5f2;
+}
+
 /* hide scrollbar for IE, Edge and Firefox */
 .hidden-scrollbar {
     -ms-overflow-style: none;
